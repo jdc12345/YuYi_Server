@@ -15,6 +15,24 @@
 		3EBD81ED1E8E2D9400BDC217 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3EBD81EB1E8E2D9400BDC217 /* LaunchScreen.storyboard */; };
 		3EBD81F81E8E2D9400BDC217 /* YuYi_ServerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EBD81F71E8E2D9400BDC217 /* YuYi_ServerTests.m */; };
 		3EBD82031E8E2D9400BDC217 /* YuYi_ServerUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EBD82021E8E2D9400BDC217 /* YuYi_ServerUITests.m */; };
+		3EBD821E1E8E37E600BDC217 /* NSArray+Log.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EBD82191E8E37E600BDC217 /* NSArray+Log.m */; };
+		3EBD821F1E8E37E600BDC217 /* NSDictionary+Log.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EBD821B1E8E37E600BDC217 /* NSDictionary+Log.m */; };
+		3EBD82201E8E37E600BDC217 /* NSString+unicode.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EBD821D1E8E37E600BDC217 /* NSString+unicode.m */; };
+		3EBD82231E8E383500BDC217 /* UIBarButtonItem+Helper.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EBD82221E8E383500BDC217 /* UIBarButtonItem+Helper.m */; };
+		3EBD82261E8E385E00BDC217 /* ZYAlertSView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EBD82251E8E385E00BDC217 /* ZYAlertSView.m */; };
+		3EBD82301E8E389C00BDC217 /* YYNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EBD82291E8E389C00BDC217 /* YYNavigationController.m */; };
+		3EBD82311E8E389C00BDC217 /* YYTabBarController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EBD822B1E8E389C00BDC217 /* YYTabBarController.m */; };
+		3EBD82321E8E389C00BDC217 /* YYTabBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EBD822D1E8E389C00BDC217 /* YYTabBar.m */; };
+		3EBD82331E8E389C00BDC217 /* YYTabBarItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EBD822F1E8E389C00BDC217 /* YYTabBarItem.m */; };
+		3EBD82361E8E565500BDC217 /* YYHomePageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EBD82351E8E565500BDC217 /* YYHomePageViewController.m */; };
+		3EBD82391E8E568600BDC217 /* YYPersonalViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EBD82381E8E568600BDC217 /* YYPersonalViewController.m */; };
+		3EBD823F1E8E56AC00BDC217 /* YYSciencesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EBD823E1E8E56AC00BDC217 /* YYSciencesViewController.m */; };
+		3EBD82421E8E56BA00BDC217 /* YYPatientsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EBD82411E8E56BA00BDC217 /* YYPatientsViewController.m */; };
+		3EBD82481E8E583200BDC217 /* UIColor+Extension.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EBD82451E8E583200BDC217 /* UIColor+Extension.m */; };
+		3EBD82491E8E583200BDC217 /* HttpClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EBD82471E8E583200BDC217 /* HttpClient.m */; };
+		708CCDDDFCDE79538A624548 /* libPods-YuYi_Server.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 807B290263AA3AA38BFE7E43 /* libPods-YuYi_Server.a */; };
+		7387397E755B14DE035FB866 /* libPods-YuYi_ServerTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6D7030E95F0508C9B4D0B8E2 /* libPods-YuYi_ServerTests.a */; };
+		A054C75C84F7DD1BD8DE8499 /* libPods-YuYi_ServerUITests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DF454ABB10983CCC39526869 /* libPods-YuYi_ServerUITests.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -51,6 +69,46 @@
 		3EBD81FE1E8E2D9400BDC217 /* YuYi_ServerUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = YuYi_ServerUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		3EBD82021E8E2D9400BDC217 /* YuYi_ServerUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = YuYi_ServerUITests.m; sourceTree = "<group>"; };
 		3EBD82041E8E2D9400BDC217 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		3EBD82181E8E37E600BDC217 /* NSArray+Log.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSArray+Log.h"; sourceTree = "<group>"; };
+		3EBD82191E8E37E600BDC217 /* NSArray+Log.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSArray+Log.m"; sourceTree = "<group>"; };
+		3EBD821A1E8E37E600BDC217 /* NSDictionary+Log.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDictionary+Log.h"; sourceTree = "<group>"; };
+		3EBD821B1E8E37E600BDC217 /* NSDictionary+Log.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDictionary+Log.m"; sourceTree = "<group>"; };
+		3EBD821C1E8E37E600BDC217 /* NSString+unicode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+unicode.h"; sourceTree = "<group>"; };
+		3EBD821D1E8E37E600BDC217 /* NSString+unicode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+unicode.m"; sourceTree = "<group>"; };
+		3EBD82211E8E383500BDC217 /* UIBarButtonItem+Helper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIBarButtonItem+Helper.h"; sourceTree = "<group>"; };
+		3EBD82221E8E383500BDC217 /* UIBarButtonItem+Helper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIBarButtonItem+Helper.m"; sourceTree = "<group>"; };
+		3EBD82241E8E385E00BDC217 /* ZYAlertSView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZYAlertSView.h; sourceTree = "<group>"; };
+		3EBD82251E8E385E00BDC217 /* ZYAlertSView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZYAlertSView.m; sourceTree = "<group>"; };
+		3EBD82281E8E389C00BDC217 /* YYNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YYNavigationController.h; sourceTree = "<group>"; };
+		3EBD82291E8E389C00BDC217 /* YYNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YYNavigationController.m; sourceTree = "<group>"; };
+		3EBD822A1E8E389C00BDC217 /* YYTabBarController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YYTabBarController.h; sourceTree = "<group>"; };
+		3EBD822B1E8E389C00BDC217 /* YYTabBarController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YYTabBarController.m; sourceTree = "<group>"; };
+		3EBD822C1E8E389C00BDC217 /* YYTabBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YYTabBar.h; sourceTree = "<group>"; };
+		3EBD822D1E8E389C00BDC217 /* YYTabBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YYTabBar.m; sourceTree = "<group>"; };
+		3EBD822E1E8E389C00BDC217 /* YYTabBarItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YYTabBarItem.h; sourceTree = "<group>"; };
+		3EBD822F1E8E389C00BDC217 /* YYTabBarItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YYTabBarItem.m; sourceTree = "<group>"; };
+		3EBD82341E8E565500BDC217 /* YYHomePageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YYHomePageViewController.h; sourceTree = "<group>"; };
+		3EBD82351E8E565500BDC217 /* YYHomePageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YYHomePageViewController.m; sourceTree = "<group>"; };
+		3EBD82371E8E568600BDC217 /* YYPersonalViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YYPersonalViewController.h; sourceTree = "<group>"; };
+		3EBD82381E8E568600BDC217 /* YYPersonalViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YYPersonalViewController.m; sourceTree = "<group>"; };
+		3EBD823D1E8E56AC00BDC217 /* YYSciencesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YYSciencesViewController.h; sourceTree = "<group>"; };
+		3EBD823E1E8E56AC00BDC217 /* YYSciencesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YYSciencesViewController.m; sourceTree = "<group>"; };
+		3EBD82401E8E56BA00BDC217 /* YYPatientsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YYPatientsViewController.h; sourceTree = "<group>"; };
+		3EBD82411E8E56BA00BDC217 /* YYPatientsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YYPatientsViewController.m; sourceTree = "<group>"; };
+		3EBD82431E8E573500BDC217 /* YYDefine.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YYDefine.pch; sourceTree = "<group>"; };
+		3EBD82441E8E583200BDC217 /* UIColor+Extension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+Extension.h"; sourceTree = "<group>"; };
+		3EBD82451E8E583200BDC217 /* UIColor+Extension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+Extension.m"; sourceTree = "<group>"; };
+		3EBD82461E8E583200BDC217 /* HttpClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HttpClient.h; sourceTree = "<group>"; };
+		3EBD82471E8E583200BDC217 /* HttpClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HttpClient.m; sourceTree = "<group>"; };
+		4CA8FAA1F8141E3B4DCA0105 /* Pods-YuYi_ServerTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-YuYi_ServerTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-YuYi_ServerTests/Pods-YuYi_ServerTests.release.xcconfig"; sourceTree = "<group>"; };
+		562FCB2765EB8EA4F257D670 /* Pods-YuYi_Server.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-YuYi_Server.release.xcconfig"; path = "Pods/Target Support Files/Pods-YuYi_Server/Pods-YuYi_Server.release.xcconfig"; sourceTree = "<group>"; };
+		65E49C3B3F52268975F672A4 /* Pods-YuYi_ServerUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-YuYi_ServerUITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-YuYi_ServerUITests/Pods-YuYi_ServerUITests.release.xcconfig"; sourceTree = "<group>"; };
+		6D7030E95F0508C9B4D0B8E2 /* libPods-YuYi_ServerTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-YuYi_ServerTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		807B290263AA3AA38BFE7E43 /* libPods-YuYi_Server.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-YuYi_Server.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		9F660235B8593BB07FBFA4AC /* Pods-YuYi_Server.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-YuYi_Server.debug.xcconfig"; path = "Pods/Target Support Files/Pods-YuYi_Server/Pods-YuYi_Server.debug.xcconfig"; sourceTree = "<group>"; };
+		C3E10FAE935586B59F53159C /* Pods-YuYi_ServerUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-YuYi_ServerUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-YuYi_ServerUITests/Pods-YuYi_ServerUITests.debug.xcconfig"; sourceTree = "<group>"; };
+		DF454ABB10983CCC39526869 /* libPods-YuYi_ServerUITests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-YuYi_ServerUITests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		F823831017D3F4E67F65B66F /* Pods-YuYi_ServerTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-YuYi_ServerTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-YuYi_ServerTests/Pods-YuYi_ServerTests.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -58,6 +116,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				708CCDDDFCDE79538A624548 /* libPods-YuYi_Server.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -65,6 +124,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7387397E755B14DE035FB866 /* libPods-YuYi_ServerTests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -72,12 +132,26 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A054C75C84F7DD1BD8DE8499 /* libPods-YuYi_ServerUITests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		1237EE55D22ABAD1EC2225F1 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				9F660235B8593BB07FBFA4AC /* Pods-YuYi_Server.debug.xcconfig */,
+				562FCB2765EB8EA4F257D670 /* Pods-YuYi_Server.release.xcconfig */,
+				F823831017D3F4E67F65B66F /* Pods-YuYi_ServerTests.debug.xcconfig */,
+				4CA8FAA1F8141E3B4DCA0105 /* Pods-YuYi_ServerTests.release.xcconfig */,
+				C3E10FAE935586B59F53159C /* Pods-YuYi_ServerUITests.debug.xcconfig */,
+				65E49C3B3F52268975F672A4 /* Pods-YuYi_ServerUITests.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
 		3EBD81D11E8E2D9400BDC217 = {
 			isa = PBXGroup;
 			children = (
@@ -85,6 +159,8 @@
 				3EBD81F61E8E2D9400BDC217 /* YuYi_ServerTests */,
 				3EBD82011E8E2D9400BDC217 /* YuYi_ServerUITests */,
 				3EBD81DB1E8E2D9400BDC217 /* Products */,
+				1237EE55D22ABAD1EC2225F1 /* Pods */,
+				A1070A94194C0E37D782134A /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -101,14 +177,8 @@
 		3EBD81DC1E8E2D9400BDC217 /* YuYi_Server */ = {
 			isa = PBXGroup;
 			children = (
-				3EBD81E01E8E2D9400BDC217 /* AppDelegate.h */,
-				3EBD81E11E8E2D9400BDC217 /* AppDelegate.m */,
-				3EBD81E31E8E2D9400BDC217 /* ViewController.h */,
-				3EBD81E41E8E2D9400BDC217 /* ViewController.m */,
-				3EBD81E61E8E2D9400BDC217 /* Main.storyboard */,
-				3EBD81E91E8E2D9400BDC217 /* Assets.xcassets */,
-				3EBD81EB1E8E2D9400BDC217 /* LaunchScreen.storyboard */,
-				3EBD81EE1E8E2D9400BDC217 /* Info.plist */,
+				3EBD82161E8E311D00BDC217 /* Root_Tools */,
+				3EBD82151E8E311500BDC217 /* Classes */,
 				3EBD81DD1E8E2D9400BDC217 /* Supporting Files */,
 			);
 			path = YuYi_Server;
@@ -140,6 +210,125 @@
 			path = YuYi_ServerUITests;
 			sourceTree = "<group>";
 		};
+		3EBD82101E8E2F2400BDC217 /* HomePage */ = {
+			isa = PBXGroup;
+			children = (
+				3EBD82341E8E565500BDC217 /* YYHomePageViewController.h */,
+				3EBD82351E8E565500BDC217 /* YYHomePageViewController.m */,
+			);
+			name = HomePage;
+			sourceTree = "<group>";
+		};
+		3EBD82111E8E2F4D00BDC217 /* SciencesPage */ = {
+			isa = PBXGroup;
+			children = (
+				3EBD823D1E8E56AC00BDC217 /* YYSciencesViewController.h */,
+				3EBD823E1E8E56AC00BDC217 /* YYSciencesViewController.m */,
+			);
+			name = SciencesPage;
+			sourceTree = "<group>";
+		};
+		3EBD82121E8E2F9600BDC217 /* PatientsPage */ = {
+			isa = PBXGroup;
+			children = (
+				3EBD82401E8E56BA00BDC217 /* YYPatientsViewController.h */,
+				3EBD82411E8E56BA00BDC217 /* YYPatientsViewController.m */,
+			);
+			name = PatientsPage;
+			sourceTree = "<group>";
+		};
+		3EBD82131E8E2FA400BDC217 /* PersonalPage */ = {
+			isa = PBXGroup;
+			children = (
+				3EBD82371E8E568600BDC217 /* YYPersonalViewController.h */,
+				3EBD82381E8E568600BDC217 /* YYPersonalViewController.m */,
+			);
+			name = PersonalPage;
+			sourceTree = "<group>";
+		};
+		3EBD82141E8E2FB900BDC217 /* Other */ = {
+			isa = PBXGroup;
+			children = (
+				3EBD82431E8E573500BDC217 /* YYDefine.pch */,
+				3EBD81E31E8E2D9400BDC217 /* ViewController.h */,
+				3EBD81E41E8E2D9400BDC217 /* ViewController.m */,
+				3EBD81E61E8E2D9400BDC217 /* Main.storyboard */,
+				3EBD81E91E8E2D9400BDC217 /* Assets.xcassets */,
+				3EBD81EB1E8E2D9400BDC217 /* LaunchScreen.storyboard */,
+				3EBD81EE1E8E2D9400BDC217 /* Info.plist */,
+			);
+			name = Other;
+			sourceTree = "<group>";
+		};
+		3EBD82151E8E311500BDC217 /* Classes */ = {
+			isa = PBXGroup;
+			children = (
+				3EBD82271E8E388200BDC217 /*  TabBarAndNavi */,
+				3EBD82171E8E314800BDC217 /* AppDelegate */,
+				3EBD82101E8E2F2400BDC217 /* HomePage */,
+				3EBD82111E8E2F4D00BDC217 /* SciencesPage */,
+				3EBD82121E8E2F9600BDC217 /* PatientsPage */,
+				3EBD82131E8E2FA400BDC217 /* PersonalPage */,
+				3EBD82141E8E2FB900BDC217 /* Other */,
+			);
+			name = Classes;
+			sourceTree = "<group>";
+		};
+		3EBD82161E8E311D00BDC217 /* Root_Tools */ = {
+			isa = PBXGroup;
+			children = (
+				3EBD82181E8E37E600BDC217 /* NSArray+Log.h */,
+				3EBD82191E8E37E600BDC217 /* NSArray+Log.m */,
+				3EBD821A1E8E37E600BDC217 /* NSDictionary+Log.h */,
+				3EBD821B1E8E37E600BDC217 /* NSDictionary+Log.m */,
+				3EBD821C1E8E37E600BDC217 /* NSString+unicode.h */,
+				3EBD821D1E8E37E600BDC217 /* NSString+unicode.m */,
+				3EBD82211E8E383500BDC217 /* UIBarButtonItem+Helper.h */,
+				3EBD82221E8E383500BDC217 /* UIBarButtonItem+Helper.m */,
+				3EBD82241E8E385E00BDC217 /* ZYAlertSView.h */,
+				3EBD82251E8E385E00BDC217 /* ZYAlertSView.m */,
+				3EBD82441E8E583200BDC217 /* UIColor+Extension.h */,
+				3EBD82451E8E583200BDC217 /* UIColor+Extension.m */,
+				3EBD82461E8E583200BDC217 /* HttpClient.h */,
+				3EBD82471E8E583200BDC217 /* HttpClient.m */,
+			);
+			name = Root_Tools;
+			sourceTree = "<group>";
+		};
+		3EBD82171E8E314800BDC217 /* AppDelegate */ = {
+			isa = PBXGroup;
+			children = (
+				3EBD81E01E8E2D9400BDC217 /* AppDelegate.h */,
+				3EBD81E11E8E2D9400BDC217 /* AppDelegate.m */,
+			);
+			name = AppDelegate;
+			sourceTree = "<group>";
+		};
+		3EBD82271E8E388200BDC217 /*  TabBarAndNavi */ = {
+			isa = PBXGroup;
+			children = (
+				3EBD82281E8E389C00BDC217 /* YYNavigationController.h */,
+				3EBD82291E8E389C00BDC217 /* YYNavigationController.m */,
+				3EBD822A1E8E389C00BDC217 /* YYTabBarController.h */,
+				3EBD822B1E8E389C00BDC217 /* YYTabBarController.m */,
+				3EBD822C1E8E389C00BDC217 /* YYTabBar.h */,
+				3EBD822D1E8E389C00BDC217 /* YYTabBar.m */,
+				3EBD822E1E8E389C00BDC217 /* YYTabBarItem.h */,
+				3EBD822F1E8E389C00BDC217 /* YYTabBarItem.m */,
+			);
+			name = " TabBarAndNavi";
+			sourceTree = "<group>";
+		};
+		A1070A94194C0E37D782134A /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				807B290263AA3AA38BFE7E43 /* libPods-YuYi_Server.a */,
+				6D7030E95F0508C9B4D0B8E2 /* libPods-YuYi_ServerTests.a */,
+				DF454ABB10983CCC39526869 /* libPods-YuYi_ServerUITests.a */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -147,9 +336,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 3EBD82071E8E2D9400BDC217 /* Build configuration list for PBXNativeTarget "YuYi_Server" */;
 			buildPhases = (
+				E3989D00490D0AFCD08979D7 /* [CP] Check Pods Manifest.lock */,
 				3EBD81D61E8E2D9400BDC217 /* Sources */,
 				3EBD81D71E8E2D9400BDC217 /* Frameworks */,
 				3EBD81D81E8E2D9400BDC217 /* Resources */,
+				76B28D62901631882E7293EC /* [CP] Embed Pods Frameworks */,
+				5D9EC76FE9CA62025483CFAA /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -164,9 +356,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 3EBD820A1E8E2D9400BDC217 /* Build configuration list for PBXNativeTarget "YuYi_ServerTests" */;
 			buildPhases = (
+				1EE39EDD98DAB17ECBBDEBE6 /* [CP] Check Pods Manifest.lock */,
 				3EBD81EF1E8E2D9400BDC217 /* Sources */,
 				3EBD81F01E8E2D9400BDC217 /* Frameworks */,
 				3EBD81F11E8E2D9400BDC217 /* Resources */,
+				BA9AC138111B9A2FFA32F98E /* [CP] Embed Pods Frameworks */,
+				ADCAD39F984E0BC2604B905A /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -182,9 +377,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 3EBD820D1E8E2D9400BDC217 /* Build configuration list for PBXNativeTarget "YuYi_ServerUITests" */;
 			buildPhases = (
+				4CFC91D8DFC9896533426171 /* [CP] Check Pods Manifest.lock */,
 				3EBD81FA1E8E2D9400BDC217 /* Sources */,
 				3EBD81FB1E8E2D9400BDC217 /* Frameworks */,
 				3EBD81FC1E8E2D9400BDC217 /* Resources */,
+				B6062D25EF68E03A57FB157D /* [CP] Embed Pods Frameworks */,
+				3BE744F65B0BE9DB080CEA06 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -268,13 +466,166 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		1EE39EDD98DAB17ECBBDEBE6 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		3BE744F65B0BE9DB080CEA06 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-YuYi_ServerUITests/Pods-YuYi_ServerUITests-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		4CFC91D8DFC9896533426171 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		5D9EC76FE9CA62025483CFAA /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-YuYi_Server/Pods-YuYi_Server-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		76B28D62901631882E7293EC /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-YuYi_Server/Pods-YuYi_Server-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		ADCAD39F984E0BC2604B905A /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-YuYi_ServerTests/Pods-YuYi_ServerTests-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		B6062D25EF68E03A57FB157D /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-YuYi_ServerUITests/Pods-YuYi_ServerUITests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		BA9AC138111B9A2FFA32F98E /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-YuYi_ServerTests/Pods-YuYi_ServerTests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		E3989D00490D0AFCD08979D7 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		3EBD81D61E8E2D9400BDC217 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3EBD82391E8E568600BDC217 /* YYPersonalViewController.m in Sources */,
 				3EBD81E51E8E2D9400BDC217 /* ViewController.m in Sources */,
+				3EBD821E1E8E37E600BDC217 /* NSArray+Log.m in Sources */,
+				3EBD82261E8E385E00BDC217 /* ZYAlertSView.m in Sources */,
+				3EBD82231E8E383500BDC217 /* UIBarButtonItem+Helper.m in Sources */,
 				3EBD81E21E8E2D9400BDC217 /* AppDelegate.m in Sources */,
+				3EBD82301E8E389C00BDC217 /* YYNavigationController.m in Sources */,
+				3EBD82481E8E583200BDC217 /* UIColor+Extension.m in Sources */,
+				3EBD823F1E8E56AC00BDC217 /* YYSciencesViewController.m in Sources */,
+				3EBD82201E8E37E600BDC217 /* NSString+unicode.m in Sources */,
+				3EBD82311E8E389C00BDC217 /* YYTabBarController.m in Sources */,
+				3EBD82321E8E389C00BDC217 /* YYTabBar.m in Sources */,
+				3EBD82491E8E583200BDC217 /* HttpClient.m in Sources */,
+				3EBD82361E8E565500BDC217 /* YYHomePageViewController.m in Sources */,
+				3EBD821F1E8E37E600BDC217 /* NSDictionary+Log.m in Sources */,
+				3EBD82331E8E389C00BDC217 /* YYTabBarItem.m in Sources */,
+				3EBD82421E8E56BA00BDC217 /* YYPatientsViewController.m in Sources */,
 				3EBD81DF1E8E2D9400BDC217 /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -422,8 +773,11 @@
 		};
 		3EBD82081E8E2D9400BDC217 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 9F660235B8593BB07FBFA4AC /* Pods-YuYi_Server.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "$(SRCROOT)/YuYi_Server/YYDefine.pch";
 				INFOPLIST_FILE = YuYi_Server/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.technology.YuYi-Server";
@@ -433,8 +787,11 @@
 		};
 		3EBD82091E8E2D9400BDC217 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 562FCB2765EB8EA4F257D670 /* Pods-YuYi_Server.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "$(SRCROOT)/YuYi_Server/YYDefine.pch";
 				INFOPLIST_FILE = YuYi_Server/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.technology.YuYi-Server";
@@ -444,6 +801,7 @@
 		};
 		3EBD820B1E8E2D9400BDC217 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = F823831017D3F4E67F65B66F /* Pods-YuYi_ServerTests.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				INFOPLIST_FILE = YuYi_ServerTests/Info.plist;
@@ -456,6 +814,7 @@
 		};
 		3EBD820C1E8E2D9400BDC217 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 4CA8FAA1F8141E3B4DCA0105 /* Pods-YuYi_ServerTests.release.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				INFOPLIST_FILE = YuYi_ServerTests/Info.plist;
@@ -468,6 +827,7 @@
 		};
 		3EBD820E1E8E2D9400BDC217 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = C3E10FAE935586B59F53159C /* Pods-YuYi_ServerUITests.debug.xcconfig */;
 			buildSettings = {
 				INFOPLIST_FILE = YuYi_ServerUITests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
@@ -479,6 +839,7 @@
 		};
 		3EBD820F1E8E2D9400BDC217 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 65E49C3B3F52268975F672A4 /* Pods-YuYi_ServerUITests.release.xcconfig */;
 			buildSettings = {
 				INFOPLIST_FILE = YuYi_ServerUITests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
@@ -507,6 +868,7 @@
 				3EBD82091E8E2D9400BDC217 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		3EBD820A1E8E2D9400BDC217 /* Build configuration list for PBXNativeTarget "YuYi_ServerTests" */ = {
 			isa = XCConfigurationList;
@@ -515,6 +877,7 @@
 				3EBD820C1E8E2D9400BDC217 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		3EBD820D1E8E2D9400BDC217 /* Build configuration list for PBXNativeTarget "YuYi_ServerUITests" */ = {
 			isa = XCConfigurationList;
@@ -523,6 +886,7 @@
 				3EBD820F1E8E2D9400BDC217 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

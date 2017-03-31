@@ -6,8 +6,8 @@
 #import "YYTabBar.h"
 #import "YYNavigationController.h"
 #import "YYHomePageViewController.h"
-#import "YYMeasureViewController.h"
-#import "YYConsultViewController.h"
+#import "YYSciencesViewController.h"
+#import "YYPatientsViewController.h"
 #import "YYPersonalViewController.h"
 
 #define kTabbarItemTag 100
@@ -53,13 +53,13 @@
     YYHomePageViewController *homeVC = [[YYHomePageViewController alloc] init];
     [self addChildViewControllerAtIndex:0 childViewController:homeVC title:@"首页" normalImage:@"home_normal" selectedImage:@"home_select"];
     
-    // 测量
-    YYMeasureViewController *measureVC = [[YYMeasureViewController alloc] init];
-    [self addChildViewControllerAtIndex:1 childViewController:measureVC title:@"测量" normalImage:@"measure_normal" selectedImage:@"measure_select"];
+    // 学术圈
+    YYSciencesViewController *measureVC = [[YYSciencesViewController alloc] init];
+    [self addChildViewControllerAtIndex:1 childViewController:measureVC title:@"学术圈" normalImage:@"measure_normal" selectedImage:@"measure_select"];
     
-    // 咨询
-    YYConsultViewController *consultVC = [[YYConsultViewController alloc] init];
-    [self addChildViewControllerAtIndex:2 childViewController:consultVC title:@"咨询" normalImage:@"consult_normal" selectedImage:@"consult_select"];
+    // 患者
+    YYPatientsViewController *consultVC = [[YYPatientsViewController alloc] init];
+    [self addChildViewControllerAtIndex:2 childViewController:consultVC title:@"患者" normalImage:@"consult_normal" selectedImage:@"consult_select"];
     
     // 我的
     YYPersonalViewController *personalVC = [[YYPersonalViewController alloc] init];
