@@ -18,9 +18,11 @@
     [super viewDidLoad];
     self.title = @"学术圈";
     self.view.backgroundColor = [UIColor whiteColor];
-    // Do any additional setup after loading the view.
+    [self loadData];
 }
-
+- (void)loadData {
+    
+}
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
