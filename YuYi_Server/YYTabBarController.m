@@ -51,19 +51,19 @@
 - (void)setupMainContents {
     // 首页
     YYHomePageViewController *homeVC = [[YYHomePageViewController alloc] init];
-    [self addChildViewControllerAtIndex:0 childViewController:homeVC title:@"首页" normalImage:@"home_normal" selectedImage:@"home_select"];
+    [self addChildViewControllerAtIndex:0 childViewController:homeVC title:@"首页" normalImage:@"information" selectedImage:@"information-selected"];
     
     // 学术圈
     YYSciencesViewController *measureVC = [[YYSciencesViewController alloc] init];
-    [self addChildViewControllerAtIndex:1 childViewController:measureVC title:@"学术圈" normalImage:@"measure_normal" selectedImage:@"measure_select"];
+    [self addChildViewControllerAtIndex:1 childViewController:measureVC title:@"学术圈" normalImage:@"Academiccircles" selectedImage:@"Academiccircles-selected"];
     
     // 患者
     YYPatientsViewController *consultVC = [[YYPatientsViewController alloc] init];
-    [self addChildViewControllerAtIndex:2 childViewController:consultVC title:@"患者" normalImage:@"consult_normal" selectedImage:@"consult_select"];
+    [self addChildViewControllerAtIndex:2 childViewController:consultVC title:@"患者" normalImage:@"patient" selectedImage:@"patient-selected"];
     
     // 我的
     YYPersonalViewController *personalVC = [[YYPersonalViewController alloc] init];
-    [self addChildViewControllerAtIndex:3 childViewController:personalVC title:@"我的" normalImage:@"personal_normal" selectedImage:@"personal_select"];
+    [self addChildViewControllerAtIndex:3 childViewController:personalVC title:@"我的" normalImage:@"my" selectedImage:@"my-selected"];
 }
 
 /**

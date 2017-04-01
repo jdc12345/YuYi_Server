@@ -7,6 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3E85EF8D1E8F38F400E7D8F1 /* YYSettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E85EF8C1E8F38F400E7D8F1 /* YYSettingViewController.m */; };
+		3E85EF901E8F390500E7D8F1 /* YYFeedbackViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E85EF8F1E8F390500E7D8F1 /* YYFeedbackViewController.m */; };
+		3E85EF951E8F391400E7D8F1 /* YYAboutUSViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E85EF921E8F391400E7D8F1 /* YYAboutUSViewController.m */; };
+		3E85EF961E8F391400E7D8F1 /* YYContactViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E85EF941E8F391400E7D8F1 /* YYContactViewController.m */; };
+		3E85EF9A1E8F3CBE00E7D8F1 /* YYPInfomationTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E85EF991E8F3CBE00E7D8F1 /* YYPInfomationTableViewCell.m */; };
+		3E85EF9C1E8F47DA00E7D8F1 /* avatar.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 3E85EF9B1E8F47DA00E7D8F1 /* avatar.jpg */; };
 		3EBD81DF1E8E2D9400BDC217 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EBD81DE1E8E2D9400BDC217 /* main.m */; };
 		3EBD81E21E8E2D9400BDC217 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EBD81E11E8E2D9400BDC217 /* AppDelegate.m */; };
 		3EBD81E51E8E2D9400BDC217 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EBD81E41E8E2D9400BDC217 /* ViewController.m */; };
@@ -30,6 +36,15 @@
 		3EBD82421E8E56BA00BDC217 /* YYPatientsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EBD82411E8E56BA00BDC217 /* YYPatientsViewController.m */; };
 		3EBD82481E8E583200BDC217 /* UIColor+Extension.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EBD82451E8E583200BDC217 /* UIColor+Extension.m */; };
 		3EBD82491E8E583200BDC217 /* HttpClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EBD82471E8E583200BDC217 /* HttpClient.m */; };
+		3EBD824F1E8E64B300BDC217 /* YYHomeNewTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EBD824E1E8E64B300BDC217 /* YYHomeNewTableViewCell.m */; };
+		3EBD82521E8E64DF00BDC217 /* YYPersonalTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EBD82511E8E64DF00BDC217 /* YYPersonalTableViewCell.m */; };
+		3EBD82551E8E672A00BDC217 /* InvitationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EBD82541E8E672A00BDC217 /* InvitationViewController.m */; };
+		3EBD82581E8E677300BDC217 /* AgreeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EBD82571E8E677300BDC217 /* AgreeViewController.m */; };
+		3EBD825B1E8E678A00BDC217 /* ConsultViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EBD825A1E8E678A00BDC217 /* ConsultViewController.m */; };
+		3EBD825E1E8E67A000BDC217 /* CheckDataViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EBD825D1E8E67A000BDC217 /* CheckDataViewController.m */; };
+		3EBD82611E8E67C800BDC217 /* ReciveAppointmentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EBD82601E8E67C800BDC217 /* ReciveAppointmentViewController.m */; };
+		3EBD82651E8E686E00BDC217 /* CcUserModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EBD82641E8E686E00BDC217 /* CcUserModel.m */; };
+		3EBD82681E8E689600BDC217 /* YYHomeUserModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EBD82671E8E689600BDC217 /* YYHomeUserModel.m */; };
 		708CCDDDFCDE79538A624548 /* libPods-YuYi_Server.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 807B290263AA3AA38BFE7E43 /* libPods-YuYi_Server.a */; };
 		7387397E755B14DE035FB866 /* libPods-YuYi_ServerTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6D7030E95F0508C9B4D0B8E2 /* libPods-YuYi_ServerTests.a */; };
 		A054C75C84F7DD1BD8DE8499 /* libPods-YuYi_ServerUITests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DF454ABB10983CCC39526869 /* libPods-YuYi_ServerUITests.a */; };
@@ -53,6 +68,17 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		3E85EF8B1E8F38F400E7D8F1 /* YYSettingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YYSettingViewController.h; sourceTree = "<group>"; };
+		3E85EF8C1E8F38F400E7D8F1 /* YYSettingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YYSettingViewController.m; sourceTree = "<group>"; };
+		3E85EF8E1E8F390500E7D8F1 /* YYFeedbackViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YYFeedbackViewController.h; sourceTree = "<group>"; };
+		3E85EF8F1E8F390500E7D8F1 /* YYFeedbackViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YYFeedbackViewController.m; sourceTree = "<group>"; };
+		3E85EF911E8F391400E7D8F1 /* YYAboutUSViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YYAboutUSViewController.h; sourceTree = "<group>"; };
+		3E85EF921E8F391400E7D8F1 /* YYAboutUSViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YYAboutUSViewController.m; sourceTree = "<group>"; };
+		3E85EF931E8F391400E7D8F1 /* YYContactViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YYContactViewController.h; sourceTree = "<group>"; };
+		3E85EF941E8F391400E7D8F1 /* YYContactViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YYContactViewController.m; sourceTree = "<group>"; };
+		3E85EF981E8F3CBE00E7D8F1 /* YYPInfomationTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YYPInfomationTableViewCell.h; sourceTree = "<group>"; };
+		3E85EF991E8F3CBE00E7D8F1 /* YYPInfomationTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YYPInfomationTableViewCell.m; sourceTree = "<group>"; };
+		3E85EF9B1E8F47DA00E7D8F1 /* avatar.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = avatar.jpg; sourceTree = "<group>"; };
 		3EBD81DA1E8E2D9400BDC217 /* YuYi_Server.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = YuYi_Server.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3EBD81DE1E8E2D9400BDC217 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		3EBD81E01E8E2D9400BDC217 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -100,6 +126,24 @@
 		3EBD82451E8E583200BDC217 /* UIColor+Extension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+Extension.m"; sourceTree = "<group>"; };
 		3EBD82461E8E583200BDC217 /* HttpClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HttpClient.h; sourceTree = "<group>"; };
 		3EBD82471E8E583200BDC217 /* HttpClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HttpClient.m; sourceTree = "<group>"; };
+		3EBD824D1E8E64B300BDC217 /* YYHomeNewTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YYHomeNewTableViewCell.h; sourceTree = "<group>"; };
+		3EBD824E1E8E64B300BDC217 /* YYHomeNewTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YYHomeNewTableViewCell.m; sourceTree = "<group>"; };
+		3EBD82501E8E64DF00BDC217 /* YYPersonalTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YYPersonalTableViewCell.h; sourceTree = "<group>"; };
+		3EBD82511E8E64DF00BDC217 /* YYPersonalTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YYPersonalTableViewCell.m; sourceTree = "<group>"; };
+		3EBD82531E8E672A00BDC217 /* InvitationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InvitationViewController.h; sourceTree = "<group>"; };
+		3EBD82541E8E672A00BDC217 /* InvitationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InvitationViewController.m; sourceTree = "<group>"; };
+		3EBD82561E8E677300BDC217 /* AgreeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AgreeViewController.h; sourceTree = "<group>"; };
+		3EBD82571E8E677300BDC217 /* AgreeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AgreeViewController.m; sourceTree = "<group>"; };
+		3EBD82591E8E678A00BDC217 /* ConsultViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConsultViewController.h; sourceTree = "<group>"; };
+		3EBD825A1E8E678A00BDC217 /* ConsultViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ConsultViewController.m; sourceTree = "<group>"; };
+		3EBD825C1E8E67A000BDC217 /* CheckDataViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CheckDataViewController.h; sourceTree = "<group>"; };
+		3EBD825D1E8E67A000BDC217 /* CheckDataViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CheckDataViewController.m; sourceTree = "<group>"; };
+		3EBD825F1E8E67C800BDC217 /* ReciveAppointmentViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReciveAppointmentViewController.h; sourceTree = "<group>"; };
+		3EBD82601E8E67C800BDC217 /* ReciveAppointmentViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReciveAppointmentViewController.m; sourceTree = "<group>"; };
+		3EBD82631E8E686E00BDC217 /* CcUserModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CcUserModel.h; sourceTree = "<group>"; };
+		3EBD82641E8E686E00BDC217 /* CcUserModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CcUserModel.m; sourceTree = "<group>"; };
+		3EBD82661E8E689600BDC217 /* YYHomeUserModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YYHomeUserModel.h; sourceTree = "<group>"; };
+		3EBD82671E8E689600BDC217 /* YYHomeUserModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YYHomeUserModel.m; sourceTree = "<group>"; };
 		4CA8FAA1F8141E3B4DCA0105 /* Pods-YuYi_ServerTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-YuYi_ServerTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-YuYi_ServerTests/Pods-YuYi_ServerTests.release.xcconfig"; sourceTree = "<group>"; };
 		562FCB2765EB8EA4F257D670 /* Pods-YuYi_Server.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-YuYi_Server.release.xcconfig"; path = "Pods/Target Support Files/Pods-YuYi_Server/Pods-YuYi_Server.release.xcconfig"; sourceTree = "<group>"; };
 		65E49C3B3F52268975F672A4 /* Pods-YuYi_ServerUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-YuYi_ServerUITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-YuYi_ServerUITests/Pods-YuYi_ServerUITests.release.xcconfig"; sourceTree = "<group>"; };
@@ -150,6 +194,15 @@
 				65E49C3B3F52268975F672A4 /* Pods-YuYi_ServerUITests.release.xcconfig */,
 			);
 			name = Pods;
+			sourceTree = "<group>";
+		};
+		3E85EF971E8F3CA700E7D8F1 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				3E85EF981E8F3CBE00E7D8F1 /* YYPInfomationTableViewCell.h */,
+				3E85EF991E8F3CBE00E7D8F1 /* YYPInfomationTableViewCell.m */,
+			);
+			name = View;
 			sourceTree = "<group>";
 		};
 		3EBD81D11E8E2D9400BDC217 = {
@@ -240,8 +293,32 @@
 		3EBD82131E8E2FA400BDC217 /* PersonalPage */ = {
 			isa = PBXGroup;
 			children = (
+				3E85EF971E8F3CA700E7D8F1 /* View */,
+				3EBD82621E8E685300BDC217 /* Model */,
 				3EBD82371E8E568600BDC217 /* YYPersonalViewController.h */,
 				3EBD82381E8E568600BDC217 /* YYPersonalViewController.m */,
+				3EBD82501E8E64DF00BDC217 /* YYPersonalTableViewCell.h */,
+				3EBD82511E8E64DF00BDC217 /* YYPersonalTableViewCell.m */,
+				3EBD824D1E8E64B300BDC217 /* YYHomeNewTableViewCell.h */,
+				3EBD824E1E8E64B300BDC217 /* YYHomeNewTableViewCell.m */,
+				3EBD82531E8E672A00BDC217 /* InvitationViewController.h */,
+				3EBD82541E8E672A00BDC217 /* InvitationViewController.m */,
+				3EBD82561E8E677300BDC217 /* AgreeViewController.h */,
+				3EBD82571E8E677300BDC217 /* AgreeViewController.m */,
+				3EBD82591E8E678A00BDC217 /* ConsultViewController.h */,
+				3EBD825A1E8E678A00BDC217 /* ConsultViewController.m */,
+				3EBD825C1E8E67A000BDC217 /* CheckDataViewController.h */,
+				3EBD825D1E8E67A000BDC217 /* CheckDataViewController.m */,
+				3EBD825F1E8E67C800BDC217 /* ReciveAppointmentViewController.h */,
+				3EBD82601E8E67C800BDC217 /* ReciveAppointmentViewController.m */,
+				3E85EF8B1E8F38F400E7D8F1 /* YYSettingViewController.h */,
+				3E85EF8C1E8F38F400E7D8F1 /* YYSettingViewController.m */,
+				3E85EF8E1E8F390500E7D8F1 /* YYFeedbackViewController.h */,
+				3E85EF8F1E8F390500E7D8F1 /* YYFeedbackViewController.m */,
+				3E85EF911E8F391400E7D8F1 /* YYAboutUSViewController.h */,
+				3E85EF921E8F391400E7D8F1 /* YYAboutUSViewController.m */,
+				3E85EF931E8F391400E7D8F1 /* YYContactViewController.h */,
+				3E85EF941E8F391400E7D8F1 /* YYContactViewController.m */,
 			);
 			name = PersonalPage;
 			sourceTree = "<group>";
@@ -254,6 +331,7 @@
 				3EBD81E41E8E2D9400BDC217 /* ViewController.m */,
 				3EBD81E61E8E2D9400BDC217 /* Main.storyboard */,
 				3EBD81E91E8E2D9400BDC217 /* Assets.xcassets */,
+				3E85EF9B1E8F47DA00E7D8F1 /* avatar.jpg */,
 				3EBD81EB1E8E2D9400BDC217 /* LaunchScreen.storyboard */,
 				3EBD81EE1E8E2D9400BDC217 /* Info.plist */,
 			);
@@ -317,6 +395,17 @@
 				3EBD822F1E8E389C00BDC217 /* YYTabBarItem.m */,
 			);
 			name = " TabBarAndNavi";
+			sourceTree = "<group>";
+		};
+		3EBD82621E8E685300BDC217 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				3EBD82631E8E686E00BDC217 /* CcUserModel.h */,
+				3EBD82641E8E686E00BDC217 /* CcUserModel.m */,
+				3EBD82661E8E689600BDC217 /* YYHomeUserModel.h */,
+				3EBD82671E8E689600BDC217 /* YYHomeUserModel.m */,
+			);
+			name = Model;
 			sourceTree = "<group>";
 		};
 		A1070A94194C0E37D782134A /* Frameworks */ = {
@@ -444,6 +533,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3E85EF9C1E8F47DA00E7D8F1 /* avatar.jpg in Resources */,
 				3EBD81ED1E8E2D9400BDC217 /* LaunchScreen.storyboard in Resources */,
 				3EBD81EA1E8E2D9400BDC217 /* Assets.xcassets in Resources */,
 				3EBD81E81E8E2D9400BDC217 /* Main.storyboard in Resources */,
@@ -609,23 +699,37 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3E85EF951E8F391400E7D8F1 /* YYAboutUSViewController.m in Sources */,
 				3EBD82391E8E568600BDC217 /* YYPersonalViewController.m in Sources */,
 				3EBD81E51E8E2D9400BDC217 /* ViewController.m in Sources */,
 				3EBD821E1E8E37E600BDC217 /* NSArray+Log.m in Sources */,
+				3EBD825B1E8E678A00BDC217 /* ConsultViewController.m in Sources */,
+				3EBD82551E8E672A00BDC217 /* InvitationViewController.m in Sources */,
 				3EBD82261E8E385E00BDC217 /* ZYAlertSView.m in Sources */,
 				3EBD82231E8E383500BDC217 /* UIBarButtonItem+Helper.m in Sources */,
 				3EBD81E21E8E2D9400BDC217 /* AppDelegate.m in Sources */,
 				3EBD82301E8E389C00BDC217 /* YYNavigationController.m in Sources */,
 				3EBD82481E8E583200BDC217 /* UIColor+Extension.m in Sources */,
 				3EBD823F1E8E56AC00BDC217 /* YYSciencesViewController.m in Sources */,
+				3EBD825E1E8E67A000BDC217 /* CheckDataViewController.m in Sources */,
+				3EBD82521E8E64DF00BDC217 /* YYPersonalTableViewCell.m in Sources */,
 				3EBD82201E8E37E600BDC217 /* NSString+unicode.m in Sources */,
 				3EBD82311E8E389C00BDC217 /* YYTabBarController.m in Sources */,
+				3E85EF9A1E8F3CBE00E7D8F1 /* YYPInfomationTableViewCell.m in Sources */,
+				3E85EF8D1E8F38F400E7D8F1 /* YYSettingViewController.m in Sources */,
 				3EBD82321E8E389C00BDC217 /* YYTabBar.m in Sources */,
+				3EBD82651E8E686E00BDC217 /* CcUserModel.m in Sources */,
 				3EBD82491E8E583200BDC217 /* HttpClient.m in Sources */,
+				3EBD82681E8E689600BDC217 /* YYHomeUserModel.m in Sources */,
+				3EBD82581E8E677300BDC217 /* AgreeViewController.m in Sources */,
 				3EBD82361E8E565500BDC217 /* YYHomePageViewController.m in Sources */,
+				3E85EF901E8F390500E7D8F1 /* YYFeedbackViewController.m in Sources */,
 				3EBD821F1E8E37E600BDC217 /* NSDictionary+Log.m in Sources */,
+				3EBD82611E8E67C800BDC217 /* ReciveAppointmentViewController.m in Sources */,
 				3EBD82331E8E389C00BDC217 /* YYTabBarItem.m in Sources */,
 				3EBD82421E8E56BA00BDC217 /* YYPatientsViewController.m in Sources */,
+				3EBD824F1E8E64B300BDC217 /* YYHomeNewTableViewCell.m in Sources */,
+				3E85EF961E8F391400E7D8F1 /* YYContactViewController.m in Sources */,
 				3EBD81DF1E8E2D9400BDC217 /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
