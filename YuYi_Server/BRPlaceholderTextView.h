@@ -65,4 +65,5 @@
  */
 -(void)setPlaceholderOpacity:(float)opacity;
 
+
 @end

@@ -156,6 +156,7 @@
         make.top.equalTo(contentView.mas_bottom).offset(50);
         make.width.height.offset(100);
     }];
+    [addPictureBtn addTarget:self action:@selector(addPicture:) forControlEvents:UIControlEventTouchUpInside];
     //添加图片label
     UILabel *addPictureLabel = [UILabel labelWithText:@"添加图片" andTextColor:[UIColor colorWithHexString:@"cccccc"] andFontSize:15];
     [backView addSubview:addPictureLabel];
@@ -185,6 +186,17 @@
     self.addPictureLabel.frame = CGRectMake(frame.origin.x+120, frame.origin.y+size.height+80, labelFrame.size.width, labelFrame.size.height);
     self.scrollView.contentSize = CGSizeMake(self.view.frame.size.width, frame.origin.y+size.height+300);
     self.scrollView.scrollEnabled = true;
+}
+-(void)addPicture:(UIButton *)sender{
+    NSString *str = self.contentView.text;
+    str = [str stringByAppendingString:@"@@@@@@图片@@@@@@"];
+    self.contentView.placeholder = @"输入内容";
+    [self.contentView addTextViewBeginEvent:^(BRPlaceholderTextView *text) {
+        //滑到文章最后
+        [text becomeFirstResponder];
+    }];
+    self.contentView.text = str;
+    [self textViewDidChange:self.contentView];
 }
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

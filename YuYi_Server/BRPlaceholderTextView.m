@@ -234,6 +234,7 @@
 -(void)setText:(NSString *)tex{
     if (tex.length>0) {
         _PlaceholderLabel.hidden=YES;
+        _PlaceholderBtn.hidden = YES;
     }
     [super setText:tex];
 }
