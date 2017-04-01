@@ -23,6 +23,9 @@
 #import "ConsultViewController.h"
 #import "CheckDataViewController.h"
 #import "ReciveAppointmentViewController.h"
+#import "YYSettingViewController.h"
+#import "NotficationViewController.h"
+#import "UIBarButtonItem+Helper.h"
 
 
 #define myToken @"6DD620E22A92AB0AED590DB66F84D064"
@@ -79,6 +82,8 @@
     self.iconList =@[@[@"Personal-EMR-icon-",@"Personal-message-icon-"],@[@"family-icon--1",@"equipment-icon-"],@[@"goods-icon-",@"Set-icon-"]];
     
     
+    self.navigationItem. leftBarButtonItem = [[UIBarButtonItem alloc]initWithTitle:@"设置" normalColor:[UIColor colorWithHexString:@"25f368"] highlightedColor:[UIColor colorWithHexString:@"25f368"] target:self action:@selector(pushSettingVC)];
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithTitle:@"消息" normalColor:[UIColor colorWithHexString:@"25f368"] highlightedColor:[UIColor colorWithHexString:@"25f368"] target:self action:@selector(pushNotficVC)];
     //    UIView *headView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, kScreenW, 70 *kiphone6)];
     //    headView.backgroundColor = [UIColor whiteColor];
     //    UIImageView *imageV =[[UIImageView alloc]initWithImage:[UIImage imageNamed:@"search_icon"]];
@@ -124,16 +129,40 @@
     idName.textColor = [UIColor colorWithHexString:@"6a6a6a"];
     idName.font = [UIFont systemFontOfSize:12];
     idName.textAlignment = NSTextAlignmentCenter;
+    
+    
+    UIButton *settingBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    settingBtn.backgroundColor = [UIColor cyanColor];
+    [settingBtn addTarget:self action:@selector(pushSettingVC) forControlEvents:UIControlEventTouchUpInside];
+    
+    
+    UIButton *notficVC = [UIButton buttonWithType:UIButtonTypeCustom];
+    notficVC.backgroundColor = [UIColor cyanColor];
+    [notficVC addTarget:self action:@selector(pushSettingVC) forControlEvents:UIControlEventTouchUpInside];
+    
     //
     [personV addSubview:iconV];
     [personV addSubview:nameLabel];
     [personV addSubview:idName];
+    
+    [personV addSubview:settingBtn];
+    [personV addSubview:notficVC];
     //
     [iconV mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(personV).with.offset(35);
         make.centerX.equalTo(personV);
         make.size.mas_equalTo(CGSizeMake(65 *kiphone6, 65 *kiphone6));
     }];
+//    [settingBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.left.equalTo(personV).with.offset(15);
+//        make.top.equalTo(personV).with.offset(35);
+//        make.size.mas_equalTo(CGSizeMake(20 *kiphone6, 20 *kiphone6));
+//    }];
+//    [notficVC mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.top.equalTo(personV).with.offset(35);
+//        make.right.equalTo(personV).with.offset(-15);
+//        make.size.mas_equalTo(CGSizeMake(20 *kiphone6, 20 *kiphone6));
+//    }];
     //
     [nameLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(iconV.mas_bottom).with.offset(15 *kiphone6);
@@ -264,6 +293,14 @@
     [self.navigationController.navigationBar setBackgroundImage:nil forBarMetrics:UIBarMetricsDefault];
     [self.navigationController.navigationBar setShadowImage:nil];
     //    self.navigationController.navigationBar.translucent = false;
+}
+- (void)pushSettingVC{
+    NSLog(@"123");
+    [self.navigationController pushViewController:[[YYSettingViewController alloc]init] animated:YES];
+}
+- (void)pushNotficVC{
+    NSLog(@"435");
+    [self.navigationController pushViewController:[[NotficationViewController alloc]init] animated:YES];
 }
 /*
  #pragma mark - Navigation

@@ -8,7 +8,7 @@
 
 #import "AppDelegate.h"
 #import "YYTabBarController.h"
-
+#import <RongIMKit/RongIMKit.h>
 @interface AppDelegate ()
 
 @end
@@ -25,6 +25,42 @@
         YYTabBarController *tabbarVC = [[YYTabBarController alloc]init];
         self.window.rootViewController = tabbarVC;
         [self.window makeKeyAndVisible];
+    
+    
+    
+    
+    
+    
+    [[RCIM sharedRCIM] initWithAppKey:@"25wehl3u2qo7w"];
+    
+   //   登陆融云
+    
+        [[RCIM sharedRCIM] connectWithToken:mRCToken     success:^(NSString *userId) {
+            NSLog(@"登陆成功。当前登录的用户ID：%@", userId);
+        } error:^(RCConnectErrorCode status) {
+            NSLog(@"登陆的错误码为:%d", status);
+        } tokenIncorrect:^{
+            //token过期或者不正确。
+            //如果设置了token有效期并且token过期，请重新请求您的服务器获取新的token
+            //如果没有设置token有效期却提示token错误，请检查您客户端和服务器的appkey是否匹配，还有检查您获取token的流程。
+            NSLog(@"token错误");
+        }];
+    
+    
+    // 融云控制台输出信息种类
+    [RCIMClient sharedRCIMClient].logLevel = RC_Log_Level_Error;
+    //////////////////
+    if ([application
+         respondsToSelector:@selector(registerUserNotificationSettings:)]) {
+        //注册推送, 用于iOS8以及iOS8之后的系统
+        UIUserNotificationSettings *settings = [UIUserNotificationSettings
+                                                settingsForTypes:(UIUserNotificationTypeBadge |
+                                                                  UIUserNotificationTypeSound |
+                                                                  UIUserNotificationTypeAlert)
+                                                categories:nil];
+        [application registerUserNotificationSettings:settings];
+    }
+
     // Override point for customization after application launch.
     return YES;
 }
