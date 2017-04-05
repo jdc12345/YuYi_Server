@@ -16,7 +16,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.title = @"首页";
+    self.title = @"咨询";
     self.view.backgroundColor = [UIColor whiteColor];
     // Do any additional setup after loading the view.
 }

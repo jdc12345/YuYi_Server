@@ -596,6 +596,7 @@
 				TargetAttributes = {
 					3EBD81D91E8E2D9400BDC217 = {
 						CreatedOnToolsVersion = 8.2.1;
+						DevelopmentTeam = HM3WX6CXQ7;
 						ProvisioningStyle = Automatic;
 					};
 					3EBD81F21E8E2D9400BDC217 = {
@@ -996,6 +997,7 @@
 			baseConfigurationReference = 9F660235B8593BB07FBFA4AC /* Pods-YuYi_Server.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = HM3WX6CXQ7;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "$(SRCROOT)/YuYi_Server/YYDefine.pch";
 				INFOPLIST_FILE = YuYi_Server/Info.plist;
@@ -1010,6 +1012,7 @@
 			baseConfigurationReference = 562FCB2765EB8EA4F257D670 /* Pods-YuYi_Server.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = HM3WX6CXQ7;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "$(SRCROOT)/YuYi_Server/YYDefine.pch";
 				INFOPLIST_FILE = YuYi_Server/Info.plist;
