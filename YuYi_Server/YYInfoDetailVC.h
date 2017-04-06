@@ -9,6 +9,6 @@
 #import <UIKit/UIKit.h>
 
 @interface YYInfoDetailVC : UIViewController
-@property (nonatomic, strong) NSString *info_id;
+@property (nonatomic, copy) NSString *info_id;
 
 @end

@@ -12,6 +12,8 @@
 		1614C0CF1E94E311004CF952 /* YYInformationVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 1614C0CE1E94E311004CF952 /* YYInformationVC.m */; };
 		1614C0D21E94F49D004CF952 /* YYCycleViewModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 1614C0D11E94F49D004CF952 /* YYCycleViewModel.m */; };
 		1614C0D51E94FE16004CF952 /* YYInfoDetailVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 1614C0D41E94FE16004CF952 /* YYInfoDetailVC.m */; };
+		161D63FA1E961AA800AF4998 /* YYInfoDetailModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 161D63F91E961AA800AF4998 /* YYInfoDetailModel.m */; };
+		161D63FD1E96358600AF4998 /* YYLogInVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 161D63FC1E96358600AF4998 /* YYLogInVC.m */; };
 		163A979A1E94A0BC007B69AD /* ZYAbstractDotView.m in Sources */ = {isa = PBXBuildFile; fileRef = 163A97991E94A0BC007B69AD /* ZYAbstractDotView.m */; };
 		163A979F1E94A0DE007B69AD /* ZYAnimatedDotView.m in Sources */ = {isa = PBXBuildFile; fileRef = 163A979C1E94A0DE007B69AD /* ZYAnimatedDotView.m */; };
 		163A97A01E94A0DE007B69AD /* ZYDotView.m in Sources */ = {isa = PBXBuildFile; fileRef = 163A979E1E94A0DE007B69AD /* ZYDotView.m */; };
@@ -106,6 +108,10 @@
 		1614C0D11E94F49D004CF952 /* YYCycleViewModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YYCycleViewModel.m; sourceTree = "<group>"; };
 		1614C0D31E94FE16004CF952 /* YYInfoDetailVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YYInfoDetailVC.h; sourceTree = "<group>"; };
 		1614C0D41E94FE16004CF952 /* YYInfoDetailVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YYInfoDetailVC.m; sourceTree = "<group>"; };
+		161D63F81E961AA800AF4998 /* YYInfoDetailModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YYInfoDetailModel.h; sourceTree = "<group>"; };
+		161D63F91E961AA800AF4998 /* YYInfoDetailModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YYInfoDetailModel.m; sourceTree = "<group>"; };
+		161D63FB1E96358600AF4998 /* YYLogInVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YYLogInVC.h; sourceTree = "<group>"; };
+		161D63FC1E96358600AF4998 /* YYLogInVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YYLogInVC.m; sourceTree = "<group>"; };
 		163A97981E94A0BC007B69AD /* ZYAbstractDotView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZYAbstractDotView.h; sourceTree = "<group>"; };
 		163A97991E94A0BC007B69AD /* ZYAbstractDotView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZYAbstractDotView.m; sourceTree = "<group>"; };
 		163A979B1E94A0DE007B69AD /* ZYAnimatedDotView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZYAnimatedDotView.h; sourceTree = "<group>"; };
@@ -358,6 +364,8 @@
 			children = (
 				1614C0D01E94F49D004CF952 /* YYCycleViewModel.h */,
 				1614C0D11E94F49D004CF952 /* YYCycleViewModel.m */,
+				161D63F81E961AA800AF4998 /* YYInfoDetailModel.h */,
+				161D63F91E961AA800AF4998 /* YYInfoDetailModel.m */,
 			);
 			name = M;
 			sourceTree = "<group>";
@@ -448,6 +456,8 @@
 		3EBD82101E8E2F2400BDC217 /* HomePage */ = {
 			isa = PBXGroup;
 			children = (
+				161D63FB1E96358600AF4998 /* YYLogInVC.h */,
+				161D63FC1E96358600AF4998 /* YYLogInVC.m */,
 				3EBD82341E8E565500BDC217 /* YYHomePageViewController.h */,
 				3EBD82351E8E565500BDC217 /* YYHomePageViewController.m */,
 				16873A891E94921A00BD354E /* C */,
@@ -909,6 +919,7 @@
 				3EA3F44A1E95E413005670A5 /* YYTrendView.m in Sources */,
 				163A979A1E94A0BC007B69AD /* ZYAbstractDotView.m in Sources */,
 				3EBD82391E8E568600BDC217 /* YYPersonalViewController.m in Sources */,
+				161D63FA1E961AA800AF4998 /* YYInfoDetailModel.m in Sources */,
 				163A979F1E94A0DE007B69AD /* ZYAnimatedDotView.m in Sources */,
 				3EBD81E51E8E2D9400BDC217 /* ViewController.m in Sources */,
 				3EBD821E1E8E37E600BDC217 /* NSArray+Log.m in Sources */,
@@ -929,6 +940,7 @@
 				3EBD825E1E8E67A000BDC217 /* CheckDataViewController.m in Sources */,
 				1614C0D51E94FE16004CF952 /* YYInfoDetailVC.m in Sources */,
 				3EBD82521E8E64DF00BDC217 /* YYPersonalTableViewCell.m in Sources */,
+				161D63FD1E96358600AF4998 /* YYLogInVC.m in Sources */,
 				3EBD82201E8E37E600BDC217 /* NSString+unicode.m in Sources */,
 				3EBD82311E8E389C00BDC217 /* YYTabBarController.m in Sources */,
 				3E85EF9A1E8F3CBE00E7D8F1 /* YYPInfomationTableViewCell.m in Sources */,

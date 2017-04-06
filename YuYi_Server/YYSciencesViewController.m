@@ -138,7 +138,7 @@
     //添加右侧消息中心按钮
     UIButton *informationBtn = [[UIButton alloc]init];
     [self.view addSubview:informationBtn];
-    [informationBtn setImage:[UIImage imageNamed:@"inform"] forState:UIControlStateNormal];
+    [informationBtn setImage:[UIImage imageNamed:@"notice"] forState:UIControlStateNormal];
     informationBtn.badgeValue = @" ";
     informationBtn.badgeBGColor = [UIColor redColor];
     informationBtn.badgeFont = [UIFont systemFontOfSize:0.1];
