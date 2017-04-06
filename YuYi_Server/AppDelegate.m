@@ -9,6 +9,8 @@
 #import "AppDelegate.h"
 #import "YYTabBarController.h"
 #import <RongIMKit/RongIMKit.h>
+#import "CcUserModel.h"
+#import "YYLogInVC.h"
 @interface AppDelegate ()
 
 @end
@@ -20,13 +22,18 @@
     //创建Window
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     self.window.backgroundColor = [UIColor whiteColor];
-
+    CcUserModel *userModel = [CcUserModel defaultClient];
+    NSString *userToken = userModel.userToken;
+    
+    if (userToken) {
         //初始化一个tabBar控制器
         YYTabBarController *tabbarVC = [[YYTabBarController alloc]init];
         self.window.rootViewController = tabbarVC;
         [self.window makeKeyAndVisible];
-    
-    
+    }else{
+        YYLogInVC *logInVC = [[YYLogInVC alloc]init];
+        self.window.rootViewController = logInVC;
+    }
     
     
     
