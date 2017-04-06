@@ -221,10 +221,15 @@
     
     if (indexPath.section == 0) {
         if (indexPath.row == 0) {
-            [self.navigationController pushViewController:[[InvitationViewController alloc]init] animated:YES];
+            InvitationViewController *myVC = [[InvitationViewController alloc]init];
+            myVC.titleStr = @"我的帖子";
+            [self.navigationController pushViewController:myVC animated:YES];
         }else{
-            AgreeViewController *shopVC = [[AgreeViewController alloc]init];
-            [self.navigationController pushViewController:shopVC animated:YES];
+//            AgreeViewController *shopVC = [[AgreeViewController alloc]init];
+//            [self.navigationController pushViewController:shopVC animated:YES];
+            InvitationViewController *myVC = [[InvitationViewController alloc]init];
+            myVC.titleStr = @"我的点赞";
+            [self.navigationController pushViewController:myVC animated:YES];
         }
         
     }else if(indexPath.section == 1){

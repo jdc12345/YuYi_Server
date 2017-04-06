@@ -43,6 +43,7 @@
 		3EA3F4561E95E49C005670A5 /* RecardDerailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EA3F4551E95E49C005670A5 /* RecardDerailViewController.m */; };
 		3EA3F4591E95E4BE005670A5 /* YYDataAnalyseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EA3F4581E95E4BE005670A5 /* YYDataAnalyseViewController.m */; };
 		3EA3F4631E95E73E005670A5 /* YYPatientsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EA3F4621E95E73E005670A5 /* YYPatientsViewController.m */; };
+		3EA3F4651E95ECAE005670A5 /* cell1.png in Resources */ = {isa = PBXBuildFile; fileRef = 3EA3F4641E95ECAE005670A5 /* cell1.png */; };
 		3EBD81DF1E8E2D9400BDC217 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EBD81DE1E8E2D9400BDC217 /* main.m */; };
 		3EBD81E21E8E2D9400BDC217 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EBD81E11E8E2D9400BDC217 /* AppDelegate.m */; };
 		3EBD81E51E8E2D9400BDC217 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EBD81E41E8E2D9400BDC217 /* ViewController.m */; };
@@ -134,7 +135,6 @@
 		163D61A21E8F7B0D003A27CF /* UILabel+Addition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UILabel+Addition.m"; sourceTree = "<group>"; };
 		163D61A41E8F7CD5003A27CF /* NSObject+Formula.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+Formula.h"; sourceTree = "<group>"; };
 		163D61A51E8F7CD5003A27CF /* NSObject+Formula.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+Formula.m"; sourceTree = "<group>"; };
-		3E649C941E9498AA004AB9F5 /* cell1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = cell1.png; sourceTree = "<group>"; };
 		3E85EF8B1E8F38F400E7D8F1 /* YYSettingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YYSettingViewController.h; sourceTree = "<group>"; };
 		3E85EF8C1E8F38F400E7D8F1 /* YYSettingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YYSettingViewController.m; sourceTree = "<group>"; };
 		3E85EF8E1E8F390500E7D8F1 /* YYFeedbackViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YYFeedbackViewController.h; sourceTree = "<group>"; };
@@ -168,6 +168,7 @@
 		3EA3F4581E95E4BE005670A5 /* YYDataAnalyseViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = YYDataAnalyseViewController.m; path = YuYi_Server/YYDataAnalyseViewController.m; sourceTree = "<group>"; };
 		3EA3F4611E95E73E005670A5 /* YYPatientsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = YYPatientsViewController.h; path = YuYi_Server/YYPatientsViewController.h; sourceTree = "<group>"; };
 		3EA3F4621E95E73E005670A5 /* YYPatientsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = YYPatientsViewController.m; path = YuYi_Server/YYPatientsViewController.m; sourceTree = "<group>"; };
+		3EA3F4641E95ECAE005670A5 /* cell1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = cell1.png; sourceTree = "<group>"; };
 		3EBD81DA1E8E2D9400BDC217 /* YuYi_Server.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = YuYi_Server.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3EBD81DE1E8E2D9400BDC217 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		3EBD81E01E8E2D9400BDC217 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -532,7 +533,7 @@
 				3EBD81E91E8E2D9400BDC217 /* Assets.xcassets */,
 				1614C0C81E94D31D004CF952 /* info.png */,
 				3E85EF9B1E8F47DA00E7D8F1 /* avatar.jpg */,
-				3E649C941E9498AA004AB9F5 /* cell1.png */,
+				3EA3F4641E95ECAE005670A5 /* cell1.png */,
 				3EBD81EB1E8E2D9400BDC217 /* LaunchScreen.storyboard */,
 				3EBD81EE1E8E2D9400BDC217 /* Info.plist */,
 			);
@@ -738,6 +739,7 @@
 				3E85EF9C1E8F47DA00E7D8F1 /* avatar.jpg in Resources */,
 				3EBD81ED1E8E2D9400BDC217 /* LaunchScreen.storyboard in Resources */,
 				3EBD81EA1E8E2D9400BDC217 /* Assets.xcassets in Resources */,
+				3EA3F4651E95ECAE005670A5 /* cell1.png in Resources */,
 				3EBD81E81E8E2D9400BDC217 /* Main.storyboard in Resources */,
 				1614C0C91E94D31D004CF952 /* info.png in Resources */,
 			);
