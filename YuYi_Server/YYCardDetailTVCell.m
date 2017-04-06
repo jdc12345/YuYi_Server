@@ -40,7 +40,7 @@
     //time
     UILabel *timeLabel = [UILabel labelWithText:@"1小时前" andTextColor:[UIColor colorWithHexString:@"cccccc"] andFontSize:11];
     [self.contentView addSubview:timeLabel];
-    //name
+    //赞数
     UILabel *countLabel = [UILabel labelWithText:@"375" andTextColor:[UIColor colorWithHexString:@"cccccc"] andFontSize:11];
     [self.contentView addSubview:countLabel];
     self.countLabel = countLabel;
