@@ -51,7 +51,7 @@
 - (void)setupMainContents {
     // 首页
     YYHomePageViewController *homeVC = [[YYHomePageViewController alloc] init];
-    [self addChildViewControllerAtIndex:0 childViewController:homeVC title:@"首页" normalImage:@"information" selectedImage:@"information-selected"];
+    [self addChildViewControllerAtIndex:0 childViewController:homeVC title:@"资讯" normalImage:@"information" selectedImage:@"information-selected"];
     
     // 学术圈
     YYSciencesViewController *measureVC = [[YYSciencesViewController alloc] init];

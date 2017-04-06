@@ -82,17 +82,42 @@
     self.iconList =@[@[@"Personal-EMR-icon-",@"Personal-message-icon-"],@[@"family-icon--1",@"equipment-icon-"],@[@"goods-icon-",@"Set-icon-"]];
     
     
-    self.navigationItem. leftBarButtonItem = [[UIBarButtonItem alloc]initWithTitle:@"设置" normalColor:[UIColor colorWithHexString:@"25f368"] highlightedColor:[UIColor colorWithHexString:@"25f368"] target:self action:@selector(pushSettingVC)];
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithTitle:@"消息" normalColor:[UIColor colorWithHexString:@"25f368"] highlightedColor:[UIColor colorWithHexString:@"25f368"] target:self action:@selector(pushNotficVC)];
-    //    UIView *headView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, kScreenW, 70 *kiphone6)];
-    //    headView.backgroundColor = [UIColor whiteColor];
-    //    UIImageView *imageV =[[UIImageView alloc]initWithImage:[UIImage imageNamed:@"search_icon"]];
-    //    [headView addSubview:imageV];
-    //    [imageV mas_makeConstraints:^(MASConstraintMaker *make) {
-    //        make.top.equalTo(headView).with.offset(20 *kiphone6);
-    //        make.left.equalTo(headView).with.offset(20 *kiphone6);
-    //        make.size.mas_equalTo(CGSizeMake((kScreenW -40*kiphone6), 30 *kiphone6));
-    //    }];
+//    self.navigationItem. leftBarButtonItem = [[UIBarButtonItem alloc]initWithTitle:@"设置" normalColor:[UIColor colorWithHexString:@"25f368"] highlightedColor:[UIColor colorWithHexString:@"25f368"] target:self action:@selector(pushSettingVC)];
+//    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithTitle:@"消息" normalColor:[UIColor colorWithHexString:@"25f368"] highlightedColor:[UIColor colorWithHexString:@"25f368"] target:self action:@selector(pushNotficVC)];
+    
+    
+    
+    
+    // 左侧地址按钮   测
+    UIButton *leftButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    
+    [leftButton setFrame:CGRectMake(0,0,20, 20)];
+    
+    [leftButton setBackgroundImage:[UIImage imageNamed:@"settings"] forState:UIControlStateNormal];
+    
+    [leftButton addTarget:self action:@selector(pushSettingVC) forControlEvents:UIControlEventTouchUpInside];
+    
+    UIBarButtonItem *leftItem = [[UIBarButtonItem alloc] initWithCustomView:leftButton];
+    
+    self.navigationItem.leftBarButtonItem = leftItem;
+    
+    [leftButton sizeToFit];
+    
+    // 右侧通知按钮
+    UIButton *rightButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    
+    [rightButton setFrame:CGRectMake(0,0,20, 20)];
+    
+    [rightButton setBackgroundImage:[UIImage imageNamed:@"notfiy_select"] forState:UIControlStateNormal];
+    
+    [rightButton addTarget:self action:@selector(pushNotficVC) forControlEvents:UIControlEventTouchUpInside];
+    
+    UIBarButtonItem *rightItem = [[UIBarButtonItem alloc] initWithCustomView:rightButton];
+    
+    self.navigationItem.rightBarButtonItem = rightItem;
+    
+    [rightButton sizeToFit];
+
     self.tableView.tableHeaderView = [self personInfomation];
     
     // [self tableView];
@@ -103,7 +128,7 @@
     
     UIView *personV = [[UIView alloc]initWithFrame:CGRectMake(0, 0, kScreenW, 170 *kiphone6)];
     personV.backgroundColor = [UIColor whiteColor];
-    
+    personV.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"personal_color"]];
     
     UITapGestureRecognizer *tapGest = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(headViewClick)];
     [personV addGestureRecognizer:tapGest];
