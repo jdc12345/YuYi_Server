@@ -124,7 +124,8 @@ static NSString *cellId = @"cell_id";
     [super viewWillAppear:animated];
     //搜索框
     UIView *headerView = [[UIView alloc]initWithFrame:CGRectMake(20,self.view.frame.size.height- 45, self.view.frame.size.width-40, 45)];
-    [[UIApplication sharedApplication].keyWindow addSubview:headerView];
+    [self.view addSubview:headerView];
+    [self.view bringSubviewToFront:headerView];
     //输入框
     UITextField *commentField = [[UITextField alloc]init];
     [headerView addSubview:commentField];
