@@ -7,6 +7,14 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1614C0C91E94D31D004CF952 /* info.png in Resources */ = {isa = PBXBuildFile; fileRef = 1614C0C81E94D31D004CF952 /* info.png */; };
+		1614C0CC1E94D3DA004CF952 /* YYInformationTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1614C0CB1E94D3DA004CF952 /* YYInformationTableViewCell.m */; };
+		1614C0CF1E94E311004CF952 /* YYInformationVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 1614C0CE1E94E311004CF952 /* YYInformationVC.m */; };
+		1614C0D21E94F49D004CF952 /* YYCycleViewModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 1614C0D11E94F49D004CF952 /* YYCycleViewModel.m */; };
+		1614C0D51E94FE16004CF952 /* YYInfoDetailVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 1614C0D41E94FE16004CF952 /* YYInfoDetailVC.m */; };
+		163A979A1E94A0BC007B69AD /* ZYAbstractDotView.m in Sources */ = {isa = PBXBuildFile; fileRef = 163A97991E94A0BC007B69AD /* ZYAbstractDotView.m */; };
+		163A979F1E94A0DE007B69AD /* ZYAnimatedDotView.m in Sources */ = {isa = PBXBuildFile; fileRef = 163A979C1E94A0DE007B69AD /* ZYAnimatedDotView.m */; };
+		163A97A01E94A0DE007B69AD /* ZYDotView.m in Sources */ = {isa = PBXBuildFile; fileRef = 163A979E1E94A0DE007B69AD /* ZYDotView.m */; };
 		163D618A1E8F790E003A27CF /* UIButton+Badge.m in Sources */ = {isa = PBXBuildFile; fileRef = 163D61871E8F790E003A27CF /* UIButton+Badge.m */; };
 		163D618B1E8F790E003A27CF /* UIColor+colorValues.m in Sources */ = {isa = PBXBuildFile; fileRef = 163D61891E8F790E003A27CF /* UIColor+colorValues.m */; };
 		163D618E1E8F79E4003A27CF /* BRPlaceholderTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 163D618D1E8F79E4003A27CF /* BRPlaceholderTextView.m */; };
@@ -18,6 +26,8 @@
 		163D61A01E8F7AB6003A27CF /* YYpostCardVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 163D619D1E8F7AB6003A27CF /* YYpostCardVC.m */; };
 		163D61A31E8F7B0D003A27CF /* UILabel+Addition.m in Sources */ = {isa = PBXBuildFile; fileRef = 163D61A21E8F7B0D003A27CF /* UILabel+Addition.m */; };
 		163D61A61E8F7CD5003A27CF /* NSObject+Formula.m in Sources */ = {isa = PBXBuildFile; fileRef = 163D61A51E8F7CD5003A27CF /* NSObject+Formula.m */; };
+		16873A8E1E9492B200BD354E /* YYCycleView.m in Sources */ = {isa = PBXBuildFile; fileRef = 16873A8D1E9492B200BD354E /* YYCycleView.m */; };
+		16873A911E94944200BD354E /* ZYPageControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 16873A901E94944200BD354E /* ZYPageControl.m */; };
 		3E85EF8D1E8F38F400E7D8F1 /* YYSettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E85EF8C1E8F38F400E7D8F1 /* YYSettingViewController.m */; };
 		3E85EF901E8F390500E7D8F1 /* YYFeedbackViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E85EF8F1E8F390500E7D8F1 /* YYFeedbackViewController.m */; };
 		3E85EF951E8F391400E7D8F1 /* YYAboutUSViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E85EF921E8F391400E7D8F1 /* YYAboutUSViewController.m */; };
@@ -82,6 +92,21 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		1614C0C81E94D31D004CF952 /* info.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = info.png; sourceTree = "<group>"; };
+		1614C0CA1E94D3DA004CF952 /* YYInformationTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YYInformationTableViewCell.h; sourceTree = "<group>"; };
+		1614C0CB1E94D3DA004CF952 /* YYInformationTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YYInformationTableViewCell.m; sourceTree = "<group>"; };
+		1614C0CD1E94E311004CF952 /* YYInformationVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YYInformationVC.h; sourceTree = "<group>"; };
+		1614C0CE1E94E311004CF952 /* YYInformationVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YYInformationVC.m; sourceTree = "<group>"; };
+		1614C0D01E94F49D004CF952 /* YYCycleViewModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YYCycleViewModel.h; sourceTree = "<group>"; };
+		1614C0D11E94F49D004CF952 /* YYCycleViewModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YYCycleViewModel.m; sourceTree = "<group>"; };
+		1614C0D31E94FE16004CF952 /* YYInfoDetailVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YYInfoDetailVC.h; sourceTree = "<group>"; };
+		1614C0D41E94FE16004CF952 /* YYInfoDetailVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YYInfoDetailVC.m; sourceTree = "<group>"; };
+		163A97981E94A0BC007B69AD /* ZYAbstractDotView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZYAbstractDotView.h; sourceTree = "<group>"; };
+		163A97991E94A0BC007B69AD /* ZYAbstractDotView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZYAbstractDotView.m; sourceTree = "<group>"; };
+		163A979B1E94A0DE007B69AD /* ZYAnimatedDotView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZYAnimatedDotView.h; sourceTree = "<group>"; };
+		163A979C1E94A0DE007B69AD /* ZYAnimatedDotView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZYAnimatedDotView.m; sourceTree = "<group>"; };
+		163A979D1E94A0DE007B69AD /* ZYDotView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZYDotView.h; sourceTree = "<group>"; };
+		163A979E1E94A0DE007B69AD /* ZYDotView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZYDotView.m; sourceTree = "<group>"; };
 		163D61861E8F790D003A27CF /* UIButton+Badge.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIButton+Badge.h"; sourceTree = "<group>"; };
 		163D61871E8F790E003A27CF /* UIButton+Badge.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIButton+Badge.m"; sourceTree = "<group>"; };
 		163D61881E8F790E003A27CF /* UIColor+colorValues.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+colorValues.h"; sourceTree = "<group>"; };
@@ -104,6 +129,10 @@
 		163D61A21E8F7B0D003A27CF /* UILabel+Addition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UILabel+Addition.m"; sourceTree = "<group>"; };
 		163D61A41E8F7CD5003A27CF /* NSObject+Formula.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+Formula.h"; sourceTree = "<group>"; };
 		163D61A51E8F7CD5003A27CF /* NSObject+Formula.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+Formula.m"; sourceTree = "<group>"; };
+		16873A8C1E9492B200BD354E /* YYCycleView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YYCycleView.h; sourceTree = "<group>"; };
+		16873A8D1E9492B200BD354E /* YYCycleView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YYCycleView.m; sourceTree = "<group>"; };
+		16873A8F1E94944200BD354E /* ZYPageControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZYPageControl.h; sourceTree = "<group>"; };
+		16873A901E94944200BD354E /* ZYPageControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZYPageControl.m; sourceTree = "<group>"; };
 		3E85EF8B1E8F38F400E7D8F1 /* YYSettingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YYSettingViewController.h; sourceTree = "<group>"; };
 		3E85EF8C1E8F38F400E7D8F1 /* YYSettingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YYSettingViewController.m; sourceTree = "<group>"; };
 		3E85EF8E1E8F390500E7D8F1 /* YYFeedbackViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YYFeedbackViewController.h; sourceTree = "<group>"; };
@@ -278,8 +307,47 @@
 				163D618D1E8F79E4003A27CF /* BRPlaceholderTextView.m */,
 				163D61A41E8F7CD5003A27CF /* NSObject+Formula.h */,
 				163D61A51E8F7CD5003A27CF /* NSObject+Formula.m */,
+				16873A8F1E94944200BD354E /* ZYPageControl.h */,
+				16873A901E94944200BD354E /* ZYPageControl.m */,
+				163A97981E94A0BC007B69AD /* ZYAbstractDotView.h */,
+				163A97991E94A0BC007B69AD /* ZYAbstractDotView.m */,
+				163A979B1E94A0DE007B69AD /* ZYAnimatedDotView.h */,
+				163A979C1E94A0DE007B69AD /* ZYAnimatedDotView.m */,
+				163A979D1E94A0DE007B69AD /* ZYDotView.h */,
+				163A979E1E94A0DE007B69AD /* ZYDotView.m */,
 			);
 			name = tools;
+			sourceTree = "<group>";
+		};
+		16873A891E94921A00BD354E /* C */ = {
+			isa = PBXGroup;
+			children = (
+				1614C0CD1E94E311004CF952 /* YYInformationVC.h */,
+				1614C0CE1E94E311004CF952 /* YYInformationVC.m */,
+				1614C0D31E94FE16004CF952 /* YYInfoDetailVC.h */,
+				1614C0D41E94FE16004CF952 /* YYInfoDetailVC.m */,
+			);
+			name = C;
+			sourceTree = "<group>";
+		};
+		16873A8A1E94922900BD354E /* V */ = {
+			isa = PBXGroup;
+			children = (
+				16873A8C1E9492B200BD354E /* YYCycleView.h */,
+				16873A8D1E9492B200BD354E /* YYCycleView.m */,
+				1614C0CA1E94D3DA004CF952 /* YYInformationTableViewCell.h */,
+				1614C0CB1E94D3DA004CF952 /* YYInformationTableViewCell.m */,
+			);
+			name = V;
+			sourceTree = "<group>";
+		};
+		16873A8B1E94923100BD354E /* M */ = {
+			isa = PBXGroup;
+			children = (
+				1614C0D01E94F49D004CF952 /* YYCycleViewModel.h */,
+				1614C0D11E94F49D004CF952 /* YYCycleViewModel.m */,
+			);
+			name = M;
 			sourceTree = "<group>";
 		};
 		3E85EF971E8F3CA700E7D8F1 /* View */ = {
@@ -354,6 +422,9 @@
 			children = (
 				3EBD82341E8E565500BDC217 /* YYHomePageViewController.h */,
 				3EBD82351E8E565500BDC217 /* YYHomePageViewController.m */,
+				16873A891E94921A00BD354E /* C */,
+				16873A8A1E94922900BD354E /* V */,
+				16873A8B1E94923100BD354E /* M */,
 			);
 			name = HomePage;
 			sourceTree = "<group>";
@@ -433,6 +504,7 @@
 				3EBD81E41E8E2D9400BDC217 /* ViewController.m */,
 				3EBD81E61E8E2D9400BDC217 /* Main.storyboard */,
 				3EBD81E91E8E2D9400BDC217 /* Assets.xcassets */,
+				1614C0C81E94D31D004CF952 /* info.png */,
 				3E85EF9B1E8F47DA00E7D8F1 /* avatar.jpg */,
 				3EBD81EB1E8E2D9400BDC217 /* LaunchScreen.storyboard */,
 				3EBD81EE1E8E2D9400BDC217 /* Info.plist */,
@@ -640,6 +712,7 @@
 				3EBD81ED1E8E2D9400BDC217 /* LaunchScreen.storyboard in Resources */,
 				3EBD81EA1E8E2D9400BDC217 /* Assets.xcassets in Resources */,
 				3EBD81E81E8E2D9400BDC217 /* Main.storyboard in Resources */,
+				1614C0C91E94D31D004CF952 /* info.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -804,20 +877,26 @@
 			files = (
 				3E85EF951E8F391400E7D8F1 /* YYAboutUSViewController.m in Sources */,
 				163D618A1E8F790E003A27CF /* UIButton+Badge.m in Sources */,
+				163A979A1E94A0BC007B69AD /* ZYAbstractDotView.m in Sources */,
 				3EBD82391E8E568600BDC217 /* YYPersonalViewController.m in Sources */,
+				163A979F1E94A0DE007B69AD /* ZYAnimatedDotView.m in Sources */,
 				3EBD81E51E8E2D9400BDC217 /* ViewController.m in Sources */,
 				3EBD821E1E8E37E600BDC217 /* NSArray+Log.m in Sources */,
 				3EBD825B1E8E678A00BDC217 /* ConsultViewController.m in Sources */,
 				3EBD82551E8E672A00BDC217 /* InvitationViewController.m in Sources */,
 				163D61A61E8F7CD5003A27CF /* NSObject+Formula.m in Sources */,
+				1614C0CC1E94D3DA004CF952 /* YYInformationTableViewCell.m in Sources */,
 				3EBD82261E8E385E00BDC217 /* ZYAlertSView.m in Sources */,
 				163D61951E8F7A2E003A27CF /* YYCardDetailTVCell.m in Sources */,
 				3EBD82231E8E383500BDC217 /* UIBarButtonItem+Helper.m in Sources */,
+				16873A911E94944200BD354E /* ZYPageControl.m in Sources */,
 				3EBD81E21E8E2D9400BDC217 /* AppDelegate.m in Sources */,
 				3EBD82301E8E389C00BDC217 /* YYNavigationController.m in Sources */,
+				1614C0CF1E94E311004CF952 /* YYInformationVC.m in Sources */,
 				3EBD82481E8E583200BDC217 /* UIColor+Extension.m in Sources */,
 				3EBD823F1E8E56AC00BDC217 /* YYSciencesViewController.m in Sources */,
 				3EBD825E1E8E67A000BDC217 /* CheckDataViewController.m in Sources */,
+				1614C0D51E94FE16004CF952 /* YYInfoDetailVC.m in Sources */,
 				3EBD82521E8E64DF00BDC217 /* YYPersonalTableViewCell.m in Sources */,
 				3EBD82201E8E37E600BDC217 /* NSString+unicode.m in Sources */,
 				3EBD82311E8E389C00BDC217 /* YYTabBarController.m in Sources */,
@@ -825,6 +904,7 @@
 				3E85EF8D1E8F38F400E7D8F1 /* YYSettingViewController.m in Sources */,
 				3EBD82321E8E389C00BDC217 /* YYTabBar.m in Sources */,
 				163D61971E8F7A2E003A27CF /* YYCommentTVCell.m in Sources */,
+				163A97A01E94A0DE007B69AD /* ZYDotView.m in Sources */,
 				163D619E1E8F7AB6003A27CF /* YYlearningCircleVC.m in Sources */,
 				3EBD82651E8E686E00BDC217 /* CcUserModel.m in Sources */,
 				3EBD82491E8E583200BDC217 /* HttpClient.m in Sources */,
@@ -841,12 +921,14 @@
 				163D61961E8F7A2E003A27CF /* YYCardTableViewCell.m in Sources */,
 				3EBD82611E8E67C800BDC217 /* ReciveAppointmentViewController.m in Sources */,
 				3EBD82331E8E389C00BDC217 /* YYTabBarItem.m in Sources */,
+				1614C0D21E94F49D004CF952 /* YYCycleViewModel.m in Sources */,
 				3E85EFA41E8F951500E7D8F1 /* NotficationTableViewCell.m in Sources */,
 				3EBD82421E8E56BA00BDC217 /* YYPatientsViewController.m in Sources */,
 				163D61A31E8F7B0D003A27CF /* UILabel+Addition.m in Sources */,
 				3EBD824F1E8E64B300BDC217 /* YYHomeNewTableViewCell.m in Sources */,
 				3E85EF961E8F391400E7D8F1 /* YYContactViewController.m in Sources */,
 				3EBD81DF1E8E2D9400BDC217 /* main.m in Sources */,
+				16873A8E1E9492B200BD354E /* YYCycleView.m in Sources */,
 				3E85EFA31E8F951500E7D8F1 /* NotficationViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
