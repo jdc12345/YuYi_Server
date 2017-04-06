@@ -13,8 +13,7 @@
 #import "YYTabBarController.h"
 #import "HttpClient.h"
 #import "CcUserModel.h"
-#import "YYHomePageViewController.h"
-#import "YYNavigationController.h"
+#import "YYTabBarController.h"
 
 @interface YYLogInVC ()<UITextFieldDelegate>
 @property(nonatomic,weak)UILabel *countdownLabel;
@@ -53,7 +52,7 @@
         make.height.offset(0.5);
     }];
     //添加电话imageView图标
-    UIImageView *telImageView = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"login_phone_icon"]];
+    UIImageView *telImageView = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"login-phone-icon-"]];
     [self.view addSubview:telImageView];
     [telImageView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(line1.mas_left);
@@ -84,7 +83,7 @@
         make.height.offset(1);
     }];
     //添加密码imageView图标
-    UIImageView *passWordImageView = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"login_lock_icon"]];
+    UIImageView *passWordImageView = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"login-lock-icon-"]];
     [self.view addSubview:passWordImageView];
     [passWordImageView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(line2.mas_left);
@@ -161,16 +160,16 @@
         [self showAlertWithMessage:@"请确认电话号码是否输入正确"];
         return;
     }
-
+//http://192.168.1.55:8080/yuyi/physician/vcode.do?id=13717883006
     //发送获取验证码请求
-    NSString *urlString = [mPrefixUrl stringByAppendingPathComponent:[NSString stringWithFormat:@"/personal/vcode.do?id=%@",self.telNumberField.text]];
+    NSString *urlString = [mPrefixUrl stringByAppendingPathComponent:[NSString stringWithFormat:@"/physician/vcode.do?id=%@",self.telNumberField.text]];
     HttpClient *httpManager = [HttpClient defaultClient];
     
     [httpManager requestWithPath:urlString method:HttpRequestPost parameters:nil prepareExecute:nil success:^(NSURLSessionDataTask *task, id responseObject) {
         NSDictionary *getCodeDic = (NSDictionary*)responseObject;
         if ([getCodeDic[@"code"] isEqualToString:@"0"]) {
             self.countdownLabel.hidden = false;
-//            self.passWordField.text = getCodeDic[@"result"];
+            self.passWordField.text = getCodeDic[@"result"];
             //倒计时时间
             __block NSInteger timeOut = 59;
             dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
@@ -223,7 +222,8 @@
         [self showAlertWithMessage:@"请确认电话号码和验证码是否输入正确"];
         return;
     }
-    NSString *urlString = [mPrefixUrl stringByAppendingPathComponent:[NSString stringWithFormat:@"/personal/login.do?id=%@&vcode=%@",self.telNumberField.text,self.passWordField.text]];
+//    http://192.168.1.55:8080/yuyi/physician/login.do?id=13717883006&vcode=617307
+    NSString *urlString = [mPrefixUrl stringByAppendingPathComponent:[NSString stringWithFormat:@"/physician/login.do?id=%@&vcode=%@",self.telNumberField.text,self.passWordField.text]];
     HttpClient *httpManager = [HttpClient defaultClient];
     [httpManager requestWithPath:urlString method:HttpRequestPost parameters:nil prepareExecute:nil success:^(NSURLSessionDataTask *task, id responseObject) {
         NSDictionary *dic = (NSDictionary *)responseObject;
@@ -244,8 +244,9 @@
 //                YYHomePageViewController *firstVC = [[YYHomePageViewController alloc]init];
 //                [UIApplication sharedApplication].keyWindow.rootViewController = firstVC;
 //            }
-            YYHomePageViewController *firstVC = [[YYHomePageViewController alloc]init];
-            [UIApplication sharedApplication].keyWindow.rootViewController = firstVC;
+
+            YYTabBarController *tabBarVC = [[YYTabBarController alloc]init];
+            [UIApplication sharedApplication].keyWindow.rootViewController = tabBarVC;
         }else{
             if ([dic[@"result"] isEqualToString:@""]) {
                 [self showAlertWithMessage:@"请确认电话号码正确以及网络是否正常"];
