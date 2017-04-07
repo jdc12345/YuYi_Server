@@ -67,40 +67,40 @@
 
     //约束
     [iconView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.left.offset(20);
-        make.width.height.offset(30);
+        make.top.left.offset(20*kiphone6);
+        make.width.height.offset(30*kiphone6);
     }];
     [nameLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(iconView);
-        make.left.equalTo(iconView.mas_right).offset(15);
+        make.left.equalTo(iconView.mas_right).offset(15*kiphone6);
     }];
     [timeLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(nameLabel.mas_bottom);
-        make.left.equalTo(iconView.mas_right).offset(15);
+        make.left.equalTo(iconView.mas_right).offset(15*kiphone6);
     }];
     [countLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.right.offset(-20);
+        make.right.offset(-20*kiphone6);
         make.centerY.equalTo(iconView);
     }];
     [praiseBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.right.equalTo(countLabel.mas_left).offset(-5);
+        make.right.equalTo(countLabel.mas_left).offset(-5*kiphone6);
         make.centerY.equalTo(iconView);
     }];
     [titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(iconView.mas_bottom).offset(20);
-        make.left.offset(20);
-        make.right.offset(-20);
+        make.top.equalTo(iconView.mas_bottom).offset(20*kiphone6);
+        make.left.offset(20*kiphone6);
+        make.right.offset(-20*kiphone6);
     }];
     [contentLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(titleLabel.mas_bottom).offset(15);
-        make.left.offset(20);
-        make.right.offset(-20);
+        make.left.offset(20*kiphone6);
+        make.right.offset(-20*kiphone6);
     }];
     [imageView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(contentLabel.mas_bottom).offset(20);
-        make.left.offset(20);
-        make.right.offset(-20);
-        make.height.offset(335);
+        make.left.offset(20*kiphone6);
+        make.right.offset(-20*kiphone6);
+        make.height.offset(335*kiphone6);
     }];
     [self.contentView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.bottom.equalTo(imageView.mas_bottom);

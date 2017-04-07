@@ -60,32 +60,32 @@
     
     //约束
     [iconView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.left.offset(20);
-        make.width.height.offset(30);
+        make.top.left.offset(20*kiphone6);
+        make.width.height.offset(30*kiphone6);
     }];
     [nameLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(iconView);
-        make.left.equalTo(iconView.mas_right).offset(15);
+        make.left.equalTo(iconView.mas_right).offset(15*kiphone6);
     }];
     [timeLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(nameLabel.mas_bottom);
-        make.left.equalTo(iconView.mas_right).offset(15);
+        make.left.equalTo(iconView.mas_right).offset(15*kiphone6);
     }];
     [contentLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(timeLabel.mas_bottom).offset(10);
+        make.top.equalTo(timeLabel.mas_bottom).offset(10*kiphone6);
         make.left.equalTo(timeLabel);
-        make.right.offset(-20);
+        make.right.offset(-20*kiphone6);
     }];
     [countLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.right.offset(-20);
+        make.right.offset(-20*kiphone6);
         make.centerY.equalTo(iconView);
     }];
     [praiseBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.right.equalTo(countLabel.mas_left).offset(-5);
+        make.right.equalTo(countLabel.mas_left).offset(-5*kiphone6);
         make.centerY.equalTo(iconView);
     }];
     [self.contentView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.bottom.equalTo(contentLabel.mas_bottom).offset(20);
+        make.bottom.equalTo(contentLabel.mas_bottom).offset(20*kiphone6);
         make.width.offset([UIScreen mainScreen].bounds.size.width);//必须加
     }];
 

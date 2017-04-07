@@ -13,7 +13,7 @@
 
 @interface YYCardTableViewCell ()
 @property(nonatomic,weak)UILabel *praiseCountLabel;
-@property(nonatomic,weak)UIImageView *imageView;
+@property(nonatomic,weak)UIImageView *imagesView;
 @property(nonatomic,weak)UILabel *titleLabel;
 @property(nonatomic,weak)UILabel *contentLabel;
 @end
@@ -33,24 +33,24 @@
         self.imageView.image = [UIImage imageNamed:image];
         [self.imageView mas_remakeConstraints:^(MASConstraintMaker *make) {
             make.left.equalTo(self.titleLabel);
-            make.top.equalTo(self.titleLabel.mas_bottom).offset(10);
-            make.width.height.offset(55);
+            make.top.equalTo(self.titleLabel.mas_bottom).offset(10*kiphone6);
+            make.width.height.offset(55*kiphone6);
         }];
         [self.contentLabel mas_remakeConstraints:^(MASConstraintMaker *make) {
-            make.left.equalTo(self.imageView.mas_right).offset(10);
-            make.right.offset(-20);
-            make.top.equalTo(self.titleLabel.mas_bottom).offset(10);
+            make.left.equalTo(self.imageView.mas_right).offset(10*kiphone6);
+            make.right.offset(-20*kiphone6);
+            make.top.equalTo(self.titleLabel.mas_bottom).offset(10*kiphone6);
         }];
     }else{
         [self.imageView mas_remakeConstraints:^(MASConstraintMaker *make) {
-            make.left.equalTo(self.titleLabel.mas_left).offset(-10);
-            make.top.equalTo(self.titleLabel.mas_bottom).offset(10);
+            make.left.equalTo(self.titleLabel.mas_left).offset(-10*kiphone6);
+            make.top.equalTo(self.titleLabel.mas_bottom).offset(10*kiphone6);
             make.width.height.offset(0);
         }];
         [self.contentLabel mas_remakeConstraints:^(MASConstraintMaker *make) {
-            make.left.equalTo(self.imageView.mas_right).offset(10);
-            make.right.offset(-20);
-            make.top.equalTo(self.titleLabel.mas_bottom).offset(10);
+            make.left.equalTo(self.imageView.mas_right).offset(10*kiphone6);
+            make.right.offset(-20*kiphone6);
+            make.top.equalTo(self.titleLabel.mas_bottom).offset(10*kiphone6);
         }];
     }
     
@@ -93,41 +93,41 @@
     [self.contentView addSubview:repliesLabel];
     //约束布局
     [titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.top.offset(20);
-        make.right.offset(-20);
+        make.left.top.offset(20*kiphone6);
+        make.right.offset(-20*kiphone6);
     }];
     [imageView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(titleLabel.mas_left).offset(-10);
-        make.top.equalTo(titleLabel.mas_bottom).offset(10);
+        make.left.equalTo(titleLabel.mas_left).offset(-10*kiphone6);
+        make.top.equalTo(titleLabel.mas_bottom).offset(10*kiphone6);
         make.width.height.offset(0);
     }];
     [contentLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(imageView.mas_right).offset(10);
-        make.right.offset(-20);
+        make.right.offset(-20*kiphone6);
         make.top.equalTo(titleLabel.mas_bottom).offset(10);
     }];
     [timeLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.offset(20);
-        make.top.equalTo(contentLabel.mas_bottom).offset(20);
+        make.left.offset(20*kiphone6);
+        make.top.equalTo(contentLabel.mas_bottom).offset(20*kiphone6);
     }];
     [repliesLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(timeLabel.mas_top);
-        make.right.offset(-20);
+        make.right.offset(-20*kiphone6);
     }];
     [repliesBtn mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerY.equalTo(timeLabel);
-        make.right.equalTo(repliesLabel.mas_left).offset(-7);
+        make.right.equalTo(repliesLabel.mas_left).offset(-7*kiphone6);
     }];
     [praiseCountLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(timeLabel.mas_top);
-        make.right.equalTo(repliesBtn.mas_left).offset(-15);
+        make.right.equalTo(repliesBtn.mas_left).offset(-15*kiphone6);
     }];
     [praiseBtn mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerY.equalTo(timeLabel);
-        make.right.equalTo(praiseCountLabel.mas_left).offset(-7);
+        make.right.equalTo(praiseCountLabel.mas_left).offset(-7*kiphone6);
     }];
     [self.contentView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.bottom.equalTo(timeLabel.mas_bottom).offset(20);
+        make.bottom.equalTo(timeLabel.mas_bottom).offset(20*kiphone6);
         make.width.offset([UIScreen mainScreen].bounds.size.width);
     }];
 

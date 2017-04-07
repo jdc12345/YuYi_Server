@@ -33,7 +33,7 @@
 }
 - (void)setupUI {
     //添加右侧发布按钮
-    UIButton *postBtn = [[UIButton alloc]initWithFrame:CGRectMake(0, 0, 30, 30)];
+    UIButton *postBtn = [[UIButton alloc]initWithFrame:CGRectMake(0, 0, 30*kiphone6, 30*kiphone6)];
     [postBtn setTitle:@"发布" forState:UIControlStateNormal];
     [postBtn setTitleColor:[UIColor colorWithHexString:@"25f368"] forState:UIControlStateNormal];
     postBtn.titleLabel.font = [UIFont systemFontOfSize:17];
@@ -57,10 +57,10 @@
     BRPlaceholderTextView *titleView = [[BRPlaceholderTextView alloc]init];
     [backView addSubview:titleView];
     [titleView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.offset(20);
-        make.bottom.equalTo(backView.mas_top).offset(55);
-        make.right.offset(-20);
-        make.height.offset(35);
+        make.left.offset(20*kiphone6);
+        make.bottom.equalTo(backView.mas_top).offset(55*kiphone6);
+        make.right.offset(-20*kiphone6);
+        make.height.offset(35*kiphone6);
     }];
     [titleView layoutIfNeeded];
 //    titleView.delegate = self;
@@ -93,8 +93,8 @@
     line.backgroundColor = [UIColor colorWithHexString:@"#cccccc"];
     [backView addSubview:line];
     [line mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.offset(20);
-        make.right.offset(-20);
+        make.left.offset(20*kiphone6);
+        make.right.offset(-20*kiphone6);
         make.top.equalTo(titleView.mas_bottom);
         make.height.offset(1);
     }];
@@ -104,16 +104,16 @@
     BRPlaceholderTextView *contentView = [[BRPlaceholderTextView alloc]init];
     [backView addSubview:contentView];
     [contentView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.offset(20);
+        make.left.offset(20*kiphone6);
         make.top.equalTo(line.mas_bottom);
-        make.right.offset(-20);
-        make.height.offset(110);
+        make.right.offset(-20*kiphone6);
+        make.height.offset(110*kiphone6);
     }];
     [contentView layoutIfNeeded];
     contentView.textAlignment = NSTextAlignmentLeft;
     contentView.delegate = self;
     self.contentView = contentView;
-    contentView.textContainerInset = UIEdgeInsetsMake(8,0, 0, 0);
+    contentView.textContainerInset = UIEdgeInsetsMake(8*kiphone6,0, 0, 0);
     contentView.placeholder = @"输入内容";
     contentView.imagePlaceholder = @"content";
     contentView.font=[UIFont boldSystemFontOfSize:13];
@@ -140,9 +140,9 @@
     [backView addSubview:lineTwo];
     self.lineTwo = lineTwo;
     [lineTwo mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.offset(20);
-        make.right.offset(-20);
-        make.top.equalTo(contentView.mas_bottom).offset(8);
+        make.left.offset(20*kiphone6);
+        make.right.offset(-20*kiphone6);
+        make.top.equalTo(contentView.mas_bottom).offset(8*kiphone6);
         make.height.offset(1);
     }];
     [line layoutIfNeeded];
@@ -152,9 +152,9 @@
     [backView addSubview:addPictureBtn];
     self.addPictureBtn = addPictureBtn;
     [addPictureBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.offset(20);
-        make.top.equalTo(contentView.mas_bottom).offset(50);
-        make.width.height.offset(100);
+        make.left.offset(20*kiphone6);
+        make.top.equalTo(contentView.mas_bottom).offset(50*kiphone6);
+        make.width.height.offset(100*kiphone6);
     }];
     [addPictureBtn addTarget:self action:@selector(addPicture:) forControlEvents:UIControlEventTouchUpInside];
     //添加图片label
@@ -162,7 +162,7 @@
     [backView addSubview:addPictureLabel];
     self.addPictureLabel = addPictureLabel;
     [addPictureLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(addPictureBtn.mas_right).offset(20);
+        make.left.equalTo(addPictureBtn.mas_right).offset(20*kiphone6);
         make.centerY.equalTo(addPictureBtn);
     }];
 
@@ -181,10 +181,10 @@
     textView.scrollEnabled = false;   // 不允许滚动
     textView.frame = CGRectMake(frame.origin.x, frame.origin.y, frame.size.width, size.height);
     self.lineTwo.frame = CGRectMake(frame.origin.x, frame.origin.y+size.height, frame.size.width, 1);
-    self.addPictureBtn.frame = CGRectMake(frame.origin.x, frame.origin.y+size.height+50, 100, 100);
+    self.addPictureBtn.frame = CGRectMake(frame.origin.x, frame.origin.y+size.height+50*kiphone6, 100*kiphone6, 100*kiphone6);
     CGRect labelFrame = self.addPictureLabel.frame;
-    self.addPictureLabel.frame = CGRectMake(frame.origin.x+120, frame.origin.y+size.height+80, labelFrame.size.width, labelFrame.size.height);
-    self.scrollView.contentSize = CGSizeMake(self.view.frame.size.width, frame.origin.y+size.height+300);
+    self.addPictureLabel.frame = CGRectMake(frame.origin.x+120, frame.origin.y+size.height+80*kiphone6, labelFrame.size.width, labelFrame.size.height);
+    self.scrollView.contentSize = CGSizeMake(self.view.frame.size.width, frame.origin.y+size.height+300*kiphone6);
     self.scrollView.scrollEnabled = true;
 }
 -(void)addPicture:(UIButton *)sender{

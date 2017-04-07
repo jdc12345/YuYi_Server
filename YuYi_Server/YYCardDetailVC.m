@@ -26,6 +26,7 @@ static NSString *cellId = @"cell_id";
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.title = @"帖子详情";
     self.commentInfos = [NSMutableArray arrayWithObjects:@"1",@"2", nil];
     [self setupUI];
 }
@@ -79,18 +80,18 @@ static NSString *cellId = @"cell_id";
     if (section == 0) {
         return nil;
     }else{
-        UIView *view = [[UIView alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 44)];
+        UIView *view = [[UIView alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 44*kiphone6)];
         view.backgroundColor = [UIColor whiteColor];
         UILabel *commentLabel = [UILabel labelWithText:@"评论" andTextColor:[UIColor colorWithHexString:@"cccccc"] andFontSize:12];
         [view addSubview:commentLabel];
         [commentLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.left.offset(20);
+            make.left.offset(20*kiphone6);
             make.centerY.equalTo(view);
         }];
         UILabel *countLabel = [UILabel labelWithText:@"65" andTextColor:[UIColor colorWithHexString:@"cccccc"] andFontSize:12];
         [view addSubview:countLabel];
         [countLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.left.equalTo(commentLabel.mas_right).offset(5);
+            make.left.equalTo(commentLabel.mas_right).offset(5*kiphone6);
             make.centerY.equalTo(view);
         }];
         return view;
@@ -99,7 +100,7 @@ static NSString *cellId = @"cell_id";
 }
 -(UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section{
     if (section == 0) {
-        UIView *view = [[UIView alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 5)];
+        UIView *view = [[UIView alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 5*kiphone6)];
         view.backgroundColor = [UIColor colorWithHexString:@"#f1f1f1"];
         return view;
     }else{
@@ -108,7 +109,7 @@ static NSString *cellId = @"cell_id";
 }
 -(CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section{
     if (section == 0) {
-        return 5;
+        return 5*kiphone6;
     }else{
         return 0.00001f;
     }
@@ -117,7 +118,7 @@ static NSString *cellId = @"cell_id";
     if (section == 0) {
         return 0.00001f;
     }else{
-        return 44;
+        return 44*kiphone6;
     }
 }
 -(void)viewWillAppear:(BOOL)animated{
@@ -142,11 +143,11 @@ static NSString *cellId = @"cell_id";
     UIImage *image = [UIImage imageNamed:@"writing"];
     UIImageView *imageView = [[UIImageView alloc]initWithImage:image];
     [imageView sizeToFit];
-    UIView *view = [[UIView alloc]initWithFrame:CGRectMake(0, 0, imageView.frame.size.width+10, imageView.frame.size.height)];
+    UIView *view = [[UIView alloc]initWithFrame:CGRectMake(0, 0, imageView.frame.size.width+10*kiphone6, imageView.frame.size.height)];
     [view addSubview:imageView];
     [imageView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.offset(5);
-        make.right.offset(-5);
+        make.left.offset(5*kiphone6);
+        make.right.offset(-5*kiphone6);
         make.top.bottom.offset(0);
     }];
     commentField.leftView = view;
