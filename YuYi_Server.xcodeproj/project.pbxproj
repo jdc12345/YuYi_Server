@@ -29,6 +29,7 @@
 		163D61A31E8F7B0D003A27CF /* UILabel+Addition.m in Sources */ = {isa = PBXBuildFile; fileRef = 163D61A21E8F7B0D003A27CF /* UILabel+Addition.m */; };
 		163D61A61E8F7CD5003A27CF /* NSObject+Formula.m in Sources */ = {isa = PBXBuildFile; fileRef = 163D61A51E8F7CD5003A27CF /* NSObject+Formula.m */; };
 		1650BC701E97349C00A3B088 /* YYInfoCommentVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 1650BC6F1E97349C00A3B088 /* YYInfoCommentVC.m */; };
+		1650BC731E9737C400A3B088 /* YYCommentInfoModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 1650BC721E9737C400A3B088 /* YYCommentInfoModel.m */; };
 		3E85EF8D1E8F38F400E7D8F1 /* YYSettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E85EF8C1E8F38F400E7D8F1 /* YYSettingViewController.m */; };
 		3E85EF901E8F390500E7D8F1 /* YYFeedbackViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E85EF8F1E8F390500E7D8F1 /* YYFeedbackViewController.m */; };
 		3E85EF951E8F391400E7D8F1 /* YYAboutUSViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E85EF921E8F391400E7D8F1 /* YYAboutUSViewController.m */; };
@@ -144,6 +145,8 @@
 		163D61A51E8F7CD5003A27CF /* NSObject+Formula.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+Formula.m"; sourceTree = "<group>"; };
 		1650BC6E1E97349C00A3B088 /* YYInfoCommentVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YYInfoCommentVC.h; sourceTree = "<group>"; };
 		1650BC6F1E97349C00A3B088 /* YYInfoCommentVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YYInfoCommentVC.m; sourceTree = "<group>"; };
+		1650BC711E9737C400A3B088 /* YYCommentInfoModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YYCommentInfoModel.h; sourceTree = "<group>"; };
+		1650BC721E9737C400A3B088 /* YYCommentInfoModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YYCommentInfoModel.m; sourceTree = "<group>"; };
 		3E85EF8B1E8F38F400E7D8F1 /* YYSettingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YYSettingViewController.h; sourceTree = "<group>"; };
 		3E85EF8C1E8F38F400E7D8F1 /* YYSettingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YYSettingViewController.m; sourceTree = "<group>"; };
 		3E85EF8E1E8F390500E7D8F1 /* YYFeedbackViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YYFeedbackViewController.h; sourceTree = "<group>"; };
@@ -372,6 +375,8 @@
 				1614C0D11E94F49D004CF952 /* YYCycleViewModel.m */,
 				161D63F81E961AA800AF4998 /* YYInfoDetailModel.h */,
 				161D63F91E961AA800AF4998 /* YYInfoDetailModel.m */,
+				1650BC711E9737C400A3B088 /* YYCommentInfoModel.h */,
+				1650BC721E9737C400A3B088 /* YYCommentInfoModel.m */,
 			);
 			name = M;
 			sourceTree = "<group>";
@@ -968,6 +973,7 @@
 				3EBD82361E8E565500BDC217 /* YYHomePageViewController.m in Sources */,
 				3EA3F4591E95E4BE005670A5 /* YYDataAnalyseViewController.m in Sources */,
 				3E85EFA51E8F951500E7D8F1 /* NoyficationModel.m in Sources */,
+				1650BC731E9737C400A3B088 /* YYCommentInfoModel.m in Sources */,
 				3E85EF901E8F390500E7D8F1 /* YYFeedbackViewController.m in Sources */,
 				3EBD821F1E8E37E600BDC217 /* NSDictionary+Log.m in Sources */,
 				163D61A01E8F7AB6003A27CF /* YYpostCardVC.m in Sources */,

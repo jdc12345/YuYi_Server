@@ -7,8 +7,24 @@
 //
 
 #import "YYInfoCommentVC.h"
+#import "HttpClient.h"
+#import "YYCommentInfoModel.h"
+#import <MJExtension.h>
+#import <Masonry.h>
+#import "YYCommentTVCell.h"
+#import "UILabel+Addition.h"
+#import "UIColor+colorValues.h"
+#import "BRPlaceholderTextView.h"
 
-@interface YYInfoCommentVC ()
+static NSString *cell_Id = @"cell_id";
+@interface YYInfoCommentVC ()<UITableViewDelegate,UITableViewDataSource,UITextViewDelegate>
+@property(nonatomic,strong)NSMutableArray *commentInfoModels;
+@property(nonatomic,weak)UILabel *titleLabel;
+@property(nonatomic,weak)UILabel *praiseCountLabel;
+@property(nonatomic,weak)UILabel *shareCountLabel;
+@property(nonatomic,weak)UILabel *commentCountLabel;
+//评论
+@property(weak, nonatomic)BRPlaceholderTextView *commentField;
 
 @end
 
@@ -19,6 +35,244 @@
     // Do any additional setup after loading the view.
     self.title = @"评论";
     self.view.backgroundColor = [UIColor whiteColor];
+    [self loadData];
+}
+//http://192.168.1.55:8080/yuyi/comment/getConmentAll.do?id=4&start=0&limit=6
+- (void)loadData {
+    NSString *urlStr = [NSString stringWithFormat:@"%@/comment/getConmentAll.do?id=%@&start=0&limit=6",mPrefixUrl,self.info_id];
+    [[HttpClient defaultClient]requestWithPath:urlStr method:0 parameters:nil prepareExecute:^{
+        
+    } success:^(NSURLSessionDataTask *task, id responseObject) {
+        NSArray *arr = responseObject[@"result"];
+        NSMutableArray *mArr = [NSMutableArray array];
+        for (NSDictionary *dic in arr) {
+            YYCommentInfoModel *infoModel = [YYCommentInfoModel mj_objectWithKeyValues:dic];
+            [mArr addObject:infoModel];
+        }
+        self.commentInfoModels  = mArr;
+        [self setUpUI];
+        
+    } failure:^(NSURLSessionDataTask *task, NSError *error) {
+        
+    }];
+}
+- (void)setUpUI {
+   //tableView
+    UITableView *tableView = [[UITableView alloc]init];
+    [self.view addSubview:tableView];
+    [tableView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.left.right.offset(0);
+        make.bottom.offset(-45*kiphone6);
+    }];
+    tableView.delegate = self;
+    tableView.dataSource = self;
+    tableView.rowHeight = UITableViewAutomaticDimension;
+    tableView.estimatedRowHeight = 120;
+    tableView.showsVerticalScrollIndicator = false;
+    tableView.showsHorizontalScrollIndicator = false;
+    [tableView registerClass:[YYCommentTVCell class] forCellReuseIdentifier:cell_Id];
+    tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    //评论框
+    //搜索框
+    UIView *fieldBackView = [[UIView alloc]initWithFrame:CGRectMake(20,self.view.frame.size.height- 45, self.view.frame.size.width-40, 45)];
+    [self.view addSubview:fieldBackView];
+    [self.view bringSubviewToFront:fieldBackView];
+    //输入框
+    BRPlaceholderTextView *commentField = [[BRPlaceholderTextView alloc]init];
+    [fieldBackView addSubview:commentField];
+    [commentField mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.right.top.bottom.offset(0);
+    }];
+    commentField.delegate = self;
+    commentField.returnKeyType = UIReturnKeySend;
+    self.commentField = commentField;
+    commentField.placeholder = @"说点什么吧";
+    commentField.imagePlaceholder = @"writing";
+    commentField.font=[UIFont boldSystemFontOfSize:14];
+    [commentField setBackgroundColor:[UIColor whiteColor]];
+    [commentField setPlaceholderFont:[UIFont systemFontOfSize:15]];
+    [commentField setPlaceholderColor:[UIColor colorWithHexString:@"999999"]];
+    [commentField setPlaceholderOpacity:0.6];
+    [commentField addMaxTextLengthWithMaxLength:200 andEvent:^(BRPlaceholderTextView *text) {
+        [self.commentField endEditing:YES];
+        
+        NSLog(@"----------");
+    }];
+    
+    [commentField addTextViewBeginEvent:^(BRPlaceholderTextView *text) {
+        NSLog(@"begin");
+    }];
+    
+    [commentField addTextViewEndEvent:^(BRPlaceholderTextView *text) {
+        NSLog(@"end");
+    }];
+    //边框宽度
+    [commentField.layer setBorderWidth:0.8];
+    commentField.layer.borderColor=[UIColor colorWithHexString:@"#f3f3f3"].CGColor;
+}
+-(void)textViewDidChange:(UITextView *)textView{
+    CGRect frame = textView.frame;
+    CGSize constraintSize = CGSizeMake(frame.size.width, MAXFLOAT);
+    CGSize size = [textView sizeThatFits:constraintSize];
+    if (size.height<=frame.size.height) {
+        size.height=frame.size.height;
+        //        textView.scrollEnabled = true;   // 允许滚动
+    }
+    else if(size.height>100*kiphone6){
+        size.height=100*kiphone6;
+    }
+//    textView.scrollEnabled = false;   // 不允许滚动
+    textView.frame = CGRectMake(frame.origin.x, frame.origin.y-(size.height-frame.size.height), frame.size.width, size.height);
+    textView.scrollEnabled = true;   // 允许滚动
+}
+
+#pragma UITableViewDelegate/DataSource
+-(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
+    return self.commentInfoModels.count;
+}
+-(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
+    YYCommentTVCell *cell = [tableView dequeueReusableCellWithIdentifier:cell_Id forIndexPath:indexPath];
+    cell.infoCommentModel = self.commentInfoModels[indexPath.row];
+    return cell;
+}
+-(UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
+    UIView *headerView = [[UIView alloc]init];
+    headerView.backgroundColor = [UIColor whiteColor];
+    [self layoutSubViews:headerView];
+    return headerView;
+}
+-(CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
+    return 132*kiphone6;
+}
+-(void)layoutSubViews:(UIView *)headerView{
+    UILabel *titlelabel = [UILabel labelWithText:self.infoDetailModel.title andTextColor:[UIColor colorWithHexString:@"333333"] andFontSize:15];
+    titlelabel.numberOfLines = 3;
+    [headerView addSubview:titlelabel];
+    [titlelabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.offset(20*kiphone6);
+        make.right.offset(-85*kiphone6);
+        make.centerY.equalTo(headerView);
+    }];
+    self.titleLabel = titlelabel;//标题
+    UIView *line = [[UIView alloc]init];//上边分割线
+    line.alpha = 0.6f;
+    line.backgroundColor = [UIColor colorWithHexString:@"999999"];
+    [headerView addSubview:line];
+    [line mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.offset(100*kiphone6);
+        make.left.right.equalTo(headerView);
+        make.height.offset(1*kiphone6);
+    }];
+    UIView *userBar = [[UIView alloc]init];//底部工具栏
+    userBar.backgroundColor = [UIColor whiteColor];
+    [headerView addSubview:userBar];
+    [self.view bringSubviewToFront:userBar];
+    [userBar mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(line.mas_bottom);
+        make.left.right.equalTo(headerView);
+        make.height.offset(30*kiphone6);
+    }];
+    UIView *downLine = [[UIView alloc]init];//下边分割线
+    downLine.alpha = 0.6f;
+    downLine.backgroundColor = [UIColor colorWithHexString:@"999999"];
+    [headerView addSubview:downLine];
+    [downLine mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(userBar.mas_bottom);
+        make.left.right.equalTo(headerView);
+        make.height.offset(1*kiphone6);
+    }];
+    //赞次数
+    NSString *praiseNum = self.infoDetailModel.likeNum?self.infoDetailModel.likeNum:@"0";
+    UILabel *praiseCountLabel = [UILabel labelWithText:praiseNum andTextColor:[UIColor colorWithHexString:@"999999"] andFontSize:12];
+    [userBar addSubview:praiseCountLabel];
+    self.praiseCountLabel = praiseCountLabel;
+    //赞btn
+    UIButton *praiseBtn = [[UIButton alloc]init];
+    NSString *praiseImage = self.infoDetailModel.state?@"Info-heart-icon-select-":@"like";
+    [praiseBtn setImage:[UIImage imageNamed:praiseImage] forState:UIControlStateNormal];
+    [praiseBtn addTarget:self action:@selector(praisePlus:) forControlEvents:UIControlEventTouchUpInside];
+    [userBar addSubview:praiseBtn];
+    //分享次数
+    //    表达式 ? 语句1 :语句2
+    NSString *shareNum = self.infoDetailModel.shareNum?self.infoDetailModel.shareNum:@"0";
+    UILabel *shareCountLabel = [UILabel labelWithText:shareNum andTextColor:[UIColor colorWithHexString:@"999999"] andFontSize:12];
+    [userBar addSubview:shareCountLabel];
+    self.shareCountLabel = shareCountLabel;
+
+    //分享btn
+    UIButton *shareBtn = [[UIButton alloc]init];
+    [shareBtn setImage:[UIImage imageNamed:@"Info-share-icon-norm-"] forState:UIControlStateNormal];
+    [shareBtn setImage:[UIImage imageNamed:@"share"] forState:UIControlStateHighlighted];
+    [shareBtn addTarget:self action:@selector(shareBtn:) forControlEvents:UIControlEventTouchUpInside];
+    [userBar addSubview:shareBtn];
+    //回帖btn
+    UIButton *repliesBtn = [[UIButton alloc]init];
+    [repliesBtn setImage:[UIImage imageNamed:@"info-comment-icon-"] forState:UIControlStateNormal];
+    [repliesBtn addTarget:self action:@selector(repliesPlus:) forControlEvents:UIControlEventTouchUpInside];
+    [userBar addSubview:repliesBtn];
+    //回帖次数
+    NSString *repliesNum = self.infoDetailModel.commentNum?self.infoDetailModel.commentNum:@"0";
+    UILabel *repliesLabel = [UILabel labelWithText:repliesNum andTextColor:[UIColor colorWithHexString:@"999999"] andFontSize:12];
+    [userBar addSubview:repliesLabel];
+    self.commentCountLabel = repliesLabel;
+    //约束布局
+    [praiseCountLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerY.equalTo(userBar);
+        make.right.offset(-20*kiphone6);
+    }];
+    [praiseBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerY.equalTo(userBar);
+        make.right.equalTo(praiseCountLabel.mas_left).offset(-5*kiphone6);
+        make.width.height.offset(20*kiphone6);
+    }];
+    [shareCountLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerY.equalTo(userBar);
+        make.right.equalTo(praiseBtn.mas_left).offset(-18*kiphone6);
+    }];
+    [shareBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerY.equalTo(userBar);
+        make.right.equalTo(shareCountLabel.mas_left).offset(-5*kiphone6);
+        make.width.height.offset(20*kiphone6);
+    }];
+   
+    [repliesBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerY.equalTo(userBar);
+        make.left.offset(20*kiphone6);
+        make.width.height.offset(20*kiphone6);
+    }];
+    [repliesLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerY.equalTo(userBar);
+        make.left.equalTo(repliesBtn.mas_right).offset(5*kiphone6);
+    }];
+    
+}
+#pragma - btnClick
+- (void)praisePlus:(UIButton*)sender{
+    NSInteger count = [self.praiseCountLabel.text integerValue];
+    if (self.infoDetailModel.state) {
+        count -= 1;
+        self.praiseCountLabel.text = [NSString stringWithFormat:@"%ld",count];
+        [sender setImage:[UIImage imageNamed:@"like"] forState:UIControlStateNormal];
+        self.infoDetailModel.state = false;
+    }else{
+        count += 1;
+        self.praiseCountLabel.text = [NSString stringWithFormat:@"%ld",count];
+        [sender setImage:[UIImage imageNamed:@"Info-heart-icon-select-"] forState:UIControlStateNormal];
+        self.infoDetailModel.state = true;
+    }
+    
+}
+- (void)repliesPlus:(UIButton*)sender{
+    NSInteger count = [self.commentCountLabel.text integerValue];
+    count += 1;
+    self.commentCountLabel.text = [NSString stringWithFormat:@"%ld",count];
+    
+    
+}
+- (void)shareBtn:(UIButton*)sender{
+    NSInteger count = [self.shareCountLabel.text integerValue];
+    count += 1;
+    self.shareCountLabel.text = [NSString stringWithFormat:@"%ld",count];
 }
 
 - (void)didReceiveMemoryWarning {

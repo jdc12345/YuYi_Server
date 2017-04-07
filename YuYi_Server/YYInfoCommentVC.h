@@ -7,7 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
-
+#import "YYInfoDetailModel.h"
 @interface YYInfoCommentVC : UIViewController
 @property (nonatomic, copy) NSString *info_id;
+@property (nonatomic, strong) YYInfoDetailModel *infoDetailModel;
 @end

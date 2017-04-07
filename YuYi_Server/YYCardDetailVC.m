@@ -12,12 +12,12 @@
 #import "YYCommentTVCell.h"
 #import "UILabel+Addition.h"
 #import "UIColor+colorValues.h"
-
+#import "BRPlaceholderTextView.h"
 static NSString *cellId = @"cell_id";
-@interface YYCardDetailVC ()<UITableViewDelegate,UITableViewDataSource,UITextFieldDelegate>
+@interface YYCardDetailVC ()<UITableViewDelegate,UITableViewDataSource,UITextViewDelegate>
 @property(nonatomic,weak)UITableView *tableView;
 //发帖btn
-@property(weak, nonatomic)UITextField *commentField;
+@property(weak, nonatomic)BRPlaceholderTextView *commentField;
 //
 @property(nonatomic,strong)NSMutableArray *commentInfos;
 @end
@@ -128,30 +128,39 @@ static NSString *cellId = @"cell_id";
     [self.view addSubview:headerView];
     [self.view bringSubviewToFront:headerView];
     //输入框
-    UITextField *commentField = [[UITextField alloc]init];
+    BRPlaceholderTextView *commentField = [[BRPlaceholderTextView alloc]init];
     [headerView addSubview:commentField];
     [commentField mas_makeConstraints:^(MASConstraintMaker *make) {
 //        make.left.offset(10);
         make.left.right.top.bottom.offset(0);
     }];
+    commentField.returnKeyType = UIReturnKeySend;
     commentField.delegate = self;
     self.commentField = commentField;
     commentField.placeholder = @"说点什么吧";
-    commentField.clearButtonMode = UITextFieldViewModeAlways;//删除内容的❎
+    commentField.imagePlaceholder = @"writing";
+    commentField.font=[UIFont boldSystemFontOfSize:14];
     [commentField setBackgroundColor:[UIColor whiteColor]];
-    //输入框左侧✏️
-    UIImage *image = [UIImage imageNamed:@"writing"];
-    UIImageView *imageView = [[UIImageView alloc]initWithImage:image];
-    [imageView sizeToFit];
-    UIView *view = [[UIView alloc]initWithFrame:CGRectMake(0, 0, imageView.frame.size.width+10*kiphone6, imageView.frame.size.height)];
-    [view addSubview:imageView];
-    [imageView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.offset(5*kiphone6);
-        make.right.offset(-5*kiphone6);
-        make.top.bottom.offset(0);
+    [commentField setPlaceholderFont:[UIFont systemFontOfSize:15]];
+    [commentField setPlaceholderColor:[UIColor colorWithHexString:@"999999"]];
+    [commentField setPlaceholderOpacity:0.6];
+    [commentField addMaxTextLengthWithMaxLength:200 andEvent:^(BRPlaceholderTextView *text) {
+        [self.commentField endEditing:YES];
+        
+        NSLog(@"----------");
     }];
-    commentField.leftView = view;
-    commentField.leftViewMode = UITextFieldViewModeAlways;
+    
+    [commentField addTextViewBeginEvent:^(BRPlaceholderTextView *text) {
+        NSLog(@"begin");
+    }];
+    
+    [commentField addTextViewEndEvent:^(BRPlaceholderTextView *text) {
+        NSLog(@"end");
+//        if (!text.text) {
+//            self.commentField.frame = CGRectMake(0,0, self.view.frame.size.width-40, 45);
+//        }
+        
+    }];
     //边框宽度
     [commentField.layer setBorderWidth:0.8];
     commentField.layer.borderColor=[UIColor colorWithHexString:@"#f3f3f3"].CGColor;
@@ -161,17 +170,20 @@ static NSString *cellId = @"cell_id";
     [tableView deselectRowAtIndexPath:indexPath animated:true];
 }
 
-#pragma textField
--(BOOL)textFieldShouldReturn:(UITextField *)textField{
-    
-    NSString *searchString = [self.commentField text];
-    [self.commentInfos addObject:searchString];
-    [self.tableView reloadData];
-    return true;
-}
--(BOOL)textFieldShouldClear:(UITextField *)textField{
-    
-    return true;
+#pragma textView
+-(void)textViewDidChange:(UITextView *)textView{
+    CGRect frame = textView.frame;
+    CGSize constraintSize = CGSizeMake(frame.size.width, MAXFLOAT);
+    CGSize size = [textView sizeThatFits:constraintSize];
+    if (size.height<=frame.size.height) {
+        size.height=frame.size.height;
+        //        textView.scrollEnabled = true;   // 允许滚动
+    }else if(size.height>100*kiphone6){
+        size.height=100*kiphone6;
+        }
+    //    textView.scrollEnabled = false;   // 不允许滚动
+    textView.frame = CGRectMake(frame.origin.x, frame.origin.y-(size.height-frame.size.height), frame.size.width, size.height);
+    textView.scrollEnabled = true;
 }
 -(void)viewWillDisappear:(BOOL)animated{
     [super viewWillDisappear:animated];

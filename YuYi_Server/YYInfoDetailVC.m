@@ -137,7 +137,7 @@
     self.commentCountLabel = repliesLabel;
     //约束布局
     [repliesLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.bottom.right.offset(-10*kiphone6);
+        make.right.offset(-10*kiphone6);
         make.bottom.offset(-12*kiphone6);
     }];
     [repliesBtn mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -186,6 +186,7 @@
     self.commentCountLabel.text = [NSString stringWithFormat:@"%ld",count];
     YYInfoCommentVC *commentVC = [[YYInfoCommentVC alloc]init];
     commentVC.info_id = self.info_id;
+    commentVC.infoDetailModel = self.infoModel;
     [self.navigationController pushViewController:commentVC animated:true];
     
 }
