@@ -54,24 +54,24 @@
     
     //约束
     [imageView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.offset(4);
-        make.left.offset(10);
-        make.width.height.offset(100);
+        make.top.offset(4*kiphone6);
+        make.left.offset(10*kiphone6);
+        make.width.height.offset(100*kiphone6);
     }];
     [titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.offset(4);
-        make.left.equalTo(imageView.mas_right).offset(30);
-        make.right.offset(-20);
+        make.top.offset(4*kiphone6);
+        make.left.equalTo(imageView.mas_right).offset(30*kiphone6);
+        make.right.offset(-20*kiphone6);
     }];
     [contentLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(titleLabel.mas_bottom).offset(10);
-        make.left.equalTo(imageView.mas_right).offset(30);
-        make.right.offset(-20);
-        make.bottom.offset(-6);
+        make.top.equalTo(titleLabel.mas_bottom).offset(10*kiphone6);
+        make.left.equalTo(imageView.mas_right).offset(30*kiphone6);
+        make.right.offset(-20*kiphone6);
+        make.bottom.offset(-6*kiphone6);
     }];
     
     [self.contentView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.bottom.equalTo(imageView.mas_bottom).offset(4);
+        make.bottom.equalTo(imageView.mas_bottom).offset(4*kiphone6);
         make.width.offset([UIScreen mainScreen].bounds.size.width);//必须加
     }];
 }

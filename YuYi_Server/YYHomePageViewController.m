@@ -156,11 +156,11 @@ static NSString *cell_id = @"cell_id";
     [infosView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(cycleView.mas_bottom);
         make.left.right.offset(0);
-        make.height.offset(44);
+        make.height.offset(44*kiphone6);
     }];
     //设置按钮约束
     [cardCategoryButtons mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.offset(18);
+        make.top.offset(18*kiphone6);
         make.bottom.offset(0);
     }];
     //循环设置按钮的等宽
@@ -170,13 +170,13 @@ static NSString *cell_id = @"cell_id";
         //
         if (i==0) {
             [currentBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.left.offset(10);
+                make.left.offset(10*kiphone6);
             }];
             
         }
         if (i==cardCategoryButtons.count-2) {
             [nextBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.right.offset(-(kScreenW-210));
+                make.right.offset(-(kScreenW-240*kiphone6));
             }];
         }
         [nextBtn mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -187,7 +187,7 @@ static NSString *cell_id = @"cell_id";
     }
     //设置滑动线的约束
     [cardLineView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.width.offset(64);
+        make.width.offset(64*kiphone6);
         make.height.offset(2);
         make.bottom.equalTo(todyInfoButton);
         make.centerX.equalTo(todyInfoButton);
@@ -261,7 +261,7 @@ static NSString *cell_id = @"cell_id";
     CGFloat d = self.view.center.x - secondBtn.center.x;
     //根据偏移距离设置滚动线的位置
     [self.cardLineView mas_remakeConstraints:^(MASConstraintMaker *make) {
-        make.width.offset(64);
+        make.width.offset(64*kiphone6);
         make.height.offset(2);
         make.bottom.equalTo(self.infosView);
         make.centerX.offset(res-d);

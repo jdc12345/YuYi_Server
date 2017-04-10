@@ -18,6 +18,8 @@
 #import <UIImageView+WebCache.h>
 #import "UILabel+Addition.h"
 #import "UIColor+colorValues.h"
+#import "CcUserModel.h"
+#import "YYInfoCommentVC.h"
 @interface YYInfoDetailVC ()<UIScrollViewDelegate>
 @property(nonatomic,strong)YYInfoDetailModel *infoModel;
 @property(nonatomic,weak)UILabel *praiseCountLabel;
@@ -30,12 +32,14 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    self.title = @"咨询详情";
+    self.title = @"资讯详情";
     self.view.backgroundColor = [UIColor whiteColor];
     [self loadData];
 }
 - (void)loadData {
-    NSString *urlStr = [NSString stringWithFormat:@"http://192.168.1.55:8080/yuyi/doctorlyinformation/get.do?id=%@",self.info_id];
+    CcUserModel *model = [CcUserModel defaultClient];
+    NSString *token = model.userToken;
+    NSString *urlStr = [NSString stringWithFormat:@"http://192.168.1.55:8080/yuyi/doctorlyinformation/get.do?id=%@&token=%@",self.info_id,token];
     [[HttpClient defaultClient]requestWithPath:urlStr method:0 parameters:nil prepareExecute:^{
         
     } success:^(NSURLSessionDataTask *task, id responseObject) {
@@ -50,7 +54,7 @@
 
 }
 - (void)setUpUI {
-    UIScrollView *scrollView = [[UIScrollView alloc]initWithFrame:CGRectMake(0, 0, kScreenW, kScreenH-54)];
+    UIScrollView *scrollView = [[UIScrollView alloc]initWithFrame:CGRectMake(0, 0, kScreenW, kScreenH-54*kiphone6)];
     scrollView.delegate = self;
     scrollView.scrollEnabled = true;
     [self.view addSubview:scrollView];
@@ -77,19 +81,19 @@
 //    contentLabel.lineBreakMode = NSLineBreakByCharWrapping;
     [backView addSubview:contentLabel];
     [contentLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.offset(10);
+        make.left.offset(10*kiphone6);
         make.top.equalTo(titleLabel.mas_bottom).offset(15);
-        make.right.offset(-10);
+        make.right.offset(-10*kiphone6);
     }];
     [backView layoutSubviews];
-    scrollView.contentSize = CGSizeMake(kScreenW,contentLabel.frame.origin.y+contentLabel.frame.size.height+54);
+    scrollView.contentSize = CGSizeMake(kScreenW,contentLabel.frame.origin.y+contentLabel.frame.size.height+54*kiphone6);
     UIView *userBar = [[UIView alloc]init];//底部工具栏
     userBar.backgroundColor = [UIColor whiteColor];
     [self.view addSubview:userBar];
     [self.view bringSubviewToFront:userBar];
     [userBar mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.right.bottom.equalTo(self.view);
-        make.height.offset(44.5);
+        make.height.offset(44.5*kiphone6);
     }];
     UIView *line = [[UIView alloc]init];//分割线
     line.backgroundColor = [UIColor colorWithHexString:@"999999"];
@@ -112,7 +116,8 @@
     self.shareCountLabel = shareCountLabel;
     //赞btn
     UIButton *praiseBtn = [[UIButton alloc]init];
-    [praiseBtn setImage:[UIImage imageNamed:@"like"] forState:UIControlStateNormal];
+    NSString *praiseImage = self.infoModel.state?@"Info-heart-icon-select-":@"like";
+    [praiseBtn setImage:[UIImage imageNamed:praiseImage] forState:UIControlStateNormal];
     [praiseBtn addTarget:self action:@selector(praisePlus:) forControlEvents:UIControlEventTouchUpInside];
     [userBar addSubview:praiseBtn];
     //赞次数
@@ -132,44 +137,58 @@
     self.commentCountLabel = repliesLabel;
     //约束布局
     [repliesLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.bottom.right.offset(-10);
-        make.bottom.offset(-15);
+        make.right.offset(-10*kiphone6);
+        make.bottom.offset(-12*kiphone6);
     }];
     [repliesBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.bottom.offset(-10);
-        make.right.equalTo(repliesLabel.mas_left).offset(-5);
-        make.height.width.offset(20);
+        make.bottom.offset(-10*kiphone6);
+        make.right.equalTo(repliesLabel.mas_left).offset(-5*kiphone6);
+        make.height.width.offset(20*kiphone6);
     }];
     [praiseCountLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerY.equalTo(repliesBtn);
-        make.right.equalTo(repliesBtn.mas_left).offset(-25);
+        make.right.equalTo(repliesBtn.mas_left).offset(-25*kiphone6);
     }];
     [praiseBtn mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerY.equalTo(repliesBtn);
-        make.right.equalTo(praiseCountLabel.mas_left).offset(-5);
-        make.width.height.offset(20);
+        make.right.equalTo(praiseCountLabel.mas_left).offset(-5*kiphone6);
+        make.width.height.offset(20*kiphone6);
     }];
     [shareCountLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerY.equalTo(repliesBtn);
-        make.right.equalTo(praiseBtn.mas_left).offset(-25);
+        make.right.equalTo(praiseBtn.mas_left).offset(-25*kiphone6);
     }];
     [shareBtn mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerY.equalTo(repliesBtn);
-        make.right.equalTo(shareCountLabel.mas_left).offset(-5);
-        make.width.height.offset(20);
+        make.right.equalTo(shareCountLabel.mas_left).offset(-5*kiphone6);
+        make.width.height.offset(20*kiphone6);
     }];
 
 }
 - (void)praisePlus:(UIButton*)sender{
     NSInteger count = [self.praiseCountLabel.text integerValue];
-    count += 1;
-    self.praiseCountLabel.text = [NSString stringWithFormat:@"%ld",count];
-    [sender setImage:[UIImage imageNamed:@"Info-heart-icon-select-"] forState:UIControlStateNormal];
+    if (self.infoModel.state) {
+        count -= 1;
+        self.praiseCountLabel.text = [NSString stringWithFormat:@"%ld",count];
+        [sender setImage:[UIImage imageNamed:@"like"] forState:UIControlStateNormal];
+        self.infoModel.state = false;
+    }else{
+        count += 1;
+        self.praiseCountLabel.text = [NSString stringWithFormat:@"%ld",count];
+        [sender setImage:[UIImage imageNamed:@"Info-heart-icon-select-"] forState:UIControlStateNormal];
+        self.infoModel.state = true;
+    }
+    
 }
 - (void)repliesPlus:(UIButton*)sender{
     NSInteger count = [self.commentCountLabel.text integerValue];
     count += 1;
     self.commentCountLabel.text = [NSString stringWithFormat:@"%ld",count];
+    YYInfoCommentVC *commentVC = [[YYInfoCommentVC alloc]init];
+    commentVC.info_id = self.info_id;
+    commentVC.infoDetailModel = self.infoModel;
+    [self.navigationController pushViewController:commentVC animated:true];
+    
 }
 - (void)shareBtn:(UIButton*)sender{
     NSInteger count = [self.shareCountLabel.text integerValue];

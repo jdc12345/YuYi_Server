@@ -21,6 +21,7 @@
 //"likeNum": null,
 //"commentNum": null,
 //"id": 3
+//"state":true
 #import <Foundation/Foundation.h>
 
 @interface YYInfoDetailModel : NSObject
@@ -32,4 +33,5 @@
 @property (nonatomic, copy) NSString *commentNum;
 @property (nonatomic, copy) NSString *info_id;
 @property (nonatomic, copy) NSString *picture;
+@property (nonatomic, assign) BOOL state;
 @end

@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-
+#import "YYCommentInfoModel.h"
 @interface YYCommentTVCell : UITableViewCell
-
+@property(nonatomic,strong)YYCommentInfoModel *infoCommentModel;
 @end
