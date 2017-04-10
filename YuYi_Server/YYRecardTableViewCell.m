@@ -1,17 +1,16 @@
 //
-//  YYPInfomationTableViewCell.m
+//  YYRecardTableViewCell.m
 //  YuYi_Client
 //
 //  Created by wylt_ios_1 on 2017/2/24.
 //  Copyright © 2017年 wylt_ios_1. All rights reserved.
 //
 
-#import "YYPInfomationTableViewCell.h"
+#import "YYRecardTableViewCell.h"
 #import <Masonry.h>
 #import "UIColor+Extension.h"
 
-
-@implementation YYPInfomationTableViewCell
+@implementation YYRecardTableViewCell
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
@@ -29,27 +28,20 @@
     lineL.backgroundColor = [UIColor colorWithHexString:@"eeeeee"];
     
     self.titleLabel = [[UILabel alloc]init];
-    self.titleLabel.textColor = [UIColor colorWithHexString:@"333333"];
-    self.titleLabel.font = [UIFont systemFontOfSize:14];
+    self.titleLabel.textColor = [UIColor colorWithHexString:@"666666"];
+    self.titleLabel.font = [UIFont fontWithName:kPingFang_S size:14];
     self.titleLabel.text = @"李美丽";
     
     self.seeRecardLabel = [[UILabel alloc]init];
     self.seeRecardLabel.textColor = [UIColor colorWithHexString:@"333333"];
     self.seeRecardLabel.font = [UIFont systemFontOfSize:14];
-    self.seeRecardLabel.textAlignment = NSTextAlignmentLeft;
-//    self.seeRecardLabel.backgroundColor = [UIColor cyanColor];
-    
-    self.editInfoText = [[UITextField alloc]init];
-    self.editInfoText.textColor = [UIColor colorWithHexString:@"333333"];
-    self.editInfoText.font = [UIFont systemFontOfSize:14];
-    self.editInfoText.textAlignment = NSTextAlignmentRight;
-    self.editInfoText.hidden = YES;
+    self.seeRecardLabel.text = @"病例查看";
+    self.seeRecardLabel.textAlignment = NSTextAlignmentRight;
     
     
     [self.contentView addSubview:lineL];
     [self.contentView addSubview:self.titleLabel];
     [self.contentView addSubview:self.seeRecardLabel];
-    [self.contentView addSubview:self.editInfoText];
     
     
     
@@ -61,33 +53,17 @@
     [self.titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerY.equalTo(self.contentView);
         make.left.equalTo(self.contentView).with.offset(10 *kiphone6);
-        make.size.mas_equalTo(CGSizeMake(45, 14 ));
+        make.size.mas_equalTo(CGSizeMake(100 *kiphone6, 14 *kiphone6));
     }];
     
     [self.seeRecardLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.centerY.equalTo(self.contentView);
-        make.left.equalTo(self.titleLabel.mas_right).with.offset(1 *kiphone6);
-        make.size.mas_equalTo(CGSizeMake(260 *kiphone6, 14 *kiphone6));
-    }];
-    [self.editInfoText mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.centerY.equalTo(self.contentView);
+        make.bottom.equalTo(self.contentView).with.offset(-10 *kiphone6);
         make.right.equalTo(self.contentView).with.offset(-10 *kiphone6);
-        make.size.mas_equalTo(CGSizeMake(200 , 14 *kiphone6));
+        make.size.mas_equalTo(CGSizeMake(200 , 14 ));
     }];
+    
 }
-- (void)setType:(NSString *)cellType{
-    if ([cellType isEqualToString:@"cellbounce"]) {
-        UITapGestureRecognizer *tapGest = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(bounceCellClick)];
-        [self.seeRecardLabel addGestureRecognizer:tapGest];
-    }else if([cellType isEqualToString:@"celltextfield"]){
-        self.seeRecardLabel.hidden = YES;
-        self.editInfoText.hidden = NO;
-    }
-}
-- (void)bounceCellClick{
-    self.sexClick(@"123");
-    // self.seeRecardLabel.text = sex;
-}
+
 - (void)awakeFromNib {
     [super awakeFromNib];
     // Initialization code
@@ -98,6 +74,5 @@
     
     // Configure the view for the selected state
 }
-
 
 @end

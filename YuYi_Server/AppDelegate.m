@@ -29,12 +29,12 @@
         //初始化一个tabBar控制器
         YYTabBarController *tabbarVC = [[YYTabBarController alloc]init];
         self.window.rootViewController = tabbarVC;
-        [self.window makeKeyAndVisible];
+       
     }else{
         YYLogInVC *logInVC = [[YYLogInVC alloc]init];
         self.window.rootViewController = logInVC;
     }
-    
+     [self.window makeKeyAndVisible];
     
     
     

@@ -20,8 +20,8 @@
 #import "YYHomeUserModel.h"
 #import "InvitationViewController.h"
 #import "AgreeViewController.h"
-#import "ConsultViewController.h"
-#import "CheckDataViewController.h"
+#import "YYChatListViewController.h"
+#import "YYPatientsViewController.h"
 #import "ReciveAppointmentViewController.h"
 #import "YYSettingViewController.h"
 #import "NotficationViewController.h"
@@ -73,7 +73,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    //    [self httpRequest];
+        [self httpRequest];
     self.view.backgroundColor = [UIColor colorWithHexString:@"f2f2f2"];
     self.automaticallyAdjustsScrollViewInsets = NO;
     
@@ -234,10 +234,11 @@
         
     }else if(indexPath.section == 1){
         if (indexPath.row == 0) {
-            ConsultViewController *familyVC = [[ConsultViewController alloc]init];
+            YYChatListViewController *familyVC = [[YYChatListViewController alloc]init];
             [self.navigationController pushViewController:familyVC animated:YES];
         }else if(indexPath.row == 1){
-            CheckDataViewController *equipmentVC = [[CheckDataViewController alloc]init];
+            YYPatientsViewController *equipmentVC = [[YYPatientsViewController alloc]init];
+            equipmentVC.isTotal = YES;
             [self.navigationController pushViewController:equipmentVC animated:YES];
         }else{
             ReciveAppointmentViewController *equipmentVC = [[ReciveAppointmentViewController alloc]init];
@@ -286,11 +287,12 @@
 #pragma mark ------------Http client----------------------
 - (void)httpRequest{
     NSString *tokenStr = [CcUserModel defaultClient].userToken;
+    NSLog(@"token = %@",tokenStr);
     [[HttpClient defaultClient]requestWithPath:[NSString stringWithFormat:@"%@%@",mMyInfo,tokenStr] method:0 parameters:nil prepareExecute:^{
         
     } success:^(NSURLSessionDataTask *task, id responseObject) {
         NSLog(@"res = = %@",responseObject);
-        NSDictionary *dict = responseObject[@"result"];
+        NSDictionary *dict = responseObject[@"physician"];
         //        CcUserModel *userMoedel = [CcUserModel mj_objectWithKeyValues:responseObject];
         YYHomeUserModel *userMoedel = [YYHomeUserModel mj_objectWithKeyValues:dict];
         
@@ -300,8 +302,8 @@
         
         [self.iconV sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@%@",mPrefixUrl,userMoedel.avatar]]];
         
-        self.nameLabel.text = userMoedel.trueName;
-        self.idLabel.text = [NSString stringWithFormat:@"%@",userMoedel.info_id];
+        self.nameLabel.text = [NSString stringWithFormat:@"%@  %@",userMoedel.trueName,userMoedel.title];
+        self.idLabel.text = [NSString stringWithFormat:@"%@  %@",userMoedel.hospitalName,userMoedel.departmentName];
         self.personalModel = userMoedel;
         
     } failure:^(NSURLSessionDataTask *task, NSError *error) {

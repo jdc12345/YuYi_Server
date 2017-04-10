@@ -70,7 +70,24 @@
     // ,@[@"购物车",@"订单详情"] ,@[@"Personal-shopping -icon-",@"order_icon_"]
     self.dataSource = [[NSMutableArray alloc]initWithArray:@[@[@"电子病例",@"消息",@"家庭用户管理",@"用户设备管理",@"收货地址",@"设置"]]];
     self.iconList =@[@[@"Personal-EMR-icon-",@"Personal-message-icon-",@"family-icon--1",@"equipment-icon-",@"goods-icon-",@"Set-icon-"]];
-    
+    if (self.isTotal) {
+        // 右侧搜索按钮
+        UIButton *rightButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        
+        [rightButton setFrame:CGRectMake(0,0,20, 20)];
+        
+        [rightButton setBackgroundImage:[UIImage imageNamed:@"search_normal"] forState:UIControlStateNormal];
+        
+        [rightButton addTarget:self action:@selector(pushToSearchVC) forControlEvents:UIControlEventTouchUpInside];
+        
+        UIBarButtonItem *rightItem = [[UIBarButtonItem alloc] initWithCustomView:rightButton];
+        
+        self.navigationItem.rightBarButtonItem = rightItem;
+        
+        [rightButton sizeToFit];
+        
+        self.tableView.tableHeaderView = [self personInfomation];
+    }
     
     //    UIView *headView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, kScreenW, 70 *kiphone6)];
     //    headView.backgroundColor = [UIColor whiteColor];
@@ -216,6 +233,9 @@
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
         
     }];
+}
+- (void)pushToSearchVC{
+    
 }
 //- (void)viewWillAppear:(BOOL)animated{
 //    [super viewWillAppear:YES];

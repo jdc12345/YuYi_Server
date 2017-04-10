@@ -47,7 +47,7 @@
 
 // [NSString stringWithFormat:@"%@%@",mPrefixUrl,@"/homeuser/findOne.do?"]
 // 我的页面用户信息接口
-#define mMyInfo [NSString stringWithFormat:@"%@%@",mPrefixUrl,@"/personal/get.do?token="]
+#define mMyInfo [NSString stringWithFormat:@"%@%@",mPrefixUrl,@"/physician/get.do?token="]
 // 医院科室接口
 #define mHospitalClass [NSString stringWithFormat:@"%@%@",mPrefixUrl,@"/department/gethid.do?hid="]
 // 添加家庭用户的接口
@@ -142,7 +142,26 @@
 
 //#define mRCToken @"nlzn5x5lRXnBeL3b7EIXOouZqhNeP62jUkZowKgPQxsXdaGtWFcdtLKAQcncmcoPxp8xMTYUVkZECKL/n8ZvGg=="//789789
 //#define mUserID @"123123"
-
+/**
+ 设置-意见反馈保存接口；
+ http://192.168.1.55:8080/yuyi/feedback/saveforph.do?token=EA62E69E02FABA4E4C9A0FDC1C7CAE10&content=10&contact=123
+ 
+ 
+ 获取我的帖子列表接口
+ http://192.168.1.55:8080/yuyi/academicpaper/findmylist.do?token=EA62E69E02FABA4E4C9A0FDC1C7CAE10
+ Method:GET
+ 参数列表:
+ |参数名        |类型      |必需  |描述
+ |-----        |----     |---- |----
+ |token        |String   |Y    |令牌
+ |start        |Integer  |N    |分页开始加载记录索引，从0开始
+ |limit        |Integer  |N    |每页多少条数据
+ 返回值：
+ |参数名        |类型      |描述
+ |total        |Integer  |总记录数
+ |rows         |[]       |结果实体对象数组
+ |colmodel     |[]       |表结构列名数组
+*/
 
 
 

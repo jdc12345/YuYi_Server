@@ -10,4 +10,6 @@
 
 @interface YYPatientsViewController : UIViewController
 
+@property (nonatomic, assign) BOOL isTotal;
+
 @end

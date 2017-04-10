@@ -1,17 +1,17 @@
 //
-//  YYPInfomationTableViewCell.m
-//  YuYi_Client
+//  YYSettingTableViewCell.m
+//  YuYi_Server
 //
-//  Created by wylt_ios_1 on 2017/2/24.
+//  Created by wylt_ios_1 on 2017/4/7.
 //  Copyright © 2017年 wylt_ios_1. All rights reserved.
 //
 
-#import "YYPInfomationTableViewCell.h"
+#import "YYSettingTableViewCell.h"
 #import <Masonry.h>
 #import "UIColor+Extension.h"
 
+@implementation YYSettingTableViewCell
 
-@implementation YYPInfomationTableViewCell
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
@@ -37,7 +37,7 @@
     self.seeRecardLabel.textColor = [UIColor colorWithHexString:@"333333"];
     self.seeRecardLabel.font = [UIFont systemFontOfSize:14];
     self.seeRecardLabel.textAlignment = NSTextAlignmentLeft;
-//    self.seeRecardLabel.backgroundColor = [UIColor cyanColor];
+    //    self.seeRecardLabel.backgroundColor = [UIColor cyanColor];
     
     self.editInfoText = [[UITextField alloc]init];
     self.editInfoText.textColor = [UIColor colorWithHexString:@"333333"];
@@ -61,7 +61,7 @@
     [self.titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerY.equalTo(self.contentView);
         make.left.equalTo(self.contentView).with.offset(10 *kiphone6);
-        make.size.mas_equalTo(CGSizeMake(45, 14 ));
+        make.size.mas_equalTo(CGSizeMake(100, 14 ));
     }];
     
     [self.seeRecardLabel mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -98,6 +98,7 @@
     
     // Configure the view for the selected state
 }
+
 
 
 @end

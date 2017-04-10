@@ -12,7 +12,7 @@
 #import <Masonry.h>
 #import "YYPersonalTableViewCell.h"
 //#import "YYRecardTableViewCell.h"
-#import "YYPInfomationTableViewCell.h"
+#import "YYSettingTableViewCell.h"
 #import "YYFeedbackViewController.h"
 #import "YYAboutUSViewController.h"
 #import "YYContactViewController.h"
@@ -42,7 +42,7 @@
         _tableView.tableFooterView = [[UIView alloc]init];
         _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
         _tableView.showsVerticalScrollIndicator = NO;
-        [_tableView registerClass:[YYPInfomationTableViewCell class] forCellReuseIdentifier:@"YYPInfomationTableViewCell"];
+        [_tableView registerClass:[YYSettingTableViewCell class] forCellReuseIdentifier:@"YYSettingTableViewCell"];
         [_tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"UITableViewCell"];
         [self.view addSubview:_tableView];
         [self.view sendSubviewToBack:_tableView];
@@ -135,7 +135,7 @@
     return headerView;
 }
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
-    YYPInfomationTableViewCell *homeTableViewCell = [tableView dequeueReusableCellWithIdentifier:@"YYPInfomationTableViewCell" forIndexPath:indexPath];
+    YYSettingTableViewCell *homeTableViewCell = [tableView dequeueReusableCellWithIdentifier:@"YYSettingTableViewCell" forIndexPath:indexPath];
     
     homeTableViewCell.titleLabel.text = self.dataSource[indexPath.section][indexPath.row];
     homeTableViewCell.titleLabel.textColor = [UIColor colorWithHexString:@"666666"];
