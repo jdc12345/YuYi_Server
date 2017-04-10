@@ -15,6 +15,8 @@
 #import "UILabel+Addition.h"
 #import "UIColor+colorValues.h"
 #import "BRPlaceholderTextView.h"
+#import "CcUserModel.h"
+
 
 static NSString *cell_Id = @"cell_id";
 @interface YYInfoCommentVC ()<UITableViewDelegate,UITableViewDataSource,UITextViewDelegate>
@@ -23,6 +25,7 @@ static NSString *cell_Id = @"cell_id";
 @property(nonatomic,weak)UILabel *praiseCountLabel;
 @property(nonatomic,weak)UILabel *shareCountLabel;
 @property(nonatomic,weak)UILabel *commentCountLabel;
+@property(nonatomic,weak)UITableView *tableView;
 //评论
 @property(weak, nonatomic)BRPlaceholderTextView *commentField;
 
@@ -70,10 +73,10 @@ static NSString *cell_Id = @"cell_id";
     tableView.estimatedRowHeight = 120;
     tableView.showsVerticalScrollIndicator = false;
     tableView.showsHorizontalScrollIndicator = false;
+    self.tableView = tableView;
     [tableView registerClass:[YYCommentTVCell class] forCellReuseIdentifier:cell_Id];
     tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     //评论框
-    //搜索框
     UIView *fieldBackView = [[UIView alloc]initWithFrame:CGRectMake(20,self.view.frame.size.height- 45, self.view.frame.size.width-40, 45)];
     [self.view addSubview:fieldBackView];
     [self.view bringSubviewToFront:fieldBackView];
@@ -110,6 +113,77 @@ static NSString *cell_Id = @"cell_id";
     [commentField.layer setBorderWidth:0.8];
     commentField.layer.borderColor=[UIColor colorWithHexString:@"#f3f3f3"].CGColor;
 }
+- (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text{
+    
+    NSCharacterSet *doneButtonCharacterSet = [NSCharacterSet newlineCharacterSet];
+    
+    NSRange replacementTextRange = [text rangeOfCharacterFromSet:doneButtonCharacterSet];
+    
+    NSUInteger location = replacementTextRange.location;
+    
+    if (textView.text.length + text.length > 140){
+        
+        if (location != NSNotFound){
+            
+            [textView resignFirstResponder];
+            
+            }
+        
+        return NO;
+        
+        }  else if (location != NSNotFound){
+            
+        [textView resignFirstResponder];
+            if (textView.text!=nil||![textView.text isEqualToString:@""]) {
+                CcUserModel *userModel = [CcUserModel defaultClient];
+                NSString *telePhoneNumber = userModel.telephoneNum;
+                //            http://192.168.1.55:8080/yuyi/comment/AddConment.do?telephone=18782931355&content_id=1&Content=haha
+                NSString *urlStr = [NSString stringWithFormat:@"%@/comment/AddConment.do?telephone=%@&content_id=%@&Content=%@",mPrefixUrl,telePhoneNumber,self.info_id,[textView.text stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]]];
+                [[HttpClient defaultClient]requestWithPath:urlStr method:HttpRequestPost parameters:nil prepareExecute:^{
+                    
+                } success:^(NSURLSessionDataTask *task, id responseObject) {
+                    if ([responseObject[@"code"] isEqualToString:@"0"]) {
+                        //更新评论数据源
+                        NSString *urlStr = [NSString stringWithFormat:@"%@/comment/getConmentAll.do?id=%@&start=0&limit=6",mPrefixUrl,self.info_id];
+                        [[HttpClient defaultClient]requestWithPath:urlStr method:0 parameters:nil prepareExecute:^{
+                            
+                        } success:^(NSURLSessionDataTask *task, id responseObject) {
+                            NSArray *arr = responseObject[@"result"];
+                            NSMutableArray *mArr = [NSMutableArray array];
+                            for (NSDictionary *dic in arr) {
+                                YYCommentInfoModel *infoModel = [YYCommentInfoModel mj_objectWithKeyValues:dic];
+                                [mArr addObject:infoModel];
+                            }
+                            self.commentInfoModels  = mArr;
+                            textView.text = nil;
+                            NSInteger count = [self.commentCountLabel.text integerValue];
+                            count += 1;
+                            self.commentCountLabel.text = [NSString stringWithFormat:@"%ld",count];//评论数加一
+                            [self.tableView reloadData];
+                            
+                            
+                        } failure:^(NSURLSessionDataTask *task, NSError *error) {
+                            
+                        }];
+                    }else{
+                    [self showAlertWithMessage:@"评论未成功，请稍后再试"];
+                    }
+                    
+                } failure:^(NSURLSessionDataTask *task, NSError *error) {
+                    
+                }];
+
+            }else{
+                [self showAlertWithMessage:@"评论内容不能为空，请重新输入"];
+            }
+            
+        return NO;
+            
+         }
+    
+    return YES;  
+    
+}
 -(void)textViewDidChange:(UITextView *)textView{
     CGRect frame = textView.frame;
     CGSize constraintSize = CGSizeMake(frame.size.width, MAXFLOAT);
@@ -124,6 +198,15 @@ static NSString *cell_Id = @"cell_id";
 //    textView.scrollEnabled = false;   // 不允许滚动
     textView.frame = CGRectMake(frame.origin.x, frame.origin.y-(size.height-frame.size.height), frame.size.width, size.height);
     textView.scrollEnabled = true;   // 允许滚动
+}
+//弹出alert
+-(void)showAlertWithMessage:(NSString*)message{
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:nil message:message preferredStyle:UIAlertControllerStyleAlert];
+    //            UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:nil];
+    UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"好的" style:UIAlertActionStyleDefault handler:nil];
+    //            [alert addAction:cancelAction];
+    [alert addAction:okAction];
+    [self presentViewController:alert animated:YES completion:nil];
 }
 
 #pragma UITableViewDelegate/DataSource
@@ -259,20 +342,22 @@ static NSString *cell_Id = @"cell_id";
         self.praiseCountLabel.text = [NSString stringWithFormat:@"%ld",count];
         [sender setImage:[UIImage imageNamed:@"Info-heart-icon-select-"] forState:UIControlStateNormal];
         self.infoDetailModel.state = true;
+//        http://192.168.1.55:8080/yuyi/likes/UpdateLikeNum.do?id=1&token=nwslqlWbk/n5G5Slunydg4uZqhNeP62jUkZowKgPQxvQPCl3PhXaC0zhxG47a1v6SRJoyw9JGYAYhHnDJc+OtmKLXaGqhpXV
+        
     }
     
 }
 - (void)repliesPlus:(UIButton*)sender{
-    NSInteger count = [self.commentCountLabel.text integerValue];
-    count += 1;
-    self.commentCountLabel.text = [NSString stringWithFormat:@"%ld",count];
+//    NSInteger count = [self.commentCountLabel.text integerValue];
+//    count += 1;
+//    self.commentCountLabel.text = [NSString stringWithFormat:@"%ld",count];
     
     
 }
 - (void)shareBtn:(UIButton*)sender{
-    NSInteger count = [self.shareCountLabel.text integerValue];
-    count += 1;
-    self.shareCountLabel.text = [NSString stringWithFormat:@"%ld",count];
+//    NSInteger count = [self.shareCountLabel.text integerValue];
+//    count += 1;
+//    self.shareCountLabel.text = [NSString stringWithFormat:@"%ld",count];
 }
 
 - (void)didReceiveMemoryWarning {

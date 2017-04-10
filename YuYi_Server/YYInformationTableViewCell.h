@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-
+#import "YYInfoDetailModel.h"
 @interface YYInformationTableViewCell : UITableViewCell
-
+@property(nonatomic,strong)YYInfoDetailModel *model;
 @end

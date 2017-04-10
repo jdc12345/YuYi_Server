@@ -166,34 +166,53 @@
 
 }
 - (void)praisePlus:(UIButton*)sender{
+    
+    //   http://192.168.1.55:8080/yuyi/likes/UpdateLikeNum.do?id=1&token=nwslqlWbk/n5G5Slunydg4uZqhNeP62jUkZowKgPQxvQPCl3PhXaC0zhxG47a1v6SRJoyw9JGYAYhHnDJc+OtmKLXaGqhpXV
+    CcUserModel *model = [CcUserModel defaultClient];
+    NSString *token = model.userToken;
+    NSString *urlStr = [NSString stringWithFormat:@"%@/likes/UpdateLikeNum.do?id=%@&token=%@",mPrefixUrl,self.info_id,token];
+    [[HttpClient defaultClient]requestWithPath:urlStr method:HttpRequestPost parameters:nil prepareExecute:^{
+        
+    } success:^(NSURLSessionDataTask *task, id responseObject) {
+        if ([responseObject[@"code"] isEqualToString:@"0"]) {
+            
+        }else{
+            //点赞/删除未成功
+        }
+    } failure:^(NSURLSessionDataTask *task, NSError *error) {
+        
+    }];
     NSInteger count = [self.praiseCountLabel.text integerValue];
     if (self.infoModel.state) {
         count -= 1;
         self.praiseCountLabel.text = [NSString stringWithFormat:@"%ld",count];
         [sender setImage:[UIImage imageNamed:@"like"] forState:UIControlStateNormal];
         self.infoModel.state = false;
-    }else{
+        self.infoModel.likeNum = [NSString stringWithFormat:@"%ld",count];
+            }else{
         count += 1;
         self.praiseCountLabel.text = [NSString stringWithFormat:@"%ld",count];
         [sender setImage:[UIImage imageNamed:@"Info-heart-icon-select-"] forState:UIControlStateNormal];
         self.infoModel.state = true;
+        self.infoModel.likeNum = [NSString stringWithFormat:@"%ld",count];
+                
     }
     
 }
 - (void)repliesPlus:(UIButton*)sender{
-    NSInteger count = [self.commentCountLabel.text integerValue];
-    count += 1;
-    self.commentCountLabel.text = [NSString stringWithFormat:@"%ld",count];
+//    NSInteger count = [self.commentCountLabel.text integerValue];
+//    count += 1;
+//    self.commentCountLabel.text = [NSString stringWithFormat:@"%ld",count];
     YYInfoCommentVC *commentVC = [[YYInfoCommentVC alloc]init];
     commentVC.info_id = self.info_id;
     commentVC.infoDetailModel = self.infoModel;
     [self.navigationController pushViewController:commentVC animated:true];
-    
+
 }
 - (void)shareBtn:(UIButton*)sender{
-    NSInteger count = [self.shareCountLabel.text integerValue];
-    count += 1;
-    self.shareCountLabel.text = [NSString stringWithFormat:@"%ld",count];
+//    NSInteger count = [self.shareCountLabel.text integerValue];
+//    count += 1;
+//    self.shareCountLabel.text = [NSString stringWithFormat:@"%ld",count];
 }
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
