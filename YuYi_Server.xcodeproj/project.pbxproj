@@ -29,6 +29,8 @@
 		163D61A31E8F7B0D003A27CF /* UILabel+Addition.m in Sources */ = {isa = PBXBuildFile; fileRef = 163D61A21E8F7B0D003A27CF /* UILabel+Addition.m */; };
 		163D61A61E8F7CD5003A27CF /* NSObject+Formula.m in Sources */ = {isa = PBXBuildFile; fileRef = 163D61A51E8F7CD5003A27CF /* NSObject+Formula.m */; };
 		3E1FC7231E97915800838F9E /* YYSettingTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E1FC7221E97915800838F9E /* YYSettingTableViewCell.m */; };
+		3E1FC7251E9B15B900838F9E /* YYInfoCommentVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E1FC7241E9B15B900838F9E /* YYInfoCommentVC.m */; };
+		3E1FC7271E9B15F000838F9E /* YYCommentInfoModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E1FC7261E9B15F000838F9E /* YYCommentInfoModel.m */; };
 		3E85EF8D1E8F38F400E7D8F1 /* YYSettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E85EF8C1E8F38F400E7D8F1 /* YYSettingViewController.m */; };
 		3E85EF901E8F390500E7D8F1 /* YYFeedbackViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E85EF8F1E8F390500E7D8F1 /* YYFeedbackViewController.m */; };
 		3E85EF951E8F391400E7D8F1 /* YYAboutUSViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E85EF921E8F391400E7D8F1 /* YYAboutUSViewController.m */; };
@@ -149,6 +151,8 @@
 		163D61A51E8F7CD5003A27CF /* NSObject+Formula.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+Formula.m"; sourceTree = "<group>"; };
 		3E1FC7211E97915800838F9E /* YYSettingTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YYSettingTableViewCell.h; sourceTree = "<group>"; };
 		3E1FC7221E97915800838F9E /* YYSettingTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YYSettingTableViewCell.m; sourceTree = "<group>"; };
+		3E1FC7241E9B15B900838F9E /* YYInfoCommentVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = YYInfoCommentVC.m; path = YuYi_Server/YYInfoCommentVC.m; sourceTree = "<group>"; };
+		3E1FC7261E9B15F000838F9E /* YYCommentInfoModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = YYCommentInfoModel.m; path = YuYi_Server/YYCommentInfoModel.m; sourceTree = "<group>"; };
 		3E85EF8B1E8F38F400E7D8F1 /* YYSettingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YYSettingViewController.h; sourceTree = "<group>"; };
 		3E85EF8C1E8F38F400E7D8F1 /* YYSettingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YYSettingViewController.m; sourceTree = "<group>"; };
 		3E85EF8E1E8F390500E7D8F1 /* YYFeedbackViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YYFeedbackViewController.h; sourceTree = "<group>"; };
@@ -405,6 +409,8 @@
 		3EBD81D11E8E2D9400BDC217 = {
 			isa = PBXGroup;
 			children = (
+				3E1FC7261E9B15F000838F9E /* YYCommentInfoModel.m */,
+				3E1FC7241E9B15B900838F9E /* YYInfoCommentVC.m */,
 				3EA3F4451E95E3D0005670A5 /* ZYPageControl.h */,
 				3EA3F4461E95E3D0005670A5 /* ZYPageControl.m */,
 				3EA3F4421E95E388005670A5 /* YYCycleView.h */,
@@ -944,6 +950,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3E1FC7271E9B15F000838F9E /* YYCommentInfoModel.m in Sources */,
+				3E1FC7251E9B15B900838F9E /* YYInfoCommentVC.m in Sources */,
 				3EA3F44D1E95E432005670A5 /* PatientsTableViewCell.m in Sources */,
 				3EA3F4441E95E388005670A5 /* YYCycleView.m in Sources */,
 				3E85EF951E8F391400E7D8F1 /* YYAboutUSViewController.m in Sources */,
