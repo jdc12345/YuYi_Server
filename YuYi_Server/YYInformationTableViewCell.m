@@ -10,6 +10,7 @@
 #import <Masonry.h>
 #import "UILabel+Addition.h"
 #import "UIColor+colorValues.h"
+#import <UIImageView+WebCache.h>
 
 @interface YYInformationTableViewCell()
 @property(nonatomic,weak)UIImageView *bigImageView;
@@ -35,10 +36,18 @@
     }
     return self;
 }
+-(void)setModel:(YYInfoDetailModel *)model{
+    _model = model;
+    self.titleLabel.text = model.title;
+    self.contentLabel.text = model.content;
+    NSString *imageUrlStr = [NSString stringWithFormat:@"%@%@",mPrefixUrl,model.picture];
+    [self.bigImageView sd_setImageWithURL:[NSURL URLWithString:imageUrlStr]];
+}
 - (void)setupUI{
     //图片
     UIImageView *imageView = [[UIImageView alloc]init];
     imageView.image = [UIImage imageNamed:@"info.png"];
+    self.bigImageView = imageView;
     [self.contentView addSubview:imageView];
     //资讯标题
     UILabel *titleLabel = [UILabel labelWithText:@"帖子标题帖子标题帖子标题帖子标题" andTextColor:[UIColor colorWithHexString:@"333333"] andFontSize:13];
@@ -50,8 +59,7 @@
     contentLabel.numberOfLines = NSNotFound;
     [self.contentView addSubview:contentLabel];
     self.contentLabel = contentLabel;
-    
-    
+        
     //约束
     [imageView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.offset(4*kiphone6);

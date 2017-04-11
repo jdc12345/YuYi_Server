@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 #import "YYCommentInfoModel.h"
+#import "YYCardCommentDetailModel.h"
 @interface YYCommentTVCell : UITableViewCell
 @property(nonatomic,strong)YYCommentInfoModel *infoCommentModel;
+@property(nonatomic,strong)YYCardCommentDetailModel *comModel;
 @end

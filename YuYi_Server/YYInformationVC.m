@@ -9,6 +9,9 @@
 #import "YYInformationVC.h"
 #import <Masonry.h>
 #import "YYInformationTableViewCell.h"
+#import "YYInfoDetailModel.h"
+#import "YYInfoDetailVC.h"
+
 
 static NSString *cellId = @"cell_id";
 @interface YYInformationVC ()<UITableViewDelegate,UITableViewDataSource>
@@ -52,12 +55,16 @@ static NSString *cellId = @"cell_id";
 }
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     YYInformationTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellId forIndexPath:indexPath];
-    
+    YYInfoDetailModel *model = self.infos[indexPath.row];
+    cell.model = model;
     return cell;
 }
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-//    YYCardDetailVC *cardVC = [[YYCardDetailVC alloc]init];
-//    [self.navigationController pushViewController:cardVC animated:true];
+    [tableView deselectRowAtIndexPath:indexPath animated:true];
+    YYInfoDetailVC *infoDetail = [[YYInfoDetailVC alloc]init];
+    YYInfoDetailModel *model = self.infos[indexPath.row];
+    infoDetail.info_id = model.info_id;
+    [self.navigationController pushViewController:infoDetail animated:YES];
 }
 -(void)tableView:(UITableView *)tableView didDeselectRowAtIndexPath:(NSIndexPath *)indexPath{
     [tableView deselectRowAtIndexPath:indexPath animated:true];

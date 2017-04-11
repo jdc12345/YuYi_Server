@@ -10,9 +10,11 @@
 #import <Masonry.h>
 #import "UILabel+Addition.h"
 #import "UIColor+colorValues.h"
+#import <UIImageView+WebCache.h>
 @interface YYCardDetailTVCell()
 @property(nonatomic,weak)UIImageView *iconView;
 @property(nonatomic,weak)UILabel *nameLabel;
+@property(nonatomic,weak)UILabel *timeLabel;
 @property(nonatomic,weak)UILabel *countLabel;
 @property(nonatomic,weak)UILabel *contentLabel;
 @property(nonatomic,weak)UIImageView *bigImageView;
@@ -27,6 +29,18 @@
     }
     return self;
 }
+-(void)setInfoModel:(YYCardDetailPageModel *)infoModel{
+    _infoModel = infoModel;
+    NSString *iconUrlStr = [NSString stringWithFormat:@"%@%@",mPrefixUrl,infoModel.avatar];
+    [self.iconView sd_setImageWithURL:[NSURL URLWithString:iconUrlStr]];
+    self.nameLabel.text = infoModel.trueName;
+    self.timeLabel.text = infoModel.createTimeString;
+    self.countLabel.text = infoModel.likeNum;
+    self.titleLabel.text = infoModel.title;
+    self.contentLabel.text = infoModel.content;
+    NSString *imageUrlStr = [NSString stringWithFormat:@"%@%@",mPrefixUrl,infoModel.picture];
+    [self.bigImageView sd_setImageWithURL:[NSURL URLWithString:imageUrlStr]];
+}
 - (void)setupUI{
     //icon
     UIImageView *iconView = [[UIImageView alloc]init];
@@ -34,12 +48,15 @@
     iconView.layer.masksToBounds = true;
     iconView.layer.cornerRadius = 15;
     [self.contentView addSubview:iconView];
+    self.iconView = iconView;
     //name
     UILabel *nameLabel = [UILabel labelWithText:@"LIM" andTextColor:[UIColor colorWithHexString:@"6a6a6a"] andFontSize:12];
     [self.contentView addSubview:nameLabel];
+    self.nameLabel = nameLabel;
     //time
     UILabel *timeLabel = [UILabel labelWithText:@"1小时前" andTextColor:[UIColor colorWithHexString:@"cccccc"] andFontSize:11];
     [self.contentView addSubview:timeLabel];
+    self.timeLabel = timeLabel;
     //赞数
     UILabel *countLabel = [UILabel labelWithText:@"375" andTextColor:[UIColor colorWithHexString:@"cccccc"] andFontSize:11];
     [self.contentView addSubview:countLabel];
@@ -64,6 +81,7 @@
     UIImageView *imageView = [[UIImageView alloc]init];
     imageView.image = [UIImage imageNamed:@"add_pic"];
     [self.contentView addSubview:imageView];
+    self.bigImageView = imageView;
 
     //约束
     [iconView mas_makeConstraints:^(MASConstraintMaker *make) {

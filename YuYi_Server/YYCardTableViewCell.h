@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-
+#import "YYCardDetailModel.h"
 @interface YYCardTableViewCell : UITableViewCell
-@property(nonatomic,copy)NSString *image;
+@property(nonatomic,strong)YYCardDetailModel *model;
 @end

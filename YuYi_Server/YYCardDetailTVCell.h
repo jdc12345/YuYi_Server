@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-
+#import "YYCardDetailPageModel.h"
 @interface YYCardDetailTVCell : UITableViewCell
-
+@property(nonatomic,strong)YYCardDetailPageModel *infoModel;
 @end
