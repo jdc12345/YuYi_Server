@@ -54,13 +54,14 @@ static NSString *cellId = @"cell_id";
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     YYCardTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellId forIndexPath:indexPath];
 
-    if (indexPath.row == 0) {
-        cell.image = @"add_pic";
-    }
+    cell.model = self.infos[indexPath.row];
     return cell;
 }
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-    YYCardDetailVC *cardVC = [[YYCardDetailVC alloc]init];
+     YYCardTableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+    YYCardDetailVC *cardVC = [[YYCardDetailVC alloc]initWithInfo:cell.model.info_id];
+   
+//    cardVC.info_id = cell.model.info_id;
     [self.navigationController pushViewController:cardVC animated:true];
 }
 -(void)tableView:(UITableView *)tableView didDeselectRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -68,7 +69,7 @@ static NSString *cellId = @"cell_id";
 }
 -(void)viewWillDisappear:(BOOL)animated{
     [super viewWillDisappear:animated];
-    self.navigationController.navigationBar.hidden = false;
+//    self.navigationController.navigationBar.hidden = false;
 
 }
 - (void)didReceiveMemoryWarning {

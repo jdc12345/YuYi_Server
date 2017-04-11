@@ -10,12 +10,15 @@
 #import "UILabel+Addition.h"
 #import "UIColor+colorValues.h"
 #import <Masonry.h>
-
+#import <UIImageView+WebCache.h>
 @interface YYCardTableViewCell ()
 @property(nonatomic,weak)UILabel *praiseCountLabel;
 @property(nonatomic,weak)UIImageView *imagesView;
 @property(nonatomic,weak)UILabel *titleLabel;
 @property(nonatomic,weak)UILabel *contentLabel;
+@property(nonatomic,weak)UILabel *timeLabel;
+@property(nonatomic,weak)UILabel *repliesLabel;
+
 @end
 
 @implementation YYCardTableViewCell
@@ -27,32 +30,38 @@
     }
     return self;
 }
--(void)setImage:(NSString *)image{
-    _image = image;
-    if (image) {
-        self.imageView.image = [UIImage imageNamed:image];
-        [self.imageView mas_remakeConstraints:^(MASConstraintMaker *make) {
-            make.left.equalTo(self.titleLabel);
-            make.top.equalTo(self.titleLabel.mas_bottom).offset(10*kiphone6);
-            make.width.height.offset(55*kiphone6);
-        }];
-        [self.contentLabel mas_remakeConstraints:^(MASConstraintMaker *make) {
-            make.left.equalTo(self.imageView.mas_right).offset(10*kiphone6);
-            make.right.offset(-20*kiphone6);
-            make.top.equalTo(self.titleLabel.mas_bottom).offset(10*kiphone6);
-        }];
-    }else{
-        [self.imageView mas_remakeConstraints:^(MASConstraintMaker *make) {
-            make.left.equalTo(self.titleLabel.mas_left).offset(-10*kiphone6);
-            make.top.equalTo(self.titleLabel.mas_bottom).offset(10*kiphone6);
+
+-(void)setModel:(YYCardDetailModel *)model{
+    _model = model;
+    self.titleLabel.text = model.title;
+    if ([model.picture isEqualToString:@""]) {
+        [self.imagesView mas_updateConstraints:^(MASConstraintMaker *make) {
             make.width.height.offset(0);
         }];
-        [self.contentLabel mas_remakeConstraints:^(MASConstraintMaker *make) {
-            make.left.equalTo(self.imageView.mas_right).offset(10*kiphone6);
-            make.right.offset(-20*kiphone6);
-            make.top.equalTo(self.titleLabel.mas_bottom).offset(10*kiphone6);
+        [self.contentLabel mas_updateConstraints:^(MASConstraintMaker *make) {
+            make.left.equalTo(self.imagesView.mas_right);
         }];
+        [self.timeLabel mas_updateConstraints:^(MASConstraintMaker *make) {
+            make.top.equalTo(self.contentLabel.mas_bottom).offset(10*kiphone6);
+        }];
+    }else{
+        [self.imagesView mas_updateConstraints:^(MASConstraintMaker *make) {
+            make.width.height.offset(55*kiphone6);
+        }];
+        [self.contentLabel mas_updateConstraints:^(MASConstraintMaker *make) {
+            make.left.equalTo(self.imagesView.mas_right).offset(10*kiphone6);
+        }];
+        [self.timeLabel mas_updateConstraints:^(MASConstraintMaker *make) {
+            make.top.equalTo(self.imagesView.mas_bottom).offset(10*kiphone6);
+        }];
+
+        NSString *imageUrlStr = [NSString stringWithFormat:@"%@%@",mPrefixUrl,model.picture];
+        [self.imagesView sd_setImageWithURL:[NSURL URLWithString:imageUrlStr]];
     }
+    self.contentLabel.text = model.content;
+    self.timeLabel.text = model.createTimeString;
+    self.praiseCountLabel.text = model.likeNum;
+    self.repliesLabel.text = model.commentNum;
     
 }
 - (void)setupUI{
@@ -64,6 +73,7 @@
     //图片
     UIImageView *imageView = [[UIImageView alloc]init];
     [self.contentView addSubview:imageView];
+    self.imagesView = imageView;
     //帖子内容
     UILabel *contentLabel = [UILabel labelWithText:@"帖子内容帖子内容帖子内容帖子内容帖子内容帖子内容帖子内容帖子内容帖子内容帖子内容帖子内容帖子内容帖子内容帖子内容帖子内容帖子内容帖子内容帖子内容帖子内容帖子内容帖子内容帖子内容帖子内容帖子内容" andTextColor:[UIColor colorWithHexString:@"6a6a6a"] andFontSize:13];
     contentLabel.numberOfLines = 3;
@@ -72,7 +82,7 @@
     //发帖时间
     UILabel *timeLabel = [UILabel labelWithText:@"3小时前" andTextColor:[UIColor colorWithHexString:@"cccccc"] andFontSize:11];
     [self.contentView addSubview:timeLabel];
-
+    self.timeLabel = timeLabel;
     //赞btn
     UIButton *praiseBtn = [[UIButton alloc]init];
     [praiseBtn setImage:[UIImage imageNamed:@"like"] forState:UIControlStateNormal];
@@ -91,24 +101,25 @@
     //回帖次数
     UILabel *repliesLabel = [UILabel labelWithText:@"379" andTextColor:[UIColor colorWithHexString:@"cccccc"] andFontSize:11];
     [self.contentView addSubview:repliesLabel];
+    self.repliesLabel = repliesLabel;
     //约束布局
     [titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.top.offset(20*kiphone6);
         make.right.offset(-20*kiphone6);
     }];
-    [imageView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(titleLabel.mas_left).offset(-10*kiphone6);
+    [self.imagesView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(titleLabel);
         make.top.equalTo(titleLabel.mas_bottom).offset(10*kiphone6);
-        make.width.height.offset(0);
+        make.width.height.offset(55*kiphone6);
     }];
     [contentLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(imageView.mas_right).offset(10);
+        make.left.equalTo(imageView.mas_right).offset(10*kiphone6);
         make.right.offset(-20*kiphone6);
-        make.top.equalTo(titleLabel.mas_bottom).offset(10);
+        make.top.equalTo(titleLabel.mas_bottom).offset(10*kiphone6);
     }];
     [timeLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.offset(20*kiphone6);
-        make.top.equalTo(contentLabel.mas_bottom).offset(20*kiphone6);
+        make.top.equalTo(imageView.mas_bottom).offset(20*kiphone6);
     }];
     [repliesLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(timeLabel.mas_top);
@@ -127,7 +138,7 @@
         make.right.equalTo(praiseCountLabel.mas_left).offset(-7*kiphone6);
     }];
     [self.contentView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.bottom.equalTo(timeLabel.mas_bottom).offset(20*kiphone6);
+        make.bottom.equalTo(praiseBtn.mas_bottom).offset(20*kiphone6);
         make.width.offset([UIScreen mainScreen].bounds.size.width);
     }];
 

@@ -9,5 +9,7 @@
 #import <UIKit/UIKit.h>
 
 @interface YYCardDetailVC : UIViewController
+@property(nonatomic,copy)NSString *info_id;
 
+-(instancetype)initWithInfo:(NSString*)info_id;
 @end

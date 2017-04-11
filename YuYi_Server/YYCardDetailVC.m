@@ -13,6 +13,11 @@
 #import "UILabel+Addition.h"
 #import "UIColor+colorValues.h"
 #import "BRPlaceholderTextView.h"
+#import "HttpClient.h"
+#import <MJExtension.h>
+#import "YYCardDetailPageModel.h"
+#import "YYCardCommentDetailModel.h"
+
 static NSString *cellId = @"cell_id";
 @interface YYCardDetailVC ()<UITableViewDelegate,UITableViewDataSource,UITextViewDelegate>
 @property(nonatomic,weak)UITableView *tableView;
@@ -20,17 +25,48 @@ static NSString *cellId = @"cell_id";
 @property(weak, nonatomic)BRPlaceholderTextView *commentField;
 //
 @property(nonatomic,strong)NSMutableArray *commentInfos;
+//
+@property(nonatomic,strong)YYCardDetailPageModel *infoModel;
 @end
 
 @implementation YYCardDetailVC
-
+-(instancetype)initWithInfo:(NSString*)info_id{
+    if (self = [super init]) {
+        self.info_id = info_id;
+    }
+    return self;
+}
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.navigationController.navigationBar.translucent = false;
+    self.view.backgroundColor = [UIColor whiteColor];
     self.title = @"帖子详情";
-    self.commentInfos = [NSMutableArray arrayWithObjects:@"1",@"2", nil];
-    [self setupUI];
+//    self.commentInfos = [NSMutableArray arrayWithObjects:@"1",@"2", nil];
+    [self loadData];
 }
+- (void)loadData{
+//    http://192.168.1.55:8080/yuyi/academicpaper/academicpaperComment.do?start=0&limit=2&id=1
+    NSString *urlStr = [NSString stringWithFormat:@"%@/academicpaper/academicpaperComment.do?start=0&limit=2&id=%@",mPrefixUrl,self.info_id];
+    [[HttpClient defaultClient]requestWithPath:urlStr method:0 parameters:nil prepareExecute:^{
+        
+    } success:^(NSURLSessionDataTask *task, id responseObject) {
+        NSDictionary *dic = responseObject[@"result"];
+        YYCardDetailPageModel *infoModel = [YYCardDetailPageModel mj_objectWithKeyValues:dic];
+        self.infoModel  = infoModel;//帖子数据
+        NSMutableArray *arr = [NSMutableArray array];
+        for (NSDictionary *dict in infoModel.commentList) {
+            YYCardCommentDetailModel *comModel = [YYCardCommentDetailModel mj_objectWithKeyValues:dict];
+            [arr addObject:comModel];
+        }
+        self.commentInfos = arr;//评论数据源
+        [self setupUI];
 
+        
+    } failure:^(NSURLSessionDataTask *task, NSError *error) {
+        
+    }];
+
+    }
 - (void)setupUI {
     //添加右侧消息中心按钮
     UIImage *image = [UIImage imageNamed:@"share"];
@@ -51,6 +87,7 @@ static NSString *cellId = @"cell_id";
     tableView.estimatedRowHeight = 150;
     tableView.rowHeight = UITableViewAutomaticDimension;
     [tableView registerClass:[YYCommentTVCell class] forCellReuseIdentifier:cellId];
+    tableView.tableHeaderView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kScreenW, CGFLOAT_MIN)];//解决group样式顶部留白问题
 
 }
 #pragma tableViewDatasource
@@ -68,14 +105,16 @@ static NSString *cellId = @"cell_id";
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     if (indexPath.section == 0) {
         YYCardDetailTVCell *cell = [[YYCardDetailTVCell alloc]init];
+        cell.infoModel = self.infoModel;
         return cell;
     }else{
-        
         YYCommentTVCell *cell = [tableView dequeueReusableCellWithIdentifier:cellId forIndexPath:indexPath];
+        cell.comModel = self.commentInfos[indexPath.row];
         return cell;
     }
 
 }
+
 -(UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
     if (section == 0) {
         return nil;
@@ -88,7 +127,7 @@ static NSString *cellId = @"cell_id";
             make.left.offset(20*kiphone6);
             make.centerY.equalTo(view);
         }];
-        UILabel *countLabel = [UILabel labelWithText:@"65" andTextColor:[UIColor colorWithHexString:@"cccccc"] andFontSize:12];
+        UILabel *countLabel = [UILabel labelWithText:self.infoModel.commentNum andTextColor:[UIColor colorWithHexString:@"cccccc"] andFontSize:12];
         [view addSubview:countLabel];
         [countLabel mas_makeConstraints:^(MASConstraintMaker *make) {
             make.left.equalTo(commentLabel.mas_right).offset(5*kiphone6);
@@ -132,7 +171,7 @@ static NSString *cellId = @"cell_id";
     [headerView addSubview:commentField];
     [commentField mas_makeConstraints:^(MASConstraintMaker *make) {
 //        make.left.offset(10);
-        make.left.right.top.bottom.offset(0);
+    make.left.right.top.bottom.offset(0);
     }];
     commentField.returnKeyType = UIReturnKeySend;
     commentField.delegate = self;

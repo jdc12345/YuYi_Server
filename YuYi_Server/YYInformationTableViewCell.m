@@ -59,8 +59,7 @@
     contentLabel.numberOfLines = NSNotFound;
     [self.contentView addSubview:contentLabel];
     self.contentLabel = contentLabel;
-    
-    
+        
     //约束
     [imageView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.offset(4*kiphone6);

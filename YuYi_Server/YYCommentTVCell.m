@@ -44,6 +44,16 @@
     self.praiseBtn.hidden = true;
     self.countLabel.hidden = true;
 }
+
+-(void)setComModel:(YYCardCommentDetailModel *)comModel{
+    _comModel = comModel;
+    NSString *urlStr = [NSString stringWithFormat:@"%@%@",mPrefixUrl,comModel.avatar];
+    [self.iconView sd_setImageWithURL:[NSURL URLWithString:urlStr] placeholderImage:[UIImage imageNamed:@"add_pic"]];
+    self.nameLabel.text =  comModel.trueName;
+    self.timeLabel.text = comModel.createTimeString;
+    self.contentLabel.text = comModel.content;
+    self.countLabel.text = comModel.likeNum;
+}
 - (void)setupUI{
     UIView *line = [[UIView alloc]init];//分割线
     line.alpha = 0.6f;

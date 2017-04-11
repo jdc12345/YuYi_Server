@@ -13,6 +13,9 @@
 #import "UIColor+colorValues.h"
 #import "YYpostCardVC.h"
 #import "NSObject+Formula.h"
+#import "YYCardDetailModel.h"
+#import "HttpClient.h"
+#import <MJExtension.h>
 @interface YYSciencesViewController ()<UIScrollViewDelegate>
 //跟button的监听事件有关
 @property(weak, nonatomic)UIView *cardLineView;
@@ -46,11 +49,76 @@
     [self loadData];
 }
 - (void)loadData {
-    self.hotInfos = [NSArray arrayWithObjects:@"1",@"2",@"3",@"4",@"5",@"6",@"4",@"5",@"6", nil];
-    self.selectInfos = [NSArray arrayWithObjects:@"1",@"2",@"3", nil];
-    self.recentInfos = [NSArray arrayWithObjects:@"1",@"2", nil];
-    [self setupUI];
+//    self.hotInfos = [NSArray arrayWithObjects:@"1",@"2",@"3",@"4",@"5",@"6",@"4",@"5",@"6", nil];
+//    self.selectInfos = [NSArray arrayWithObjects:@"1",@"2",@"3", nil];
+//    self.recentInfos = [NSArray arrayWithObjects:@"1",@"2", nil];
+//    [self setupUI];
+//    http://192.168.1.55:8080/yuyi/academicpaper/findhot.do?start=0&limit=6
+//    http://192.168.1.55:8080/yuyi/academicpaper/Selected.do?start=0&limit=1
+//    http://192.168.1.55:8080/yuyi/academicpaper/findtime.do?start=0&limit=6
+    NSString *hotUrlStr = [NSString stringWithFormat:@"%@/academicpaper/findhot.do?start=0&limit=6",mPrefixUrl];
+    NSString *selectUrlStr = [NSString stringWithFormat:@"%@/yuyi/academicpaper/Selected.do?start=0&limit=1",mPrefixUrl];
+    NSString *recentUrlStr = [NSString stringWithFormat:@"%@/academicpaper/findtime.do?start=0&limit=6",mPrefixUrl];
+    [self loadHotInfosWithUrlStr:hotUrlStr];
+    [self loadSelectInfosWithUrlStr:selectUrlStr];
+    [self loadRecentInfosWithUrlStr:recentUrlStr];
+    
 }
+
+-(void)loadHotInfosWithUrlStr:(NSString*)urlStr{
+    [[HttpClient defaultClient]requestWithPath:urlStr method:0 parameters:nil prepareExecute:^{
+        
+    } success:^(NSURLSessionDataTask *task, id responseObject) {
+        NSArray *arr = responseObject[@"rows"];
+        NSMutableArray *mArr = [NSMutableArray array];
+        for (NSDictionary *dic in arr) {
+            YYCardDetailModel *infoModel = [YYCardDetailModel mj_objectWithKeyValues:dic];
+            [mArr addObject:infoModel];
+        }
+        self.hotInfos = mArr;
+        [self setupUI];
+        
+    } failure:^(NSURLSessionDataTask *task, NSError *error) {
+        
+    }];
+    
+}
+-(void)loadSelectInfosWithUrlStr:(NSString*)urlStr{
+    [[HttpClient defaultClient]requestWithPath:urlStr method:0 parameters:nil prepareExecute:^{
+        
+    } success:^(NSURLSessionDataTask *task, id responseObject) {
+        NSArray *arr = responseObject[@"rows"];
+        NSMutableArray *mArr = [NSMutableArray array];
+        for (NSDictionary *dic in arr) {
+            YYCardDetailModel *infoModel = [YYCardDetailModel mj_objectWithKeyValues:dic];
+            [mArr addObject:infoModel];
+        }
+        self.selectCardVC.infos = mArr;
+        
+        
+    } failure:^(NSURLSessionDataTask *task, NSError *error) {
+        
+    }];
+    
+}
+-(void)loadRecentInfosWithUrlStr:(NSString*)urlStr{
+    [[HttpClient defaultClient]requestWithPath:urlStr method:0 parameters:nil prepareExecute:^{
+        
+    } success:^(NSURLSessionDataTask *task, id responseObject) {
+        NSArray *arr = responseObject[@"rows"];
+        NSMutableArray *mArr = [NSMutableArray array];
+        for (NSDictionary *dic in arr) {
+            YYCardDetailModel *infoModel = [YYCardDetailModel mj_objectWithKeyValues:dic];
+            [mArr addObject:infoModel];
+        }
+        self.recentCardVC.infos = mArr;
+        
+    } failure:^(NSURLSessionDataTask *task, NSError *error) {
+        
+    }];
+    
+}
+
 //
 -(void)setupUI{
     self.navigationController.navigationBar.hidden = true;
@@ -164,7 +232,7 @@
         //
         if (i==0) {
             [currentBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.left.offset(10);
+                make.left.offset(10*kiphone6);
             }];
             
         }
@@ -181,8 +249,8 @@
     }
     //设置滑动线的约束
     [cardLineView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.width.offset(30);
-        make.height.offset(2);
+        make.width.offset(30*kiphone6);
+        make.height.offset(2*kiphone6);
         make.bottom.equalTo(hotCardButton);
         make.centerX.equalTo(hotCardButton);
     }];
@@ -213,7 +281,7 @@
     }];
     [informationBtn mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerY.equalTo(hotCardButton);
-        make.right.offset(-20);
+        make.right.offset(-20*kiphone6);
     }];
     
 }
@@ -223,14 +291,28 @@
     
     [self.cardDetailView setContentOffset:CGPointMake(sender.tag*self.cardDetailView.bounds.size.width, 0) animated:YES];
     if (sender.tag == 0) {
-        self.hotInfos = [NSArray arrayWithObjects:@"1",@"2",@"3", nil];
-        self.hotCardVC.infos = self.hotInfos;
+        NSString *hotUrlStr = [NSString stringWithFormat:@"%@/academicpaper/findhot.do?start=0&limit=6",mPrefixUrl];
+        [[HttpClient defaultClient]requestWithPath:hotUrlStr method:0 parameters:nil prepareExecute:^{
+            
+        } success:^(NSURLSessionDataTask *task, id responseObject) {
+            NSArray *arr = responseObject[@"rows"];
+            NSMutableArray *mArr = [NSMutableArray array];
+            for (NSDictionary *dic in arr) {
+                YYCardDetailModel *infoModel = [YYCardDetailModel mj_objectWithKeyValues:dic];
+                [mArr addObject:infoModel];
+            }
+            self.hotCardVC.infos = mArr;
+            
+        } failure:^(NSURLSessionDataTask *task, NSError *error) {
+            
+        }];
+
     }else if (sender.tag == 1){
-        self.selectInfos = [NSArray arrayWithObjects:@"1",@"2", nil];
-        self.selectCardVC.infos = self.selectInfos;
+        NSString *selectUrlStr = [NSString stringWithFormat:@"%@/yuyi/academicpaper/Selected.do?start=0&limit=1",mPrefixUrl];
+        [self loadSelectInfosWithUrlStr:selectUrlStr];
     }else if (sender.tag == 2){
-        self.recentInfos = [NSArray arrayWithObjects:@"1", nil];
-        self.recentCardVC.infos = self.recentInfos;
+        NSString *recentUrlStr = [NSString stringWithFormat:@"%@/academicpaper/findtime.do?start=0&limit=6",mPrefixUrl];
+        [self loadRecentInfosWithUrlStr:recentUrlStr];
     }
 }
 -(void)informationBtnClick:(UIButton*)sender{
@@ -256,8 +338,8 @@
     self.noticeView = noticeView;
     [noticeView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.center.equalTo(backView);
-        make.width.offset(300);
-        make.height.offset(200);
+        make.width.offset(300*kiphone6);
+        make.height.offset(200*kiphone6);
     }];
     //noticeLabel
     UILabel *noticeLabel = [[UILabel alloc]init];
@@ -267,7 +349,7 @@
     [noticeView addSubview:noticeLabel];
     [noticeLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerX.equalTo(noticeView);
-        make.top.offset(25);
+        make.top.offset(25*kiphone6);
     }];
     //contentLabel
     UILabel *contentLabel = [[UILabel alloc]init];
@@ -278,9 +360,9 @@
     contentLabel.textColor = [UIColor colorWithHexString:@"333333"];
     [noticeView addSubview:contentLabel];
     [contentLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.offset(25);
-        make.top.equalTo(noticeLabel.mas_bottom).offset(25);
-        make.right.offset(-25);
+        make.left.offset(25*kiphone6);
+        make.top.equalTo(noticeLabel.mas_bottom).offset(25*kiphone6);
+        make.right.offset(-25*kiphone6);
     }];
     //confirmButton
     UIButton *confirmButton = [[UIButton alloc]init];
@@ -291,7 +373,7 @@
     [noticeView addSubview:confirmButton];
     [confirmButton mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.right.bottom.offset(0);
-        make.height.offset(60);
+        make.height.offset(60*kiphone6);
     }];
     //添加关闭提示框按钮的点击事件
     [confirmButton addTarget:self action:@selector(closeNoticeView:) forControlEvents:UIControlEventTouchUpInside];
@@ -335,8 +417,8 @@
     CGFloat d = self.view.center.x - secondBtn.center.x;
     //根据偏移距离设置滚动线的位置
     [self.cardLineView mas_remakeConstraints:^(MASConstraintMaker *make) {
-        make.width.offset(30);
-        make.height.offset(2);
+        make.width.offset(30*kiphone6);
+        make.height.offset(2*kiphone6);
         make.bottom.equalTo(self.cardsView);
         make.centerX.offset(res-d);
     }];
@@ -349,7 +431,7 @@
     [super viewWillAppear:animated];
     self.navigationController.navigationBar.hidden = true;
     //添加右侧发帖按钮
-    UIButton *postMessageBtn = [[UIButton alloc]initWithFrame:CGRectMake(self.view.frame.size.width-70, self.view.frame.size.height-114, 50, 50)];
+    UIButton *postMessageBtn = [[UIButton alloc]initWithFrame:CGRectMake(self.view.frame.size.width-70*kiphone6, self.view.frame.size.height-114*kiphone6, 50*kiphone6, 50*kiphone6)];
     [[UIApplication sharedApplication].keyWindow addSubview:postMessageBtn];
     self.postMessageBtn = postMessageBtn;
     [postMessageBtn setImage:[UIImage imageNamed:@"postamessage"] forState:UIControlStateNormal];
