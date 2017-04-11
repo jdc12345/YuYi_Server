@@ -125,7 +125,7 @@
     }];
     [self createTrendView];
     [self createTemperatureTrendView];
-    [self httpRequest];
+//    [self httpRequest];
     
     [self.view bringSubviewToFront:topLine];
     // Do any additional setup after loading the view.
@@ -489,7 +489,7 @@
 - (void)httpRequest{
     
     CcUserModel *userModel = [CcUserModel defaultClient];
-    [[HttpClient defaultClient]requestWithPath:[NSString stringWithFormat:@"%@token=%@&humeuserId=%@",mHomeuserMeasure,userModel.userToken,self.userHome_id] method:0 parameters:nil prepareExecute:^{
+    [[HttpClient defaultClient]requestWithPath:[NSString stringWithFormat:@"%@token=%@&humeuserId=%@",mMeasure,userModel.userToken,self.userHome_id] method:0 parameters:nil prepareExecute:^{
         
     } success:^(NSURLSessionDataTask *task, id responseObject) {
         NSDictionary *result = responseObject[@"result"];

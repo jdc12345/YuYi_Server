@@ -9,6 +9,9 @@
 #import "RecardDerailViewController.h"
 #import "UIColor+Extension.h"
 #import <Masonry.h>
+#import "CcUserModel.h"
+#import <MJExtension.h>
+#import "HttpClient.h"
 
 @interface RecardDerailViewController ()
 
@@ -19,55 +22,51 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
-    [self createSubView];
+//    [self createSubView];
     // Do any additional setup after loading the view.
 }
 
 - (void)createSubView{
     
-    UILabel *marryLabel = [[UILabel alloc]init];
-    marryLabel.text = @"民族：汉族";
-    marryLabel.textColor = [UIColor colorWithHexString:@"333333"];
-    marryLabel.font = [UIFont systemFontOfSize:12];
-    
     
     UILabel *dateLabel = [[UILabel alloc]init];
-    dateLabel.text = @"病理采集日期：2017-01-12";
+    
+    dateLabel.text = [NSString stringWithFormat:@"病理采集日期：%@",[self.patientModel.createTimeString componentsSeparatedByString:@" "].firstObject];
     dateLabel.textColor = [UIColor colorWithHexString:@"333333"];
     dateLabel.font = [UIFont systemFontOfSize:12];
     
-    [self.view addSubview:marryLabel];
+//    [self.view addSubview:marryLabel];
     [self.view addSubview:dateLabel];
     
-    [marryLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+//    [marryLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.top.equalTo(self.view).with.offset(8);
+//        make.left.equalTo(self.view).with.offset(10);
+//        make.size.mas_equalTo(CGSizeMake(kScreenW, 12));
+//    }];
+    [dateLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.view).with.offset(8);
         make.left.equalTo(self.view).with.offset(10);
         make.size.mas_equalTo(CGSizeMake(kScreenW, 12));
     }];
-    [dateLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(marryLabel.mas_bottom).with.offset(16);
-        make.left.equalTo(self.view).with.offset(10);
-        make.size.mas_equalTo(CGSizeMake(kScreenW, 12));
-    }];
     
     
-    UILabel *topLine = [[UILabel alloc]init];
-    topLine.backgroundColor = [UIColor colorWithHexString:@"d6d6d6"];
+//    UILabel *topLine = [[UILabel alloc]init];
+//    topLine.backgroundColor = [UIColor colorWithHexString:@"d6d6d6"];
     
     UILabel *bottomLine = [[UILabel alloc]init];
     bottomLine.backgroundColor = [UIColor colorWithHexString:@"d6d6d6"];
     
     [self.view addSubview:bottomLine];
-    [self.view addSubview:topLine];
+//    [self.view addSubview:topLine];
     
-    [topLine mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.view).with.offset(28);
-        make.left.equalTo(self.view).with.offset(0 *kiphone6);
-        make.size.mas_equalTo(CGSizeMake(kScreenW, 1 *kiphone6));
-    }];
+//    [topLine mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.top.equalTo(self.view).with.offset(28);
+//        make.left.equalTo(self.view).with.offset(0 *kiphone6);
+//        make.size.mas_equalTo(CGSizeMake(kScreenW, 1 *kiphone6));
+//    }];
     
     [bottomLine mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(topLine.mas_bottom).with.offset(28);
+        make.top.equalTo(self.view).with.offset(28);
         make.left.equalTo(self.view).with.offset(0 *kiphone6);
         make.size.mas_equalTo(CGSizeMake(kScreenW, 1 *kiphone6));
     }];
@@ -82,7 +81,7 @@
     //
     
     UITextView *textView = [[UITextView alloc]init];
-    textView.text = @"哦啊司机都 i 啊摔手机哦大家啊 iOS 的剧情我觉得期望；离开你们是来看你了；阿克苏呢； 哦 i 请叫我就去问你妈送哦 i 却忘记哦教练卡数据来看";
+    textView.text = self.patientModel.medicalrecord;
     textView.textColor = [UIColor colorWithHexString:@"666666"];
     textView.font = [UIFont systemFontOfSize:13];
     textView.editable = NO;
@@ -108,7 +107,16 @@
     
 
 }
-
+- (void)httpRequest{
+//    CcUserModel *userModel = [CcUserModel defaultClient];
+//    [[HttpClient defaultClient]requestWithPath:[NSString stringWithFormat:@"%@%@",mRecardDetail,userModel.userToken] method:0 parameters:nil prepareExecute:^{
+//        
+//    } success:^(NSURLSessionDataTask *task, id responseObject) {
+//        
+//    } failure:^(NSURLSessionDataTask *task, NSError *error) {
+//        NSLog(@"%@",error);
+//    }];
+}
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.

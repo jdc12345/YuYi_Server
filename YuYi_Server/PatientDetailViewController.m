@@ -11,10 +11,21 @@
 #import <Masonry.h>
 #import "YYDataAnalyseViewController.h"
 #import "RecardDerailViewController.h"
+#import "CcUserModel.h"
+#import <MJExtension.h>
+#import "HttpClient.h"
+#import "PatientModel.h"
+#import <UIImageView+WebCache.h>
+
 
 @interface PatientDetailViewController ()
 @property (nonatomic, weak) UIButton *recardBtn;
 @property (nonatomic, weak) UIButton *trendBtn;
+@property (nonatomic, weak) UILabel *nameLabel;
+@property (nonatomic, weak) UILabel *ageLabel;
+@property (nonatomic, weak) UILabel *genderLabel;
+@property (nonatomic, weak) UIImageView *iconImageV;
+@property (nonatomic, strong) PatientModel *patientModel;
 @end
 
 @implementation PatientDetailViewController
@@ -24,9 +35,8 @@
     self.title = @"患者详情";
     self.view.backgroundColor = [UIColor whiteColor];
     
-    
-    [self createHeadView];
-    [self createDataView];
+    [self httpRequest];
+
     // Do any additional setup after loading the view.
 }
 - (void)createHeadView{
@@ -51,6 +61,7 @@
     nameLabel.text = @"李美丽";
     nameLabel.textColor = [UIColor colorWithHexString:@"333333"];
     nameLabel.font = [UIFont systemFontOfSize:15];
+    
     //
     UILabel *idName = [[UILabel alloc]init];
     idName.text = @"性别：女";
@@ -67,6 +78,11 @@
     [personV addSubview:nameLabel];
     [personV addSubview:idName];
     [personV addSubview:ageName];
+    
+    self.nameLabel = nameLabel;
+    self.ageLabel = ageName;
+    self.iconImageV = iconV;
+    self.genderLabel = idName;
     //
     [iconV mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(personV).with.offset(10);
@@ -148,16 +164,19 @@
 }
 - (void)createDataView{
     
-    
     YYDataAnalyseViewController *dataAnalyseVC = [[YYDataAnalyseViewController alloc]init];
     dataAnalyseVC.view.frame = CGRectMake(0, 100 +64, kScreenW, kScreenH -100 -64);
+    dataAnalyseVC.userHome_id = self.info_id;
     [self.view addSubview:dataAnalyseVC.view];
+    [dataAnalyseVC httpRequest];
     
     [self addChildViewController:dataAnalyseVC];
     
     
     RecardDerailViewController *recardVC = [[RecardDerailViewController alloc]init];
     recardVC.view.frame = CGRectMake(0, 100 +64, kScreenW, kScreenH -100 -64);
+    recardVC.patientModel = self.patientModel;
+    [recardVC createSubView];
     [self.view addSubview:recardVC.view];
     [self addChildViewController:recardVC];
     
@@ -193,7 +212,42 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
+- (void)httpRequest{
+    NSLog(@"asdasd%@",self.info_id);
+    CcUserModel *userModel = [CcUserModel defaultClient];
+    [[HttpClient defaultClient]requestWithPath:[NSString stringWithFormat:@"%@token=%@&humeuserId=%@",mRecardDetail,userModel.userToken,self.info_id] method:0 parameters:nil prepareExecute:^{
+        
+    } success:^(NSURLSessionDataTask *task, id responseObject) {
+        NSLog(@"%@",responseObject);
+        
+        
 
+        
+        
+        NSDictionary *dict = responseObject[@"result"];
+        
+        PatientModel *patient = [PatientModel mj_objectWithKeyValues:dict];
+        
+        self.patientModel = patient;
+        
+        
+        [self createHeadView];
+        [self createDataView];
+        
+        self.nameLabel.text = patient.trueName;
+        self.ageLabel.text = [NSString stringWithFormat:@"年龄：%@",patient.age];
+        if ([patient.gender isEqualToString:@"1"]) {
+            self.genderLabel.text = @"性别：男";
+        }else{
+            self.genderLabel.text = @"性别：女";
+        }
+        [self.iconImageV sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@%@",mPrefixUrl,patient.avatar]]];
+     
+
+    } failure:^(NSURLSessionDataTask *task, NSError *error) {
+        NSLog(@"%@",error);
+    }];
+}
 /*
 #pragma mark - Navigation
 

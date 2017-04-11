@@ -19,6 +19,13 @@
 #import "CcUserModel.h"
 #import "YYHomeUserModel.h"
 #import "PatientDetailViewController.h"
+#import "YYSearchTableViewController.h"
+#import "CcUserModel.h"
+#import <MJExtension.h>
+#import "HttpClient.h"
+#import "PatientModel.h"
+#import <UIImageView+WebCache.h>
+#import "UIButton+Badge.h"
 
 @interface YYPatientsViewController ()<UITableViewDataSource, UITableViewDelegate>
 
@@ -30,13 +37,16 @@
 @property (nonatomic, strong) UIImageView *iconV;
 @property (nonatomic, strong) YYHomeUserModel *personalModel;
 
+
+
+
 @end
 
 @implementation YYPatientsViewController
 
 - (UITableView *)tableView{
     if (_tableView == nil) {
-        _tableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, kScreenW, kScreenH) style:UITableViewStylePlain];
+        _tableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 64, kScreenW, kScreenH -64) style:UITableViewStylePlain];
         _tableView.backgroundColor = [UIColor colorWithHexString:@"f2f2f2"];
         _tableView.dataSource = self;
         _tableView.delegate = self;
@@ -64,12 +74,13 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.title = @"患者";
+    self.automaticallyAdjustsScrollViewInsets = NO;
     //    [self httpRequest];
     self.view.backgroundColor = [UIColor colorWithHexString:@"f2f2f2"];
     
     // ,@[@"购物车",@"订单详情"] ,@[@"Personal-shopping -icon-",@"order_icon_"]
-    self.dataSource = [[NSMutableArray alloc]initWithArray:@[@[@"电子病例",@"消息",@"家庭用户管理",@"用户设备管理",@"收货地址",@"设置"]]];
-    self.iconList =@[@[@"Personal-EMR-icon-",@"Personal-message-icon-",@"family-icon--1",@"equipment-icon-",@"goods-icon-",@"Set-icon-"]];
+//    self.dataSource = [[NSMutableArray alloc]initWithArray:@[@[@"电子病例",@"消息",@"家庭用户管理",@"用户设备管理",@"收货地址",@"设置"]]];
+//    self.iconList =@[@[@"Personal-EMR-icon-",@"Personal-message-icon-",@"family-icon--1",@"equipment-icon-",@"goods-icon-",@"Set-icon-"]];
     if (self.isTotal) {
         // 右侧搜索按钮
         UIButton *rightButton = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -86,7 +97,8 @@
         
         [rightButton sizeToFit];
         
-        self.tableView.tableHeaderView = [self personInfomation];
+        
+//        self.tableView.tableHeaderView = [self personInfomation];
     }
     
     //    UIView *headView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, kScreenW, 70 *kiphone6)];
@@ -98,7 +110,8 @@
     //        make.left.equalTo(headView).with.offset(20 *kiphone6);
     //        make.size.mas_equalTo(CGSizeMake((kScreenW -40*kiphone6), 30 *kiphone6));
     //    }];
-    self.tableView.tableHeaderView = nil;//[self personInfomation];
+//    self.tableView.tableHeaderView = nil;//[self personInfomation];
+    [self httpRequestForUserList];
     
     // [self tableView];
     
@@ -171,18 +184,21 @@
 #pragma mark -
 #pragma mark ------------Tableview Delegate----------------------
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    PatientModel *patient = self.dataSource[indexPath.row];
     PatientDetailViewController *patientDVC = [[PatientDetailViewController alloc]init];
+    patientDVC.info_id = patient.info_id;
     [self.navigationController pushViewController:patientDVC animated:YES];
     [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 #pragma mark -
 #pragma mark ------------TableView DataSource----------------------
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
-    return self.dataSource.count;
+    NSLog(@"source count = %ld",self.dataSource.count);
+    return 1;
 }
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    NSArray *array = self.dataSource.firstObject;
-    return array.count;
+//    NSArray *array = self.dataSource.firstObject;
+    return self.dataSource.count;
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     
@@ -200,9 +216,11 @@
 }
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     PatientsTableViewCell *homeTableViewCell = [tableView dequeueReusableCellWithIdentifier:@"PatientsTableViewCell" forIndexPath:indexPath];
-    NSArray *array = self.dataSource[0];
-    homeTableViewCell.titleLabel.text = array[indexPath.row];
-//    homeTableViewCell.iconV.image = array[indexPath.row];
+//    NSArray *array = self.dataSource[0];
+    PatientModel *patient = self.dataSource[indexPath.row];
+    homeTableViewCell.titleLabel.text = patient.trueName;
+    
+    [homeTableViewCell.iconV sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@%@",mPrefixUrl,patient.avatar]]];
     
     return homeTableViewCell;
     
@@ -210,32 +228,61 @@
 
 #pragma mark -
 #pragma mark ------------Http client----------------------
-- (void)httpRequest{
-    NSString *tokenStr = [CcUserModel defaultClient].userToken;
-    [[HttpClient defaultClient]requestWithPath:[NSString stringWithFormat:@"%@%@",mMyInfo,tokenStr] method:0 parameters:nil prepareExecute:^{
+//- (void)httpRequest{
+//    NSString *tokenStr = [CcUserModel defaultClient].userToken;
+//    [[HttpClient defaultClient]requestWithPath:[NSString stringWithFormat:@"%@%@",mMyInfo,tokenStr] method:0 parameters:nil prepareExecute:^{
+//        
+//    } success:^(NSURLSessionDataTask *task, id responseObject) {
+//        NSLog(@"res = = %@",responseObject);
+//        NSDictionary *dict = responseObject[@"result"];
+//        //        CcUserModel *userMoedel = [CcUserModel mj_objectWithKeyValues:responseObject];
+//        YYHomeUserModel *userMoedel = [YYHomeUserModel mj_objectWithKeyValues:dict];
+//        
+//        
+//        NSLog(@"%@",userMoedel.avatar);
+//        
+//        
+//        [self.iconV sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@%@",mPrefixUrl,userMoedel.avatar]]];
+//        
+//        self.nameLabel.text = userMoedel.trueName;
+//        self.idLabel.text = [NSString stringWithFormat:@"%@",userMoedel.info_id];
+//        self.personalModel = userMoedel;
+//        
+//    } failure:^(NSURLSessionDataTask *task, NSError *error) {
+//        
+//    }];
+//}
+- (void)pushToSearchVC{
+    YYSearchTableViewController *searchVC = [[YYSearchTableViewController alloc]init];
+    searchVC.searchCayegory = 1;
+    [self.navigationController pushViewController:searchVC animated:true];
+}
+
+- (void)httpRequestForUserList{
+    NSString *urlStr;
+//    if ([self.titleStr isEqualToString:@"all"]) {
+        urlStr = mPatientListTotal;
+//    }
+    
+    
+    CcUserModel *userModel = [CcUserModel defaultClient];
+    [[HttpClient defaultClient]requestWithPath:[NSString stringWithFormat:@"%@token=%@",urlStr,userModel.userToken] method:0 parameters:nil prepareExecute:^{
         
     } success:^(NSURLSessionDataTask *task, id responseObject) {
-        NSLog(@"res = = %@",responseObject);
-        NSDictionary *dict = responseObject[@"result"];
-        //        CcUserModel *userMoedel = [CcUserModel mj_objectWithKeyValues:responseObject];
-        YYHomeUserModel *userMoedel = [YYHomeUserModel mj_objectWithKeyValues:dict];
+        NSLog(@"%@",responseObject);
+        NSArray *patientList = responseObject[@"rows"];
+        for (NSDictionary *dict in patientList) {
+            PatientModel *patientModel = [PatientModel mj_objectWithKeyValues:dict];
+            [self.dataSource addObject:patientModel];
+        }
+        [self tableView];
         
+
         
-        NSLog(@"%@",userMoedel.avatar);
-        
-        
-        [self.iconV sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@%@",mPrefixUrl,userMoedel.avatar]]];
-        
-        self.nameLabel.text = userMoedel.trueName;
-        self.idLabel.text = [NSString stringWithFormat:@"%@",userMoedel.info_id];
-        self.personalModel = userMoedel;
-        
+
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
-        
+        NSLog(@"%@",error);
     }];
-}
-- (void)pushToSearchVC{
-    
 }
 //- (void)viewWillAppear:(BOOL)animated{
 //    [super viewWillAppear:YES];

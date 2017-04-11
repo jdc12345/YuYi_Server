@@ -12,4 +12,6 @@
 
 @property (nonatomic, assign) BOOL isTotal;
 
+@property (nonatomic, strong) NSString *titleStr;
+
 @end

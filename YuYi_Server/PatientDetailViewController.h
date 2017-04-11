@@ -10,4 +10,6 @@
 
 @interface PatientDetailViewController : UIViewController
 
+@property (nonatomic, strong) NSString *info_id;
+
 @end

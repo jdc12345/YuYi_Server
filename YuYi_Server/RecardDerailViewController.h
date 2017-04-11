@@ -7,7 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
-
+#import "PatientModel.h"
 @interface RecardDerailViewController : UIViewController
 
+@property (nonatomic, strong)PatientModel *patientModel;
+
+
+- (void)createSubView;
 @end

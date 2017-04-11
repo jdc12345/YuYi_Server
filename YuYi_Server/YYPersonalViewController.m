@@ -26,6 +26,7 @@
 #import "YYSettingViewController.h"
 #import "NotficationViewController.h"
 #import "UIBarButtonItem+Helper.h"
+#import "UIButton+Badge.h"
 
 
 #define myToken @"6DD620E22A92AB0AED590DB66F84D064"
@@ -39,6 +40,8 @@
 @property (nonatomic, strong) UILabel *idLabel;
 @property (nonatomic, strong) UIImageView *iconV;
 @property (nonatomic, strong) YYHomeUserModel *personalModel;
+
+@property (nonatomic, weak) UIButton *rightNotBtn;
 
 @end
 
@@ -117,6 +120,8 @@
     self.navigationItem.rightBarButtonItem = rightItem;
     
     [rightButton sizeToFit];
+    
+    self.rightNotBtn = rightButton;
 
     self.tableView.tableHeaderView = [self personInfomation];
     
@@ -238,6 +243,7 @@
             [self.navigationController pushViewController:familyVC animated:YES];
         }else if(indexPath.row == 1){
             YYPatientsViewController *equipmentVC = [[YYPatientsViewController alloc]init];
+            equipmentVC.titleStr = @"all";
             equipmentVC.isTotal = YES;
             [self.navigationController pushViewController:equipmentVC animated:YES];
         }else{
@@ -305,6 +311,20 @@
         self.nameLabel.text = [NSString stringWithFormat:@"%@  %@",userMoedel.trueName,userMoedel.title];
         self.idLabel.text = [NSString stringWithFormat:@"%@  %@",userMoedel.hospitalName,userMoedel.departmentName];
         self.personalModel = userMoedel;
+        
+        
+        NSString *messageCount = responseObject[@"hasMessage"];
+        if ([messageCount integerValue] >0) {
+            self.rightNotBtn.badgeValue = @" ";
+            self.rightNotBtn.badgeBGColor = [UIColor redColor];
+            self.rightNotBtn.badgeFont = [UIFont systemFontOfSize:0.1];
+            self.rightNotBtn.badgeOriginX = 16;
+            self.rightNotBtn.badgeOriginY = 1;
+            self.rightNotBtn.badgePadding = 0.1;
+            self.rightNotBtn.badgeMinSize = 5;
+        }
+        
+        
         
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
         

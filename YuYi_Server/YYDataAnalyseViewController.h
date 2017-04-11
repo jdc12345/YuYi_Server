@@ -11,5 +11,5 @@
 @interface YYDataAnalyseViewController : UIViewController
 
 @property  (nonatomic, strong) NSString *userHome_id;
-
+- (void)httpRequest;
 @end
