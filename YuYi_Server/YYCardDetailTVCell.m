@@ -11,6 +11,8 @@
 #import "UILabel+Addition.h"
 #import "UIColor+colorValues.h"
 #import <UIImageView+WebCache.h>
+#import "CcUserModel.h"
+#import "HttpClient.h"
 @interface YYCardDetailTVCell()
 @property(nonatomic,weak)UIImageView *iconView;
 @property(nonatomic,weak)UILabel *nameLabel;
@@ -20,6 +22,7 @@
 @property(nonatomic,weak)UIImageView *bigImageView;
 @property(nonatomic,weak)UILabel *titleLabel;
 @property(nonatomic,weak)UILabel *conentLabel;
+@property(nonatomic,weak)UIButton *praiseBtn;
 @end
 @implementation YYCardDetailTVCell
 
@@ -40,6 +43,13 @@
     self.contentLabel.text = infoModel.content;
     NSString *imageUrlStr = [NSString stringWithFormat:@"%@%@",mPrefixUrl,infoModel.picture];
     [self.bigImageView sd_setImageWithURL:[NSURL URLWithString:imageUrlStr]];
+    if (infoModel.isLike) {
+        [self.praiseBtn setImage:[UIImage imageNamed:@"Info-heart-icon-select-"] forState:UIControlStateNormal];
+    }else{
+        [self.praiseBtn setImage:[UIImage imageNamed:@"like"] forState:UIControlStateNormal];
+        
+    }
+
 }
 - (void)setupUI{
     //icon
@@ -67,6 +77,7 @@
     [praiseBtn setImage:[UIImage imageNamed:@"like-selected"] forState:UIControlStateHighlighted];
     [praiseBtn addTarget:self action:@selector(praisePlus:) forControlEvents:UIControlEventTouchUpInside];
     [self.contentView addSubview:praiseBtn];
+    self.praiseBtn = praiseBtn;
     //帖子标题
     UILabel *titleLabel = [UILabel labelWithText:@"帖子标题帖子标题" andTextColor:[UIColor colorWithHexString:@"2b2b2b"] andFontSize:17];
     titleLabel.numberOfLines = 2;
@@ -103,6 +114,7 @@
     [praiseBtn mas_makeConstraints:^(MASConstraintMaker *make) {
         make.right.equalTo(countLabel.mas_left).offset(-5*kiphone6);
         make.centerY.equalTo(iconView);
+        make.width.height.offset(20*kiphone6);
     }];
     [titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(iconView.mas_bottom).offset(20*kiphone6);
@@ -126,9 +138,38 @@
     }];
 }
 - (void)praisePlus:(UIButton*)sender{
-    NSInteger count = [self.countLabel.text integerValue];
-    count += 1;
-    self.countLabel.text = [NSString stringWithFormat:@"%ld",count];
+        CcUserModel *model = [CcUserModel defaultClient];
+        NSString *token = model.userToken;
+        NSString *urlStr = [NSString stringWithFormat:@"%@/likes/LikeNum.do?id=%@&token=%@",mPrefixUrl,self.infoModel.info_id,token];
+        [[HttpClient defaultClient]requestWithPath:urlStr method:HttpRequestPost parameters:nil prepareExecute:^{
+    
+        } success:^(NSURLSessionDataTask *task, id responseObject) {
+            if ([responseObject[@"code"] isEqualToString:@"0"]) {
+    
+            }else{
+                //点赞/删除未成功
+            }
+        } failure:^(NSURLSessionDataTask *task, NSError *error) {
+    
+        }];
+        NSInteger count = [self.countLabel.text integerValue];
+        if (self.infoModel.isLike) {
+            count -= 1;
+            self.countLabel.text = [NSString stringWithFormat:@"%ld",count];
+            [sender setImage:[UIImage imageNamed:@"like"] forState:UIControlStateNormal];
+            self.infoModel.isLike = false;
+            self.infoModel.likeNum = [NSString stringWithFormat:@"%ld",count];
+        }else{
+            count += 1;
+            self.countLabel.text = [NSString stringWithFormat:@"%ld",count];
+            [sender setImage:[UIImage imageNamed:@"Info-heart-icon-select-"] forState:UIControlStateNormal];
+            self.infoModel.isLike = true;
+            self.infoModel.likeNum = [NSString stringWithFormat:@"%ld",count];
+        }
+    
+//    NSInteger count = [self.countLabel.text integerValue];
+//    count += 1;
+//    self.countLabel.text = [NSString stringWithFormat:@"%ld",count];
 }
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
     [super setSelected:selected animated:animated];

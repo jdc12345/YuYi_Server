@@ -11,7 +11,8 @@
 #import "UILabel+Addition.h"
 #import "UIColor+colorValues.h"
 #import <UIImageView+WebCache.h>
-
+#import "CcUserModel.h"
+#import "HttpClient.h"
 @interface YYCommentTVCell ()
 @property(nonatomic,weak)UIImageView *iconView;
 @property(nonatomic,weak)UILabel *nameLabel;
@@ -96,7 +97,6 @@
     [self.contentView addSubview:countLabel];
     self.countLabel = countLabel;
    
-
     //约束
     [iconView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.left.offset(20*kiphone6);
@@ -128,9 +128,38 @@
         make.width.offset([UIScreen mainScreen].bounds.size.width);//必须加
     }];
 
-
 }
 - (void)praisePlus:(UIButton*)sender{
+//    CcUserModel *model = [CcUserModel defaultClient];
+//    NSString *token = model.userToken;
+//    NSString *urlStr = [NSString stringWithFormat:@"%@/likes/UpdateLikeNum.do?id=%@&token=%@",mPrefixUrl,self.comModel.info_id,token];
+//    [[HttpClient defaultClient]requestWithPath:urlStr method:HttpRequestPost parameters:nil prepareExecute:^{
+//        
+//    } success:^(NSURLSessionDataTask *task, id responseObject) {
+//        if ([responseObject[@"code"] isEqualToString:@"0"]) {
+//            
+//        }else{
+//            //点赞/删除未成功
+//        }
+//    } failure:^(NSURLSessionDataTask *task, NSError *error) {
+//        
+//    }];
+//    NSInteger count = [self.countLabel.text integerValue];
+//    if (self.comModel.state) {
+//        count -= 1;
+//        self.countLabel.text = [NSString stringWithFormat:@"%ld",count];
+//        [sender setImage:[UIImage imageNamed:@"like"] forState:UIControlStateNormal];
+//        self.infoDetailModel.state = false;
+//        self.infoDetailModel.likeNum = [NSString stringWithFormat:@"%ld",count];
+//    }else{
+//        count += 1;
+//        self.countLabel.text = [NSString stringWithFormat:@"%ld",count];
+//        [sender setImage:[UIImage imageNamed:@"Info-heart-icon-select-"] forState:UIControlStateNormal];
+//        self.infoDetailModel.state = true;
+//        self.infoDetailModel.likeNum = [NSString stringWithFormat:@"%ld",count];
+//    }
+
+    
     NSInteger count = [self.countLabel.text integerValue];
     count += 1;
     self.countLabel.text = [NSString stringWithFormat:@"%ld",count];
