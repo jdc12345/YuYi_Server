@@ -9,5 +9,5 @@
 #import <UIKit/UIKit.h>
 
 @interface AgreeViewController : UIViewController
-
+@property (nonatomic, strong) NSString *titleStr;
 @end
