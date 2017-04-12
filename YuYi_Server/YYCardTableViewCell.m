@@ -43,9 +43,7 @@
         [self.contentLabel mas_updateConstraints:^(MASConstraintMaker *make) {
             make.left.equalTo(self.imagesView.mas_right);
         }];
-        /*[self.timeLabel mas_updateConstraints:^(MASConstraintMaker *make) {
-            make.top.equalTo(self.contentLabel.mas_bottom).offset(10*kiphone6);
-        }];*/
+        
     }else{
         [self.imagesView mas_updateConstraints:^(MASConstraintMaker *make) {
             make.width.height.offset(55*kiphone6);
@@ -53,11 +51,8 @@
         [self.contentLabel mas_updateConstraints:^(MASConstraintMaker *make) {
             make.left.equalTo(self.imagesView.mas_right).offset(10*kiphone6);
         }];
-        /*[self.timeLabel mas_updateConstraints:^(MASConstraintMaker *make) {
-            make.top.equalTo(self.imagesView.mas_bottom).offset(10*kiphone6);
-        }];*/
-
-        NSString *imageUrlStr = [NSString stringWithFormat:@"%@%@",mPrefixUrl,model.picture];
+        NSArray *array = [model.picture componentsSeparatedByString:@";"]; //以分号分割图片字符串
+        NSString *imageUrlStr = [NSString stringWithFormat:@"%@%@",mPrefixUrl,array[0]];
         [self.imagesView sd_setImageWithURL:[NSURL URLWithString:imageUrlStr]];
     }
     self.contentLabel.text = model.content;
