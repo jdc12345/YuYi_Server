@@ -196,13 +196,9 @@ static NSString *cell_Id = @"cell_id";
             }else{
                 [self showAlertWithMessage:@"评论内容不能为空，请重新输入"];
             }
-            
         return NO;
-            
          }
-    
-    return YES;  
-    
+    return YES;
 }
 -(void)textViewDidChange:(UITextView *)textView{
     CGRect frame = textView.frame;

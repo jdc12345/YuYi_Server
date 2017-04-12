@@ -16,6 +16,7 @@
 #import "YYCardDetailModel.h"
 #import "HttpClient.h"
 #import <MJExtension.h>
+#import "CcUserModel.h"
 @interface YYSciencesViewController ()<UIScrollViewDelegate>
 //跟button的监听事件有关
 @property(weak, nonatomic)UIView *cardLineView;
@@ -49,12 +50,14 @@
     [self loadData];
 }
 - (void)loadData {
-//    http://192.168.1.55:8080/yuyi/academicpaper/findhot.do?start=0&limit=6
+//    http://192.168.1.55:8080/yuyi/academicpaper/findhot.do?start=0&limit=6&token=EA62E69E02FABA4E4C9A0FDC1C7CAE10
 //    http://192.168.1.55:8080/yuyi/academicpaper/Selected.do?start=0&limit=1
 //    http://192.168.1.55:8080/yuyi/academicpaper/findtime.do?start=0&limit=6
-    NSString *hotUrlStr = [NSString stringWithFormat:@"%@/academicpaper/findhot.do?start=0&limit=6",mPrefixUrl];
-    NSString *selectUrlStr = [NSString stringWithFormat:@"%@/academicpaper/Selected.do?start=0&limit=1",mPrefixUrl];
-    NSString *recentUrlStr = [NSString stringWithFormat:@"%@/academicpaper/findtime.do?start=0&limit=6",mPrefixUrl];
+    CcUserModel *userModel = [CcUserModel defaultClient];
+    NSString *token = userModel.userToken;
+    NSString *hotUrlStr = [NSString stringWithFormat:@"%@/academicpaper/findhot.do?start=0&limit=6&token=%@",mPrefixUrl,token];
+    NSString *selectUrlStr = [NSString stringWithFormat:@"%@/academicpaper/Selected.do?start=0&limit=1&token=%@",mPrefixUrl,token];
+    NSString *recentUrlStr = [NSString stringWithFormat:@"%@/academicpaper/findtime.do?start=0&limit=6&token=%@",mPrefixUrl,token];
     [self loadHotInfosWithUrlStr:hotUrlStr];
     [self loadSelectInfosWithUrlStr:selectUrlStr];
     [self loadRecentInfosWithUrlStr:recentUrlStr];
@@ -270,15 +273,22 @@
         make.centerY.equalTo(hotCardButton);
         make.right.offset(-20*kiphone6);
     }];
-    
+    //添加右侧发帖按钮
+    UIButton *postMessageBtn = [[UIButton alloc]initWithFrame:CGRectMake(self.view.frame.size.width-70*kiphone6, self.view.frame.size.height-114*kiphone6, 50*kiphone6, 50*kiphone6)];
+    [self.view addSubview:postMessageBtn];
+    [self.view bringSubviewToFront:postMessageBtn];
+    self.postMessageBtn = postMessageBtn;
+    [postMessageBtn setImage:[UIImage imageNamed:@"postamessage"] forState:UIControlStateNormal];
+    [postMessageBtn addTarget:self action:@selector(postMassageBtnClick:) forControlEvents:UIControlEventTouchUpInside];
 }
 
 //按钮的监听事件
 -(void)shopCategoryButtonClick:(UIButton*)sender{
-    
+    CcUserModel *userModel = [CcUserModel defaultClient];
+    NSString *token = userModel.userToken;
     [self.cardDetailView setContentOffset:CGPointMake(sender.tag*self.cardDetailView.bounds.size.width, 0) animated:YES];
     if (sender.tag == 0) {
-        NSString *hotUrlStr = [NSString stringWithFormat:@"%@/academicpaper/findhot.do?start=0&limit=6",mPrefixUrl];
+        NSString *hotUrlStr = [NSString stringWithFormat:@"%@/academicpaper/findhot.do?start=0&limit=6&token=%@",mPrefixUrl,token];
         [[HttpClient defaultClient]requestWithPath:hotUrlStr method:0 parameters:nil prepareExecute:^{
             
         } success:^(NSURLSessionDataTask *task, id responseObject) {
@@ -295,10 +305,10 @@
         }];
 
     }else if (sender.tag == 1){
-        NSString *selectUrlStr = [NSString stringWithFormat:@"%@/academicpaper/Selected.do?start=0&limit=1",mPrefixUrl];
+        NSString *selectUrlStr = [NSString stringWithFormat:@"%@/academicpaper/Selected.do?start=0&limit=1&token=%@",mPrefixUrl,token];
         [self loadSelectInfosWithUrlStr:selectUrlStr];
     }else if (sender.tag == 2){
-        NSString *recentUrlStr = [NSString stringWithFormat:@"%@/academicpaper/findtime.do?start=0&limit=6",mPrefixUrl];
+        NSString *recentUrlStr = [NSString stringWithFormat:@"%@/academicpaper/findtime.do?start=0&limit=6&token=%@",mPrefixUrl,token];
         [self loadRecentInfosWithUrlStr:recentUrlStr];
     }
 }
@@ -415,14 +425,32 @@
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
     self.navigationController.navigationBar.hidden = true;
-    //添加右侧发帖按钮
-    UIButton *postMessageBtn = [[UIButton alloc]initWithFrame:CGRectMake(self.view.frame.size.width-70*kiphone6, self.view.frame.size.height-114*kiphone6, 50*kiphone6, 50*kiphone6)];
-    [[UIApplication sharedApplication].keyWindow addSubview:postMessageBtn];
-    self.postMessageBtn = postMessageBtn;
-    [postMessageBtn setImage:[UIImage imageNamed:@"postamessage"] forState:UIControlStateNormal];
-    [postMessageBtn addTarget:self action:@selector(postMassageBtnClick:) forControlEvents:UIControlEventTouchUpInside];
     
+    //
+    CcUserModel *userModel = [CcUserModel defaultClient];
+    NSString *token = userModel.userToken;
+    NSString *hotUrlStr = [NSString stringWithFormat:@"%@/academicpaper/findhot.do?start=0&limit=6&token=%@",mPrefixUrl,token];
+    NSString *selectUrlStr = [NSString stringWithFormat:@"%@/academicpaper/Selected.do?start=0&limit=1&token=%@",mPrefixUrl,token];
+    NSString *recentUrlStr = [NSString stringWithFormat:@"%@/academicpaper/findtime.do?start=0&limit=6&token=%@",mPrefixUrl,token];
+    [[HttpClient defaultClient]requestWithPath:hotUrlStr method:0 parameters:nil prepareExecute:^{
+        
+    } success:^(NSURLSessionDataTask *task, id responseObject) {
+        NSArray *arr = responseObject[@"rows"];
+        NSMutableArray *mArr = [NSMutableArray array];
+        for (NSDictionary *dic in arr) {
+            YYCardDetailModel *infoModel = [YYCardDetailModel mj_objectWithKeyValues:dic];
+            [mArr addObject:infoModel];
+        }
+        self.hotCardVC.infos = mArr;
+        
+    } failure:^(NSURLSessionDataTask *task, NSError *error) {
+        
+    }];
+
+    [self loadSelectInfosWithUrlStr:selectUrlStr];
+    [self loadRecentInfosWithUrlStr:recentUrlStr];
 }
+
 -(void)viewWillDisappear:(BOOL)animated{
     [super viewWillDisappear:animated];
     self.navigationController.navigationBar.hidden = false;

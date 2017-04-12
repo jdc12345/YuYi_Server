@@ -20,7 +20,7 @@
 @property(nonatomic,weak)UILabel *contentLabel;
 @property(nonatomic,weak)UILabel *timeLabel;
 @property(nonatomic,weak)UILabel *repliesLabel;
-
+@property(nonatomic,weak)UIButton *praiseBtn;
 @end
 
 @implementation YYCardTableViewCell
@@ -64,7 +64,12 @@
     self.timeLabel.text = model.createTimeString;
     self.praiseCountLabel.text = model.likeNum;
     self.repliesLabel.text = model.commentNum;
-    
+    if (model.isLike) {
+        [self.praiseBtn setImage:[UIImage imageNamed:@"Info-heart-icon-select-"] forState:UIControlStateNormal];
+    }else{
+        [self.praiseBtn setImage:[UIImage imageNamed:@"like"] forState:UIControlStateNormal];
+        
+    }
 }
 - (void)setupUI{
 //    self.contentView.backgroundColor = [UIColor orangeColor];
@@ -99,6 +104,7 @@
     [praiseBtn setImage:[UIImage imageNamed:@"like-selected"] forState:UIControlStateHighlighted];
     [praiseBtn addTarget:self action:@selector(praisePlus:) forControlEvents:UIControlEventTouchUpInside];
     [self.contentView addSubview:praiseBtn];
+    self.praiseBtn = praiseBtn;
     //赞次数
     UILabel *praiseCountLabel = [UILabel labelWithText:@"379" andTextColor:[UIColor colorWithHexString:@"cccccc"] andFontSize:11];
     [self.contentView addSubview:praiseCountLabel];

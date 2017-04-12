@@ -25,6 +25,7 @@
 @property(nonatomic,weak)UILabel *praiseCountLabel;
 @property(nonatomic,weak)UILabel *shareCountLabel;
 @property(nonatomic,weak)UILabel *commentCountLabel;
+@property(nonatomic,weak)UIButton *praiseBtn;
 @end
 
 @implementation YYInfoDetailVC
@@ -120,6 +121,7 @@
     [praiseBtn setImage:[UIImage imageNamed:praiseImage] forState:UIControlStateNormal];
     [praiseBtn addTarget:self action:@selector(praisePlus:) forControlEvents:UIControlEventTouchUpInside];
     [userBar addSubview:praiseBtn];
+    self.praiseBtn = praiseBtn;
     //赞次数
     NSString *praiseNum = self.infoModel.likeNum?self.infoModel.likeNum:@"0";
     UILabel *praiseCountLabel = [UILabel labelWithText:praiseNum andTextColor:[UIColor colorWithHexString:@"999999"] andFontSize:12];
@@ -213,6 +215,32 @@
 //    NSInteger count = [self.shareCountLabel.text integerValue];
 //    count += 1;
 //    self.shareCountLabel.text = [NSString stringWithFormat:@"%ld",count];
+}
+-(void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+    CcUserModel *model = [CcUserModel defaultClient];
+    NSString *token = model.userToken;
+    NSString *urlStr = [NSString stringWithFormat:@"http://192.168.1.55:8080/yuyi/doctorlyinformation/get.do?id=%@&token=%@",self.info_id,token];
+    [[HttpClient defaultClient]requestWithPath:urlStr method:0 parameters:nil prepareExecute:^{
+        
+    } success:^(NSURLSessionDataTask *task, id responseObject) {
+        NSDictionary *dic = responseObject;
+        YYInfoDetailModel *infoModel = [YYInfoDetailModel mj_objectWithKeyValues:dic];
+        self.infoModel  = infoModel;
+        self.shareCountLabel.text = self.infoModel.shareNum?self.infoModel.shareNum:@"0";
+        self.praiseCountLabel.text = self.infoModel.likeNum?self.infoModel.likeNum:@"0";
+        self.commentCountLabel.text = self.infoModel.commentNum?self.infoModel.commentNum:@"0";
+        if (self.infoModel.state) {
+            [self.praiseBtn setImage:[UIImage imageNamed:@"Info-heart-icon-select-"] forState:UIControlStateNormal];
+        }else{
+            [self.praiseBtn setImage:[UIImage imageNamed:@"like"] forState:UIControlStateNormal];
+            
+        }
+        
+    } failure:^(NSURLSessionDataTask *task, NSError *error) {
+        
+    }];
+
 }
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

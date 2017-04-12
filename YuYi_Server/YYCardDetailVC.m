@@ -91,7 +91,7 @@ static NSString *cellId = @"cell_id";
     tableView.rowHeight = UITableViewAutomaticDimension;
     [tableView registerClass:[YYCommentTVCell class] forCellReuseIdentifier:cellId];
     tableView.tableHeaderView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kScreenW, CGFLOAT_MIN)];//解决group样式顶部留白问题
-    //搜索框
+    //输入框背景
     UIView *headerView = [[UIView alloc]initWithFrame:CGRectMake(20,self.view.frame.size.height- 45*kiphone6, self.view.frame.size.width-40*kiphone6, 45*kiphone6)];
     [self.view addSubview:headerView];
     [self.view bringSubviewToFront:headerView];
@@ -134,6 +134,85 @@ static NSString *cellId = @"cell_id";
     commentField.layer.borderColor=[UIColor colorWithHexString:@"#f3f3f3"].CGColor;
 
 }
+- (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text{
+    
+    NSCharacterSet *doneButtonCharacterSet = [NSCharacterSet newlineCharacterSet];
+    
+    NSRange replacementTextRange = [text rangeOfCharacterFromSet:doneButtonCharacterSet];
+    
+    NSUInteger location = replacementTextRange.location;
+    
+    if (textView.text.length + text.length > 140){
+        
+        if (location != NSNotFound){
+            
+            [textView resignFirstResponder];
+            
+        }
+        
+        return NO;
+        
+    }  else if (location != NSNotFound){
+        
+        [textView resignFirstResponder];
+        if (textView.text!=nil||![textView.text isEqualToString:@""]) {
+            CcUserModel *userModel = [CcUserModel defaultClient];
+            NSString *telePhoneNumber = userModel.telephoneNum;
+//            http://192.168.1.55:8080/yuyi/comment/AddConment2.do?telephone=18782931355&content_id=1&Content=haha
+            NSString *urlStr = [NSString stringWithFormat:@"%@/comment/AddConment2.do?telephone=%@&content_id=%@&Content=%@",mPrefixUrl,telePhoneNumber,self.info_id,[textView.text stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]]];
+            [[HttpClient defaultClient]requestWithPath:urlStr method:HttpRequestPost parameters:nil prepareExecute:^{
+                
+            } success:^(NSURLSessionDataTask *task, id responseObject) {
+                if ([responseObject[@"code"] isEqualToString:@"0"]) {
+                    //更新评论数据源
+                    //    http://192.168.1.55:8080/yuyi/academicpaper/academicpaperComment.do?start=0&limit=2&id=1
+                    CcUserModel *model = [CcUserModel defaultClient];
+                    NSString *token = model.userToken;
+                    NSString *urlStr = [NSString stringWithFormat:@"%@/academicpaper/academicpaperComment.do?start=0&limit=2&id=%@&token=%@",mPrefixUrl,self.info_id,token];
+                    [[HttpClient defaultClient]requestWithPath:urlStr method:0 parameters:nil prepareExecute:^{
+                        
+                    } success:^(NSURLSessionDataTask *task, id responseObject) {
+                        NSDictionary *dic = responseObject[@"result"];
+                        YYCardDetailPageModel *infoModel = [YYCardDetailPageModel mj_objectWithKeyValues:dic];
+                        self.infoModel  = infoModel;//帖子数据
+                        NSMutableArray *arr = [NSMutableArray array];
+                        for (NSDictionary *dict in infoModel.commentList) {
+                            YYCardCommentDetailModel *comModel = [YYCardCommentDetailModel mj_objectWithKeyValues:dict];
+                            [arr addObject:comModel];
+                        }
+                        self.commentInfos = arr;//评论数据源
+                        [self.tableView reloadData];
+                        self.commentField.text = nil;
+                        
+                    } failure:^(NSURLSessionDataTask *task, NSError *error) {
+                        
+                    }];
+
+                }else{
+                    [self showAlertWithMessage:@"评论未成功，请稍后再试"];
+                }
+                
+            } failure:^(NSURLSessionDataTask *task, NSError *error) {
+                
+            }];
+            
+        }else{
+            [self showAlertWithMessage:@"评论内容不能为空，请重新输入"];
+        }
+        return NO;
+    }
+    return YES;
+}
+//弹出alert
+-(void)showAlertWithMessage:(NSString*)message{
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:nil message:message preferredStyle:UIAlertControllerStyleAlert];
+    //            UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:nil];
+    UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"好的" style:UIAlertActionStyleDefault handler:nil];
+    //            [alert addAction:cancelAction];
+    [alert addAction:okAction];
+    [self presentViewController:alert animated:YES completion:nil];
+}
+
 #pragma tableViewDatasource
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
     return 2;
@@ -204,30 +283,9 @@ static NSString *cellId = @"cell_id";
         return 44*kiphone6;
     }
 }
--(void)viewWillAppear:(BOOL)animated{
-    [super viewWillAppear:animated];
-    
-    
-}
-- (void)keyboardWillChangeFrame:(NSNotification *)noti{
-    
-    
-    //    if (!self.isSwitchKeyboard) {
-    //从userInfo里面取出来键盘最终的位置
-    NSValue *rectValue = noti.userInfo[UIKeyboardFrameEndUserInfoKey];
-    
-    CGRect rect = [rectValue CGRectValue];
-    CGRect rectField = self.headerView.frame;
-    CGRect newRect = CGRectMake(rectField.origin.x, rect.origin.y - rectField.size.height-70*kiphone6, rectField.size.width, rectField.size.height) ;
-    [UIView animateWithDuration:0.25 animations:^{
-        self.headerView.frame = newRect;
-    }];
-    //    }
-}
--(void)tableView:(UITableView *)tableView didDeselectRowAtIndexPath:(NSIndexPath *)indexPath{
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     [tableView deselectRowAtIndexPath:indexPath animated:true];
 }
-
 #pragma textView
 -(void)textViewDidChange:(UITextView *)textView{
     CGRect frame = textView.frame;
@@ -243,10 +301,20 @@ static NSString *cellId = @"cell_id";
     textView.frame = CGRectMake(frame.origin.x, frame.origin.y-(size.height-frame.size.height), frame.size.width, size.height);
     textView.scrollEnabled = true;
 }
--(void)viewWillDisappear:(BOOL)animated{
-    [super viewWillDisappear:animated];
-    [self.commentField removeFromSuperview];
+- (void)keyboardWillChangeFrame:(NSNotification *)noti{
+    //    if (!self.isSwitchKeyboard) {
+    //从userInfo里面取出来键盘最终的位置
+    NSValue *rectValue = noti.userInfo[UIKeyboardFrameEndUserInfoKey];
+    
+    CGRect rect = [rectValue CGRectValue];
+    CGRect rectField = self.headerView.frame;
+    CGRect newRect = CGRectMake(rectField.origin.x, rect.origin.y - rectField.size.height-70*kiphone6, rectField.size.width, rectField.size.height) ;
+    [UIView animateWithDuration:0.25 animations:^{
+        self.headerView.frame = newRect;
+    }];
+    //    }
 }
+
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.

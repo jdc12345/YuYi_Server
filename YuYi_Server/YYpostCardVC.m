@@ -11,13 +11,16 @@
 #import <Masonry.h>
 #import "BRPlaceholderTextView.h"
 #import "UILabel+Addition.h"
-@interface YYpostCardVC ()<UITextViewDelegate>
+@interface YYpostCardVC ()<UITextViewDelegate,UIImagePickerControllerDelegate>
 @property(nonatomic,weak)BRPlaceholderTextView *titleView;
 @property(nonatomic,weak)BRPlaceholderTextView *contentView;
 @property(nonatomic,weak)UIButton *addPictureBtn;
 @property(nonatomic,weak)UILabel *addPictureLabel;
 @property(nonatomic,weak)UIScrollView *scrollView;
 @property(nonatomic,weak)UIView *lineTwo;
+
+@property (nonatomic, weak) UIImageView *userIcon;
+@property (nonatomic, strong) UIImage *chooseImage;
 
 @end
 
@@ -188,29 +191,97 @@
     self.scrollView.scrollEnabled = true;
 }
 -(void)addPicture:(UIButton *)sender{
-    NSString *str = self.contentView.text;
-    str = [str stringByAppendingString:@"@@@@@@图片@@@@@@"];
-    self.contentView.placeholder = @"输入内容";
-    [self.contentView addTextViewBeginEvent:^(BRPlaceholderTextView *text) {
-        //滑到文章最后
-        [text becomeFirstResponder];
-    }];
-    self.contentView.text = str;
-    [self textViewDidChange:self.contentView];
+//    NSString *str = self.contentView.text;
+//    str = [str stringByAppendingString:@"@@@@@@图片@@@@@@"];
+//    self.contentView.placeholder = @"输入内容";
+//    [self.contentView addTextViewBeginEvent:^(BRPlaceholderTextView *text) {
+//        //滑到文章最后
+//        [text becomeFirstResponder];
+//    }];
+//    self.contentView.text = str;
+//    [self textViewDidChange:self.contentView];
+    UIImagePickerController *picker = [[UIImagePickerController alloc] init];
+    picker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+    picker.delegate = self;
+    //设置选择后的图片可被编辑
+    picker.allowsEditing = YES;
+    [self presentViewController:picker animated:YES completion:nil];
 }
+//当选择一张图片后进入这里
+-(void)imagePickerController:(UIImagePickerController*)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
+
+{
+    
+    NSString *type = [info objectForKey:UIImagePickerControllerMediaType];
+    //当选择的类型是图片
+    if ([type isEqualToString:@"public.image"]){
+        //先把图片转成NSData
+        self.chooseImage = [info objectForKey:@"UIImagePickerControllerOriginalImage"];
+        NSData *data;
+        if (UIImagePNGRepresentation(self.chooseImage) == nil){
+            data = UIImageJPEGRepresentation(self.chooseImage, 1.0);
+        }else{
+            data = UIImagePNGRepresentation(self.chooseImage);
+        }
+        UIImage *image = [UIImage imageWithData:data];
+        NSMutableAttributedString *string = [[NSMutableAttributedString alloc] initWithAttributedString:self.contentView.attributedText];
+        NSTextAttachment *textAttachment = [[NSTextAttachment alloc] initWithData:nil ofType:nil] ;
+        textAttachment.image = image; //要添加的图片
+        NSAttributedString *textAttachmentString = [NSAttributedString attributedStringWithAttachment:textAttachment] ;
+        [string insertAttributedString:textAttachmentString atIndex:0];//index为用户指定要插入图片的位置
+        self.contentView.attributedText = string;
+//        self.content.text=@"1111";
+//        //图片保存的路径
+//        //这里将图片放在沙盒的documents文件夹中
+//        NSString * DocumentsPath = [NSHomeDirectory() stringByAppendingPathComponent:@"Documents"];
+//        
+//        //文件管理器
+//        NSFileManager *fileManager = [NSFileManager defaultManager];
+//        
+//        //把刚刚图片转换的data对象拷贝至沙盒中 并保存为image.png
+//        [fileManager createDirectoryAtPath:DocumentsPath withIntermediateDirectories:YES attributes:nil error:nil];
+//        [fileManager createFileAtPath:[DocumentsPath stringByAppendingString:@"/image.png"] contents:data attributes:nil];
+//        
+//        //得到选择后沙盒中图片的完整路径
+//        _filePath = [[NSString alloc]initWithFormat:@"%@%@",DocumentsPath,  @"/image.png"];
+        //关闭相册界面
+        [picker dismissViewControllerAnimated:YES completion:nil];
+        
+        /****图片本地持久化*******/
+        
+        
+        
+        //        NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,NSUserDomainMask, YES);
+        //        NSString *myfilePath = [[paths objectAtIndex:0] stringByAppendingPathComponent:[NSString stringWithFormat:@"picture.png"]];
+        //        // 保存文件的名称
+        //        [UIImagePNGRepresentation(self.chooseImage)writeToFile: myfilePath  atomically:YES];
+        //        NSUserDefaults *userDef= [NSUserDefaults standardUserDefaults];
+        //        [userDef setObject:myfilePath forKey:kImageFilePath];
+        
+        //创建一个选择后图片的小图标放在下方
+        //类似微薄选择图后的效果
+        self.userIcon.image = [self.chooseImage  imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+        
+    }
+    
+}
+//
+//
+//- (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker
+//{
+//    
+//    NSLog(@"您取消了选择图片");
+//    [picker dismissViewControllerAnimated:YES completion:nil];
+//}
+//-(void)sendInfo
+//{
+//    NSLog(@"图片的路径是：%@", _filePath);
+//    
+//}
+
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
-
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
 
 @end
