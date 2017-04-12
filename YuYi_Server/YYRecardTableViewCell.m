@@ -33,16 +33,21 @@
     self.titleLabel.text = @"李美丽";
     
     self.seeRecardLabel = [[UILabel alloc]init];
-    self.seeRecardLabel.textColor = [UIColor colorWithHexString:@"333333"];
+    self.seeRecardLabel.textColor = [UIColor colorWithHexString:@"666666"];
     self.seeRecardLabel.font = [UIFont systemFontOfSize:14];
     self.seeRecardLabel.text = @"病例查看";
     self.seeRecardLabel.textAlignment = NSTextAlignmentRight;
     
+    UILabel *promptLabel = [[UILabel alloc]init];
+    promptLabel.text = @"挂号时间：";
+    promptLabel.textColor = [UIColor colorWithHexString:@"333333"];
+    promptLabel.font = [UIFont systemFontOfSize:14];
+    promptLabel.textAlignment = NSTextAlignmentRight;
     
     [self.contentView addSubview:lineL];
     [self.contentView addSubview:self.titleLabel];
     [self.contentView addSubview:self.seeRecardLabel];
-    
+    [self.contentView addSubview:promptLabel];
     
     
     [lineL mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -59,6 +64,11 @@
     [self.seeRecardLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.bottom.equalTo(self.contentView).with.offset(-10 *kiphone6);
         make.right.equalTo(self.contentView).with.offset(-10 *kiphone6);
+        make.size.mas_equalTo(CGSizeMake(130 , 14 ));
+    }];
+    [promptLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.bottom.equalTo(self.seeRecardLabel.mas_bottom).with.offset(0 *kiphone6);
+        make.right.equalTo(self.seeRecardLabel.mas_left).with.offset(0 *kiphone6);
         make.size.mas_equalTo(CGSizeMake(200 , 14 ));
     }];
     

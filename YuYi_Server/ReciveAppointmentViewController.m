@@ -17,10 +17,15 @@
 #import "RecardModel.h"
 #import <MJExtension.h>
 #import "YHPullDownMenu.h"
+#import "AppointmentModel.h"
+#import "DeparmentModel.h"
 @interface ReciveAppointmentViewController ()<UITableViewDataSource, UITableViewDelegate>
 
 @property (nonatomic, strong) UITableView *tableView;
 @property (nonatomic, strong) NSMutableArray *dataSource;
+@property (nonatomic, strong) NSMutableArray *appointmentDataSource;
+@property (nonatomic, strong) NSMutableArray *dapartDataSource;
+@property (nonatomic, strong) NSMutableArray *clinicDataSource;
 @property (nonatomic, strong) NSArray *iconList;
 
 @property (nonatomic, weak) UILabel *nameLabel;
@@ -59,6 +64,24 @@
     }
     return _dataSource;
 }
+- (NSMutableArray *)dapartDataSource{
+    if (_dapartDataSource == nil) {
+        _dapartDataSource = [[NSMutableArray alloc]initWithCapacity:2];
+    }
+    return _dapartDataSource;
+}
+- (NSMutableArray *)appointmentDataSource{
+    if (_appointmentDataSource == nil) {
+        _appointmentDataSource = [[NSMutableArray alloc]initWithCapacity:2];
+    }
+    return _appointmentDataSource;
+}
+- (NSMutableArray *)clinicDataSource{
+    if (_clinicDataSource == nil) {
+        _clinicDataSource = [[NSMutableArray alloc]initWithCapacity:2];
+    }
+    return _clinicDataSource;
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -80,9 +103,9 @@
     //        make.size.mas_equalTo(CGSizeMake((kScreenW -40*kiphone6), 30 *kiphone6));
     //    }];
     //   self.tableView.tableHeaderView = [self personInfomation];
-//    [self httpRequest];
-    [self tableView];
-
+    [self httpRequest];
+//    [self tableView];
+    [self httpRequestForDepartment];
     
     // Do any additional setup after loading the view.
 }
@@ -203,9 +226,9 @@
 #pragma mark -
 #pragma mark ------------Tableview Delegate----------------------
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-//    RecardModel *recardModel = self.dataSource[indexPath.row];
+    AppointmentModel *recardModel = self.dataSource[indexPath.row];
     YYDetailRecardViewController *detailRecardVC = [[YYDetailRecardViewController alloc]init];
-//    detailRecardVC.recardID = recardModel.info_id;
+    detailRecardVC.appointmentModel = recardModel;
     [self.navigationController pushViewController:detailRecardVC animated:YES];
     [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
@@ -215,12 +238,12 @@
     return 1;
 }
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    if (self.dataSource.count >0) {
+//    if (self.dataSource.count >0) {
         return self.dataSource.count;
-    }else{
-        return 2;
-    }
-    
+//    }else{
+//        return 2;
+//    }
+//    
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     
@@ -260,8 +283,11 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     YYRecardTableViewCell *homeTableViewCell = [tableView dequeueReusableCellWithIdentifier:@"YYRecardTableViewCell" forIndexPath:indexPath];
     if (self.dataSource.count >0) {
-        RecardModel *recardModel = self.dataSource[indexPath.row];
-        homeTableViewCell.titleLabel.text = [recardModel.createTimeString componentsSeparatedByString:@" "].firstObject;
+        AppointmentModel *recardModel = self.dataSource[indexPath.row];
+        homeTableViewCell.titleLabel.text = recardModel.trueName;
+        
+        NSString *appointmentTime = [recardModel.visitTimeString substringWithRange:NSMakeRange(0, 16)];
+        homeTableViewCell.seeRecardLabel.text = appointmentTime;
     }else{
         homeTableViewCell.titleLabel.text = @"张三";
         homeTableViewCell.seeRecardLabel.text = @"挂号时间：2017-03-12 09:40";
@@ -275,24 +301,16 @@
 - (void)headViewClick{
     NSLog(@"123");
     NSArray *items = @[@"东方不败", @"步惊云", @"女娲大帝"];
-    YHPullDownMenu *pd=[[YHPullDownMenu alloc]initPullDownMenuWithItems:items cellHeight:30 menuFrame:CGRectMake(50, 10 +108.5, kScreenW -60, 300) clickIndexHandle:^(NSInteger index) {
-        switch (index) {
-            case 0://这个是选中哪一行的时候的输出，或者执行的动作，此处打印相关的信息
-                NSLog(@"selected=东方不败;");
-                self.nameLabel.text = items[0];
-                break;
-            case 1:
-                NSLog(@"selected=步惊云;");
-                self.nameLabel.text = items[1];
-                break;
-            case 2:
-                NSLog(@"selected=女娲大帝;");
-                self.nameLabel.text = items[2];
-                break;
-                
-            default:
-                break;
+    YHPullDownMenu *pd=[[YHPullDownMenu alloc]initPullDownMenuWithItems:self.dapartDataSource clinicLisy:self.clinicDataSource cellHeight:30 menuFrame:CGRectMake(50, 10 +108.5, kScreenW -60, 300) clickIndexHandle:^(NSInteger index ,NSInteger section) {
+        if (index == -1) {
+            self.nameLabel.text = self.dapartDataSource[section];
+            [self httpRequestForSection:section];
+        }else{
+            self.nameLabel.text = self.clinicDataSource[section][index];
+            [self httpRequestForClasses:index AndSection:section];
         }
+        
+
     }];
     pd.backgroundColor=[UIColor clearColor];
     [pd show];
@@ -305,14 +323,14 @@
 #pragma mark ------------Http client----------------------
 
 - (void)httpRequest{
-    [[HttpClient defaultClient]requestWithPath:[NSString stringWithFormat:@"%@token=%@",mMedicalToken,[CcUserModel defaultClient].userToken] method:0 parameters:nil prepareExecute:^{
+    [[HttpClient defaultClient]requestWithPath:[NSString stringWithFormat:@"%@token=%@&start=0&limit=10",mAllAppointment,[CcUserModel defaultClient].userToken] method:0 parameters:nil prepareExecute:^{
         
     } success:^(NSURLSessionDataTask *task, id responseObject) {
-        NSArray *rowArray = responseObject[@"result"];
-        NSLog(@"%@",responseObject);
+        NSArray *rowArray = responseObject[@"rows"];
+//        NSLog(@"%@",responseObject);
         for (NSDictionary *dict in rowArray) {
             
-            RecardModel *recardModel = [RecardModel mj_objectWithKeyValues:dict];
+            AppointmentModel *recardModel = [AppointmentModel mj_objectWithKeyValues:dict];
             [self.dataSource addObject:recardModel];
         }
         if (self.dataSource.count != 0) {
@@ -322,6 +340,84 @@
         //        [self.tableView reloadData];
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
         
+    }];
+}
+- (void)httpRequestForDepartment{
+    [[HttpClient defaultClient]requestWithPath:[NSString stringWithFormat:@"%@token=%@",mDepartment,[CcUserModel defaultClient].userToken] method:0 parameters:nil prepareExecute:^{
+        
+    } success:^(NSURLSessionDataTask *task, id responseObject) {
+        NSArray *rowArray = responseObject[@"result"];
+        NSLog(@"%@",responseObject);
+        for (NSDictionary *dict in rowArray) {
+            DeparmentModel *recardModel = [DeparmentModel mj_objectWithKeyValues:dict];
+            [self.appointmentDataSource addObject:recardModel];
+            [self.dapartDataSource addObject:dict[@"departmentName"]];
+            
+            NSMutableArray *sectionList = [[NSMutableArray alloc]initWithCapacity:2];
+            for (NSDictionary *clinicDict in recardModel.clinicList) {
+                [sectionList addObject:clinicDict[@"clinicName"]];
+            }
+            [self.clinicDataSource addObject:sectionList];
+        }
+        NSLog(@"depart = %@  \n  clinic = %@",self.dapartDataSource,self.clinicDataSource);
+        if (self.dapartDataSource.count != 0) {
+            
+        }
+        
+        //        [self.tableView reloadData];
+    } failure:^(NSURLSessionDataTask *task, NSError *error) {
+        
+    }];
+}
+- (void)httpRequestForClasses:(NSInteger )row
+                   AndSection:(NSInteger )section{
+    DeparmentModel *appointmentModel = self.appointmentDataSource[section];
+    
+    NSDictionary *clinicDict = appointmentModel.clinicList[row];
+    
+    [[HttpClient defaultClient]requestWithPath:[NSString stringWithFormat:@"%@token=%@&start=0&limit=10&departmentId=%@&clinicId=%@",mAllAppointment,[CcUserModel defaultClient].userToken,appointmentModel.info_id,clinicDict[@"id"]] method:0 parameters:nil prepareExecute:^{
+        
+    } success:^(NSURLSessionDataTask *task, id responseObject) {
+        NSArray *rowArray = responseObject[@"rows"];
+                NSLog(@"%@",responseObject);
+        [self.dataSource removeAllObjects];
+        for (NSDictionary *dict in rowArray) {
+            
+            AppointmentModel *recardModel = [AppointmentModel mj_objectWithKeyValues:dict];
+            [self.dataSource addObject:recardModel];
+        }
+        if (self.dataSource.count != 0) {
+            [self tableView];
+        }
+        
+        [self.tableView reloadData];
+    } failure:^(NSURLSessionDataTask *task, NSError *error) {
+        
+    }];
+}- (void)httpRequestForSection:(NSInteger )section{
+    DeparmentModel *appointmentModel = self.appointmentDataSource[section];
+
+    
+    [[HttpClient defaultClient]requestWithPath:[NSString stringWithFormat:@"%@token=%@&start=0&limit=10&departmentId=%@",mAllAppointment,[CcUserModel defaultClient].userToken,appointmentModel.info_id] method:0 parameters:nil prepareExecute:^{
+        
+    } success:^(NSURLSessionDataTask *task, id responseObject) {
+        NSArray *rowArray = responseObject[@"rows"];
+        NSLog(@"%@",responseObject);
+        [self.dataSource removeAllObjects];
+        for (NSDictionary *dict in rowArray) {
+            
+            AppointmentModel *recardModel = [AppointmentModel mj_objectWithKeyValues:dict];
+            [self.dataSource addObject:recardModel];
+        }
+        if (self.dataSource.count != 0) {
+            [self tableView];
+        }
+        
+        [self.tableView reloadData];
+        
+        //        [self.tableView reloadData];
+    } failure:^(NSURLSessionDataTask *task, NSError *error) {
+        NSLog(@"%@",error);
     }];
 }
 

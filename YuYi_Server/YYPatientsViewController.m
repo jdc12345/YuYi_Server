@@ -253,26 +253,26 @@
 }
 - (void)headViewClick{
     NSLog(@"123");
-     NSArray *items = @[@"东方不败", @"步惊云", @"女娲大帝"];
-    YHPullDownMenu *pd=[[YHPullDownMenu alloc]initPullDownMenuWithItems:items cellHeight:35 menuFrame:CGRectMake(50, 10 +108.5 -64, kScreenW -60, 300) clickIndexHandle:^(NSInteger index) {
-        switch (index) {
-            case 0://这个是选中哪一行的时候的输出，或者执行的动作，此处打印相关的信息
-                NSLog(@"selected=东方不败;");
-                break;
-            case 1:
-                NSLog(@"selected=步惊云;");
-                break;
-            case 2:
-                NSLog(@"selected=女娲大帝;");
-                break;
-                
-            default:
-                break;
-        }
-    }];
-    pd.backgroundColor=[UIColor clearColor];
-    self.pd = pd;
-    [self.pd show];
+//     NSArray *items = @[@"东方不败", @"步惊云", @"女娲大帝"];
+//    YHPullDownMenu *pd=[[YHPullDownMenu alloc]initPullDownMenuWithItems:items cellHeight:35 menuFrame:CGRectMake(50, 10 +108.5 -64, kScreenW -60, 300) clickIndexHandle:^(NSInteger index) {
+//        switch (index) {
+//            case 0://这个是选中哪一行的时候的输出，或者执行的动作，此处打印相关的信息
+//                NSLog(@"selected=东方不败;");
+//                break;
+//            case 1:
+//                NSLog(@"selected=步惊云;");
+//                break;
+//            case 2:
+//                NSLog(@"selected=女娲大帝;");
+//                break;
+//                
+//            default:
+//                break;
+//        }
+//    }];
+//    pd.backgroundColor=[UIColor clearColor];
+//    self.pd = pd;
+//    [self.pd show];
 //    YYPInfomartionViewController *pInfoVC = [[YYPInfomartionViewController alloc]init];
 //    pInfoVC.personalModel = self.personalModel;
 //    [self.navigationController pushViewController:pInfoVC animated:YES];
@@ -357,8 +357,11 @@
 
 - (void)httpRequestForUserList{
     NSString *urlStr;
+    NSLog(@"%@",self.titleStr);
 //    if ([self.titleStr isEqualToString:@"all"]) {
         urlStr = mPatientListTotal;
+//    }else{
+//        urlStr = mPatientListMine;
 //    }
     
     

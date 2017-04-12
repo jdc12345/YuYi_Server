@@ -7,7 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "AppointmentModel.h"
 
 @interface YYDetailRecardViewController : UIViewController
 @property (nonatomic, strong) NSString *recardID;
+@property (nonatomic, strong) AppointmentModel *appointmentModel;
 @end

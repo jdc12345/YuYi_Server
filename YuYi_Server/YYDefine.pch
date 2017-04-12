@@ -168,6 +168,8 @@
 #pragma mark ------------医生端----------------------
 // 获取患者列表接口
 #define mPatientListTotal [NSString stringWithFormat:@"%@%@",mPrefixUrl,@"/homeuser/findAllUserList.do?"]
+// 获取我的患者列表接口
+#define mPatientListMine [NSString stringWithFormat:@"%@%@",mPrefixUrl,@"/findMyUserList.do?"]
 // 获取患者电子病历信息接口
 #define mRecardDetail [NSString stringWithFormat:@"%@%@",mPrefixUrl,@"/medical/findOnePh.do?"]
 // 获取患者测量数据信息接口
@@ -176,6 +178,14 @@
 #define mMessages [NSString stringWithFormat:@"%@%@",mPrefixUrl,@"/messagePhysician/findPage.do?token="]
 // 意见反馈接口
 #define mFeedBackInfo [NSString stringWithFormat:@"%@%@",mPrefixUrl,@"/feedback/saveforph.do?"]
+
+
+// 挂号科室门诊列表接口
+#define mDepartment [NSString stringWithFormat:@"%@%@",mPrefixUrl,@"/department/getallph.do?"]
+// 全部挂号接口
+#define mAllAppointment [NSString stringWithFormat:@"%@%@",mPrefixUrl,@"/register/findList.do?"]
+// 挂号详情接口
+#define mAppointmentDetail [NSString stringWithFormat:@"%@%@",mPrefixUrl,@"/register/get.do?"]
 // Include any system framework and library headers here that should be included in all compilation units.
 // You will also need to set the Prefix Header build setting of one or more of your targets to reference this file.
 

@@ -8,14 +8,16 @@
 
 
 #import <UIKit/UIKit.h>
-typedef void(^YHPullDownMenuClickIndexBlock)(NSInteger index);
+typedef void(^YHPullDownMenuClickIndexBlock)(NSInteger index ,NSInteger section);
 @interface YHPullDownMenu : UIView
 @property(nonatomic,strong)UIView*pdContentView;
 + (instancetype)dropdownMenuWithItems:(NSArray*)items;
 -(instancetype)initPullDownMenuWithItems:(NSArray*)items
+                              clinicLisy:(NSArray *)clinicList
                               cellHeight:(CGFloat)cellHeight
                                menuFrame:(CGRect) menuFrame
-                        clickIndexHandle:(YHPullDownMenuClickIndexBlock)handle;
+                        clickIndexHandle:(YHPullDownMenuClickIndexBlock)handle
+                              ;
 /**
  *  IOS下拉菜单初始化函数
  *
@@ -28,6 +30,7 @@ typedef void(^YHPullDownMenuClickIndexBlock)(NSInteger index);
  *  @return instancetype
  */
 -(instancetype)initPullDownMenuWithItems:(NSArray*)items
+                              clinicLisy:(NSArray *)clinicList
                               cellHeight:(CGFloat)cellHeight
                                menuFrame:(CGRect) menuFrame
                                   bgImge:(UIImage*)bgImage

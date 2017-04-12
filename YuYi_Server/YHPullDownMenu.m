@@ -20,6 +20,7 @@
 @property(nonatomic,strong)UIImage*bgImage;
 @property (nonatomic, copy) NSArray *totaldData;
 @property (nonatomic, strong) NSMutableArray *currentData;
+@property (nonatomic, copy) NSArray *clinicList;
 @end
 
 @implementation YHPullDownMenu
@@ -31,11 +32,13 @@
     return _currentData;
 }
 -(instancetype)initPullDownMenuWithItems:(NSArray*)items
-                              cellHeight:(CGFloat)cellHeight
+                              clinicLisy:(NSArray *)clinicList
+                                cellHeight:(CGFloat)cellHeight
                                menuFrame:(CGRect) menuFrame
                         clickIndexHandle:(YHPullDownMenuClickIndexBlock)handle{
     
     return [self initPullDownMenuWithItems:items
+                                clinicLisy:(NSArray *)clinicList
                                 cellHeight:cellHeight
                                  menuFrame: menuFrame
                                    bgImage:[UIImage imageNamed:@"avatar"]
@@ -43,6 +46,7 @@
 }
 
 -(instancetype)initPullDownMenuWithItems:(NSArray*)items
+                              clinicLisy:(NSArray *)clinicList
                               cellHeight:(CGFloat)cellHeight
                                menuFrame:(CGRect) menuFrame
                                  bgImage:(UIImage*)bgImage
@@ -50,6 +54,7 @@
     self=[super init];
     if(self){
         self.items=items;
+        self.clinicList = clinicList;
         self.frame= [UIScreen mainScreen].bounds;
         self.backgroundColor=[UIColor yellowColor];
         self.block=[handle copy];
@@ -131,7 +136,8 @@
 }
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return [self.items count];
+    NSArray *array = self.clinicList[section];
+    return array.count;
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
     return 44;
@@ -147,6 +153,7 @@
     }else{
         title = @ "常用药品";
     }
+    title = self.items[section];
     UIView *sectionHView = [[UIView alloc]init];
     sectionHView.backgroundColor = [UIColor colorWithHexString:@"f2f2f2"];
     
@@ -209,7 +216,7 @@
 //        cell.selectionStyle = UITableViewCellSelectionStyleNone;
     }
     cell.textLabel.textAlignment=NSTextAlignmentLeft;
-    cell.textLabel.text = self.items[indexPath.row];
+    cell.textLabel.text = self.clinicList[indexPath.section][indexPath.row];
     return cell;
 }
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -223,7 +230,7 @@
 {
     
     if (self.block) {
-        self.block([indexPath row]);
+        self.block([indexPath row],indexPath.section);
         self.block = nil;
     }
     [self dismiss];
@@ -250,6 +257,15 @@
     labelSize.height = ceil(labelSize.height);
     labelSize.width = ceil(labelSize.width);
     return labelSize;
+}
+- (void)Actiondo:(UITapGestureRecognizer *)tapNum{
+    
+    NSInteger sectionNum = tapNum.view.tag -200;
+    if (self.block) {
+        self.block(-1,sectionNum);
+        self.block = nil;
+    }
+    [self dismiss];
 }
 
 //- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath{

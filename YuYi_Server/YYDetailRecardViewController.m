@@ -99,10 +99,17 @@
 //        make.size.mas_equalTo(CGSizeMake(140 *kiphone6, 10 *kiphone6));
     }];
     
-    NSArray *arrayList = @[@"科室：内科",@"医师：李四",@"门诊：二楼203呼吸科室"];
+    NSArray *arrayList = @[@"科室：",@"医师：",@"门诊："];
     for (int i = 0;  i<3; i++) {
         UILabel *titleLabel = [[UILabel alloc]init];
-        titleLabel.text = arrayList[i];
+        if (i == 0) {
+            titleLabel.text = [NSString stringWithFormat:@"%@%@",arrayList[i],self.appointmentModel.departmentName];
+        }else if (i == 1){
+            titleLabel.text = [NSString stringWithFormat:@"%@%@",arrayList[i],self.appointmentModel.physicianTrueName];;
+        }else{
+            titleLabel.text = [NSString stringWithFormat:@"%@%@",arrayList[i],self.appointmentModel.clinicName];;
+        }
+        
         titleLabel.textColor = [UIColor colorWithHexString:@"333333"];
         titleLabel.font = [UIFont systemFontOfSize:15];
         
@@ -207,29 +214,26 @@
     
     homeTableViewCell.titleLabel.text = self.dataSource[indexPath.section][indexPath.row];
     if (indexPath.section == 0) {
-        
         if (indexPath.row ==  0) {
-            homeTableViewCell.seeRecardLabel.text = self.dataModel.trueName;
+            homeTableViewCell.seeRecardLabel.text = self.appointmentModel.info_id;
         }else if (indexPath.row ==  1) {
-            if ([self.dataModel.gender isEqualToString:@"0"]) {
+            homeTableViewCell.seeRecardLabel.text = self.appointmentModel.trueName;
+    
+        }else if (indexPath.row ==  2) {
+            if ([self.appointmentModel.gender isEqualToString:@"0"]) {
                 homeTableViewCell.seeRecardLabel.text = @"男";
             }else{
                 homeTableViewCell.seeRecardLabel.text = @"女";
             }
             
-        }else if (indexPath.row ==  2) {
-            homeTableViewCell.seeRecardLabel.text = self.dataModel.age;
+            
         }else if (indexPath.row ==  3) {
-            if ([self.dataModel.marital isEqualToString:@"0"]) {
-                homeTableViewCell.seeRecardLabel.text = @"未婚";
-            }
-            if ([self.dataModel.marital isEqualToString:@"1"]) {
-                homeTableViewCell.seeRecardLabel.text = @"已婚";
-            }if ([self.dataModel.marital isEqualToString:@"2"]) {
-                homeTableViewCell.seeRecardLabel.text = @"离异";
-            }if ([self.dataModel.marital isEqualToString:@"3"]) {
-                homeTableViewCell.seeRecardLabel.text = @"丧偶";
-            }
+            homeTableViewCell.seeRecardLabel.text = self.appointmentModel.age;
+            
+        }else if (indexPath.row ==  4) {
+            homeTableViewCell.seeRecardLabel.text = self.appointmentModel.telephone;
+        }else if (indexPath.row ==  5) {
+            homeTableViewCell.seeRecardLabel.text = self.appointmentModel.telephone;
         }
     }else{
         
@@ -245,20 +249,21 @@
 #pragma mark -
 #pragma mark ------------Http client----------------------
 
-- (void)httpRequest{
-    [[HttpClient defaultClient]requestWithPath:[NSString stringWithFormat:@"%@%@",mMedicalDetail,self.recardID] method:0 parameters:nil prepareExecute:^{
-        
-    } success:^(NSURLSessionDataTask *task, id responseObject) {
-        NSLog(@"%@",responseObject);
-        NSArray *array = responseObject;
-        NSDictionary *dict = responseObject;
-        self.dataModel = [RecardDetailModel mj_objectWithKeyValues:dict];
-        self.tableView.tableFooterView = [self personInfomation];
-//        [self.tableView reloadData];
-    } failure:^(NSURLSessionDataTask *task, NSError *error) {
-        
-    }];
-}
+//- (void)httpRequest{
+//    NSString *tokenStr = [CcUserModel defaultClient].userToken;
+//    [[HttpClient defaultClient]requestWithPath:[NSString stringWithFormat:@"%@token=%@&id=%@",mAppointmentDetail,tokenStr,self.recardID] method:0 parameters:nil prepareExecute:^{
+//        
+//    } success:^(NSURLSessionDataTask *task, id responseObject) {
+//        NSLog(@"%@",responseObject);
+////        NSArray *array = responseObject;
+////        NSDictionary *dict = responseObject;
+////        self.dataModel = [RecardDetailModel mj_objectWithKeyValues:dict];
+////        self.tableView.tableFooterView = [self personInfomation];
+//////        [self.tableView reloadData];
+//    } failure:^(NSURLSessionDataTask *task, NSError *error) {
+//        
+//    }];
+//}
 
 
 /*
