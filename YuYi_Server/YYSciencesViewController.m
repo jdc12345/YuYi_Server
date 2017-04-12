@@ -49,22 +49,16 @@
     [self loadData];
 }
 - (void)loadData {
-//    self.hotInfos = [NSArray arrayWithObjects:@"1",@"2",@"3",@"4",@"5",@"6",@"4",@"5",@"6", nil];
-//    self.selectInfos = [NSArray arrayWithObjects:@"1",@"2",@"3", nil];
-//    self.recentInfos = [NSArray arrayWithObjects:@"1",@"2", nil];
-//    [self setupUI];
 //    http://192.168.1.55:8080/yuyi/academicpaper/findhot.do?start=0&limit=6
 //    http://192.168.1.55:8080/yuyi/academicpaper/Selected.do?start=0&limit=1
 //    http://192.168.1.55:8080/yuyi/academicpaper/findtime.do?start=0&limit=6
     NSString *hotUrlStr = [NSString stringWithFormat:@"%@/academicpaper/findhot.do?start=0&limit=6",mPrefixUrl];
-    NSString *selectUrlStr = [NSString stringWithFormat:@"%@/yuyi/academicpaper/Selected.do?start=0&limit=1",mPrefixUrl];
+    NSString *selectUrlStr = [NSString stringWithFormat:@"%@/academicpaper/Selected.do?start=0&limit=1",mPrefixUrl];
     NSString *recentUrlStr = [NSString stringWithFormat:@"%@/academicpaper/findtime.do?start=0&limit=6",mPrefixUrl];
     [self loadHotInfosWithUrlStr:hotUrlStr];
     [self loadSelectInfosWithUrlStr:selectUrlStr];
     [self loadRecentInfosWithUrlStr:recentUrlStr];
-    
 }
-
 -(void)loadHotInfosWithUrlStr:(NSString*)urlStr{
     [[HttpClient defaultClient]requestWithPath:urlStr method:0 parameters:nil prepareExecute:^{
         
@@ -87,23 +81,19 @@
     [[HttpClient defaultClient]requestWithPath:urlStr method:0 parameters:nil prepareExecute:^{
         
     } success:^(NSURLSessionDataTask *task, id responseObject) {
-        NSArray *arr = responseObject[@"rows"];
+        NSArray *arr = responseObject[@"result"];
         NSMutableArray *mArr = [NSMutableArray array];
         for (NSDictionary *dic in arr) {
             YYCardDetailModel *infoModel = [YYCardDetailModel mj_objectWithKeyValues:dic];
             [mArr addObject:infoModel];
         }
         self.selectCardVC.infos = mArr;
-        
-        
+        self.selectInfos = mArr;
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
-        
     }];
-    
 }
 -(void)loadRecentInfosWithUrlStr:(NSString*)urlStr{
     [[HttpClient defaultClient]requestWithPath:urlStr method:0 parameters:nil prepareExecute:^{
-        
     } success:^(NSURLSessionDataTask *task, id responseObject) {
         NSArray *arr = responseObject[@"rows"];
         NSMutableArray *mArr = [NSMutableArray array];
@@ -112,13 +102,11 @@
             [mArr addObject:infoModel];
         }
         self.recentCardVC.infos = mArr;
-        
+        self.recentInfos = mArr;
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
         
     }];
-    
 }
-
 //
 -(void)setupUI{
     self.navigationController.navigationBar.hidden = true;
@@ -218,12 +206,12 @@
     //设置帖子分类约束
     [cardsView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.left.right.offset(0);
-        make.height.offset(64);
+        make.height.offset(64*kiphone6);
     }];
     //设置按钮约束
     [cardCategoryButtons mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.offset(20);
-        make.bottom.offset(0);
+        make.bottom.offset(0*kiphone6);
     }];
     //循环设置按钮的等宽
     for (int i = 0; i < cardCategoryButtons.count-1; i ++) {
@@ -238,14 +226,13 @@
         }
         if (i==cardCategoryButtons.count-2) {
             [nextBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.right.offset(-([UIScreen mainScreen].bounds.size.width-170));
+                make.right.offset(-([UIScreen mainScreen].bounds.size.width-170*kiphone6));
             }];
         }
         [nextBtn mas_makeConstraints:^(MASConstraintMaker *make) {
             make.width.equalTo(currentBtn);
             make.left.equalTo(currentBtn.mas_right);
         }];
-        
     }
     //设置滑动线的约束
     [cardLineView mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -308,7 +295,7 @@
         }];
 
     }else if (sender.tag == 1){
-        NSString *selectUrlStr = [NSString stringWithFormat:@"%@/yuyi/academicpaper/Selected.do?start=0&limit=1",mPrefixUrl];
+        NSString *selectUrlStr = [NSString stringWithFormat:@"%@/academicpaper/Selected.do?start=0&limit=1",mPrefixUrl];
         [self loadSelectInfosWithUrlStr:selectUrlStr];
     }else if (sender.tag == 2){
         NSString *recentUrlStr = [NSString stringWithFormat:@"%@/academicpaper/findtime.do?start=0&limit=6",mPrefixUrl];
@@ -422,9 +409,7 @@
         make.bottom.equalTo(self.cardsView);
         make.centerX.offset(res-d);
     }];
-    
-    //
-    [self.cardLineView layoutIfNeeded];
+
 }
 
 -(void)viewWillAppear:(BOOL)animated{

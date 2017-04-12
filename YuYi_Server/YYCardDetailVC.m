@@ -17,7 +17,7 @@
 #import <MJExtension.h>
 #import "YYCardDetailPageModel.h"
 #import "YYCardCommentDetailModel.h"
-
+#import "CcUserModel.h"
 static NSString *cellId = @"cell_id";
 @interface YYCardDetailVC ()<UITableViewDelegate,UITableViewDataSource,UITextViewDelegate>
 @property(nonatomic,weak)UITableView *tableView;
@@ -27,6 +27,7 @@ static NSString *cellId = @"cell_id";
 @property(nonatomic,strong)NSMutableArray *commentInfos;
 //
 @property(nonatomic,strong)YYCardDetailPageModel *infoModel;
+@property(nonatomic,weak)UIView *headerView;
 @end
 
 @implementation YYCardDetailVC
@@ -46,7 +47,9 @@ static NSString *cellId = @"cell_id";
 }
 - (void)loadData{
 //    http://192.168.1.55:8080/yuyi/academicpaper/academicpaperComment.do?start=0&limit=2&id=1
-    NSString *urlStr = [NSString stringWithFormat:@"%@/academicpaper/academicpaperComment.do?start=0&limit=2&id=%@",mPrefixUrl,self.info_id];
+    CcUserModel *model = [CcUserModel defaultClient];
+    NSString *token = model.userToken;
+    NSString *urlStr = [NSString stringWithFormat:@"%@/academicpaper/academicpaperComment.do?start=0&limit=2&id=%@&token=%@",mPrefixUrl,self.info_id,token];
     [[HttpClient defaultClient]requestWithPath:urlStr method:0 parameters:nil prepareExecute:^{
         
     } success:^(NSURLSessionDataTask *task, id responseObject) {
@@ -88,6 +91,47 @@ static NSString *cellId = @"cell_id";
     tableView.rowHeight = UITableViewAutomaticDimension;
     [tableView registerClass:[YYCommentTVCell class] forCellReuseIdentifier:cellId];
     tableView.tableHeaderView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kScreenW, CGFLOAT_MIN)];//解决group样式顶部留白问题
+    //搜索框
+    UIView *headerView = [[UIView alloc]initWithFrame:CGRectMake(20,self.view.frame.size.height- 45*kiphone6, self.view.frame.size.width-40*kiphone6, 45*kiphone6)];
+    [self.view addSubview:headerView];
+    [self.view bringSubviewToFront:headerView];
+    self.headerView = headerView;
+    //键盘的Frame改变的通知
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillChangeFrame:) name:UIKeyboardWillChangeFrameNotification object:nil];
+    //输入框
+    BRPlaceholderTextView *commentField = [[BRPlaceholderTextView alloc]init];
+    [headerView addSubview:commentField];
+    [commentField mas_makeConstraints:^(MASConstraintMaker *make) {
+        //        make.left.offset(10);
+        make.left.right.top.bottom.offset(0);
+    }];
+    commentField.returnKeyType = UIReturnKeySend;
+    commentField.delegate = self;
+    self.commentField = commentField;
+    commentField.placeholder = @"说点什么吧";
+    commentField.imagePlaceholder = @"writing";
+    commentField.font=[UIFont boldSystemFontOfSize:14];
+    [commentField setBackgroundColor:[UIColor whiteColor]];
+    [commentField setPlaceholderFont:[UIFont systemFontOfSize:15]];
+    [commentField setPlaceholderColor:[UIColor colorWithHexString:@"999999"]];
+    [commentField setPlaceholderOpacity:0.6];
+    [commentField addMaxTextLengthWithMaxLength:200 andEvent:^(BRPlaceholderTextView *text) {
+        [self.commentField endEditing:YES];
+        
+        NSLog(@"----------");
+    }];
+    
+    [commentField addTextViewBeginEvent:^(BRPlaceholderTextView *text) {
+        NSLog(@"begin");
+    }];
+    
+    [commentField addTextViewEndEvent:^(BRPlaceholderTextView *text) {
+        NSLog(@"end");
+        
+    }];
+    //边框宽度
+    [commentField.layer setBorderWidth:0.8];
+    commentField.layer.borderColor=[UIColor colorWithHexString:@"#f3f3f3"].CGColor;
 
 }
 #pragma tableViewDatasource
@@ -162,48 +206,23 @@ static NSString *cellId = @"cell_id";
 }
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
-    //搜索框
-    UIView *headerView = [[UIView alloc]initWithFrame:CGRectMake(20,self.view.frame.size.height- 45, self.view.frame.size.width-40, 45)];
-    [self.view addSubview:headerView];
-    [self.view bringSubviewToFront:headerView];
-    //输入框
-    BRPlaceholderTextView *commentField = [[BRPlaceholderTextView alloc]init];
-    [headerView addSubview:commentField];
-    [commentField mas_makeConstraints:^(MASConstraintMaker *make) {
-//        make.left.offset(10);
-    make.left.right.top.bottom.offset(0);
-    }];
-    commentField.returnKeyType = UIReturnKeySend;
-    commentField.delegate = self;
-    self.commentField = commentField;
-    commentField.placeholder = @"说点什么吧";
-    commentField.imagePlaceholder = @"writing";
-    commentField.font=[UIFont boldSystemFontOfSize:14];
-    [commentField setBackgroundColor:[UIColor whiteColor]];
-    [commentField setPlaceholderFont:[UIFont systemFontOfSize:15]];
-    [commentField setPlaceholderColor:[UIColor colorWithHexString:@"999999"]];
-    [commentField setPlaceholderOpacity:0.6];
-    [commentField addMaxTextLengthWithMaxLength:200 andEvent:^(BRPlaceholderTextView *text) {
-        [self.commentField endEditing:YES];
-        
-        NSLog(@"----------");
-    }];
     
-    [commentField addTextViewBeginEvent:^(BRPlaceholderTextView *text) {
-        NSLog(@"begin");
-    }];
     
-    [commentField addTextViewEndEvent:^(BRPlaceholderTextView *text) {
-        NSLog(@"end");
-//        if (!text.text) {
-//            self.commentField.frame = CGRectMake(0,0, self.view.frame.size.width-40, 45);
-//        }
-        
-    }];
-    //边框宽度
-    [commentField.layer setBorderWidth:0.8];
-    commentField.layer.borderColor=[UIColor colorWithHexString:@"#f3f3f3"].CGColor;
+}
+- (void)keyboardWillChangeFrame:(NSNotification *)noti{
     
+    
+    //    if (!self.isSwitchKeyboard) {
+    //从userInfo里面取出来键盘最终的位置
+    NSValue *rectValue = noti.userInfo[UIKeyboardFrameEndUserInfoKey];
+    
+    CGRect rect = [rectValue CGRectValue];
+    CGRect rectField = self.headerView.frame;
+    CGRect newRect = CGRectMake(rectField.origin.x, rect.origin.y - rectField.size.height-70*kiphone6, rectField.size.width, rectField.size.height) ;
+    [UIView animateWithDuration:0.25 animations:^{
+        self.headerView.frame = newRect;
+    }];
+    //    }
 }
 -(void)tableView:(UITableView *)tableView didDeselectRowAtIndexPath:(NSIndexPath *)indexPath{
     [tableView deselectRowAtIndexPath:indexPath animated:true];

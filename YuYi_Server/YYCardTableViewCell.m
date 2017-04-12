@@ -11,6 +11,8 @@
 #import "UIColor+colorValues.h"
 #import <Masonry.h>
 #import <UIImageView+WebCache.h>
+#import "CcUserModel.h"
+#import "HttpClient.h"
 @interface YYCardTableViewCell ()
 @property(nonatomic,weak)UILabel *praiseCountLabel;
 @property(nonatomic,weak)UIImageView *imagesView;
@@ -41,9 +43,9 @@
         [self.contentLabel mas_updateConstraints:^(MASConstraintMaker *make) {
             make.left.equalTo(self.imagesView.mas_right);
         }];
-        [self.timeLabel mas_updateConstraints:^(MASConstraintMaker *make) {
+        /*[self.timeLabel mas_updateConstraints:^(MASConstraintMaker *make) {
             make.top.equalTo(self.contentLabel.mas_bottom).offset(10*kiphone6);
-        }];
+        }];*/
     }else{
         [self.imagesView mas_updateConstraints:^(MASConstraintMaker *make) {
             make.width.height.offset(55*kiphone6);
@@ -51,9 +53,9 @@
         [self.contentLabel mas_updateConstraints:^(MASConstraintMaker *make) {
             make.left.equalTo(self.imagesView.mas_right).offset(10*kiphone6);
         }];
-        [self.timeLabel mas_updateConstraints:^(MASConstraintMaker *make) {
+        /*[self.timeLabel mas_updateConstraints:^(MASConstraintMaker *make) {
             make.top.equalTo(self.imagesView.mas_bottom).offset(10*kiphone6);
-        }];
+        }];*/
 
         NSString *imageUrlStr = [NSString stringWithFormat:@"%@%@",mPrefixUrl,model.picture];
         [self.imagesView sd_setImageWithURL:[NSURL URLWithString:imageUrlStr]];
@@ -66,6 +68,14 @@
 }
 - (void)setupUI{
 //    self.contentView.backgroundColor = [UIColor orangeColor];
+    UIView *line = [[UIView alloc]init];//分割线
+    line.alpha = 0.6f;
+    line.backgroundColor = [UIColor colorWithHexString:@"999999"];
+    [self.contentView addSubview:line];
+    [line mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.right.bottom.equalTo(self.contentView);
+        make.height.offset(0.5*kiphone6);
+    }];
     //帖子标题
     UILabel *titleLabel = [UILabel labelWithText:@"帖子标题" andTextColor:[UIColor colorWithHexString:@"2b2b2b"] andFontSize:14];
     [self.contentView addSubview:titleLabel];
@@ -116,10 +126,11 @@
         make.left.equalTo(imageView.mas_right).offset(10*kiphone6);
         make.right.offset(-20*kiphone6);
         make.top.equalTo(titleLabel.mas_bottom).offset(10*kiphone6);
+        make.height.offset(55*kiphone6);
     }];
     [timeLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.offset(20*kiphone6);
-        make.top.equalTo(imageView.mas_bottom).offset(20*kiphone6);
+        make.top.equalTo(titleLabel.mas_bottom).offset(85*kiphone6);
     }];
     [repliesLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(timeLabel.mas_top);
@@ -136,6 +147,7 @@
     [praiseBtn mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerY.equalTo(timeLabel);
         make.right.equalTo(praiseCountLabel.mas_left).offset(-7*kiphone6);
+        make.width.height.offset(20*kiphone6);
     }];
     [self.contentView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.bottom.equalTo(praiseBtn.mas_bottom).offset(20*kiphone6);
@@ -144,9 +156,35 @@
 
 }
 - (void)praisePlus:(UIButton*)sender{
+    
+    CcUserModel *model = [CcUserModel defaultClient];
+    NSString *token = model.userToken;
+    NSString *urlStr = [NSString stringWithFormat:@"%@/likes/LikeNum.do?id=%@&token=%@",mPrefixUrl,self.model.info_id,token];
+    [[HttpClient defaultClient]requestWithPath:urlStr method:HttpRequestPost parameters:nil prepareExecute:^{
+        
+    } success:^(NSURLSessionDataTask *task, id responseObject) {
+        if ([responseObject[@"code"] isEqualToString:@"0"]) {
+            
+        }else{
+            //点赞/删除未成功
+        }
+    } failure:^(NSURLSessionDataTask *task, NSError *error) {
+        
+    }];
     NSInteger count = [self.praiseCountLabel.text integerValue];
-    count += 1;
-    self.praiseCountLabel.text = [NSString stringWithFormat:@"%ld",count];
+    if (self.model.isLike) {
+        count -= 1;
+        self.praiseCountLabel.text = [NSString stringWithFormat:@"%ld",count];
+        [sender setImage:[UIImage imageNamed:@"like"] forState:UIControlStateNormal];
+        self.model.isLike = false;
+        self.model.likeNum = [NSString stringWithFormat:@"%ld",count];
+    }else{
+        count += 1;
+        self.praiseCountLabel.text = [NSString stringWithFormat:@"%ld",count];
+        [sender setImage:[UIImage imageNamed:@"Info-heart-icon-select-"] forState:UIControlStateNormal];
+        self.model.isLike = true;
+        self.model.likeNum = [NSString stringWithFormat:@"%ld",count];
+    }
 }
 - (void)repliesPlus:(UIButton*)sender{
     

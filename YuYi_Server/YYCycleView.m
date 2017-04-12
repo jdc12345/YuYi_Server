@@ -94,7 +94,7 @@
     _pageCtrl.currentPage = 0; //当前页
     _pageCtrl.dotImage = [UIImage imageNamed:@"pageControl-normal"];
     _pageCtrl.currentDotImage = [UIImage imageNamed:@"pageControl-select"];
-    _pageCtrl.dotSize = CGSizeMake(15, 5);
+    _pageCtrl.dotSize = CGSizeMake(0, 0);
     [_pageCtrl addTarget:self action:@selector(pageTurn:) forControlEvents:UIControlEventValueChanged];  //用户点击UIPageControl的响应函数
     //
     [self addSubview:cycleScrollView];
@@ -107,7 +107,7 @@
         make.top.bottom.left.right.offset(0);
     }];
     [_pageCtrl mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.bottom.equalTo(self);
+        make.bottom.equalTo(self).offset(40);
         make.centerX.equalTo(ws.mas_centerX).offset(20);
         make.size.mas_equalTo(CGSizeMake(40 *kiphone6, 10 *kiphone6));
     }];

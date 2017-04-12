@@ -45,7 +45,7 @@ static NSString *cellId = @"cell_id";
     tableView.estimatedRowHeight = 150;
     tableView.rowHeight = UITableViewAutomaticDimension;
     [tableView registerClass:[YYCardTableViewCell class] forCellReuseIdentifier:cellId];
-    
+    tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
 }
 #pragma tableViewDatasource
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
@@ -67,6 +67,9 @@ static NSString *cellId = @"cell_id";
 -(void)tableView:(UITableView *)tableView didDeselectRowAtIndexPath:(NSIndexPath *)indexPath{
     [tableView deselectRowAtIndexPath:indexPath animated:true];
 }
+/*-(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
+    return 150*kiphone6;
+}*/
 -(void)viewWillDisappear:(BOOL)animated{
     [super viewWillDisappear:animated];
 //    self.navigationController.navigationBar.hidden = false;

@@ -29,6 +29,7 @@ static NSString *cell_Id = @"cell_id";
 //评论
 @property(weak, nonatomic)BRPlaceholderTextView *commentField;
 
+@property(nonatomic,weak)UIView *fieldBackView;
 @end
 
 @implementation YYInfoCommentVC
@@ -77,7 +78,10 @@ static NSString *cell_Id = @"cell_id";
     [tableView registerClass:[YYCommentTVCell class] forCellReuseIdentifier:cell_Id];
     tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     //评论框
-    UIView *fieldBackView = [[UIView alloc]initWithFrame:CGRectMake(20,self.view.frame.size.height- 45, self.view.frame.size.width-40, 45)];
+    UIView *fieldBackView = [[UIView alloc]initWithFrame:CGRectMake(20,self.view.frame.size.height- 45*kiphone6, self.view.frame.size.width-40*kiphone6, 45*kiphone6)];
+    self.fieldBackView = fieldBackView;
+    //键盘的Frame改变的通知
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillChangeFrame:) name:UIKeyboardWillChangeFrameNotification object:nil];
     [self.view addSubview:fieldBackView];
     [self.view bringSubviewToFront:fieldBackView];
     //输入框
@@ -113,6 +117,21 @@ static NSString *cell_Id = @"cell_id";
     [commentField.layer setBorderWidth:0.8];
     commentField.layer.borderColor=[UIColor colorWithHexString:@"#f3f3f3"].CGColor;
 }
+- (void)keyboardWillChangeFrame:(NSNotification *)noti{
+    
+    
+//    if (!self.isSwitchKeyboard) {
+        //从userInfo里面取出来键盘最终的位置
+        NSValue *rectValue = noti.userInfo[UIKeyboardFrameEndUserInfoKey];
+        
+        CGRect rect = [rectValue CGRectValue];
+        CGRect rectField = self.fieldBackView.frame;
+        CGRect newRect = CGRectMake(rectField.origin.x, rect.origin.y - rectField.size.height-70*kiphone6, rectField.size.width, rectField.size.height) ;
+        [UIView animateWithDuration:0.25 animations:^{
+            self.fieldBackView.frame = newRect;
+        }];
+//    }
+}
 - (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text{
     
     NSCharacterSet *doneButtonCharacterSet = [NSCharacterSet newlineCharacterSet];
@@ -134,42 +153,43 @@ static NSString *cell_Id = @"cell_id";
         }  else if (location != NSNotFound){
             
         [textView resignFirstResponder];
-            if (textView.text!=nil||![textView.text isEqualToString:@""]) {
-                CcUserModel *userModel = [CcUserModel defaultClient];
-                NSString *telePhoneNumber = userModel.telephoneNum;
-                //            http://192.168.1.55:8080/yuyi/comment/AddConment.do?telephone=18782931355&content_id=1&Content=haha
-                NSString *urlStr = [NSString stringWithFormat:@"%@/comment/AddConment.do?telephone=%@&content_id=%@&Content=%@",mPrefixUrl,telePhoneNumber,self.info_id,[textView.text stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]]];
-                [[HttpClient defaultClient]requestWithPath:urlStr method:HttpRequestPost parameters:nil prepareExecute:^{
-                    
+    if (textView.text!=nil||![textView.text isEqualToString:@""]) {
+        CcUserModel *userModel = [CcUserModel defaultClient];
+        NSString *telePhoneNumber = userModel.telephoneNum;
+        //            http://192.168.1.55:8080/yuyi/comment/AddConment.do?telephone=18782931355&content_id=1&Content=haha
+        NSString *urlStr = [NSString stringWithFormat:@"%@/comment/AddConment.do?telephone=%@&content_id=%@&Content=%@",mPrefixUrl,telePhoneNumber,self.info_id,[textView.text stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]]];
+        [[HttpClient defaultClient]requestWithPath:urlStr method:HttpRequestPost parameters:nil prepareExecute:^{
+
                 } success:^(NSURLSessionDataTask *task, id responseObject) {
                     if ([responseObject[@"code"] isEqualToString:@"0"]) {
                         //更新评论数据源
                         NSString *urlStr = [NSString stringWithFormat:@"%@/comment/getConmentAll.do?id=%@&start=0&limit=6",mPrefixUrl,self.info_id];
-                        [[HttpClient defaultClient]requestWithPath:urlStr method:0 parameters:nil prepareExecute:^{
+        [[HttpClient defaultClient]requestWithPath:urlStr method:0 parameters:nil prepareExecute:^{
                             
                         } success:^(NSURLSessionDataTask *task, id responseObject) {
-                            NSArray *arr = responseObject[@"result"];
-                            NSMutableArray *mArr = [NSMutableArray array];
-                            for (NSDictionary *dic in arr) {
-                                YYCommentInfoModel *infoModel = [YYCommentInfoModel mj_objectWithKeyValues:dic];
-                                [mArr addObject:infoModel];
-                            }
-                            self.commentInfoModels  = mArr;
-                            textView.text = nil;
-                            NSInteger count = [self.commentCountLabel.text integerValue];
-                            count += 1;
-                            self.commentCountLabel.text = [NSString stringWithFormat:@"%ld",count];//评论数加一
-                            [self.tableView reloadData];
+            NSArray *arr = responseObject[@"result"];
+            NSMutableArray *mArr = [NSMutableArray array];
+            for (NSDictionary *dic in arr) {
+        YYCommentInfoModel *infoModel = [YYCommentInfoModel mj_objectWithKeyValues:dic];
+        [mArr addObject:infoModel];
+                }
+        self.commentInfoModels  = mArr;
+        NSInteger count = [self.commentCountLabel.text integerValue];
+        count += 1;
+        self.commentCountLabel.text = [NSString stringWithFormat:@"%ld",count];//评论数加一
+        [self.tableView reloadData];
+        self.commentField.text = nil;
+        self.commentField.placeholder = @"说点什么吧";
+        self.commentField.imagePlaceholder = @"writing";
+
+        } failure:^(NSURLSessionDataTask *task, NSError *error) {
                             
-                            
-                        } failure:^(NSURLSessionDataTask *task, NSError *error) {
-                            
-                        }];
-                    }else{
-                    [self showAlertWithMessage:@"评论未成功，请稍后再试"];
-                    }
+        }];
+        }else{
+        [self showAlertWithMessage:@"评论未成功，请稍后再试"];
+        }
                     
-                } failure:^(NSURLSessionDataTask *task, NSError *error) {
+        } failure:^(NSURLSessionDataTask *task, NSError *error) {
                     
                 }];
 
@@ -331,19 +351,34 @@ static NSString *cell_Id = @"cell_id";
 }
 #pragma - btnClick
 - (void)praisePlus:(UIButton*)sender{
+    CcUserModel *model = [CcUserModel defaultClient];
+    NSString *token = model.userToken;
+    NSString *urlStr = [NSString stringWithFormat:@"%@/likes/UpdateLikeNum.do?id=%@&token=%@",mPrefixUrl,self.info_id,token];
+    [[HttpClient defaultClient]requestWithPath:urlStr method:HttpRequestPost parameters:nil prepareExecute:^{
+        
+    } success:^(NSURLSessionDataTask *task, id responseObject) {
+        if ([responseObject[@"code"] isEqualToString:@"0"]) {
+            
+        }else{
+            //点赞/删除未成功
+        }
+    } failure:^(NSURLSessionDataTask *task, NSError *error) {
+        
+    }];
     NSInteger count = [self.praiseCountLabel.text integerValue];
     if (self.infoDetailModel.state) {
         count -= 1;
         self.praiseCountLabel.text = [NSString stringWithFormat:@"%ld",count];
         [sender setImage:[UIImage imageNamed:@"like"] forState:UIControlStateNormal];
         self.infoDetailModel.state = false;
+        self.infoDetailModel.likeNum = [NSString stringWithFormat:@"%ld",count];
     }else{
         count += 1;
         self.praiseCountLabel.text = [NSString stringWithFormat:@"%ld",count];
         [sender setImage:[UIImage imageNamed:@"Info-heart-icon-select-"] forState:UIControlStateNormal];
         self.infoDetailModel.state = true;
-//        http://192.168.1.55:8080/yuyi/likes/UpdateLikeNum.do?id=1&token=nwslqlWbk/n5G5Slunydg4uZqhNeP62jUkZowKgPQxvQPCl3PhXaC0zhxG47a1v6SRJoyw9JGYAYhHnDJc+OtmKLXaGqhpXV
-        
+        self.infoDetailModel.likeNum = [NSString stringWithFormat:@"%ld",count];
+
     }
     
 }
@@ -364,7 +399,9 @@ static NSString *cell_Id = @"cell_id";
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
-
+-(void)dealloc{
+     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillChangeFrameNotification object:nil];
+}
 /*
 #pragma mark - Navigation
 
