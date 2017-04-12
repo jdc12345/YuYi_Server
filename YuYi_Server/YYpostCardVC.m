@@ -11,7 +11,10 @@
 #import <Masonry.h>
 #import "BRPlaceholderTextView.h"
 #import "UILabel+Addition.h"
-@interface YYpostCardVC ()<UITextViewDelegate,UIImagePickerControllerDelegate>
+#import "HUImagePickerViewController.h"
+#import "YYCardPostPictureCell.h"
+static NSString *cell_id = @"cell_id";
+@interface YYpostCardVC ()<UITextViewDelegate,HUImagePickerViewControllerDelegate,UITableViewDelegate,UITableViewDataSource,UINavigationControllerDelegate>
 @property(nonatomic,weak)BRPlaceholderTextView *titleView;
 @property(nonatomic,weak)BRPlaceholderTextView *contentView;
 @property(nonatomic,weak)UIButton *addPictureBtn;
@@ -21,7 +24,8 @@
 
 @property (nonatomic, weak) UIImageView *userIcon;
 @property (nonatomic, strong) UIImage *chooseImage;
-
+@property (nonatomic, weak) UITableView *tableView;
+@property (nonatomic, strong) NSMutableArray *imageArr;
 @end
 
 @implementation YYpostCardVC
@@ -45,14 +49,14 @@
     [self.navigationItem setRightBarButtonItem:postBtnItem];
     //
     UIScrollView *scrollView = [[UIScrollView alloc]initWithFrame:self.view.frame];
-//    backView.contentSize = self.view.frame.size;
+    //    backView.contentSize = self.view.frame.size;
     scrollView.delegate = self;
     self.scrollView = scrollView;
     [self.view addSubview:scrollView];
-//    [backView mas_makeConstraints:^(MASConstraintMaker *make) {
-//        make.top.left.right.bottom.offset(0);
-//    }];
-//    [backView layoutIfNeeded];
+    //    [backView mas_makeConstraints:^(MASConstraintMaker *make) {
+    //        make.top.left.right.bottom.offset(0);
+    //    }];
+    //    [backView layoutIfNeeded];
     UIView *backView = [[UIView alloc]initWithFrame:self.view.frame];
     [scrollView addSubview:backView];
     //添加标题feild
@@ -66,7 +70,7 @@
         make.height.offset(35*kiphone6);
     }];
     [titleView layoutIfNeeded];
-//    titleView.delegate = self;
+    //    titleView.delegate = self;
     self.titleView = titleView;
     titleView.placeholder = @"标题 (不超过20个字)";
     titleView.imagePlaceholder = @"title";
@@ -74,13 +78,13 @@
     [titleView setBackgroundColor:[UIColor whiteColor]];
     [titleView setPlaceholderFont:[UIFont systemFontOfSize:15]];
     [titleView setPlaceholderColor:[UIColor colorWithHexString:@"6a6a6a"]];
-//    titleField.borderStyle = UITextBorderStyleNone;
-//    //边框宽度
-//    [titleField.layer setBorderWidth:0.01f];
+    //    titleField.borderStyle = UITextBorderStyleNone;
+    //    //边框宽度
+    //    [titleField.layer setBorderWidth:0.01f];
     [titleView setPlaceholderOpacity:0.6];
     [titleView addMaxTextLengthWithMaxLength:20 andEvent:^(BRPlaceholderTextView *text) {
         [self.titleView endEditing:YES];
-               
+        
         NSLog(@"----------");
     }];
     
@@ -138,17 +142,30 @@
         NSLog(@"end");
     }];
     //line
-    UIView *lineTwo = [[UIView alloc]init];
-    lineTwo.backgroundColor = [UIColor colorWithHexString:@"#cccccc"];
-    [backView addSubview:lineTwo];
-    self.lineTwo = lineTwo;
-    [lineTwo mas_makeConstraints:^(MASConstraintMaker *make) {
+    //    UIView *lineTwo = [[UIView alloc]init];
+    //    lineTwo.backgroundColor = [UIColor colorWithHexString:@"#cccccc"];
+    //    [backView addSubview:lineTwo];
+    //    self.lineTwo = lineTwo;
+    //    [lineTwo mas_makeConstraints:^(MASConstraintMaker *make) {
+    //        make.left.offset(20*kiphone6);
+    //        make.right.offset(-20*kiphone6);
+    //        make.top.equalTo(contentView.mas_bottom).offset(8*kiphone6);
+    //        make.height.offset(1);
+    //    }];
+    //    [line layoutIfNeeded];
+    UITableView *tableView = [[UITableView alloc]init];
+    [backView addSubview:tableView];
+    self.tableView = tableView;
+    [tableView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.offset(20*kiphone6);
         make.right.offset(-20*kiphone6);
-        make.top.equalTo(contentView.mas_bottom).offset(8*kiphone6);
-        make.height.offset(1);
+        make.top.equalTo(contentView.mas_bottom);
+        make.width.height.offset(0);
     }];
-    [line layoutIfNeeded];
+    tableView.dataSource = self;
+    tableView.delegate = self;
+    tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    [tableView registerClass:[YYCardPostPictureCell class] forCellReuseIdentifier:cell_id];
     //添加图片
     UIButton *addPictureBtn = [[UIButton alloc]init];
     [addPictureBtn setImage:[UIImage imageNamed:@"add_pic"] forState:UIControlStateNormal];
@@ -156,7 +173,7 @@
     self.addPictureBtn = addPictureBtn;
     [addPictureBtn mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.offset(20*kiphone6);
-        make.top.equalTo(contentView.mas_bottom).offset(50*kiphone6);
+        make.top.equalTo(tableView.mas_bottom).offset(50*kiphone6);
         make.width.height.offset(100*kiphone6);
     }];
     [addPictureBtn addTarget:self action:@selector(addPicture:) forControlEvents:UIControlEventTouchUpInside];
@@ -168,116 +185,95 @@
         make.left.equalTo(addPictureBtn.mas_right).offset(20*kiphone6);
         make.centerY.equalTo(addPictureBtn);
     }];
-
+    
+}
+#pragma UItableViewDelegate/UItableViewDataSource
+-(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
+    [self textViewDidChange:self.contentView];
+    return self.imageArr.count;
+}
+-(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
+    YYCardPostPictureCell *cell = [tableView dequeueReusableCellWithIdentifier:cell_id forIndexPath:indexPath];
+    cell.image = self.imageArr[indexPath.row];
+    return cell;
+}
+-(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
+    return kScreenW;
+}
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    NSLog(@"%ld",indexPath.row);
+}
+- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return true;
 }
 
+- (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return UITableViewCellEditingStyleDelete;
+}
+
+- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath{
+    [tableView setEditing:NO animated:YES];
+    if (editingStyle == UITableViewCellEditingStyleDelete) {
+        
+        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"提示" message:@"你确定删除该图片？" preferredStyle:UIAlertControllerStyleAlert];
+        [alertController addAction:[UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDestructive handler:^(UIAlertAction * _Nonnull action) {
+            [self.imageArr removeObjectAtIndex:indexPath.row];
+            [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+            
+        }]];
+        
+        [self presentViewController:alertController animated:YES completion:nil];
+    }
+    [self.tableView reloadData];
+    
+}
 -(void)textViewDidChange:(UITextView *)textView{
     CGRect frame = textView.frame;
     CGSize constraintSize = CGSizeMake(frame.size.width, MAXFLOAT);
     CGSize size = [textView sizeThatFits:constraintSize];
     if (size.height<=frame.size.height) {
         size.height=frame.size.height;
-//        textView.scrollEnabled = true;   // 允许滚动
+        //        textView.scrollEnabled = true;   // 允许滚动
     }
-//    else{
-//    }
+    //    else{
+    //    }
     textView.scrollEnabled = false;   // 不允许滚动
     textView.frame = CGRectMake(frame.origin.x, frame.origin.y, frame.size.width, size.height);
-    self.lineTwo.frame = CGRectMake(frame.origin.x, frame.origin.y+size.height, frame.size.width, 1);
-    self.addPictureBtn.frame = CGRectMake(frame.origin.x, frame.origin.y+size.height+50*kiphone6, 100*kiphone6, 100*kiphone6);
+    [self.addPictureLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerY.equalTo(self.addPictureBtn);
+    }];
+    //    self.lineTwo.frame = CGRectMake(frame.origin.x, frame.origin.y+size.height, frame.size.width, 1);
+    self.tableView.frame = CGRectMake(frame.origin.x, frame.origin.y+size.height, frame.size.width, self.imageArr.count*kScreenW);
+    self.addPictureBtn.frame = CGRectMake(frame.origin.x, self.tableView.frame.origin.y+self.imageArr.count*kScreenW+10*kiphone6, 100*kiphone6, 100*kiphone6);
     CGRect labelFrame = self.addPictureLabel.frame;
-    self.addPictureLabel.frame = CGRectMake(frame.origin.x+120, frame.origin.y+size.height+80*kiphone6, labelFrame.size.width, labelFrame.size.height);
-    self.scrollView.contentSize = CGSizeMake(self.view.frame.size.width, frame.origin.y+size.height+300*kiphone6);
+    self.addPictureLabel.frame = CGRectMake(frame.origin.x+120, self.addPictureBtn.frame.origin.y+45*kiphone6, labelFrame.size.width, labelFrame.size.height);
+    self.scrollView.contentSize = CGSizeMake(self.view.frame.size.width, kScreenH-frame.size.height+size.height+self.imageArr.count*kScreenW);
     self.scrollView.scrollEnabled = true;
 }
+-(NSMutableArray *)imageArr{
+    if (_imageArr == nil) {
+        _imageArr = [[NSMutableArray alloc]init];
+    }
+    return _imageArr;
+}
 -(void)addPicture:(UIButton *)sender{
-//    NSString *str = self.contentView.text;
-//    str = [str stringByAppendingString:@"@@@@@@图片@@@@@@"];
-//    self.contentView.placeholder = @"输入内容";
-//    [self.contentView addTextViewBeginEvent:^(BRPlaceholderTextView *text) {
-//        //滑到文章最后
-//        [text becomeFirstResponder];
-//    }];
-//    self.contentView.text = str;
-//    [self textViewDidChange:self.contentView];
-    UIImagePickerController *picker = [[UIImagePickerController alloc] init];
-    picker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+    HUImagePickerViewController *picker = [[HUImagePickerViewController alloc] init];
     picker.delegate = self;
-    //设置选择后的图片可被编辑
-    picker.allowsEditing = YES;
+    picker.maxAllowedCount = 6-self.imageArr.count;
+    picker.originalImageAllowed = YES; //想要获取高清图设置为YES,默认为NO
     [self presentViewController:picker animated:YES completion:nil];
 }
 //当选择一张图片后进入这里
--(void)imagePickerController:(UIImagePickerController*)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
-
-{
-    
-    NSString *type = [info objectForKey:UIImagePickerControllerMediaType];
-    //当选择的类型是图片
-    if ([type isEqualToString:@"public.image"]){
-        //先把图片转成NSData
-        self.chooseImage = [info objectForKey:@"UIImagePickerControllerOriginalImage"];
-        NSData *data;
-        if (UIImagePNGRepresentation(self.chooseImage) == nil){
-            data = UIImageJPEGRepresentation(self.chooseImage, 1.0);
-        }else{
-            data = UIImagePNGRepresentation(self.chooseImage);
-        }
-        UIImage *image = [UIImage imageWithData:data];
-        NSMutableAttributedString *string = [[NSMutableAttributedString alloc] initWithAttributedString:self.contentView.attributedText];
-        NSTextAttachment *textAttachment = [[NSTextAttachment alloc] initWithData:nil ofType:nil] ;
-        textAttachment.image = image; //要添加的图片
-        NSAttributedString *textAttachmentString = [NSAttributedString attributedStringWithAttachment:textAttachment] ;
-        [string insertAttributedString:textAttachmentString atIndex:0];//index为用户指定要插入图片的位置
-        self.contentView.attributedText = string;
-//        self.content.text=@"1111";
-//        //图片保存的路径
-//        //这里将图片放在沙盒的documents文件夹中
-//        NSString * DocumentsPath = [NSHomeDirectory() stringByAppendingPathComponent:@"Documents"];
-//        
-//        //文件管理器
-//        NSFileManager *fileManager = [NSFileManager defaultManager];
-//        
-//        //把刚刚图片转换的data对象拷贝至沙盒中 并保存为image.png
-//        [fileManager createDirectoryAtPath:DocumentsPath withIntermediateDirectories:YES attributes:nil error:nil];
-//        [fileManager createFileAtPath:[DocumentsPath stringByAppendingString:@"/image.png"] contents:data attributes:nil];
-//        
-//        //得到选择后沙盒中图片的完整路径
-//        _filePath = [[NSString alloc]initWithFormat:@"%@%@",DocumentsPath,  @"/image.png"];
-        //关闭相册界面
-        [picker dismissViewControllerAnimated:YES completion:nil];
-        
-        /****图片本地持久化*******/
-        
-        
-        
-        //        NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,NSUserDomainMask, YES);
-        //        NSString *myfilePath = [[paths objectAtIndex:0] stringByAppendingPathComponent:[NSString stringWithFormat:@"picture.png"]];
-        //        // 保存文件的名称
-        //        [UIImagePNGRepresentation(self.chooseImage)writeToFile: myfilePath  atomically:YES];
-        //        NSUserDefaults *userDef= [NSUserDefaults standardUserDefaults];
-        //        [userDef setObject:myfilePath forKey:kImageFilePath];
-        
-        //创建一个选择后图片的小图标放在下方
-        //类似微薄选择图后的效果
-        self.userIcon.image = [self.chooseImage  imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-        
-    }
-    
+- (void)imagePickerController:(HUImagePickerViewController *)picker didFinishPickingImagesWithInfo:(NSDictionary *)info{
+    //    self.imageArr = info[kHUImagePickerThumbnailImage];//缩小图
+    NSMutableArray *arr = info[kHUImagePickerOriginalImage];//源图
+    self.imageArr = [NSMutableArray arrayWithArray:arr];
+    [self.tableView reloadData];
+    [self textViewDidChange:self.contentView];
+    [picker dismissViewControllerAnimated:YES completion:nil];
 }
-//
-//
-//- (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker
-//{
-//    
-//    NSLog(@"您取消了选择图片");
-//    [picker dismissViewControllerAnimated:YES completion:nil];
-//}
-//-(void)sendInfo
-//{
-//    NSLog(@"图片的路径是：%@", _filePath);
-//    
-//}
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
