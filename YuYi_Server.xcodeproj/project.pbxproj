@@ -53,6 +53,9 @@
 		3E2272B81E9C78B8005BF064 /* RCDSettingUserDefaults.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E2272B51E9C78B8005BF064 /* RCDSettingUserDefaults.m */; };
 		3E2272BA1E9C78D9005BF064 /* FMDatabase.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E2272B91E9C78D9005BF064 /* FMDatabase.m */; };
 		3E2272BC1E9C78F3005BF064 /* FMResultSet.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E2272BB1E9C78F3005BF064 /* FMResultSet.m */; };
+		3E2272BF1E9CA533005BF064 /* YYNotficationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E2272BE1E9CA533005BF064 /* YYNotficationViewController.m */; };
+		3E2272C21E9CA815005BF064 /* YYNotficTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E2272C11E9CA815005BF064 /* YYNotficTableViewCell.m */; };
+		3E2272C51E9CBDBC005BF064 /* YHPullDownMenu.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E2272C41E9CBDBC005BF064 /* YHPullDownMenu.m */; };
 		3E85EF8D1E8F38F400E7D8F1 /* YYSettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E85EF8C1E8F38F400E7D8F1 /* YYSettingViewController.m */; };
 		3E85EF901E8F390500E7D8F1 /* YYFeedbackViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E85EF8F1E8F390500E7D8F1 /* YYFeedbackViewController.m */; };
 		3E85EF951E8F391400E7D8F1 /* YYAboutUSViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E85EF921E8F391400E7D8F1 /* YYAboutUSViewController.m */; };
@@ -181,27 +184,33 @@
 		3E1FC7221E97915800838F9E /* YYSettingTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YYSettingTableViewCell.m; sourceTree = "<group>"; };
 		3E1FC7241E9B15B900838F9E /* YYInfoCommentVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = YYInfoCommentVC.m; path = YuYi_Server/YYInfoCommentVC.m; sourceTree = "<group>"; };
 		3E1FC7261E9B15F000838F9E /* YYCommentInfoModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = YYCommentInfoModel.m; path = YuYi_Server/YYCommentInfoModel.m; sourceTree = "<group>"; };
-		3E2272951E9C76EF005BF064 /* pinyin.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = pinyin.c; path = YuYi_Server/pinyin.c; sourceTree = "<group>"; };
-		3E2272961E9C76EF005BF064 /* pinyin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = pinyin.h; path = YuYi_Server/pinyin.h; sourceTree = "<group>"; };
+		3E2272951E9C76EF005BF064 /* pinyin.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = pinyin.c; sourceTree = "<group>"; };
+		3E2272961E9C76EF005BF064 /* pinyin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = pinyin.h; sourceTree = "<group>"; };
 		3E2272981E9C76FC005BF064 /* YuYi_Server.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = YuYi_Server.entitlements; sourceTree = "<group>"; };
-		3E2272991E9C77AB005BF064 /* YYWordsViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = YYWordsViewController.m; path = YuYi_Server/YYWordsViewController.m; sourceTree = "<group>"; };
-		3E22729B1E9C7835005BF064 /* PatientModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = PatientModel.m; path = YuYi_Server/PatientModel.m; sourceTree = "<group>"; };
-		3E22729C1E9C7835005BF064 /* RCDChatListCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = RCDChatListCell.m; path = YuYi_Server/RCDChatListCell.m; sourceTree = "<group>"; };
-		3E22729D1E9C7835005BF064 /* RCDHttpTool.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = RCDHttpTool.m; path = YuYi_Server/RCDHttpTool.m; sourceTree = "<group>"; };
-		3E22729E1E9C7835005BF064 /* RCDUserInfo.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = RCDUserInfo.m; path = YuYi_Server/RCDUserInfo.m; sourceTree = "<group>"; };
-		3E22729F1E9C7835005BF064 /* YYAVViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = YYAVViewController.m; path = YuYi_Server/YYAVViewController.m; sourceTree = "<group>"; };
-		3E2272A01E9C7835005BF064 /* YYSearchTableViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = YYSearchTableViewController.m; path = YuYi_Server/YYSearchTableViewController.m; sourceTree = "<group>"; };
-		3E2272A11E9C7835005BF064 /* YYSpeechViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = YYSpeechViewController.m; path = YuYi_Server/YYSpeechViewController.m; sourceTree = "<group>"; };
-		3E2272A91E9C788D005BF064 /* AFHttpTool.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = AFHttpTool.m; path = YuYi_Server/AFHttpTool.m; sourceTree = "<group>"; };
-		3E2272AA1E9C788D005BF064 /* RCDataBaseManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = RCDataBaseManager.m; path = YuYi_Server/RCDataBaseManager.m; sourceTree = "<group>"; };
-		3E2272AB1E9C788D005BF064 /* RCDGroupInfo.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = RCDGroupInfo.m; path = YuYi_Server/RCDGroupInfo.m; sourceTree = "<group>"; };
-		3E2272AC1E9C788D005BF064 /* RCDUtilities.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = RCDUtilities.m; path = YuYi_Server/RCDUtilities.m; sourceTree = "<group>"; };
-		3E2272AD1E9C788D005BF064 /* SortForTime.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = SortForTime.m; path = YuYi_Server/SortForTime.m; sourceTree = "<group>"; };
-		3E2272B31E9C78B8005BF064 /* DefaultPortraitView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = DefaultPortraitView.m; path = YuYi_Server/DefaultPortraitView.m; sourceTree = "<group>"; };
-		3E2272B41E9C78B8005BF064 /* FMDatabaseQueue.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = FMDatabaseQueue.m; path = YuYi_Server/FMDatabaseQueue.m; sourceTree = "<group>"; };
-		3E2272B51E9C78B8005BF064 /* RCDSettingUserDefaults.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = RCDSettingUserDefaults.m; path = YuYi_Server/RCDSettingUserDefaults.m; sourceTree = "<group>"; };
-		3E2272B91E9C78D9005BF064 /* FMDatabase.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = FMDatabase.m; path = YuYi_Server/FMDatabase.m; sourceTree = "<group>"; };
-		3E2272BB1E9C78F3005BF064 /* FMResultSet.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = FMResultSet.m; path = YuYi_Server/FMResultSet.m; sourceTree = "<group>"; };
+		3E2272991E9C77AB005BF064 /* YYWordsViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = YYWordsViewController.m; sourceTree = "<group>"; };
+		3E22729B1E9C7835005BF064 /* PatientModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PatientModel.m; sourceTree = "<group>"; };
+		3E22729C1E9C7835005BF064 /* RCDChatListCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RCDChatListCell.m; sourceTree = "<group>"; };
+		3E22729D1E9C7835005BF064 /* RCDHttpTool.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RCDHttpTool.m; sourceTree = "<group>"; };
+		3E22729E1E9C7835005BF064 /* RCDUserInfo.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RCDUserInfo.m; sourceTree = "<group>"; };
+		3E22729F1E9C7835005BF064 /* YYAVViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = YYAVViewController.m; sourceTree = "<group>"; };
+		3E2272A01E9C7835005BF064 /* YYSearchTableViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = YYSearchTableViewController.m; sourceTree = "<group>"; };
+		3E2272A11E9C7835005BF064 /* YYSpeechViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = YYSpeechViewController.m; sourceTree = "<group>"; };
+		3E2272A91E9C788D005BF064 /* AFHttpTool.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AFHttpTool.m; sourceTree = "<group>"; };
+		3E2272AA1E9C788D005BF064 /* RCDataBaseManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RCDataBaseManager.m; sourceTree = "<group>"; };
+		3E2272AB1E9C788D005BF064 /* RCDGroupInfo.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RCDGroupInfo.m; sourceTree = "<group>"; };
+		3E2272AC1E9C788D005BF064 /* RCDUtilities.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RCDUtilities.m; sourceTree = "<group>"; };
+		3E2272AD1E9C788D005BF064 /* SortForTime.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SortForTime.m; sourceTree = "<group>"; };
+		3E2272B31E9C78B8005BF064 /* DefaultPortraitView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DefaultPortraitView.m; sourceTree = "<group>"; };
+		3E2272B41E9C78B8005BF064 /* FMDatabaseQueue.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FMDatabaseQueue.m; sourceTree = "<group>"; };
+		3E2272B51E9C78B8005BF064 /* RCDSettingUserDefaults.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RCDSettingUserDefaults.m; sourceTree = "<group>"; };
+		3E2272B91E9C78D9005BF064 /* FMDatabase.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FMDatabase.m; sourceTree = "<group>"; };
+		3E2272BB1E9C78F3005BF064 /* FMResultSet.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FMResultSet.m; sourceTree = "<group>"; };
+		3E2272BD1E9CA533005BF064 /* YYNotficationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YYNotficationViewController.h; sourceTree = "<group>"; };
+		3E2272BE1E9CA533005BF064 /* YYNotficationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YYNotficationViewController.m; sourceTree = "<group>"; };
+		3E2272C01E9CA815005BF064 /* YYNotficTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YYNotficTableViewCell.h; sourceTree = "<group>"; };
+		3E2272C11E9CA815005BF064 /* YYNotficTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YYNotficTableViewCell.m; sourceTree = "<group>"; };
+		3E2272C31E9CBDBC005BF064 /* YHPullDownMenu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YHPullDownMenu.h; sourceTree = "<group>"; };
+		3E2272C41E9CBDBC005BF064 /* YHPullDownMenu.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YHPullDownMenu.m; sourceTree = "<group>"; };
 		3E85EF8B1E8F38F400E7D8F1 /* YYSettingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YYSettingViewController.h; sourceTree = "<group>"; };
 		3E85EF8C1E8F38F400E7D8F1 /* YYSettingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YYSettingViewController.m; sourceTree = "<group>"; };
 		3E85EF8E1E8F390500E7D8F1 /* YYFeedbackViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YYFeedbackViewController.h; sourceTree = "<group>"; };
@@ -464,26 +473,6 @@
 		3EBD81D11E8E2D9400BDC217 = {
 			isa = PBXGroup;
 			children = (
-				3E2272BB1E9C78F3005BF064 /* FMResultSet.m */,
-				3E2272B91E9C78D9005BF064 /* FMDatabase.m */,
-				3E2272B31E9C78B8005BF064 /* DefaultPortraitView.m */,
-				3E2272B41E9C78B8005BF064 /* FMDatabaseQueue.m */,
-				3E2272B51E9C78B8005BF064 /* RCDSettingUserDefaults.m */,
-				3E2272A91E9C788D005BF064 /* AFHttpTool.m */,
-				3E2272AA1E9C788D005BF064 /* RCDataBaseManager.m */,
-				3E2272AB1E9C788D005BF064 /* RCDGroupInfo.m */,
-				3E2272AC1E9C788D005BF064 /* RCDUtilities.m */,
-				3E2272AD1E9C788D005BF064 /* SortForTime.m */,
-				3E22729B1E9C7835005BF064 /* PatientModel.m */,
-				3E22729C1E9C7835005BF064 /* RCDChatListCell.m */,
-				3E22729D1E9C7835005BF064 /* RCDHttpTool.m */,
-				3E22729E1E9C7835005BF064 /* RCDUserInfo.m */,
-				3E22729F1E9C7835005BF064 /* YYAVViewController.m */,
-				3E2272A01E9C7835005BF064 /* YYSearchTableViewController.m */,
-				3E2272A11E9C7835005BF064 /* YYSpeechViewController.m */,
-				3E2272991E9C77AB005BF064 /* YYWordsViewController.m */,
-				3E2272951E9C76EF005BF064 /* pinyin.c */,
-				3E2272961E9C76EF005BF064 /* pinyin.h */,
 				3E1FC7261E9B15F000838F9E /* YYCommentInfoModel.m */,
 				3E1FC7241E9B15B900838F9E /* YYInfoCommentVC.m */,
 				3EA3F4451E95E3D0005670A5 /* ZYPageControl.h */,
@@ -629,6 +618,10 @@
 				3E85EF921E8F391400E7D8F1 /* YYAboutUSViewController.m */,
 				3E85EF931E8F391400E7D8F1 /* YYContactViewController.h */,
 				3E85EF941E8F391400E7D8F1 /* YYContactViewController.m */,
+				3E2272BD1E9CA533005BF064 /* YYNotficationViewController.h */,
+				3E2272BE1E9CA533005BF064 /* YYNotficationViewController.m */,
+				3E2272C01E9CA815005BF064 /* YYNotficTableViewCell.h */,
+				3E2272C11E9CA815005BF064 /* YYNotficTableViewCell.m */,
 				3E85EF9D1E8F951500E7D8F1 /* NotficationViewController.h */,
 				3E85EF9E1E8F951500E7D8F1 /* NotficationViewController.m */,
 				3E85EF9F1E8F951500E7D8F1 /* NotficationTableViewCell.h */,
@@ -637,6 +630,8 @@
 				3E85EFA21E8F951500E7D8F1 /* NoyficationModel.m */,
 				3EA3F4671E97647C005670A5 /* YYChatListViewController.h */,
 				3EA3F4681E97647C005670A5 /* YYChatListViewController.m */,
+				3E2272C31E9CBDBC005BF064 /* YHPullDownMenu.h */,
+				3E2272C41E9CBDBC005BF064 /* YHPullDownMenu.m */,
 			);
 			name = PersonalPage;
 			sourceTree = "<group>";
@@ -720,6 +715,26 @@
 		3EBD82621E8E685300BDC217 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				3E2272BB1E9C78F3005BF064 /* FMResultSet.m */,
+				3E2272B91E9C78D9005BF064 /* FMDatabase.m */,
+				3E2272B31E9C78B8005BF064 /* DefaultPortraitView.m */,
+				3E2272B41E9C78B8005BF064 /* FMDatabaseQueue.m */,
+				3E2272B51E9C78B8005BF064 /* RCDSettingUserDefaults.m */,
+				3E2272A91E9C788D005BF064 /* AFHttpTool.m */,
+				3E2272AA1E9C788D005BF064 /* RCDataBaseManager.m */,
+				3E2272AB1E9C788D005BF064 /* RCDGroupInfo.m */,
+				3E2272AC1E9C788D005BF064 /* RCDUtilities.m */,
+				3E2272AD1E9C788D005BF064 /* SortForTime.m */,
+				3E22729B1E9C7835005BF064 /* PatientModel.m */,
+				3E22729C1E9C7835005BF064 /* RCDChatListCell.m */,
+				3E22729D1E9C7835005BF064 /* RCDHttpTool.m */,
+				3E22729E1E9C7835005BF064 /* RCDUserInfo.m */,
+				3E22729F1E9C7835005BF064 /* YYAVViewController.m */,
+				3E2272A01E9C7835005BF064 /* YYSearchTableViewController.m */,
+				3E2272A11E9C7835005BF064 /* YYSpeechViewController.m */,
+				3E2272991E9C77AB005BF064 /* YYWordsViewController.m */,
+				3E2272951E9C76EF005BF064 /* pinyin.c */,
+				3E2272961E9C76EF005BF064 /* pinyin.h */,
 				3EA3F4731E977135005670A5 /* RecardDetailModel.h */,
 				3EA3F4741E977135005670A5 /* RecardDetailModel.m */,
 				3EA3F46D1E976BDA005670A5 /* RecardModel.h */,
@@ -1032,11 +1047,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				3E2272BC1E9C78F3005BF064 /* FMResultSet.m in Sources */,
+				3E2272C51E9CBDBC005BF064 /* YHPullDownMenu.m in Sources */,
 				3E2272BA1E9C78D9005BF064 /* FMDatabase.m in Sources */,
 				3E2272B61E9C78B8005BF064 /* DefaultPortraitView.m in Sources */,
 				3E2272B71E9C78B8005BF064 /* FMDatabaseQueue.m in Sources */,
 				3E2272B81E9C78B8005BF064 /* RCDSettingUserDefaults.m in Sources */,
 				3E2272AE1E9C788D005BF064 /* AFHttpTool.m in Sources */,
+				3E2272C21E9CA815005BF064 /* YYNotficTableViewCell.m in Sources */,
 				3E2272AF1E9C788D005BF064 /* RCDataBaseManager.m in Sources */,
 				3E2272B01E9C788D005BF064 /* RCDGroupInfo.m in Sources */,
 				3E2272B11E9C788D005BF064 /* RCDUtilities.m in Sources */,
@@ -1087,6 +1104,7 @@
 				3EBD82201E8E37E600BDC217 /* NSString+unicode.m in Sources */,
 				3EBD82311E8E389C00BDC217 /* YYTabBarController.m in Sources */,
 				3E85EF9A1E8F3CBE00E7D8F1 /* YYPInfomationTableViewCell.m in Sources */,
+				3E2272BF1E9CA533005BF064 /* YYNotficationViewController.m in Sources */,
 				3E85EF8D1E8F38F400E7D8F1 /* YYSettingViewController.m in Sources */,
 				3EA3F4561E95E49C005670A5 /* RecardDerailViewController.m in Sources */,
 				3EBD82321E8E389C00BDC217 /* YYTabBar.m in Sources */,

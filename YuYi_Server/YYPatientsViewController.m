@@ -26,6 +26,7 @@
 #import "PatientModel.h"
 #import <UIImageView+WebCache.h>
 #import "UIButton+Badge.h"
+#import "YHPullDownMenu.h"
 
 @interface YYPatientsViewController ()<UITableViewDataSource, UITableViewDelegate>
 
@@ -36,6 +37,7 @@
 @property (nonatomic, strong) UILabel *idLabel;
 @property (nonatomic, strong) UIImageView *iconV;
 @property (nonatomic, strong) YYHomeUserModel *personalModel;
+@property (nonatomic, weak)YHPullDownMenu *pd;
 
 
 
@@ -46,7 +48,12 @@
 
 - (UITableView *)tableView{
     if (_tableView == nil) {
-        _tableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 64, kScreenW, kScreenH -64) style:UITableViewStylePlain];
+//        if (self.titleStr) {
+//            _tableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 64 +60, kScreenW, kScreenH -64 -60) style:UITableViewStylePlain];
+//            [self createMeau];
+//        }else{
+            _tableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 64, kScreenW, kScreenH -64) style:UITableViewStylePlain];
+//    }
         _tableView.backgroundColor = [UIColor colorWithHexString:@"f2f2f2"];
         _tableView.dataSource = self;
         _tableView.delegate = self;
@@ -78,6 +85,12 @@
     //    [self httpRequest];
     self.view.backgroundColor = [UIColor colorWithHexString:@"f2f2f2"];
     
+    
+    
+    
+    
+    
+
     // ,@[@"购物车",@"订单详情"] ,@[@"Personal-shopping -icon-",@"order_icon_"]
 //    self.dataSource = [[NSMutableArray alloc]initWithArray:@[@[@"电子病例",@"消息",@"家庭用户管理",@"用户设备管理",@"收货地址",@"设置"]]];
 //    self.iconList =@[@[@"Personal-EMR-icon-",@"Personal-message-icon-",@"family-icon--1",@"equipment-icon-",@"goods-icon-",@"Set-icon-"]];
@@ -117,6 +130,70 @@
     
     // Do any additional setup after loading the view.
 }
+//- (void)createMeau{
+//    UIView *meauView = [[UIView alloc]initWithFrame:CGRectMake(0, 64, kScreenW, 60)];
+//    meauView.backgroundColor = [UIColor colorWithHexString:@"f2f2f2"];
+//    [self.view addSubview:meauView];
+//    
+//    UILabel *titleLabel = [[UILabel alloc]init];
+//    titleLabel.text = @"科室";
+//    titleLabel.textColor = [UIColor colorWithHexString:@"333333"];
+//    titleLabel.font = [UIFont systemFontOfSize:13];
+//    
+//    [meauView addSubview:titleLabel];
+//    
+//    [titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.centerY.equalTo(meauView).with.offset(0);
+//        make.left.equalTo(meauView).with.offset(10 *kiphone6);
+//        make.size.mas_equalTo(CGSizeMake(30 , 13 ));
+//    }];
+//    
+//    UIView *cardView = [[UIView alloc]init];
+//    cardView.backgroundColor = [UIColor whiteColor];
+//    cardView.layer.shadowColor = [UIColor colorWithHexString:@"d5d5d5"].CGColor;
+//    cardView.layer.shadowRadius = 1 *kiphone6;
+//    cardView.layer.shadowOffset = CGSizeMake(1, 1);
+//    cardView.layer.shadowOpacity = 1;
+//    
+//    [meauView addSubview:cardView];
+//    
+//    [cardView mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.centerY.equalTo(meauView).with.offset(0);
+//        make.left.equalTo(titleLabel.mas_right).with.offset(10);
+//        make.right.equalTo(meauView).with.offset(-10);
+//        make.size.mas_equalTo(CGSizeMake(kScreenW - 60 , 29 ));
+//    }];
+//    
+//    UILabel *nameLabel = [[UILabel alloc]init];
+//    nameLabel.text = @"全部";
+//    nameLabel.textColor = [UIColor colorWithHexString:@"333333"];
+//    nameLabel.font = [UIFont systemFontOfSize:13];
+//    
+//    [cardView addSubview:nameLabel];
+//    
+//    [nameLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.centerY.equalTo(cardView).with.offset(0);
+//        make.left.equalTo(cardView).with.offset(10 *kiphone6);
+//        make.size.mas_equalTo(CGSizeMake(30 , 13 ));
+//    }];
+//    
+//    UIImageView *imageV = [[UIImageView alloc]init];
+//    imageV.image = [UIImage imageNamed:@"展开"];
+//    [imageV sizeToFit];
+//    
+//    [cardView addSubview:imageV];
+//    [imageV mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.centerY.equalTo(cardView).with.offset(0);
+//        make.right.equalTo(cardView).with.offset(-10 *kiphone6);
+////        make.size.mas_equalTo(CGSizeMake(30 , 13 ));
+//    }];
+//    
+//    
+//   
+//
+//    UITapGestureRecognizer *tapGest = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(headViewClick)];
+//    [cardView addGestureRecognizer:tapGest];
+//}
 - (UIView *)personInfomation{
     
     UIView *personV = [[UIView alloc]initWithFrame:CGRectMake(0, 0, kScreenW, 90 *kiphone6)];
@@ -176,6 +253,26 @@
 }
 - (void)headViewClick{
     NSLog(@"123");
+     NSArray *items = @[@"东方不败", @"步惊云", @"女娲大帝"];
+    YHPullDownMenu *pd=[[YHPullDownMenu alloc]initPullDownMenuWithItems:items cellHeight:35 menuFrame:CGRectMake(50, 10 +108.5 -64, kScreenW -60, 300) clickIndexHandle:^(NSInteger index) {
+        switch (index) {
+            case 0://这个是选中哪一行的时候的输出，或者执行的动作，此处打印相关的信息
+                NSLog(@"selected=东方不败;");
+                break;
+            case 1:
+                NSLog(@"selected=步惊云;");
+                break;
+            case 2:
+                NSLog(@"selected=女娲大帝;");
+                break;
+                
+            default:
+                break;
+        }
+    }];
+    pd.backgroundColor=[UIColor clearColor];
+    self.pd = pd;
+    [self.pd show];
 //    YYPInfomartionViewController *pInfoVC = [[YYPInfomartionViewController alloc]init];
 //    pInfoVC.personalModel = self.personalModel;
 //    [self.navigationController pushViewController:pInfoVC animated:YES];
@@ -276,13 +373,17 @@
             [self.dataSource addObject:patientModel];
         }
         [self tableView];
-        
+
 
         
 
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
         NSLog(@"%@",error);
     }];
+}
+- (void)viewWillDisappear:(BOOL)animated{
+    [super viewWillDisappear:YES];
+    [self.pd removeFromSuperview];
 }
 //- (void)viewWillAppear:(BOOL)animated{
 //    [super viewWillAppear:YES];

@@ -9,5 +9,15 @@
 #import <UIKit/UIKit.h>
 
 @interface YYNotficTableViewCell : UITableViewCell
+@property (nonatomic, strong) UIImageView *iconV;
+@property (nonatomic, strong) UILabel *titleLabel;
+@property (nonatomic, strong) UILabel *timeLabel;
+@property (nonatomic, strong) UIImageView *nextImageV;
+@property (nonatomic, strong) UILabel *seeRecardLabel;
+@property (nonatomic, strong) UITextField *editInfoText;
 
+- (void)setType:(NSString *)cellType;
+
+
+@property (nonatomic, copy) void(^sexClick)(NSString *);
 @end

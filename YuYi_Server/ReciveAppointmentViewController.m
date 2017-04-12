@@ -16,13 +16,14 @@
 #import "CcUserModel.h"
 #import "RecardModel.h"
 #import <MJExtension.h>
+#import "YHPullDownMenu.h"
 @interface ReciveAppointmentViewController ()<UITableViewDataSource, UITableViewDelegate>
 
 @property (nonatomic, strong) UITableView *tableView;
 @property (nonatomic, strong) NSMutableArray *dataSource;
 @property (nonatomic, strong) NSArray *iconList;
 
-
+@property (nonatomic, weak) UILabel *nameLabel;
 
 @end
 
@@ -31,7 +32,7 @@
 
 - (UITableView *)tableView{
     if (_tableView == nil) {
-        _tableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 64, kScreenW, kScreenH) style:UITableViewStylePlain];
+        _tableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 64 +60, kScreenW, kScreenH) style:UITableViewStylePlain];
         _tableView.backgroundColor = [UIColor colorWithHexString:@"f2f2f2"];
         _tableView.dataSource = self;
         _tableView.delegate = self;
@@ -45,6 +46,8 @@
         [_tableView registerClass:[YYRecardTableViewCell class] forCellReuseIdentifier:@"YYRecardTableViewCell"];
         [_tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"UITableViewCell"];
         [self.view addSubview:_tableView];
+        
+        [self createMeau];
         // [self.view sendSubviewToBack:_tableView];
         
     }
@@ -79,10 +82,75 @@
     //   self.tableView.tableHeaderView = [self personInfomation];
 //    [self httpRequest];
     [self tableView];
-    
+
     
     // Do any additional setup after loading the view.
 }
+- (void)createMeau{
+    UIView *meauView = [[UIView alloc]initWithFrame:CGRectMake(0, 64, kScreenW, 60)];
+    meauView.backgroundColor = [UIColor colorWithHexString:@"f2f2f2"];
+    [self.view addSubview:meauView];
+
+    UILabel *titleLabel = [[UILabel alloc]init];
+    titleLabel.text = @"科室";
+    titleLabel.textColor = [UIColor colorWithHexString:@"333333"];
+    titleLabel.font = [UIFont systemFontOfSize:13];
+
+    [meauView addSubview:titleLabel];
+
+    [titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerY.equalTo(meauView).with.offset(0);
+        make.left.equalTo(meauView).with.offset(10 *kiphone6);
+        make.size.mas_equalTo(CGSizeMake(30 , 13 ));
+    }];
+
+    UIView *cardView = [[UIView alloc]init];
+    cardView.backgroundColor = [UIColor whiteColor];
+    cardView.layer.shadowColor = [UIColor colorWithHexString:@"d5d5d5"].CGColor;
+    cardView.layer.shadowRadius = 1 *kiphone6;
+    cardView.layer.shadowOffset = CGSizeMake(1, 1);
+    cardView.layer.shadowOpacity = 1;
+
+    [meauView addSubview:cardView];
+
+    [cardView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerY.equalTo(meauView).with.offset(0);
+        make.left.equalTo(titleLabel.mas_right).with.offset(10);
+        make.right.equalTo(meauView).with.offset(-10);
+        make.size.mas_equalTo(CGSizeMake(kScreenW - 60 , 29 ));
+    }];
+
+    UILabel *nameLabel = [[UILabel alloc]init];
+    nameLabel.text = @"全部";
+    nameLabel.textColor = [UIColor colorWithHexString:@"333333"];
+    nameLabel.font = [UIFont systemFontOfSize:13];
+    self.nameLabel = nameLabel;
+    [cardView addSubview:nameLabel];
+
+    [nameLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerY.equalTo(cardView).with.offset(0);
+        make.left.equalTo(cardView).with.offset(10 *kiphone6);
+        make.size.mas_equalTo(CGSizeMake(100 , 13 ));
+    }];
+
+    UIImageView *imageV = [[UIImageView alloc]init];
+    imageV.image = [UIImage imageNamed:@"展开"];
+    [imageV sizeToFit];
+
+    [cardView addSubview:imageV];
+    [imageV mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerY.equalTo(cardView).with.offset(0);
+        make.right.equalTo(cardView).with.offset(-10 *kiphone6);
+//        make.size.mas_equalTo(CGSizeMake(30 , 13 ));
+    }];
+
+
+
+
+    UITapGestureRecognizer *tapGest = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(headViewClick)];
+    [cardView addGestureRecognizer:tapGest];
+}
+
 - (UIView *)personInfomation{
     
     UIView *personV = [[UIView alloc]initWithFrame:CGRectMake(0, 0, kScreenW, 90 *kiphone6)];
@@ -203,6 +271,34 @@
     
     return homeTableViewCell;
     
+}
+- (void)headViewClick{
+    NSLog(@"123");
+    NSArray *items = @[@"东方不败", @"步惊云", @"女娲大帝"];
+    YHPullDownMenu *pd=[[YHPullDownMenu alloc]initPullDownMenuWithItems:items cellHeight:30 menuFrame:CGRectMake(50, 10 +108.5, kScreenW -60, 300) clickIndexHandle:^(NSInteger index) {
+        switch (index) {
+            case 0://这个是选中哪一行的时候的输出，或者执行的动作，此处打印相关的信息
+                NSLog(@"selected=东方不败;");
+                self.nameLabel.text = items[0];
+                break;
+            case 1:
+                NSLog(@"selected=步惊云;");
+                self.nameLabel.text = items[1];
+                break;
+            case 2:
+                NSLog(@"selected=女娲大帝;");
+                self.nameLabel.text = items[2];
+                break;
+                
+            default:
+                break;
+        }
+    }];
+    pd.backgroundColor=[UIColor clearColor];
+    [pd show];
+    //    YYPInfomartionViewController *pInfoVC = [[YYPInfomartionViewController alloc]init];
+    //    pInfoVC.personalModel = self.personalModel;
+    //    [self.navigationController pushViewController:pInfoVC animated:YES];
 }
 
 #pragma mark -

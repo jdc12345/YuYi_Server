@@ -48,7 +48,7 @@
     }];
     
     
-    self.iconV = [[UIImageView alloc]init];
+//    self.iconV = [[UIImageView alloc]init];
 //    self.iconV.layer.cornerRadius = 25 *kiphone6;
 //    self.iconV.clipsToBounds = YES;
 //    [self.iconV sizeToFit];
@@ -76,7 +76,7 @@
     
     
     
-    [self.cardView addSubview:self.iconV];
+//    [self.cardView addSubview:self.iconV];
     [self.cardView  addSubview:self.titleLabel];
     [self.cardView addSubview:self.timeLabel];
     [self.cardView addSubview:lineL];
@@ -84,19 +84,19 @@
     
     
     WS(ws);
-    [self.iconV mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(ws.cardView).with.offset(14 *kiphone6);
-        make.left.equalTo(ws.cardView).with.offset(15 *kiphone6);
-        make.size.mas_equalTo(CGSizeMake(32 *kiphone6, 32 *kiphone6));
-    }];
+//    [self.iconV mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.top.equalTo(ws.cardView).with.offset(14 *kiphone6);
+//        make.left.equalTo(ws.cardView).with.offset(15 *kiphone6);
+//        make.size.mas_equalTo(CGSizeMake(32 *kiphone6, 32 *kiphone6));
+//    }];
     [self.titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(ws.cardView).with.offset(23 *kiphone6);
-        make.left.equalTo(ws.iconV.mas_right).with.offset(10 *kiphone6);
+        make.left.equalTo(ws.cardView).with.offset(15 *kiphone6);
         make.size.mas_equalTo(CGSizeMake(64 , 14 ));
     }];
     
     [self.timeLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.centerY.equalTo(ws.iconV.mas_centerY);
+        make.top.equalTo(ws.cardView).with.offset(23 *kiphone6);
         make.right.equalTo(ws.cardView.mas_right).with.offset(-15 *kiphone6);
         make.size.mas_equalTo(CGSizeMake(64 , 12 ));
     }];
@@ -112,7 +112,7 @@
     
     [self.introduceLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(lineL.mas_bottom).with.offset(15 *kiphone6);
-        make.left.equalTo(ws.iconV.mas_left);
+        make.left.equalTo(ws.titleLabel.mas_left);
         make.size.mas_equalTo(CGSizeMake( kScreenW - 50 *kiphone6, 30));
     }];
     
@@ -146,16 +146,16 @@
     
     
 }
-- (void)addOtherCell{
-    self.iconV.layer.cornerRadius = 0;
-    WS(ws);
-    [self.introduceLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.centerY.equalTo(ws.cardView);
-        make.left.equalTo(ws.iconV.mas_right).with.offset(20 *kiphone6);
-        make.size.mas_equalTo(CGSizeMake(13 *8 *kiphone6, 13 *kiphone6));
-    }];
-    self.titleLabel.hidden = YES;
-}
+//- (void)addOtherCell{
+//    self.iconV.layer.cornerRadius = 0;
+//    WS(ws);
+//    [self.introduceLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.centerY.equalTo(ws.cardView);
+//        make.left.equalTo(ws.iconV.mas_right).with.offset(20 *kiphone6);
+//        make.size.mas_equalTo(CGSizeMake(13 *8 *kiphone6, 13 *kiphone6));
+//    }];
+//    self.titleLabel.hidden = YES;
+//}
 
 - (void)awakeFromNib {
     [super awakeFromNib];

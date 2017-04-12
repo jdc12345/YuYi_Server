@@ -7,6 +7,8 @@
 //
 
 #import "YHPullDownMenu.h"
+#import "UIColor+Extension.h"
+#import <Masonry.h>
 
 @interface YHPullDownMenu()<UITableViewDelegate,UITableViewDataSource>
 @property(nonatomic, strong)NSArray<NSString*> *items;
@@ -16,10 +18,18 @@
 @property(nonatomic,strong)UIImageView*bgImageView;
 @property(nonatomic,assign)NSInteger  cellHeight;
 @property(nonatomic,strong)UIImage*bgImage;
+@property (nonatomic, copy) NSArray *totaldData;
+@property (nonatomic, strong) NSMutableArray *currentData;
 @end
 
 @implementation YHPullDownMenu
-
+- (NSMutableArray *)currentData{
+    if (_currentData == nil) {
+        _currentData = [[NSMutableArray alloc]initWithCapacity:2];
+        
+    }
+    return _currentData;
+}
 -(instancetype)initPullDownMenuWithItems:(NSArray*)items
                               cellHeight:(CGFloat)cellHeight
                                menuFrame:(CGRect) menuFrame
@@ -40,7 +50,7 @@
     self=[super init];
     if(self){
         self.items=items;
-        self.frame=[UIScreen mainScreen].bounds;
+        self.frame= [UIScreen mainScreen].bounds;
         self.backgroundColor=[UIColor yellowColor];
         self.block=[handle copy];
         self.bgImage=bgImage;
@@ -52,10 +62,14 @@
 -(void)setupPullDownMenuWithcellHeight:(CGFloat)cellHeight
                              menuFrame:(CGRect) menuFrame{
     _pdContentView=[[UIView alloc]initWithFrame:menuFrame];
-    _pdContentView.backgroundColor=[UIColor  clearColor];//设置背景颜色
+    _pdContentView.backgroundColor=[UIColor  whiteColor];//设置背景颜色
     [self addSubview: self.pdContentView];
-    _pdContentView.layer.borderWidth=0.5;//设置边框颜色
-    _pdContentView.layer.borderColor=[UIColor grayColor].CGColor;//设置边框颜色
+    _pdContentView.layer.shadowColor = [UIColor colorWithHexString:@"d5d5d5"].CGColor;
+    _pdContentView.layer.shadowRadius = 1 *kiphone6;
+    _pdContentView.layer.shadowOffset = CGSizeMake(1, 1);
+    _pdContentView.layer.shadowOpacity = 1;
+//    _pdContentView.layer.borderWidth=0.5;//设置边框颜色
+//    _pdContentView.layer.borderColor=[UIColor grayColor].CGColor;//设置边框颜色
     self.bgImageView=[[UIImageView alloc]initWithImage:self.bgImage];
     [self.pdContentView addSubview:self.bgImageView];
     self.bgImageView.translatesAutoresizingMaskIntoConstraints=NO;
@@ -66,10 +80,12 @@
     [self.pdContentView addConstraint:[NSLayoutConstraint constraintWithItem:self.bgImageView attribute:NSLayoutAttributeCenterY relatedBy:NSLayoutRelationEqual toItem:self.pdContentView attribute:NSLayoutAttributeCenterY multiplier:1.0f constant:0.0f]];
  
     self.cellHeight=cellHeight;
-    _tableView=[[UITableView alloc]initWithFrame:menuFrame style:UITableViewStylePlain];
+    _tableView=[[UITableView alloc]initWithFrame:menuFrame style:UITableViewStyleGrouped];
     _tableView.delegate=self;
     _tableView.dataSource=self;
     _tableView.backgroundColor=[UIColor clearColor];//设置表格背景颜色
+    _tableView.tableFooterView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 0, 0)];
+    _tableView.sectionFooterHeight = 0;
     [self addSubview:_tableView];
 //    self.tableView.translatesAutoresizingMaskIntoConstraints=NO;
 //    [self.pdContentView addConstraint:[NSLayoutConstraint constraintWithItem:self.tableView attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:menuFrame.size.width]];
@@ -92,9 +108,10 @@
 
 - (void)show{
     
-    _pdContainerwindow=[[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
+    _pdContainerwindow=[[UIWindow alloc] initWithFrame:CGRectMake(0, 0, kScreenW, kScreenH)];//[UIScreen mainScreen].bounds];
     _pdContainerwindow.windowLevel=UIWindowLevelAlert;
     [_pdContainerwindow becomeKeyWindow];
+    _pdContainerwindow.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0.2];
     [_pdContainerwindow makeKeyAndVisible];
     [_pdContainerwindow addSubview:self];
     
@@ -110,30 +127,97 @@
 }
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return 1;
+    return [self.items count];
 }
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     return [self.items count];
 }
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
+    return 44;
+}
+- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section{
+    return 0;
+}
+
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
+    NSString *title;
+    if (section == 0) {
+        title =  @"资讯";
+    }else{
+        title = @ "常用药品";
+    }
+    UIView *sectionHView = [[UIView alloc]init];
+    sectionHView.backgroundColor = [UIColor colorWithHexString:@"f2f2f2"];
+    
+    UIView *whiteView = [[UIView alloc]init];
+    whiteView.backgroundColor = [UIColor colorWithHexString:@"f2f2f2"];
+    whiteView.tag = 200 +section;
+    
+    
+    UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(Actiondo:)];
+    [whiteView addGestureRecognizer:tapGesture];
+    
+    UILabel *sectionName = [[UILabel alloc]init];
+    sectionName.text = title;
+    sectionName.textColor = [UIColor colorWithHexString:@"6a6a6a"];
+    sectionName.font = [UIFont systemFontOfSize:14];
+    
+    UIButton *clickButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    [clickButton setImage:[UIImage imageNamed:@"more"] forState:UIControlStateNormal];
+    clickButton.enabled = NO;
+    //    [clickButton addTarget:self action:@selector(Actiondo:) forControlEvents:UIControlEventTouchUpInside];
+    //    [clickButton addGestureRecognizer:tapGesture];
+    
+    [whiteView addSubview:sectionName];
+    [whiteView addSubview:clickButton];
+    
+    [sectionName mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(whiteView).with.offset(10 *kiphone6);
+        make.left.equalTo(whiteView).with.offset(20 *kiphone6);
+        make.size.mas_equalTo(CGSizeMake(64, 14));
+    }];
+    
+    [clickButton mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(whiteView).with.offset(0);
+        make.right.equalTo(whiteView).with.offset(10);
+        make.size.mas_equalTo(CGSizeMake(40 *kiphone6, 40 *kiphone6));
+    }];
+    
+    
+    
+    [sectionHView addSubview:whiteView];
+    [whiteView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(sectionHView).with.offset(4*kiphone6);
+        make.left.equalTo(sectionHView);
+        make.size.mas_equalTo(CGSizeMake(kScreenW, 40*kiphone6));
+    }];
+     sectionHView.frame = CGRectMake(0, 0, kScreenW, 44 *kiphone6);
+    return sectionHView;
+    
+}
+
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:NSStringFromClass([self class])];
     if (cell == nil) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:NSStringFromClass([self class])];
-        cell.textLabel.font = [UIFont fontWithName:@"Marion" size:14];
-        cell.textLabel.textColor = [UIColor colorWithRed:255/255 green:66.0/255 blue:66.0/255 alpha:1.0];
+        cell.textLabel.font = [UIFont fontWithName:@"Marion" size:13];
+        cell.textLabel.textColor = [UIColor colorWithHexString:@"333333"];
         cell.backgroundColor = [UIColor clearColor];
-        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+//        cell.selectionStyle = UITableViewCellSelectionStyleNone;
     }
-    cell.textLabel.textAlignment=NSTextAlignmentCenter;
+    cell.textLabel.textAlignment=NSTextAlignmentLeft;
     cell.textLabel.text = self.items[indexPath.row];
     return cell;
 }
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     return  self.cellHeight;
+}
+- (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section{
+    return nil;
 }
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -168,22 +252,22 @@
     return labelSize;
 }
 
-- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath{
-    if ([cell respondsToSelector:@selector(setSeparatorInset:)]) {
-        [cell setSeparatorInset:UIEdgeInsetsMake(0, 10, 0, 10)];
-    }
-    
-    // Prevent the cell from inheriting the Table View's margin settings
-    if ([cell respondsToSelector:@selector(setPreservesSuperviewLayoutMargins:)]) {
-        [cell setPreservesSuperviewLayoutMargins:NO];
-    }
-    
-    if ([cell respondsToSelector:@selector(setLayoutMargins:)]) {
-        [cell setLayoutMargins:UIEdgeInsetsZero];
-    }
-    
-    ;
-}
+//- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath{
+//    if ([cell respondsToSelector:@selector(setSeparatorInset:)]) {
+//        [cell setSeparatorInset:UIEdgeInsetsMake(0, 10, 0, 10)];
+//    }
+//    
+//    // Prevent the cell from inheriting the Table View's margin settings
+//    if ([cell respondsToSelector:@selector(setPreservesSuperviewLayoutMargins:)]) {
+//        [cell setPreservesSuperviewLayoutMargins:NO];
+//    }
+//    
+//    if ([cell respondsToSelector:@selector(setLayoutMargins:)]) {
+//        [cell setLayoutMargins:UIEdgeInsetsZero];
+//    }
+//    
+//    ;
+//}
 
 @end
 

@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 
 @interface NotficationTableViewCell : UITableViewCell
-@property (nonatomic, strong) UIImageView *iconV;
+//@property (nonatomic, strong) UIImageView *iconV;
 @property (nonatomic, strong) UILabel *titleLabel;
 @property (nonatomic, strong) UILabel *introduceLabel;
 @property (nonatomic, strong) UIView *cardView;

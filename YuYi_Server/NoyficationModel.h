@@ -15,4 +15,7 @@
 @property (nonatomic, copy) NSString *address;
 @property (nonatomic, copy) NSString *info_id;
 @property (nonatomic, copy) NSString *picture;
+@property (nonatomic, copy) NSString *avatar;
+@property (nonatomic, copy) NSString *isRead;
+@property (nonatomic, copy) NSString *title;
 @end

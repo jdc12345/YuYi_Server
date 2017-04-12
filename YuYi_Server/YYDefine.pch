@@ -172,7 +172,10 @@
 #define mRecardDetail [NSString stringWithFormat:@"%@%@",mPrefixUrl,@"/medical/findOnePh.do?"]
 // 获取患者测量数据信息接口
 #define mMeasure [NSString stringWithFormat:@"%@%@",mPrefixUrl,@"/homeuser/findOnePh.do?"]
-
+// 获取消息信息接口
+#define mMessages [NSString stringWithFormat:@"%@%@",mPrefixUrl,@"/messagePhysician/findPage.do?token="]
+// 意见反馈接口
+#define mFeedBackInfo [NSString stringWithFormat:@"%@%@",mPrefixUrl,@"/feedback/saveforph.do?"]
 // Include any system framework and library headers here that should be included in all compilation units.
 // You will also need to set the Prefix Header build setting of one or more of your targets to reference this file.
 

@@ -68,8 +68,8 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
-    self.title = @"消息";
-//    [self httpRequest];
+    self.title = @"宇医公告";
+    [self httpRequest];
     [self tableView];
     self.rowHArray = @[@"130",@"160",@"130"];
     self.titleArray = @[@"宇医公告",@"血压测量",@"挂号通知"];
@@ -116,17 +116,17 @@
     
 
     if (self.dataSource.count == 0) {
-        homeTableViewCell.iconV.image = [UIImage imageNamed:self.iconArray[indexPath.row]];
+//        homeTableViewCell.iconV.image = [UIImage imageNamed:self.iconArray[indexPath.row]];
         homeTableViewCell.titleLabel.text = self.titleArray[indexPath.row];
         homeTableViewCell.introduceLabel.text = self.contentArray[indexPath.row];
     }else{
          NoyficationModel *infoModel = self.dataSource[indexPath.row];
     if ([infoModel.msgType isEqualToString:@"1"]) {
-        homeTableViewCell.iconV.image = [UIImage imageNamed:@"inform"];
-        homeTableViewCell.titleLabel.text = @"宇医公告";
+//        homeTableViewCell.iconV.image = [UIImage imageNamed:@"inform"];
+        homeTableViewCell.titleLabel.text = infoModel.title;
     }else{
-        homeTableViewCell.iconV.image = [UIImage imageNamed:@"registration"];
-        homeTableViewCell.titleLabel.text = @"挂号通知";
+//        homeTableViewCell.iconV.image = [UIImage imageNamed:@"registration"];
+        homeTableViewCell.titleLabel.text = infoModel.title;
     }
          homeTableViewCell.introduceLabel.text = infoModel.content;
     }
@@ -151,11 +151,11 @@
 }
 - (void)httpRequest{
     
-    [[HttpClient defaultClient]requestWithPath:[NSString stringWithFormat:@"%@%@",mPushNotfic,[CcUserModel defaultClient].userToken] method:0 parameters:nil prepareExecute:^{
+    [[HttpClient defaultClient]requestWithPath:[NSString stringWithFormat:@"%@%@&start=0&limit=10&msgType=1",mMessages,[CcUserModel defaultClient].userToken] method:0 parameters:nil prepareExecute:^{
         
     } success:^(NSURLSessionDataTask *task, id responseObject) {
         NSLog(@"%@",responseObject);
-        NSArray *rowArray = responseObject[@"result"];
+        NSArray *rowArray = responseObject[@"rows"];
         for (NSDictionary *dict in rowArray){
             NoyficationModel *infoModel = [NoyficationModel mj_objectWithKeyValues:dict];
             [self.dataSource addObject:infoModel];

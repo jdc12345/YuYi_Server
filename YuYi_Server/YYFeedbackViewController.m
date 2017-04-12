@@ -120,7 +120,7 @@
 }
 - (void)sendFeedBack{
     NSString *tokenStr = [CcUserModel defaultClient].userToken;
-    [[HttpClient defaultClient]requestWithPath:[NSString stringWithFormat:@"%@content=%@&token=%@&contact=%@",mFeedBack,self.feedTextView.text,tokenStr,self.phoneTextF.text] method:0 parameters:nil prepareExecute:^{
+    [[HttpClient defaultClient]requestWithPath:[NSString stringWithFormat:@"%@content=%@&token=%@&contact=%@",mFeedBackInfo,self.feedTextView.text,tokenStr,self.phoneTextF.text] method:0 parameters:nil prepareExecute:^{
         
     } success:^(NSURLSessionDataTask *task, id responseObject) {
         NSLog(@"提交成功%@",responseObject);

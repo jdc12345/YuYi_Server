@@ -24,7 +24,7 @@
 #import "YYPatientsViewController.h"
 #import "ReciveAppointmentViewController.h"
 #import "YYSettingViewController.h"
-#import "NotficationViewController.h"
+#import "YYNotficationViewController.h"
 #import "UIBarButtonItem+Helper.h"
 #import "UIButton+Badge.h"
 
@@ -352,7 +352,7 @@
 }
 - (void)pushNotficVC{
     NSLog(@"435");
-    [self.navigationController pushViewController:[[NotficationViewController alloc]init] animated:YES];
+    [self.navigationController pushViewController:[[YYNotficationViewController alloc]init] animated:YES];
 }
 /*
  #pragma mark - Navigation
