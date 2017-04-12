@@ -107,6 +107,7 @@ static NSString *dentifier=@"cellforappliancelist";
     if (searchString.length >0) {
         YYPatientsViewController *dataAnalyseVC = [[YYPatientsViewController alloc]init];
         dataAnalyseVC.view.frame = CGRectMake(0, 64, kScreenW, kScreenH -64);
+        dataAnalyseVC.titleStr = @"search";
         [self.view addSubview:dataAnalyseVC.view];
         
         [self addChildViewController:dataAnalyseVC];

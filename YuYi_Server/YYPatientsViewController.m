@@ -48,12 +48,11 @@
 
 - (UITableView *)tableView{
     if (_tableView == nil) {
-//        if (self.titleStr) {
-//            _tableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 64 +60, kScreenW, kScreenH -64 -60) style:UITableViewStylePlain];
-//            [self createMeau];
-//        }else{
+        if ([self.titleStr isEqualToString:@"search"]) {
+            _tableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, kScreenW, kScreenH -64) style:UITableViewStylePlain];
+        }else{
             _tableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 64, kScreenW, kScreenH -64) style:UITableViewStylePlain];
-//    }
+    }
         _tableView.backgroundColor = [UIColor colorWithHexString:@"f2f2f2"];
         _tableView.dataSource = self;
         _tableView.delegate = self;
