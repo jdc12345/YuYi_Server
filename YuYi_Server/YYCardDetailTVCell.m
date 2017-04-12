@@ -13,7 +13,9 @@
 #import <UIImageView+WebCache.h>
 #import "CcUserModel.h"
 #import "HttpClient.h"
-@interface YYCardDetailTVCell()
+#import "YYCardPostPictureCell.h"
+static NSString *cell_id = @"cell_id";
+@interface YYCardDetailTVCell()<UITableViewDelegate,UITableViewDataSource>
 @property(nonatomic,weak)UIImageView *iconView;
 @property(nonatomic,weak)UILabel *nameLabel;
 @property(nonatomic,weak)UILabel *timeLabel;
@@ -23,6 +25,8 @@
 @property(nonatomic,weak)UILabel *titleLabel;
 @property(nonatomic,weak)UILabel *conentLabel;
 @property(nonatomic,weak)UIButton *praiseBtn;
+@property(nonatomic,weak)UITableView *tableView;
+@property(nonatomic,strong)NSArray *imagesArr;
 @end
 @implementation YYCardDetailTVCell
 
@@ -41,8 +45,20 @@
     self.countLabel.text = infoModel.likeNum;
     self.titleLabel.text = infoModel.title;
     self.contentLabel.text = infoModel.content;
-    NSString *imageUrlStr = [NSString stringWithFormat:@"%@%@",mPrefixUrl,infoModel.picture];
-    [self.bigImageView sd_setImageWithURL:[NSURL URLWithString:imageUrlStr]];
+    if (infoModel.picture) {
+        NSArray *array = [infoModel.picture componentsSeparatedByString:@";"];
+        self.imagesArr = array;
+        if ([array[1] isEqualToString:@""]) {
+            NSArray *arrOne = [NSArray arrayWithObject:array[0]];
+            self.imagesArr = arrOne;
+        }
+        [self.tableView mas_updateConstraints:^(MASConstraintMaker *make) {
+            make.height.offset(self.imagesArr.count*kScreenW);
+        }];
+        [self.tableView reloadData];
+    }
+//    NSString *imageUrlStr = [NSString stringWithFormat:@"%@%@",mPrefixUrl,infoModel.picture];
+//    [self.bigImageView sd_setImageWithURL:[NSURL URLWithString:imageUrlStr]];
     if (infoModel.isLike) {
         [self.praiseBtn setImage:[UIImage imageNamed:@"Info-heart-icon-select-"] forState:UIControlStateNormal];
     }else{
@@ -89,10 +105,18 @@
     [self.contentView addSubview:contentLabel];
     self.contentLabel = contentLabel;
     //图片
-    UIImageView *imageView = [[UIImageView alloc]init];
-    imageView.image = [UIImage imageNamed:@"add_pic"];
-    [self.contentView addSubview:imageView];
-    self.bigImageView = imageView;
+//    UIImageView *imageView = [[UIImageView alloc]init];
+//    imageView.image = [UIImage imageNamed:@"add_pic"];
+//    [self.contentView addSubview:imageView];
+//    self.bigImageView = imageView;
+    UITableView *tableView = [[UITableView alloc]init];
+    [self.contentView addSubview:tableView];
+    tableView.dataSource = self;
+    tableView.delegate = self;
+    tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    [tableView registerClass:[YYCardPostPictureCell class] forCellReuseIdentifier:cell_id];
+    self.tableView = tableView;
+    tableView.userInteractionEnabled = false;
 
     //约束
     [iconView mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -126,16 +150,43 @@
         make.left.offset(20*kiphone6);
         make.right.offset(-20*kiphone6);
     }];
-    [imageView mas_makeConstraints:^(MASConstraintMaker *make) {
+    [tableView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(contentLabel.mas_bottom).offset(20);
         make.left.offset(20*kiphone6);
         make.right.offset(-20*kiphone6);
-        make.height.offset(335*kiphone6);
+        make.height.offset(self.imagesArr.count*kScreenW);
+
     }];
+//    [imageView mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.top.equalTo(contentLabel.mas_bottom).offset(20);
+//        make.left.offset(20*kiphone6);
+//        make.right.offset(-20*kiphone6);
+//        make.height.offset(335*kiphone6);
+//    }];
     [self.contentView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.bottom.equalTo(imageView.mas_bottom);
+        make.bottom.equalTo(tableView.mas_bottom);
         make.width.offset([UIScreen mainScreen].bounds.size.width);//必须加
     }];
+}
+#pragma UItableView
+-(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
+    return self.imagesArr.count;
+}
+-(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
+    YYCardPostPictureCell *cell = [tableView dequeueReusableCellWithIdentifier:cell_id forIndexPath:indexPath];
+    NSString *imageUrlStr = [NSString stringWithFormat:@"%@%@",mPrefixUrl,self.imagesArr[indexPath.row]];
+    
+    SDWebImageManager *manager = [SDWebImageManager sharedManager];
+    [manager downloadImageWithURL:[NSURL URLWithString:imageUrlStr]
+                          options:0
+                         progress:nil
+                        completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, BOOL finished, NSURL *imageURL) {
+                            cell.image = image;
+                        }];
+    return cell;
+}
+-(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
+    return kScreenW;
 }
 - (void)praisePlus:(UIButton*)sender{
         CcUserModel *model = [CcUserModel defaultClient];

@@ -14,7 +14,7 @@
 #import "CcUserModel.h"
 #import "HttpClient.h"
 @interface YYCardPostPictureCell ()
-@property(nonatomic,weak)UIImageView *pictureView;
+
 
 @end
 

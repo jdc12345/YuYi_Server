@@ -10,4 +10,5 @@
 
 @interface YYCardPostPictureCell : UITableViewCell
 @property(nonatomic,strong)UIImage *image;
+@property(nonatomic,weak)UIImageView *pictureView;
 @end
