@@ -83,6 +83,7 @@
     
 }
 -(void)loadSelectInfosWithUrlStr:(NSString*)urlStr{
+    
     [[HttpClient defaultClient]requestWithPath:urlStr method:0 parameters:nil prepareExecute:^{
         
     } success:^(NSURLSessionDataTask *task, id responseObject) {
@@ -145,8 +146,8 @@
 //        [btn addTarget:self action:@selector(shopCategoryButtonClick:) forControlEvents:UIControlEventTouchUpInside];
 //        [cardsView addSubview:btn];
 //    }
-//    
-//    //添加滑动线
+    
+    //添加滑动线
 //    UIView *cardLineView = [[UIView alloc]init];
 //    [cardLineView setBackgroundColor:[UIColor greenColor]];
 //    [cardsView addSubview:cardLineView];
@@ -180,7 +181,7 @@
     hotCardVC.view.backgroundColor = [UIColor whiteColor];
     selectCardVC.view.backgroundColor = [UIColor blueColor];
     recentCardVC.view.backgroundColor = [UIColor whiteColor];
-    
+    hotCardVC.view.frame = CGRectMake(0, 64, kScreenW, kScreenH -64);
     //添加子控件的view
     [cardDetailView addSubview:hotCardVC.view];
     [cardDetailView addSubview:selectCardVC.view];
@@ -198,28 +199,28 @@
     self.selectCardVC = selectCardVC;
     self.recentCardVC = recentCardVC;
     //添加右侧消息中心按钮
-//    UIButton *informationBtn = [[UIButton alloc]init];
-//    [self.view addSubview:informationBtn];
-//    [informationBtn setImage:[UIImage imageNamed:@"notice"] forState:UIControlStateNormal];
-//    informationBtn.badgeValue = @" ";
-//    informationBtn.badgeBGColor = [UIColor redColor];
-//    informationBtn.badgeFont = [UIFont systemFontOfSize:0.1];
-//    informationBtn.badgeOriginX = 16;
-//    informationBtn.badgeOriginY = 1;
-//    informationBtn.badgePadding = 0.1;
-//    informationBtn.badgeMinSize = 5;
-//    [informationBtn addTarget:self action:@selector(informationBtnClick:) forControlEvents:UIControlEventTouchUpInside];
-//    //设置帖子分类约束
+    UIButton *informationBtn = [[UIButton alloc]init];
+    [self.view addSubview:informationBtn];
+    [informationBtn setImage:[UIImage imageNamed:@"notice"] forState:UIControlStateNormal];
+    informationBtn.badgeValue = @" ";
+    informationBtn.badgeBGColor = [UIColor redColor];
+    informationBtn.badgeFont = [UIFont systemFontOfSize:0.1];
+    informationBtn.badgeOriginX = 16;
+    informationBtn.badgeOriginY = 1;
+    informationBtn.badgePadding = 0.1;
+    informationBtn.badgeMinSize = 5;
+    [informationBtn addTarget:self action:@selector(informationBtnClick:) forControlEvents:UIControlEventTouchUpInside];
+    //设置帖子分类约束
 //    [cardsView mas_makeConstraints:^(MASConstraintMaker *make) {
 //        make.top.left.right.offset(0);
 //        make.height.offset(64*kiphone6);
 //    }];
-//    //设置按钮约束
+    //设置按钮约束
 //    [cardCategoryButtons mas_makeConstraints:^(MASConstraintMaker *make) {
 //        make.top.offset(20);
 //        make.bottom.offset(0*kiphone6);
 //    }];
-//    //循环设置按钮的等宽
+    //循环设置按钮的等宽
 //    for (int i = 0; i < cardCategoryButtons.count-1; i ++) {
 //        UIButton *currentBtn = cardCategoryButtons[i];
 //        UIButton *nextBtn = cardCategoryButtons[i+1];
@@ -240,18 +241,18 @@
 //            make.left.equalTo(currentBtn.mas_right);
 //        }];
 //    }
-//    //设置滑动线的约束
+    //设置滑动线的约束
 //    [cardLineView mas_makeConstraints:^(MASConstraintMaker *make) {
 //        make.width.offset(30*kiphone6);
 //        make.height.offset(2*kiphone6);
 //        make.bottom.equalTo(hotCardButton);
 //        make.centerX.equalTo(hotCardButton);
 //    }];
-//    //约束
-//    [cardDetailView mas_makeConstraints:^(MASConstraintMaker *make) {
-//        make.left.right.bottom.offset(0);
-//        make.top.equalTo(cardsView.mas_bottom);
-//    }];
+//    约束
+    [cardDetailView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.right.bottom.offset(0);
+        make.top.mas_equalTo(0);
+    }];
     [cardDetailView layoutIfNeeded];
     [hotCardVC.view mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.left.bottom.offset(0);
@@ -259,19 +260,19 @@
         make.height.equalTo(cardDetailView);
         
     }];
-    [selectCardVC.view mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.bottom.offset(0);
-        make.left.equalTo(hotCardVC.view.mas_right);
-        make.width.equalTo(cardDetailView);
-        make.height.equalTo(cardDetailView);
-        
-    }];
-    [recentCardVC.view mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.bottom.right.offset(0);
-        make.left.equalTo(selectCardVC.view.mas_right);
-        make.width.equalTo(cardDetailView);
-        make.height.equalTo(cardDetailView);
-    }];
+//    [selectCardVC.view mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.top.bottom.offset(0);
+//        make.left.equalTo(hotCardVC.view.mas_right);
+//        make.width.equalTo(cardDetailView);
+//        make.height.equalTo(cardDetailView);
+//        
+//    }];
+//    [recentCardVC.view mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.top.bottom.right.offset(0);
+//        make.left.equalTo(selectCardVC.view.mas_right);
+//        make.width.equalTo(cardDetailView);
+//        make.height.equalTo(cardDetailView);
+//    }];
 //    [informationBtn mas_makeConstraints:^(MASConstraintMaker *make) {
 //        make.centerY.equalTo(hotCardButton);
 //        make.right.offset(-20*kiphone6);
@@ -414,14 +415,14 @@
     CGFloat res = [NSObject resultWithConsult:offSetX andResultValue:resValue andConsultValue:conValue];
     UIButton *secondBtn = self.cardCategoryButtons[1];
     //按钮所在view宽和scrollView的宽不相等，所以需要减去该距离
-//    CGFloat d = self.view.center.x - secondBtn.center.x;
-//    //根据偏移距离设置滚动线的位置
-//    [self.cardLineView mas_remakeConstraints:^(MASConstraintMaker *make) {
-//        make.width.offset(30*kiphone6);
-//        make.height.offset(2*kiphone6);
-//        make.bottom.equalTo(self.cardsView);
-//        make.centerX.offset(res-d);
-//    }];
+    CGFloat d = self.view.center.x - secondBtn.center.x;
+    //根据偏移距离设置滚动线的位置
+    [self.cardLineView mas_remakeConstraints:^(MASConstraintMaker *make) {
+        make.width.offset(30*kiphone6);
+        make.height.offset(2*kiphone6);
+        make.bottom.equalTo(self.cardsView);
+        make.centerX.offset(res-d);
+    }];
     
 }
 

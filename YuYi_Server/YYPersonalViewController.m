@@ -226,7 +226,7 @@
     
     if (indexPath.section == 0) {
         if (indexPath.row == 0) {
-            AgreeViewController *myVC = [[AgreeViewController alloc]init];
+            InvitationViewController *myVC = [[InvitationViewController alloc]init];
             myVC.titleStr = @"我的帖子";
             [self.navigationController pushViewController:myVC animated:YES];
         }else{
