@@ -13,6 +13,8 @@
 #import "UILabel+Addition.h"
 #import "HUImagePickerViewController.h"
 #import "YYCardPostPictureCell.h"
+#import "AFNetworking.h"
+#import "CcUserModel.h"
 static NSString *cell_id = @"cell_id";
 @interface YYpostCardVC ()<UITextViewDelegate,HUImagePickerViewControllerDelegate,UITableViewDelegate,UITableViewDataSource,UINavigationControllerDelegate>
 @property(nonatomic,weak)BRPlaceholderTextView *titleView;
@@ -38,6 +40,104 @@ static NSString *cell_id = @"cell_id";
     [self setupUI];
     
 }
+- (void)uploadCardInfos:(UIButton*)btn{
+    CcUserModel *model = [CcUserModel defaultClient];
+    NSString *token = model.userToken;
+    NSDictionary *dic = @{@"token":token,@"title":self.titleView.text,@"content":self.contentView.text};
+    NSMutableDictionary *params = [NSMutableDictionary dictionaryWithDictionary:dic];
+    
+    //添加服务器需要你传的参数 params /academicpaper/AddAcademicpaper.do?token=EA62E69E02FABA4E4C9A0FDC1C7CAE10&title=test&content=test&images=
+    NSString *urlStr = [NSString stringWithFormat:@"%@/academicpaper/AddAcademicpaper.do?token=%@",mPrefixUrl,token];
+    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+    [manager POST:urlStr parameters:params constructingBodyWithBlock:^(id<AFMultipartFormData>  _Nonnull formData) {
+        //  图片上传
+        for (NSInteger i = 0; i < self.imageArr.count; i ++) {
+            UIImage *images = self.imageArr[i];
+            NSData *picData = UIImageJPEGRepresentation(images, 0.5);
+            NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+            formatter.dateFormat = @"yyyyMMddHHmmss";
+            NSString *fileName = [NSString stringWithFormat:@"%@%ld.png", [formatter stringFromDate:[NSDate date]], (long)i];
+            [formData appendPartWithFileData:picData name:[NSString stringWithFormat:@"uploadFile%ld",(long)i] fileName:fileName mimeType:@"image/png"];
+        }
+    } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nonnull responseObject) {
+//        [MBProgressHUD hideHUDForView:self.view animated:YES];
+       NSString *message = responseObject[@"message"];
+        [message stringByRemovingPercentEncoding];
+        NSLog(@"宝宝头像上传== %@,%@", responseObject,message);
+        if ([responseObject[@"code"] isEqualToString:@"0"]) {
+            [self showSuccessAlertWithMessage:@"已上传成功，你可以在学术圈最新帖子处查看"];
+        }else{
+            [self showAlertWithMessage:[NSString stringWithFormat:@"上传失败:%@",message]];
+        }
+      
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        NSLog(@"错误信息=====%@", error.description);
+        [self showAlertWithMessage:@"上传失败"];
+    }];
+//    [manager POST:urlStr parameters:params constructingBodyWithBlock:^(id<AFMultipartFormData>  _Nonnull formData) {
+//        
+//        //拼接图片
+//        [self.imageArr enumerateObjectsUsingBlock:^(UIImage * _Nonnull image, NSUInteger idx, BOOL * _Nonnull stop) {
+//            
+//            NSData *imageData = UIImagePNGRepresentation(image);
+//            
+//            if (imageData.length >= 1024 * 1024) {
+//                //因为我们服务器有限制1M以内   所以我超过1M的进行压缩了
+////                imageData = [image resetSizeOfImageData:image maxSize:1000];
+//                [formData appendPartWithFileData:imageData name:@"kinta" fileName:@"kinta.jpg" mimeType:@"image/jpg"];
+//            }else{
+//                
+//                [formData appendPartWithFileData:imageData name:@"kinta" fileName:@"kinta.png" mimeType:@"image/png"];
+//            }
+//            
+//        }];
+//        
+//    } progress:^(NSProgress * _Nonnull uploadProgress) {
+//        
+//        // 回到主队列刷新UI,用户自定义的进度条
+//        dispatch_async(dispatch_get_main_queue(), ^{
+////            [SVProgressHUD showProgress:1.0 *
+////             uploadProgress.completedUnitCount / uploadProgress.totalUnitCount];
+//        });
+//        
+//        
+//    } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+//        
+//        NSLog(@"上传成功 %@", responseObject);
+//        
+//        id datalist = responseObject[@"datalist"];
+//        
+//        NSLog(@"%@",datalist);
+//    }else{
+//
+//    }
+//     
+//     
+//     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+//         
+//         NSLog(@"上传失败 %@", error);
+////         [SVProgressHUD dismiss];
+//     }];
+    
+}
+//弹出alert
+-(void)showAlertWithMessage:(NSString*)message{
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:nil message:message preferredStyle:UIAlertControllerStyleAlert];
+    //            UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:nil];
+    UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"好的" style:UIAlertActionStyleDefault handler:nil];
+    //            [alert addAction:cancelAction];
+    [alert addAction:okAction];
+    [self presentViewController:alert animated:YES completion:nil];
+}
+-(void)showSuccessAlertWithMessage:(NSString*)message{
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:nil message:message preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"确定" style:0 handler:^(UIAlertAction * _Nonnull action) {
+        [self.navigationController popViewControllerAnimated:true];
+    }];
+    //            [alert addAction:cancelAction];
+    [alert addAction:okAction];
+    [self presentViewController:alert animated:YES completion:nil];
+}
 - (void)setupUI {
     //添加右侧发布按钮
     UIButton *postBtn = [[UIButton alloc]initWithFrame:CGRectMake(0, 0, 30*kiphone6, 30*kiphone6)];
@@ -47,6 +147,7 @@ static NSString *cell_id = @"cell_id";
     [postBtn sizeToFit];
     UIBarButtonItem *postBtnItem = [[UIBarButtonItem alloc]initWithCustomView:postBtn];
     [self.navigationItem setRightBarButtonItem:postBtnItem];
+    [postBtn addTarget:self action:@selector(uploadCardInfos:) forControlEvents:UIControlEventTouchUpInside];
     //
     UIScrollView *scrollView = [[UIScrollView alloc]initWithFrame:self.view.frame];
     //    backView.contentSize = self.view.frame.size;

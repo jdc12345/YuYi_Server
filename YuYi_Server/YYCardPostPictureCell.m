@@ -36,7 +36,7 @@
     _image = image;
 //    image = [self thumbnailWithImageWithoutScale:image size:CGSizeMake(kScreenW, kScreenW)];
 //    image = [self imageCompressForWidthScale:image targetWidth:kScreenW];
-    image = [self imageCompressFitSizeScale:image targetSize:CGSizeMake(kScreenW, kScreenW)];
+    image = [self imageCompressFitSizeScale:image targetSize:CGSizeMake(kScreenW, kScreenW-10)];
     self.pictureView.image = image;
     
 }
@@ -202,12 +202,11 @@
     
     //约束
     [pictureView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.right.top.bottom.offset(0);
-//        make.left.offset(20*kiphone6);
-//        make.right.offset(-20*kiphone6);
+        make.left.right.top.offset(0);
+        make.bottom.offset(-5);
     }];
     [self.contentView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.bottom.equalTo(pictureView.mas_bottom);
+        make.bottom.equalTo(pictureView.mas_bottom).offset(5);
         make.width.offset(kScreenW);//必须加
     }];
     
