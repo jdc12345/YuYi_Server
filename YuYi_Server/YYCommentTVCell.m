@@ -124,7 +124,7 @@
         make.right.equalTo(countLabel.mas_left).offset(-5*kiphone6);
         make.centerY.equalTo(iconView);
     }];
-    [self.contentView mas_makeConstraints:^(MASConstraintMaker *make) {
+    [self.contentView mas_updateConstraints:^(MASConstraintMaker *make) {
         make.bottom.equalTo(contentLabel.mas_bottom).offset(20*kiphone6);
         make.width.offset([UIScreen mainScreen].bounds.size.width);//必须加
     }];

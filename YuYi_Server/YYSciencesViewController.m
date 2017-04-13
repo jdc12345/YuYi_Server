@@ -246,8 +246,9 @@
     }];
     //约束
     [cardDetailView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.right.bottom.offset(0);
+        make.left.right.offset(0);
         make.top.equalTo(cardsView.mas_bottom);
+        make.bottom.offset(-64*kiphone6);
     }];
     [cardDetailView layoutIfNeeded];
     [hotCardVC.view mas_makeConstraints:^(MASConstraintMaker *make) {

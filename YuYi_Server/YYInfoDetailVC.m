@@ -55,7 +55,7 @@
 
 }
 - (void)setUpUI {
-    UIScrollView *scrollView = [[UIScrollView alloc]initWithFrame:CGRectMake(0, 0, kScreenW, kScreenH-54*kiphone6)];
+    UIScrollView *scrollView = [[UIScrollView alloc]initWithFrame:CGRectMake(0, 0, kScreenW, kScreenH-64.5*kiphone6)];
     scrollView.delegate = self;
     scrollView.scrollEnabled = true;
     [self.view addSubview:scrollView];
@@ -67,7 +67,7 @@
     [backView addSubview:imageView];
     [imageView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.left.right.offset(0);
-        make.height.offset(200);
+        make.height.offset(200*kiphone6);
     }];
     UILabel *titleLabel = [UILabel labelWithText:self.infoModel.title andTextColor:[UIColor colorWithHexString:@"333333"] andFontSize:15];
     titleLabel.numberOfLines = 2;

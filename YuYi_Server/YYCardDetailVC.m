@@ -83,7 +83,8 @@ static NSString *cellId = @"cell_id";
     [self.view addSubview:tableView];
     self.tableView = tableView;
     [tableView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.right.top.bottom.offset(0);
+        make.left.right.top.offset(0);
+        make.bottom.offset(-45*kiphone6);
     }];
     tableView.delegate = self;
     tableView.dataSource = self;
