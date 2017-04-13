@@ -63,12 +63,32 @@
     self.view.backgroundColor = [UIColor colorWithHexString:@"f2f2f2"];
     
     
-    self.dataSource = [[NSMutableArray alloc]initWithArray:@[@[@"意见反馈",@"关于我们"],@[@"退出"]]];
+    self.dataSource = [[NSMutableArray alloc]initWithArray:@[@[@"意见反馈",@"关于我们"]]];
     self.iconList =@[@[@"18511694068",@"男",@"布依族",@"24"],@[@"黑龙江哈尔滨",@"程序员",@"未婚"],@[@"2016-10-23"]];
     
     
-    [self tableView];
     
+    [self tableView];
+    UIButton *sureBtn = [UIButton  buttonWithType:UIButtonTypeCustom];
+    sureBtn.layer.cornerRadius = 1.5 *kiphone6;
+    sureBtn.layer.borderWidth = 0.5 *kiphone6;
+    sureBtn.layer.borderColor = [UIColor colorWithHexString:@"e00610"].CGColor;
+    sureBtn.clipsToBounds = YES;
+    [sureBtn setTitle:@"删除" forState:UIControlStateNormal];
+    sureBtn.backgroundColor = [UIColor clearColor];
+    [sureBtn setTitleColor:[UIColor colorWithHexString:@"e00610"] forState:UIControlStateNormal];
+    [sureBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateHighlighted];
+    //     [sureBtn addTarget:self action:@selector(buttonClick:) forControlEvents:UIControlEventTouchDown];
+    [sureBtn addTarget:self action:@selector(buttonClick1:) forControlEvents:UIControlEventTouchUpInside];
+    
+    [self.view addSubview:sureBtn];
+    
+    WS(ws);
+    [sureBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.bottom.equalTo(ws.view).with.offset(-9.5 *kiphone6);
+        make.centerX.equalTo(ws.view);
+        make.size.mas_equalTo(CGSizeMake(150 *kiphone6 ,50 *kiphone6));
+    }];
     // Do any additional setup after loading the view.
 }
 
