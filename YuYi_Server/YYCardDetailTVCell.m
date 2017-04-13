@@ -45,13 +45,11 @@ static NSString *cell_id = @"cell_id";
     self.countLabel.text = infoModel.likeNum;
     self.titleLabel.text = infoModel.title;
     self.contentLabel.text = infoModel.content;
-    if (infoModel.picture) {
+    if (![infoModel.picture isEqualToString:@""]) {
         NSArray *array = [infoModel.picture componentsSeparatedByString:@";"];
-        self.imagesArr = array;
-        if ([array[1] isEqualToString:@""]) {
-            NSArray *arrOne = [NSArray arrayWithObject:array[0]];
-            self.imagesArr = arrOne;
-        }
+        NSMutableArray *arr = [NSMutableArray arrayWithArray:array];
+        [arr removeLastObject];
+        self.imagesArr = arr;
         [self.tableView mas_updateConstraints:^(MASConstraintMaker *make) {
             make.height.offset(self.imagesArr.count*kScreenW);
         }];

@@ -41,7 +41,7 @@
     [self.iconView sd_setImageWithURL:[NSURL URLWithString:urlStr] placeholderImage:[UIImage imageNamed:@"add_pic"]];
     self.nameLabel.text =  infoCommentModel.trueName;
     self.timeLabel.text = infoCommentModel.createTimeString;
-    self.contentLabel.text = infoCommentModel.content;
+    self.contentLabel.text = [infoCommentModel.content stringByRemovingPercentEncoding];
     self.praiseBtn.hidden = true;
     self.countLabel.hidden = true;
 }
@@ -52,7 +52,8 @@
     [self.iconView sd_setImageWithURL:[NSURL URLWithString:urlStr] placeholderImage:[UIImage imageNamed:@"add_pic"]];
     self.nameLabel.text =  comModel.trueName;
     self.timeLabel.text = comModel.createTimeString;
-    self.contentLabel.text = comModel.content;
+//    self.contentLabel.text = comModel.content;
+    self.contentLabel.text = [comModel.content stringByRemovingPercentEncoding];
     self.countLabel.text = comModel.likeNum;
 }
 - (void)setupUI{

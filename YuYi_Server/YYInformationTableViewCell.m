@@ -64,7 +64,7 @@
     [imageView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.offset(4*kiphone6);
         make.left.offset(10*kiphone6);
-        make.width.height.offset(100*kiphone6);
+        make.width.height.offset(92*kiphone6);
     }];
     [titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.offset(4*kiphone6);
@@ -78,10 +78,10 @@
         make.bottom.offset(-6*kiphone6);
     }];
     
-    [self.contentView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.bottom.equalTo(imageView.mas_bottom).offset(4*kiphone6);
-        make.width.offset([UIScreen mainScreen].bounds.size.width);//必须加
-    }];
+//    [self.contentView mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.bottom.equalTo(imageView.mas_bottom).offset(4*kiphone6);
+//        make.width.offset([UIScreen mainScreen].bounds.size.width);//必须加
+//    }];
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
