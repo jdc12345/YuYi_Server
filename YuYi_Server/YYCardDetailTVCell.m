@@ -161,7 +161,7 @@ static NSString *cell_id = @"cell_id";
 //        make.right.offset(-20*kiphone6);
 //        make.height.offset(335*kiphone6);
 //    }];
-    [self.contentView mas_makeConstraints:^(MASConstraintMaker *make) {
+    [self.contentView mas_updateConstraints:^(MASConstraintMaker *make) {
         make.bottom.equalTo(tableView.mas_bottom);
         make.width.offset([UIScreen mainScreen].bounds.size.width);//必须加
     }];

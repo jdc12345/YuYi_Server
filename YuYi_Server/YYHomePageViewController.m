@@ -258,8 +258,9 @@ static NSString *cell_id = @"cell_id";
     }];
     //约束
     [cardDetailView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.right.bottom.offset(0);
+        make.left.right.offset(0);
         make.top.equalTo(infosView.mas_bottom);
+        make.bottom.offset(-64*kiphone6);
     }];
     [cardDetailView layoutIfNeeded];
     [todayInfoVC.view mas_makeConstraints:^(MASConstraintMaker *make) {

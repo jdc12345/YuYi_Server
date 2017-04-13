@@ -41,6 +41,7 @@ static NSString *cell_id = @"cell_id";
     
 }
 - (void)uploadCardInfos:(UIButton*)btn{
+    [self resignFirstResponder];
     CcUserModel *model = [CcUserModel defaultClient];
     NSString *token = model.userToken;
     NSDictionary *dic = @{@"token":token,@"title":self.titleView.text,@"content":self.contentView.text};
