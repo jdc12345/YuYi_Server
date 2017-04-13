@@ -150,10 +150,10 @@
         make.right.equalTo(praiseCountLabel.mas_left).offset(-7*kiphone6);
         make.width.height.offset(20*kiphone6);
     }];
-    [self.contentView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.bottom.equalTo(praiseBtn.mas_bottom).offset(20*kiphone6);
-        make.width.offset([UIScreen mainScreen].bounds.size.width);
-    }];
+//    [self.contentView mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.bottom.equalTo(praiseBtn.mas_bottom).offset(20*kiphone6);
+//        make.width.offset([UIScreen mainScreen].bounds.size.width);
+//    }];
 
 }
 - (void)praisePlus:(UIButton*)sender{
