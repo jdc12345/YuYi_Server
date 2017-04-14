@@ -42,7 +42,6 @@ static NSString *cellId = @"cell_id";
     self.navigationController.navigationBar.translucent = false;
     self.view.backgroundColor = [UIColor whiteColor];
     self.title = @"帖子详情";
-//    self.commentInfos = [NSMutableArray arrayWithObjects:@"1",@"2", nil];
     [self loadData];
 }
 - (void)loadData{
@@ -84,12 +83,14 @@ static NSString *cellId = @"cell_id";
     self.tableView = tableView;
     [tableView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.right.top.offset(0);
-        make.bottom.offset(-45*kiphone6);
+        make.bottom.offset(-20*kiphone6);
     }];
     tableView.delegate = self;
     tableView.dataSource = self;
+    tableView.backgroundColor = [UIColor whiteColor];
     tableView.estimatedRowHeight = 150;
     tableView.rowHeight = UITableViewAutomaticDimension;
+    tableView.separatorStyle = UITableViewCellAccessoryNone;
     [tableView registerClass:[YYCommentTVCell class] forCellReuseIdentifier:cellId];
     tableView.tableHeaderView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kScreenW, CGFLOAT_MIN)];//解决group样式顶部留白问题
     //输入框背景
@@ -257,6 +258,15 @@ static NSString *cellId = @"cell_id";
             make.left.equalTo(commentLabel.mas_right).offset(5*kiphone6);
             make.centerY.equalTo(view);
         }];
+        UIView *line = [[UIView alloc]init];//分割线
+        line.alpha = 0.6f;
+        line.backgroundColor = [UIColor colorWithHexString:@"999999"];
+        [view addSubview:line];
+        [line mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.left.right.bottom.offset(0);
+            make.height.offset(0.5*kiphone6);
+        }];
+
         return view;
  
     }
@@ -267,6 +277,7 @@ static NSString *cellId = @"cell_id";
         view.backgroundColor = [UIColor colorWithHexString:@"#f1f1f1"];
         return view;
     }else{
+        
         return nil;
     }
 }

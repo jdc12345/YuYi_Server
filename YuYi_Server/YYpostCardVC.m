@@ -320,12 +320,13 @@ static NSString *cell_id = @"cell_id";
     if (editingStyle == UITableViewCellEditingStyleDelete) {
         
         UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"提示" message:@"你确定删除该图片？" preferredStyle:UIAlertControllerStyleAlert];
+        UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:nil];
         [alertController addAction:[UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDestructive handler:^(UIAlertAction * _Nonnull action) {
             [self.imageArr removeObjectAtIndex:indexPath.row];
             [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
             
         }]];
-        
+        [alertController addAction:cancelAction];
         [self presentViewController:alertController animated:YES completion:nil];
     }
     [self.tableView reloadData];
@@ -333,10 +334,11 @@ static NSString *cell_id = @"cell_id";
 }
 -(void)textViewDidChange:(UITextView *)textView{
     CGRect frame = textView.frame;
-    CGSize constraintSize = CGSizeMake(frame.size.width, MAXFLOAT);
-    CGSize size = [textView sizeThatFits:constraintSize];
-    if (size.height<=frame.size.height) {
-        size.height=frame.size.height;
+    CGSize textSize = [textView.text boundingRectWithSize:CGSizeMake(textView.frame.size.width, MAXFLOAT) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName : [UIFont systemFontOfSize:13.0]} context:nil].size;
+//    CGSize constraintSize = CGSizeMake(frame.size.width, MAXFLOAT);
+    CGSize size = [textView sizeThatFits:textSize];
+    if (size.height<=110*kiphone6) {
+        size.height=110*kiphone6;
         //        textView.scrollEnabled = true;   // 允许滚动
     }
     //    else{

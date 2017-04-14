@@ -169,7 +169,7 @@
         NSDictionary *getCodeDic = (NSDictionary*)responseObject;
         if ([getCodeDic[@"code"] isEqualToString:@"0"]) {
             self.countdownLabel.hidden = false;
-            self.passWordField.text = getCodeDic[@"result"];
+//            self.passWordField.text = getCodeDic[@"result"];
             //倒计时时间
             __block NSInteger timeOut = 59;
             dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
