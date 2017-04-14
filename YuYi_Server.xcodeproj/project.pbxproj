@@ -52,6 +52,8 @@
 		1688D7C91E9B6CEB001BBA61 /* YYCardDetailModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 1688D7C81E9B6CEB001BBA61 /* YYCardDetailModel.m */; };
 		1688D7CC1E9B97B4001BBA61 /* YYCardDetailPageModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 1688D7CB1E9B97B4001BBA61 /* YYCardDetailPageModel.m */; };
 		1688D7CF1E9BB756001BBA61 /* YYCardCommentDetailModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 1688D7CE1E9BB756001BBA61 /* YYCardCommentDetailModel.m */; };
+		3E1ABC701EA0649B00F66BC3 /* EmptyNetView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E1ABC6F1EA0649B00F66BC3 /* EmptyNetView.m */; };
+		3E1ABC731EA064AF00F66BC3 /* EmptyDataView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E1ABC721EA064AF00F66BC3 /* EmptyDataView.m */; };
 		3E1FC7231E97915800838F9E /* YYSettingTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E1FC7221E97915800838F9E /* YYSettingTableViewCell.m */; };
 		3E1FC7251E9B15B900838F9E /* YYInfoCommentVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E1FC7241E9B15B900838F9E /* YYInfoCommentVC.m */; };
 		3E1FC7271E9B15F000838F9E /* YYCommentInfoModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E1FC7261E9B15F000838F9E /* YYCommentInfoModel.m */; };
@@ -243,6 +245,10 @@
 		1688D7CB1E9B97B4001BBA61 /* YYCardDetailPageModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YYCardDetailPageModel.m; sourceTree = "<group>"; };
 		1688D7CD1E9BB756001BBA61 /* YYCardCommentDetailModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YYCardCommentDetailModel.h; sourceTree = "<group>"; };
 		1688D7CE1E9BB756001BBA61 /* YYCardCommentDetailModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YYCardCommentDetailModel.m; sourceTree = "<group>"; };
+		3E1ABC6E1EA0649B00F66BC3 /* EmptyNetView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EmptyNetView.h; sourceTree = "<group>"; };
+		3E1ABC6F1EA0649B00F66BC3 /* EmptyNetView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EmptyNetView.m; sourceTree = "<group>"; };
+		3E1ABC711EA064AF00F66BC3 /* EmptyDataView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EmptyDataView.h; sourceTree = "<group>"; };
+		3E1ABC721EA064AF00F66BC3 /* EmptyDataView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EmptyDataView.m; sourceTree = "<group>"; };
 		3E1FC7211E97915800838F9E /* YYSettingTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YYSettingTableViewCell.h; sourceTree = "<group>"; };
 		3E1FC7221E97915800838F9E /* YYSettingTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YYSettingTableViewCell.m; sourceTree = "<group>"; };
 		3E1FC7241E9B15B900838F9E /* YYInfoCommentVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = YYInfoCommentVC.m; path = YuYi_Server/YYInfoCommentVC.m; sourceTree = "<group>"; };
@@ -597,6 +603,10 @@
 				3E85EF991E8F3CBE00E7D8F1 /* YYPInfomationTableViewCell.m */,
 				3E1FC7211E97915800838F9E /* YYSettingTableViewCell.h */,
 				3E1FC7221E97915800838F9E /* YYSettingTableViewCell.m */,
+				3E1ABC6E1EA0649B00F66BC3 /* EmptyNetView.h */,
+				3E1ABC6F1EA0649B00F66BC3 /* EmptyNetView.m */,
+				3E1ABC711EA064AF00F66BC3 /* EmptyDataView.h */,
+				3E1ABC721EA064AF00F66BC3 /* EmptyDataView.m */,
 			);
 			name = View;
 			sourceTree = "<group>";
@@ -1219,6 +1229,7 @@
 				163A979A1E94A0BC007B69AD /* ZYAbstractDotView.m in Sources */,
 				3EBD82391E8E568600BDC217 /* YYPersonalViewController.m in Sources */,
 				161D63FA1E961AA800AF4998 /* YYInfoDetailModel.m in Sources */,
+				3E1ABC701EA0649B00F66BC3 /* EmptyNetView.m in Sources */,
 				163A979F1E94A0DE007B69AD /* ZYAnimatedDotView.m in Sources */,
 				161B03B71E9E123E00095F77 /* UIView+frame.m in Sources */,
 				3EBD81E51E8E2D9400BDC217 /* ViewController.m in Sources */,
@@ -1282,6 +1293,7 @@
 				163D61A01E8F7AB6003A27CF /* YYpostCardVC.m in Sources */,
 				161B03B31E9E123E00095F77 /* HUWebImageDownloader.m in Sources */,
 				163D618B1E8F790E003A27CF /* UIColor+colorValues.m in Sources */,
+				3E1ABC731EA064AF00F66BC3 /* EmptyDataView.m in Sources */,
 				161B03A51E9E123E00095F77 /* HUPhotoBrowserCell.m in Sources */,
 				163D61961E8F7A2E003A27CF /* YYCardTableViewCell.m in Sources */,
 				3EBD82611E8E67C800BDC217 /* ReciveAppointmentViewController.m in Sources */,
@@ -1453,6 +1465,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "$(SRCROOT)/YuYi_Server/YYDefine.pch";
 				INFOPLIST_FILE = YuYi_Server/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.technology.YuYi-Server";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1469,6 +1482,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "$(SRCROOT)/YuYi_Server/YYDefine.pch";
 				INFOPLIST_FILE = YuYi_Server/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.technology.YuYi-Server";
 				PRODUCT_NAME = "$(TARGET_NAME)";

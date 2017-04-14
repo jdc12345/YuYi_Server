@@ -13,6 +13,7 @@
 #import "YYLogInVC.h"
 // 引入JPush功能所需头文件
 #import "JPUSHService.h"
+#import "YYChatListViewController.h"
 // iOS10注册APNs所需头文件
 #ifdef NSFoundationVersionNumber_iOS_9_x_Max
 #import <UserNotifications/UserNotifications.h>
@@ -20,8 +21,8 @@
 // 如果需要使用idfa功能所需要引入的头文件（可选）
 #import <AdSupport/AdSupport.h>
 
-@interface AppDelegate ()<JPUSHRegisterDelegate>
-
+@interface AppDelegate ()<JPUSHRegisterDelegate,RCIMReceiveMessageDelegate, UNUserNotificationCenterDelegate>
+@property (nonatomic, strong) YYTabBarController *yyTabBar;
 @end
 
 @implementation AppDelegate
@@ -38,6 +39,7 @@
         //初始化一个tabBar控制器
         YYTabBarController *tabbarVC = [[YYTabBarController alloc]init];
         self.window.rootViewController = tabbarVC;
+        self.yyTabBar = tabbarVC;
        
     }else{
         YYLogInVC *logInVC = [[YYLogInVC alloc]init];
@@ -46,6 +48,8 @@
      [self.window makeKeyAndVisible];
     
     
+  
+    
     
     [[RCIM sharedRCIM] initWithAppKey:@"25wehl3u2qo7w"];
     
@@ -53,6 +57,9 @@
     
         [[RCIM sharedRCIM] connectWithToken:mRCToken     success:^(NSString *userId) {
             NSLog(@"登陆成功。当前登录的用户ID：%@", userId);
+//            [[RCIMClient sharedRCIMClient] setReceiveMessageDelegate:self object:nil];
+            [[RCIM sharedRCIM] setReceiveMessageDelegate:self];
+            [[RCIM sharedRCIM] setDisableMessageNotificaiton:NO];
         } error:^(RCConnectErrorCode status) {
             NSLog(@"登陆的错误码为:%d", status);
         } tokenIncorrect:^{
@@ -96,7 +103,27 @@
                  apsForProduction:0
             advertisingIdentifier:advertisingId];
     
-
+    
+    
+    UNUserNotificationCenter *center = [UNUserNotificationCenter currentNotificationCenter];
+    center.delegate = self;
+    [center requestAuthorizationWithOptions:(UNAuthorizationOptionBadge | UNAuthorizationOptionSound | UNAuthorizationOptionAlert) completionHandler:^(BOOL granted, NSError * _Nullable error) {
+        
+        if (granted) {
+            //点击允许
+            NSLog(@"注册通知成功");
+            [center getNotificationSettingsWithCompletionHandler:^(UNNotificationSettings * _Nonnull settings) {
+                NSLog(@"%@", settings);
+            }];
+        } else {
+            //点击不允许
+            NSLog(@"注册通知失败");
+        }
+    }];
+    //注册推送（同iOS8）
+    [[UIApplication sharedApplication] registerForRemoteNotifications];
+    
+    
     // Override point for customization after application launch.
     return YES;
 }
@@ -107,6 +134,8 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
     
     /// Required - 注册 DeviceToken
     [JPUSHService registerDeviceToken:deviceToken];
+    application.applicationIconBadgeNumber = 0;
+    [JPUSHService setBadge:0];
 }
 // 融云
 - (void)application:(UIApplication *)application
@@ -152,6 +181,8 @@ didReceiveRemoteNotification:(NSDictionary *)userInfo {
 
 
 - (void)applicationDidBecomeActive:(UIApplication *)application {
+    application.applicationIconBadgeNumber = 0;
+    [JPUSHService setBadge:0];
     // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
 }
 
@@ -167,6 +198,7 @@ didReceiveRemoteNotification:(NSDictionary *)userInfo {
     NSDictionary * userInfo = notification.request.content.userInfo;
     if([notification.request.trigger isKindOfClass:[UNPushNotificationTrigger class]]) {
         [JPUSHService handleRemoteNotification:userInfo];
+        NSLog(@"%@",userInfo);
     }
     completionHandler(UNNotificationPresentationOptionAlert); // 需要执行这个方法，选择是否提醒用户，有Badge、Sound、Alert三种类型可以选择设置
 }
@@ -188,6 +220,97 @@ didReceiveRemoteNotification:(NSDictionary *)userInfo {
     completionHandler(UIBackgroundFetchResultNewData);
 }
 
+- (void)onRCIMReceiveMessage:(RCMessage *)message
+                        left:(int)left{
+    
+    int unreadMsgCount = [[RCIMClient sharedRCIMClient] getUnreadCount:@[
+                                                                         @(ConversationType_PRIVATE),
+                                                                         @(ConversationType_DISCUSSION),
+                                                                         @(ConversationType_APPSERVICE),
+                                                                         @(ConversationType_PUBLICSERVICE),
+                                                                         @(ConversationType_GROUP)
+                                                                         ]];
+    
+    NSString * unreadNum = [NSString stringWithFormat:@"%d",unreadMsgCount];
+    NSDictionary * dict = @{@"unreadNum":unreadNum};
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"MessageUnreadNum" object:nil userInfo:dict];
+    
+    float version = [[[UIDevice currentDevice] systemVersion] floatValue];
+    
+    if (version >= 8.0) {
+        UIUserNotificationSettings *settings = [UIUserNotificationSettings settingsForTypes:UIUserNotificationTypeBadge categories:nil];
+        [[UIApplication sharedApplication] registerUserNotificationSettings:settings];
+    }
+    UIApplication *app = [UIApplication sharedApplication];
+    app.applicationIconBadgeNumber = unreadMsgCount;
+    
+    // 注册通知
+    if ([message.content isMemberOfClass:[RCTextMessage class]]) {
+        RCTextMessage *testMessage = (RCTextMessage *)message.content;
+        NSLog(@"消息内容：%@", testMessage.content);
+    }
+    NSLog(@"还剩余的未接收的消息数：%d", left);
+    
+    
+    
+    
+    // 1.创建本地通知
+    UILocalNotification *localNote = [[UILocalNotification alloc] init];
+    
+    
+    localNote.fireDate = [NSDate dateWithTimeIntervalSinceNow:3.0];
+    
+    localNote.alertBody = @"在干吗?";
+    
+    localNote.alertAction = @"解锁";
+    
+    localNote.hasAction = NO;
+    
+    localNote.alertLaunchImage = @"123Abc";
+    // 2.6.设置alertTitle
+    localNote.alertTitle = @"你有一条新通知";
+    // 2.7.设置有通知时的音效
+    localNote.soundName = @"buyao.wav";
+    // 2.8.设置应用程序图标右上角的数字
+    localNote.applicationIconBadgeNumber = 999;
+    // 2.9.设置额外信息
+    localNote.userInfo = @{@"type" : @"聊天"};
+    
+    // 3.调用通知
+    [[UIApplication sharedApplication] scheduleLocalNotification:localNote];
+}
+- (void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification
+{
+    NSLog(@"来了么");
+    // 必须要监听--应用程序在后台的时候进行的跳转
+    if (application.applicationState == UIApplicationStateInactive) {
+        NSLog(@"进行界面的跳转");
+        // 如果在上面的通知方法中设置了一些，可以在这里打印额外信息的内容，就做到监听，也就可以根据额外信息，做出相应的判断
+//        NSLog(@"%@", notification.userInfo);
+        
+        
+        YYTabBarController *tabbarVC = (YYTabBarController *)self.window.rootViewController;
+        tabbarVC.selectedIndex = 4;
+        
+    }
+}
+- (void)userNotificationCenter:(UNUserNotificationCenter *)center willPresentNotification:(UNNotification *)notification withCompletionHandler:(void (^)(UNNotificationPresentationOptions))completionHandler {
+    //应用在前台收到通知
+    NSLog(@"========%@", notification);
+    //如果需要在应用在前台也展示通知
+    completionHandler(UNNotificationPresentationOptionBadge|UNNotificationPresentationOptionSound|UNNotificationPresentationOptionAlert);
+}
 
+- (void)userNotificationCenter:(UNUserNotificationCenter *)center didReceiveNotificationResponse:(UNNotificationResponse *)response withCompletionHandler:(void (^)())completionHandler {
+    //点击通知进入应用
+    self.yyTabBar.selectedIndex = 3;
+    
 
+    YYChatListViewController *chatList = [[YYChatListViewController alloc]init];
+    if ([self.yyTabBar.viewControllers.lastObject respondsToSelector:@selector(pushViewController: animated:)]) {
+        [self.yyTabBar.viewControllers.lastObject pushViewController:chatList animated:YES];
+    }
+    NSLog(@"response:%@", response);
+}
 @end

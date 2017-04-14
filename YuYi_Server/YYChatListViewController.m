@@ -25,8 +25,8 @@
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
     self.title = @"咨询";
-    [self.conversationListTableView  setSeparatorStyle:UITableViewCellSeparatorStyleNone];
-    
+    [self.conversationListTableView  setSeparatorStyle:UITableViewCellSeparatorStyleSingleLine];
+    [[RCIMClient sharedRCIMClient] setReceiveMessageDelegate:self object:nil];
     
     
     //设置要显示的会话类型
@@ -70,6 +70,7 @@
 //插入自定义会话model
 - (NSMutableArray *)willReloadTableData:(NSMutableArray *)dataSource {
     NSLog(@"%@",dataSource);
+    
     for (int i = 0; i < dataSource.count; i++) {
         RCConversationModel *model = dataSource[i];
         //筛选请求添加好友的系统消息，用于生成自定义会话类型的cell
@@ -243,6 +244,17 @@
      [self.conversationListTableView reloadRowsAtIndexPaths:[NSArray arrayWithObjects:indexPath,nil] withRowAnimation:UITableViewRowAnimationNone];
      });
      */
+    [self refreshConversationTableViewIfNeeded];
+}
+- (void)onReceived:(RCMessage *)message
+              left:(int)nLeft
+            object:(id)object {
+    if ([message.content isMemberOfClass:[RCTextMessage class]]) {
+        RCTextMessage *testMessage = (RCTextMessage *)message.content;
+        NSLog(@"消息内容：%@", testMessage.content);
+    }
+    int totalUnreadCount = [[RCIMClient sharedRCIMClient] getTotalUnreadCount];
+    NSLog(@"还剩余的未接收的消息数：%d", totalUnreadCount);
     [self refreshConversationTableViewIfNeeded];
 }
 /*

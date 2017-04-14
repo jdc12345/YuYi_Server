@@ -76,6 +76,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    NSLog(@"我存在了");
         [self httpRequest];
     self.view.backgroundColor = [UIColor colorWithHexString:@"f2f2f2"];
     self.automaticallyAdjustsScrollViewInsets = NO;
@@ -255,6 +256,8 @@
     
     }
     [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
+//    [self.navigationController popToRootViewControllerAnimated:YES];
+//    self.tabBarController.selectedIndex = 4;
 }
 #pragma mark -
 #pragma mark ------------TableView DataSource----------------------

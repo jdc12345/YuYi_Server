@@ -44,13 +44,13 @@
     self.editInfoText.font = [UIFont systemFontOfSize:14];
     self.editInfoText.textAlignment = NSTextAlignmentRight;
     self.editInfoText.hidden = YES;
-    
+      UIImageView *imageV = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"disclosure-arrow-拷贝-2"]];
     
     [self.contentView addSubview:lineL];
     [self.contentView addSubview:self.titleLabel];
     [self.contentView addSubview:self.seeRecardLabel];
     [self.contentView addSubview:self.editInfoText];
-    
+        [self.contentView addSubview:imageV];
     
     
     [lineL mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -73,6 +73,12 @@
         make.centerY.equalTo(self.contentView);
         make.right.equalTo(self.contentView).with.offset(-10 *kiphone6);
         make.size.mas_equalTo(CGSizeMake(200 , 14 *kiphone6));
+    }];
+    
+    [imageV mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerY.equalTo(self.contentView);
+        make.right.equalTo(self.contentView).with.offset(-10 *kiphone6);
+        make.size.mas_equalTo(CGSizeMake(7.5 *kiphone6, 13 *kiphone6));
     }];
 }
 - (void)setType:(NSString *)cellType{
