@@ -60,7 +60,7 @@
     return self;
 }
 - (void)loadData{
-    NSString *urlStr = @"http://192.168.1.55:8080/yuyi/doctorlyinformation/getall.do";
+    NSString *urlStr = [NSString stringWithFormat:@"%@/doctorlyinformation/getall.do",mPrefixUrl];
     [[HttpClient defaultClient]requestWithPath:urlStr method:0 parameters:nil prepareExecute:^{
         
     } success:^(NSURLSessionDataTask *task, id responseObject) {

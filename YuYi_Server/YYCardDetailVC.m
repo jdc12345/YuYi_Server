@@ -18,6 +18,7 @@
 #import "YYCardDetailPageModel.h"
 #import "YYCardCommentDetailModel.h"
 #import "CcUserModel.h"
+#import <UShareUI/UShareUI.h>
 static NSString *cellId = @"cell_id";
 @interface YYCardDetailVC ()<UITableViewDelegate,UITableViewDataSource,UITextViewDelegate>
 @property(nonatomic,weak)UITableView *tableView;
@@ -69,10 +70,96 @@ static NSString *cellId = @"cell_id";
     }];
 
     }
+//分享按钮点击事件
+- (void)shareBtnClick{
+    [UMSocialUIManager setPreDefinePlatforms:@[@(UMSocialPlatformType_WechatTimeLine),@(UMSocialPlatformType_Sina),@(UMSocialPlatformType_Qzone)]];
+    //显示分享面板
+    [UMSocialUIManager showShareMenuViewInWindowWithPlatformSelectionBlock:^(UMSocialPlatformType platformType, NSDictionary *userInfo) {
+        // 根据获取的platformType确定所选平台进行下一步操作
+        //        if (platformType == UMSocialPlatformType_Sina) {
+        //            [self shareImageAndTextToPlatformType:platformType];
+        //        }else{
+        //            [self shareTextToPlatformType:platformType];
+        //        }
+        [self shareTextToPlatformType:platformType];
+        
+    }];
+ 
+}
+//分享文本
+- (void)shareTextToPlatformType:(UMSocialPlatformType)platformType
+{
+    //创建分享消息对象
+    UMSocialMessageObject *messageObject = [UMSocialMessageObject messageObject];
+    //设置文本
+    messageObject.text = self.infoModel.content;
+    
+    //调用分享接口
+    [[UMSocialManager defaultManager] shareToPlatform:platformType messageObject:messageObject currentViewController:self completion:^(id data, NSError *error) {
+        if (error) {
+            NSLog(@"************Share fail with error %@*********",error);
+        }else{
+            NSLog(@"response data is %@",data);
+        }
+    }];
+}
+//分享图片
+- (void)shareImageToPlatformType:(UMSocialPlatformType)platformType
+{
+    //创建分享消息对象
+    UMSocialMessageObject *messageObject = [UMSocialMessageObject messageObject];
+    
+    //创建图片内容对象
+    UMShareImageObject *shareObject = [[UMShareImageObject alloc] init];
+    //如果有缩略图，则设置缩略图
+    shareObject.thumbImage = [UIImage imageNamed:@"icon"];
+    [shareObject setShareImage:@"https://mobile.umeng.com/images/pic/home/social/img-1.png"];
+    
+    //分享消息对象设置分享内容对象
+    messageObject.shareObject = shareObject;
+    
+    //调用分享接口
+    [[UMSocialManager defaultManager] shareToPlatform:platformType messageObject:messageObject currentViewController:self completion:^(id data, NSError *error) {
+        if (error) {
+            NSLog(@"************Share fail with error %@*********",error);
+        }else{
+            NSLog(@"response data is %@",data);
+        }
+    }];
+}
+//分享图文（新浪支持，微信/QQ仅支持图或文本分享）
+- (void)shareImageAndTextToPlatformType:(UMSocialPlatformType)platformType
+{
+    //创建分享消息对象
+    UMSocialMessageObject *messageObject = [UMSocialMessageObject messageObject];
+    
+    //设置文本
+    messageObject.text = self.infoModel.content;
+    
+    //创建图片内容对象
+    UMShareImageObject *shareObject = [[UMShareImageObject alloc] init];
+    //如果有缩略图，则设置缩略图
+    shareObject.thumbImage = [UIImage imageNamed:@"icon"];
+    [shareObject setShareImage:[NSString stringWithFormat:@"%@%@",mPrefixUrl,self.infoModel.picture]];
+    
+    //分享消息对象设置分享内容对象
+    messageObject.shareObject = shareObject;
+    
+    //调用分享接口
+    [[UMSocialManager defaultManager] shareToPlatform:platformType messageObject:messageObject currentViewController:self completion:^(id data, NSError *error) {
+        if (error) {
+            NSLog(@"************Share fail with error %@*********",error);
+        }else{
+            NSLog(@"response data is %@",data);
+        }
+    }];
+}
+
 - (void)setupUI {
-    //添加右侧消息中心按钮
+    //添加右侧分享按钮
     UIImage *image = [UIImage imageNamed:@"share"];
     UIButton *shareBtn = [[UIButton alloc]initWithFrame:CGRectMake(0, 0, image.size.width, image.size.width)];
+    [shareBtn addTarget:self action:@selector(shareBtnClick) forControlEvents:UIControlEventTouchUpInside];
     [shareBtn setBackgroundImage:image forState:UIControlStateNormal];
     [shareBtn sizeToFit];
     UIBarButtonItem *shareBtnItem = [[UIBarButtonItem alloc]initWithCustomView:shareBtn];

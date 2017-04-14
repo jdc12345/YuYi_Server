@@ -16,7 +16,7 @@
 #import "UIColor+colorValues.h"
 #import "BRPlaceholderTextView.h"
 #import "CcUserModel.h"
-
+#import <UShareUI/UShareUI.h>
 
 static NSString *cell_Id = @"cell_id";
 @interface YYInfoCommentVC ()<UITableViewDelegate,UITableViewDataSource,UITextViewDelegate>
@@ -386,9 +386,112 @@ static NSString *cell_Id = @"cell_id";
     
 }
 - (void)shareBtn:(UIButton*)sender{
-//    NSInteger count = [self.shareCountLabel.text integerValue];
-//    count += 1;
-//    self.shareCountLabel.text = [NSString stringWithFormat:@"%ld",count];
+    [UMSocialUIManager setPreDefinePlatforms:@[@(UMSocialPlatformType_WechatTimeLine),@(UMSocialPlatformType_Sina),@(UMSocialPlatformType_Qzone)]];
+    //显示分享面板
+    [UMSocialUIManager showShareMenuViewInWindowWithPlatformSelectionBlock:^(UMSocialPlatformType platformType, NSDictionary *userInfo) {
+        // 根据获取的platformType确定所选平台进行下一步操作
+        //        if (platformType == UMSocialPlatformType_Sina) {
+        //            [self shareImageAndTextToPlatformType:platformType];
+        //        }else{
+        //            [self shareTextToPlatformType:platformType];
+        //        }
+        [self shareTextToPlatformType:platformType];
+        
+    }];
+
+}
+//分享文本
+- (void)shareTextToPlatformType:(UMSocialPlatformType)platformType
+{
+    //创建分享消息对象
+    UMSocialMessageObject *messageObject = [UMSocialMessageObject messageObject];
+    //设置文本
+    messageObject.text = self.infoDetailModel.content;
+    
+    //调用分享接口
+    [UMSocialGlobal shareInstance].isTruncateShareText=NO;//不允许新浪截取文字
+    [[UMSocialManager defaultManager] shareToPlatform:platformType messageObject:messageObject currentViewController:self completion:^(id data, NSError *error) {
+        if (error) {
+            NSLog(@"************Share fail with error %@*********",error);
+        }else{
+            NSLog(@"response data is %@",data);
+            NSInteger count = [self.shareCountLabel.text integerValue];
+            count += 1;
+            self.shareCountLabel.text = [NSString stringWithFormat:@"%ld",count];
+//            http://192.168.1.55:8080/yuyi/share/AcademicpaperShare.do?id=1&token=CEDA9F4E7D5FEC556E1BB035FA18E54E&shareType=1
+            CcUserModel *userModel = [CcUserModel defaultClient];
+            NSString *token = userModel.userToken;
+            NSInteger type;
+            if (platformType == UMSocialPlatformType_WechatTimeLine) {
+                type = 1;
+            }else if (platformType == UMSocialPlatformType_Sina){
+                type = 2;
+            }else if (platformType == UMSocialPlatformType_Qzone){
+                type = 3;
+            }
+            NSString *urlStr = [NSString stringWithFormat:@"%@/share/AcademicpaperShare.do?id=%@&token=%@&shareType=%ld",mPrefixUrl,self.info_id,token,type];
+            [[HttpClient defaultClient]requestWithPath:urlStr method:0 parameters:nil prepareExecute:^{
+                
+            } success:^(NSURLSessionDataTask *task, id responseObject) {
+//                NSArray *arr = responseObject[@"result"];
+                NSLog(@"%@",responseObject);
+            } failure:^(NSURLSessionDataTask *task, NSError *error) {
+                
+            }];
+
+        }
+    }];
+}
+//分享图片
+- (void)shareImageToPlatformType:(UMSocialPlatformType)platformType
+{
+    //创建分享消息对象
+    UMSocialMessageObject *messageObject = [UMSocialMessageObject messageObject];
+    
+    //创建图片内容对象
+    UMShareImageObject *shareObject = [[UMShareImageObject alloc] init];
+    //如果有缩略图，则设置缩略图
+    shareObject.thumbImage = [UIImage imageNamed:@"icon"];
+    [shareObject setShareImage:@"https://mobile.umeng.com/images/pic/home/social/img-1.png"];
+    
+    //分享消息对象设置分享内容对象
+    messageObject.shareObject = shareObject;
+    
+    //调用分享接口
+    [[UMSocialManager defaultManager] shareToPlatform:platformType messageObject:messageObject currentViewController:self completion:^(id data, NSError *error) {
+        if (error) {
+            NSLog(@"************Share fail with error %@*********",error);
+        }else{
+            NSLog(@"response data is %@",data);
+        }
+    }];
+}
+//分享图文（新浪支持，微信/QQ仅支持图或文本分享）
+- (void)shareImageAndTextToPlatformType:(UMSocialPlatformType)platformType
+{
+    //创建分享消息对象
+    UMSocialMessageObject *messageObject = [UMSocialMessageObject messageObject];
+    
+    //设置文本
+    messageObject.text = self.infoDetailModel.content;
+    
+    //创建图片内容对象
+    UMShareImageObject *shareObject = [[UMShareImageObject alloc] init];
+    //如果有缩略图，则设置缩略图
+    shareObject.thumbImage = [UIImage imageNamed:@"icon"];
+    [shareObject setShareImage:[NSString stringWithFormat:@"%@%@",mPrefixUrl,self.infoDetailModel.picture]];
+    
+    //分享消息对象设置分享内容对象
+    messageObject.shareObject = shareObject;
+    
+    //调用分享接口
+    [[UMSocialManager defaultManager] shareToPlatform:platformType messageObject:messageObject currentViewController:self completion:^(id data, NSError *error) {
+        if (error) {
+            NSLog(@"************Share fail with error %@*********",error);
+        }else{
+            NSLog(@"response data is %@",data);
+        }
+    }];
 }
 
 - (void)didReceiveMemoryWarning {

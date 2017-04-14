@@ -220,6 +220,7 @@ static NSString *cell_id = @"cell_id";
 //    count += 1;
 //    self.countLabel.text = [NSString stringWithFormat:@"%ld",count];
 }
+
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
     [super setSelected:selected animated:animated];
 

@@ -21,7 +21,7 @@
 #import "CcUserModel.h"
 #import "YYInfoCommentVC.h"
 #import <UShareUI/UShareUI.h>
-
+#import "CcUserModel.h"
 @interface YYInfoDetailVC ()<UIScrollViewDelegate>
 @property(nonatomic,strong)YYInfoDetailModel *infoModel;
 @property(nonatomic,weak)UILabel *praiseCountLabel;
@@ -204,9 +204,7 @@
     
 }
 - (void)repliesPlus:(UIButton*)sender{
-//    NSInteger count = [self.commentCountLabel.text integerValue];
-//    count += 1;
-//    self.commentCountLabel.text = [NSString stringWithFormat:@"%ld",count];
+
     YYInfoCommentVC *commentVC = [[YYInfoCommentVC alloc]init];
     commentVC.info_id = self.info_id;
     commentVC.infoDetailModel = self.infoModel;
@@ -214,11 +212,17 @@
 
 }
 - (void)shareBtn:(UIButton*)sender{
-    [UMSocialUIManager setPreDefinePlatforms:@[@(UMSocialPlatformType_Sina),@(UMSocialPlatformType_QQ),@(UMSocialPlatformType_WechatSession),@(UMSocialPlatformType_Qzone)]];
+    [UMSocialUIManager setPreDefinePlatforms:@[@(UMSocialPlatformType_WechatTimeLine),@(UMSocialPlatformType_Sina),@(UMSocialPlatformType_Qzone)]];
     //显示分享面板
     [UMSocialUIManager showShareMenuViewInWindowWithPlatformSelectionBlock:^(UMSocialPlatformType platformType, NSDictionary *userInfo) {
         // 根据获取的platformType确定所选平台进行下一步操作
+//        if (platformType == UMSocialPlatformType_Sina) {
+//            [self shareImageAndTextToPlatformType:platformType];
+//        }else{
+//            [self shareTextToPlatformType:platformType];
+//        }
         [self shareTextToPlatformType:platformType];
+
     }];
 
 }
@@ -229,6 +233,54 @@
     UMSocialMessageObject *messageObject = [UMSocialMessageObject messageObject];
     //设置文本
     messageObject.text = self.infoModel.content;
+    
+    //调用分享接口
+    [[UMSocialManager defaultManager] shareToPlatform:platformType messageObject:messageObject currentViewController:self completion:^(id data, NSError *error) {
+        if (error) {
+            NSLog(@"************Share fail with error %@*********",error);
+        }else{
+            NSLog(@"response data is %@",data);
+            NSInteger count = [self.shareCountLabel.text integerValue];
+            count += 1;
+            self.shareCountLabel.text = [NSString stringWithFormat:@"%ld",count];
+//        http://192.168.1.55:8080/yuyi/share/AcademicpaperShare.do?id=1&token=CEDA9F4E7D5FEC556E1BB035FA18E54E&shareType=1
+            CcUserModel *userModel = [CcUserModel defaultClient];
+            NSString *token = userModel.userToken;
+            NSInteger type;
+            if (platformType == UMSocialPlatformType_WechatTimeLine) {
+                type = 1;
+            }else if (platformType == UMSocialPlatformType_Sina){
+                type = 2;
+            }else if (platformType == UMSocialPlatformType_Qzone){
+                type = 3;
+            }
+            NSString *urlStr = [NSString stringWithFormat:@"%@/share/AcademicpaperShare.do?id=%@&token=%@&shareType=%ld",mPrefixUrl,self.info_id,token,type];
+            [[HttpClient defaultClient]requestWithPath:urlStr method:0 parameters:nil prepareExecute:^{
+                
+            } success:^(NSURLSessionDataTask *task, id responseObject) {
+                //                NSArray *arr = responseObject[@"result"];
+                NSLog(@"%@",responseObject);
+            } failure:^(NSURLSessionDataTask *task, NSError *error) {
+                
+            }];
+
+        }
+    }];
+}
+//分享图片
+- (void)shareImageToPlatformType:(UMSocialPlatformType)platformType
+{
+    //创建分享消息对象
+    UMSocialMessageObject *messageObject = [UMSocialMessageObject messageObject];
+    
+    //创建图片内容对象
+    UMShareImageObject *shareObject = [[UMShareImageObject alloc] init];
+    //如果有缩略图，则设置缩略图
+    shareObject.thumbImage = [UIImage imageNamed:@"icon"];
+    [shareObject setShareImage:@"https://mobile.umeng.com/images/pic/home/social/img-1.png"];
+    
+    //分享消息对象设置分享内容对象
+    messageObject.shareObject = shareObject;
     
     //调用分享接口
     [[UMSocialManager defaultManager] shareToPlatform:platformType messageObject:messageObject currentViewController:self completion:^(id data, NSError *error) {
