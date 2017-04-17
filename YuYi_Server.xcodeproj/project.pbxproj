@@ -47,6 +47,7 @@
 		161B04121EA0A20700095F77 /* UShareUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 161B04061EA0A20700095F77 /* UShareUI.framework */; };
 		161D63FA1E961AA800AF4998 /* YYInfoDetailModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 161D63F91E961AA800AF4998 /* YYInfoDetailModel.m */; };
 		161D63FD1E96358600AF4998 /* YYLogInVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 161D63FC1E96358600AF4998 /* YYLogInVC.m */; };
+		161D8ADB1EA46821006B6844 /* YYBackView.m in Sources */ = {isa = PBXBuildFile; fileRef = 161D8ADA1EA46821006B6844 /* YYBackView.m */; };
 		163A979A1E94A0BC007B69AD /* ZYAbstractDotView.m in Sources */ = {isa = PBXBuildFile; fileRef = 163A97991E94A0BC007B69AD /* ZYAbstractDotView.m */; };
 		163A979F1E94A0DE007B69AD /* ZYAnimatedDotView.m in Sources */ = {isa = PBXBuildFile; fileRef = 163A979C1E94A0DE007B69AD /* ZYAnimatedDotView.m */; };
 		163A97A01E94A0DE007B69AD /* ZYDotView.m in Sources */ = {isa = PBXBuildFile; fileRef = 163A979E1E94A0DE007B69AD /* ZYDotView.m */; };
@@ -242,6 +243,8 @@
 		161D63F91E961AA800AF4998 /* YYInfoDetailModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YYInfoDetailModel.m; sourceTree = "<group>"; };
 		161D63FB1E96358600AF4998 /* YYLogInVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YYLogInVC.h; sourceTree = "<group>"; };
 		161D63FC1E96358600AF4998 /* YYLogInVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YYLogInVC.m; sourceTree = "<group>"; };
+		161D8AD91EA46821006B6844 /* YYBackView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YYBackView.h; sourceTree = "<group>"; };
+		161D8ADA1EA46821006B6844 /* YYBackView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YYBackView.m; sourceTree = "<group>"; };
 		163A97981E94A0BC007B69AD /* ZYAbstractDotView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZYAbstractDotView.h; sourceTree = "<group>"; };
 		163A97991E94A0BC007B69AD /* ZYAbstractDotView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZYAbstractDotView.m; sourceTree = "<group>"; };
 		163A979B1E94A0DE007B69AD /* ZYAnimatedDotView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZYAnimatedDotView.h; sourceTree = "<group>"; };
@@ -661,6 +664,8 @@
 				163D61941E8F7A2E003A27CF /* YYCommentTVCell.m */,
 				161B03B81E9E129E00095F77 /* YYCardPostPictureCell.h */,
 				161B03B91E9E129E00095F77 /* YYCardPostPictureCell.m */,
+				161D8AD91EA46821006B6844 /* YYBackView.h */,
+				161D8ADA1EA46821006B6844 /* YYBackView.m */,
 			);
 			name = V;
 			sourceTree = "<group>";
@@ -1415,6 +1420,7 @@
 				161B03AD1E9E123E00095F77 /* HUImagePickerRootViewController.m in Sources */,
 				163D619E1E8F7AB6003A27CF /* YYlearningCircleVC.m in Sources */,
 				3EBD82651E8E686E00BDC217 /* CcUserModel.m in Sources */,
+				161D8ADB1EA46821006B6844 /* YYBackView.m in Sources */,
 				3EBD82491E8E583200BDC217 /* HttpClient.m in Sources */,
 				163D618E1E8F79E4003A27CF /* BRPlaceholderTextView.m in Sources */,
 				3EBD82681E8E689600BDC217 /* YYHomeUserModel.m in Sources */,

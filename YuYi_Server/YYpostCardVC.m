@@ -15,6 +15,7 @@
 #import "YYCardPostPictureCell.h"
 #import "AFNetworking.h"
 #import "CcUserModel.h"
+#import "YYBackView.h"
 static NSString *cell_id = @"cell_id";
 @interface YYpostCardVC ()<UITextViewDelegate,HUImagePickerViewControllerDelegate,UITableViewDelegate,UITableViewDataSource,UINavigationControllerDelegate>
 @property(nonatomic,weak)BRPlaceholderTextView *titleView;
@@ -22,7 +23,7 @@ static NSString *cell_id = @"cell_id";
 @property(nonatomic,weak)UIButton *addPictureBtn;
 @property(nonatomic,weak)UILabel *addPictureLabel;
 @property(nonatomic,weak)UIScrollView *scrollView;
-@property(nonatomic,weak)UIView *lineTwo;
+@property(nonatomic,weak)UIView *backView;
 
 @property (nonatomic, weak) UIImageView *userIcon;
 @property (nonatomic, strong) UIImage *chooseImage;
@@ -42,6 +43,7 @@ static NSString *cell_id = @"cell_id";
 }
 - (void)uploadCardInfos:(UIButton*)btn{
     [self resignFirstResponder];
+    btn.enabled = false;
     CcUserModel *model = [CcUserModel defaultClient];
     NSString *token = model.userToken;
     NSDictionary *dic = @{@"token":token,@"title":self.titleView.text,@"content":self.contentView.text};
@@ -67,13 +69,16 @@ static NSString *cell_id = @"cell_id";
         NSLog(@"宝宝头像上传== %@,%@", responseObject,message);
         if ([responseObject[@"code"] isEqualToString:@"0"]) {
             [self showSuccessAlertWithMessage:@"已上传成功，你可以在学术圈最新帖子处查看"];
+            btn.enabled = true;
         }else{
             [self showAlertWithMessage:[NSString stringWithFormat:@"上传失败:%@",message]];
+            btn.enabled = true;
         }
       
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         NSLog(@"错误信息=====%@", error.description);
         [self showAlertWithMessage:@"上传失败"];
+        btn.enabled = true;
     }];
 //    [manager POST:urlStr parameters:params constructingBodyWithBlock:^(id<AFMultipartFormData>  _Nonnull formData) {
 //        
@@ -159,8 +164,9 @@ static NSString *cell_id = @"cell_id";
     //        make.top.left.right.bottom.offset(0);
     //    }];
     //    [backView layoutIfNeeded];
-    UIView *backView = [[UIView alloc]initWithFrame:self.view.frame];
+    YYBackView *backView = [[YYBackView alloc]initWithFrame:self.view.frame];
     [scrollView addSubview:backView];
+    self.backView = backView;
     //添加标题feild
     //输入框
     BRPlaceholderTextView *titleView = [[BRPlaceholderTextView alloc]init];
@@ -259,8 +265,6 @@ static NSString *cell_id = @"cell_id";
     [backView addSubview:tableView];
     self.tableView = tableView;
     [tableView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.offset(20*kiphone6);
-        make.right.offset(-20*kiphone6);
         make.top.equalTo(contentView.mas_bottom);
         make.width.height.offset(0);
     }];
@@ -303,35 +307,45 @@ static NSString *cell_id = @"cell_id";
     return kScreenW;
 }
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-    NSLog(@"%ld",indexPath.row);
-}
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    return true;
-}
-
-- (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    return UITableViewCellEditingStyleDelete;
-}
-
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath{
-    [tableView setEditing:NO animated:YES];
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"提示" message:@"你确定删除该图片？" preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:nil];
+    [alertController addAction:[UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDestructive handler:^(UIAlertAction * _Nonnull action) {
+        [self.imageArr removeObjectAtIndex:indexPath.row];
+        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
         
-        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"提示" message:@"你确定删除该图片？" preferredStyle:UIAlertControllerStyleAlert];
-        UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:nil];
-        [alertController addAction:[UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDestructive handler:^(UIAlertAction * _Nonnull action) {
-            [self.imageArr removeObjectAtIndex:indexPath.row];
-            [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
-            
-        }]];
-        [alertController addAction:cancelAction];
-        [self presentViewController:alertController animated:YES completion:nil];
-    }
+    }]];
+    [alertController addAction:cancelAction];
+    [self presentViewController:alertController animated:YES completion:nil];
     [self.tableView reloadData];
-    
+//    NSLog(@"%ld",indexPath.row);
+//    [self tableView:tableView commitEditingStyle:UITableViewCellEditingStyleDelete forRowAtIndexPath:indexPath];
 }
+//- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
+//{
+//    return true;
+//}
+//- (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath
+//{
+//    return UITableViewCellEditingStyleDelete;
+//}
+
+//- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath{
+//    [tableView setEditing:NO animated:YES];
+//    if (editingStyle == UITableViewCellEditingStyleDelete) {
+//        
+//        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"提示" message:@"你确定删除该图片？" preferredStyle:UIAlertControllerStyleAlert];
+//        UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:nil];
+//        [alertController addAction:[UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDestructive handler:^(UIAlertAction * _Nonnull action) {
+//            [self.imageArr removeObjectAtIndex:indexPath.row];
+//            [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+//            
+//        }]];
+//        [alertController addAction:cancelAction];
+//        [self presentViewController:alertController animated:YES completion:nil];
+//    }
+//    [self.tableView reloadData];
+//    
+//}
 -(void)textViewDidChange:(UITextView *)textView{
     CGRect frame = textView.frame;
     CGSize textSize = [textView.text boundingRectWithSize:CGSizeMake(textView.frame.size.width, MAXFLOAT) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName : [UIFont systemFontOfSize:13.0]} context:nil].size;
@@ -343,19 +357,38 @@ static NSString *cell_id = @"cell_id";
     }
     //    else{
     //    }
+    //    self.backView.frame = CGRectMake(self.backView.frame.origin.x, self.backView.frame.origin.y, self.backView.frame.size.width, kScreenH-frame.size.height+size.height+self.imageArr.count*kScreenW);
+    [self.scrollView layoutIfNeeded];
+    [self.backView layoutIfNeeded];
     textView.scrollEnabled = false;   // 不允许滚动
-    textView.frame = CGRectMake(frame.origin.x, frame.origin.y, frame.size.width, size.height);
-    [self.addPictureLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.centerY.equalTo(self.addPictureBtn);
+    [textView mas_updateConstraints:^(MASConstraintMaker *make) {
+        make.height.offset(size.height);
     }];
     //    self.lineTwo.frame = CGRectMake(frame.origin.x, frame.origin.y+size.height, frame.size.width, 1);
-    self.tableView.frame = CGRectMake(frame.origin.x, frame.origin.y+size.height, frame.size.width, self.imageArr.count*kScreenW);
-    self.addPictureBtn.frame = CGRectMake(frame.origin.x, self.tableView.frame.origin.y+self.imageArr.count*kScreenW+10*kiphone6, 100*kiphone6, 100*kiphone6);
-    CGRect labelFrame = self.addPictureLabel.frame;
-    self.addPictureLabel.frame = CGRectMake(frame.origin.x+120, self.addPictureBtn.frame.origin.y+45*kiphone6, labelFrame.size.width, labelFrame.size.height);
+    [self.tableView mas_updateConstraints:^(MASConstraintMaker *make) {
+        make.left.offset(20*kiphone6);
+        make.width.offset(frame.size.width);
+        make.height.offset(self.imageArr.count*kScreenW);
+    }];
+    
     self.scrollView.contentSize = CGSizeMake(self.view.frame.size.width, kScreenH-frame.size.height+size.height+self.imageArr.count*kScreenW);
     self.scrollView.scrollEnabled = true;
 }
+-(void)loadView{
+    [super loadView];
+}
+
+//- (UIView *)hitTest:(CGPoint)point withEvent:(UIEvent *)event {
+//    UIView *view = [super hitTest:point withEvent:event];
+//    if (view == nil) {
+//        CGPoint tempoint = [btn convertPoint:point fromView:self];
+//        if (CGRectContainsPoint(btn.bounds, tempoint))
+//        {
+//            view = btn;
+//        }
+//    }
+//    return view;
+//}
 -(NSMutableArray *)imageArr{
     if (_imageArr == nil) {
         _imageArr = [[NSMutableArray alloc]init];
@@ -373,7 +406,10 @@ static NSString *cell_id = @"cell_id";
 - (void)imagePickerController:(HUImagePickerViewController *)picker didFinishPickingImagesWithInfo:(NSDictionary *)info{
     //    self.imageArr = info[kHUImagePickerThumbnailImage];//缩小图
     NSMutableArray *arr = info[kHUImagePickerOriginalImage];//源图
-    self.imageArr = [NSMutableArray arrayWithArray:arr];
+    for (int i = 0; i<arr.count; i++) {
+        [self.imageArr addObject:arr[i]];
+    }
+//    self.imageArr = [NSMutableArray arrayWithArray:arr];
     [self.tableView reloadData];
     [self textViewDidChange:self.contentView];
     [picker dismissViewControllerAnimated:YES completion:nil];
