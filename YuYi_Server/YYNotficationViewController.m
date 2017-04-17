@@ -41,7 +41,7 @@
 @implementation YYNotficationViewController
 - (UITableView *)tableView{
     if (_tableView == nil) {
-        _tableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, kScreenW, kScreenH) style:UITableViewStylePlain];
+        _tableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 64, kScreenW, kScreenH -64) style:UITableViewStylePlain];
         _tableView.backgroundColor = [UIColor colorWithHexString:@"f1f1f1"];
         _tableView.dataSource = self;
         _tableView.delegate = self;
