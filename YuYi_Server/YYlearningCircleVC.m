@@ -10,10 +10,10 @@
 #import <Masonry.h>
 #import "YYCardTableViewCell.h"
 #import "YYCardDetailVC.h"
-
+#import <MJRefresh.h>
 
 @interface YYlearningCircleVC ()<UITableViewDelegate,UITableViewDataSource>
-@property(nonatomic,weak)UITableView *tableView;
+
 
 @end
 
@@ -37,6 +37,14 @@ static NSString *cellId = @"cell_id";
     UITableView *tableView = [[UITableView alloc]init];
     [self.view addSubview:tableView];
     self.tableView = tableView;
+    self.tableView.mj_header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
+        // 进入刷新状态后会自动调用这个block
+        if (self.delegate && [self.delegate respondsToSelector:@selector(transViewController:)]) {
+            //代理存在且有这个transButIndex:方法
+            [self.delegate transViewController:self];
+        }
+    }];
+    
     [tableView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.right.top.bottom.offset(0);
     }];

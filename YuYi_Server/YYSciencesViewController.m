@@ -17,7 +17,8 @@
 #import "HttpClient.h"
 #import <MJExtension.h>
 #import "CcUserModel.h"
-@interface YYSciencesViewController ()<UIScrollViewDelegate>
+#import <MJRefresh.h>
+@interface YYSciencesViewController ()<UIScrollViewDelegate,refreshDelegate>
 //跟button的监听事件有关
 @property(weak, nonatomic)UIView *cardLineView;
 //
@@ -48,6 +49,64 @@
     self.title = @"学术圈";
     self.view.backgroundColor = [UIColor whiteColor];
     [self loadData];
+}
+-(void)transViewController:(YYlearningCircleVC *)learningVC{
+    CcUserModel *userModel = [CcUserModel defaultClient];
+    NSString *token = userModel.userToken;
+    if (learningVC == self.hotCardVC) {
+        NSString *hotUrlStr = [NSString stringWithFormat:@"%@/academicpaper/findhot.do?start=0&limit=6&token=%@",mPrefixUrl,token];
+        [[HttpClient defaultClient]requestWithPath:hotUrlStr method:0 parameters:nil prepareExecute:^{
+            
+        } success:^(NSURLSessionDataTask *task, id responseObject) {
+            NSArray *arr = responseObject[@"rows"];
+            NSMutableArray *mArr = [NSMutableArray array];
+            for (NSDictionary *dic in arr) {
+                YYCardDetailModel *infoModel = [YYCardDetailModel mj_objectWithKeyValues:dic];
+                [mArr addObject:infoModel];
+            }
+            self.hotCardVC.infos = mArr;
+            self.hotInfos = mArr;
+            [learningVC.tableView.mj_header endRefreshing];
+        } failure:^(NSURLSessionDataTask *task, NSError *error) {
+            [learningVC.tableView.mj_header endRefreshing];
+        }];
+    }else if (learningVC == self.selectCardVC){
+        NSString *selectUrlStr = [NSString stringWithFormat:@"%@/academicpaper/Selected.do?start=0&limit=1&token=%@",mPrefixUrl,token];
+        [[HttpClient defaultClient]requestWithPath:selectUrlStr method:0 parameters:nil prepareExecute:^{
+            
+        } success:^(NSURLSessionDataTask *task, id responseObject) {
+            NSArray *arr = responseObject[@"result"];
+            NSMutableArray *mArr = [NSMutableArray array];
+            for (NSDictionary *dic in arr) {
+                YYCardDetailModel *infoModel = [YYCardDetailModel mj_objectWithKeyValues:dic];
+                [mArr addObject:infoModel];
+            }
+            self.selectCardVC.infos = mArr;
+            self.selectInfos = mArr;
+            [learningVC.tableView.mj_header endRefreshing];
+        } failure:^(NSURLSessionDataTask *task, NSError *error) {
+            [learningVC.tableView.mj_header endRefreshing];
+        }];
+
+    }else if (learningVC == self.recentCardVC){
+        NSString *recentUrlStr = [NSString stringWithFormat:@"%@/academicpaper/findtime.do?start=0&limit=6&token=%@",mPrefixUrl,token];
+        [[HttpClient defaultClient]requestWithPath:recentUrlStr method:0 parameters:nil prepareExecute:^{
+            
+        } success:^(NSURLSessionDataTask *task, id responseObject) {
+            NSArray *arr = responseObject[@"rows"];
+            NSMutableArray *mArr = [NSMutableArray array];
+            for (NSDictionary *dic in arr) {
+                YYCardDetailModel *infoModel = [YYCardDetailModel mj_objectWithKeyValues:dic];
+                [mArr addObject:infoModel];
+            }
+            self.recentCardVC.infos = mArr;
+            self.recentInfos = mArr;
+            [learningVC.tableView.mj_header endRefreshing];
+        } failure:^(NSURLSessionDataTask *task, NSError *error) {
+            [learningVC.tableView.mj_header endRefreshing];
+        }];
+        
+    }
 }
 - (void)loadData {
 //    http://192.168.1.55:8080/yuyi/academicpaper/findhot.do?start=0&limit=6&token=EA62E69E02FABA4E4C9A0FDC1C7CAE10
@@ -169,6 +228,10 @@
     YYlearningCircleVC *hotCardVC = [[YYlearningCircleVC alloc]init];
     YYlearningCircleVC *selectCardVC = [[YYlearningCircleVC alloc]init];
     YYlearningCircleVC *recentCardVC = [[YYlearningCircleVC alloc]init];
+    //设置代理
+    hotCardVC.delegate = self;
+    selectCardVC.delegate = self;
+    recentCardVC.delegate = self;
     //传数据
     hotCardVC.infos = self.hotInfos;
     selectCardVC.infos = self.selectInfos;
