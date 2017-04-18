@@ -7,7 +7,15 @@
 //
 
 #import <UIKit/UIKit.h>
+@class YYInformationVC;
+@protocol refreshDelegate <NSObject>//协议
 
+- (void)transViewController:(YYInformationVC*)learningVC;//协议方法
+- (void)transForFootRefreshWithViewController:(YYInformationVC*)learningVC;//上拉加载协议方法
+@end
 @interface YYInformationVC : UIViewController
-@property(nonatomic,strong)NSArray *infos;
+@property(nonatomic,strong)NSMutableArray *infos;
+@property(nonatomic,weak)UITableView *tableView;
+@property (nonatomic, assign) id<refreshDelegate>delegate;//代理属性
+
 @end
