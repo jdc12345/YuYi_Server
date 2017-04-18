@@ -29,6 +29,7 @@ static NSString *cell_id = @"cell_id";
 @property (nonatomic, strong) UIImage *chooseImage;
 @property (nonatomic, weak) UITableView *tableView;
 @property (nonatomic, strong) NSMutableArray *imageArr;
+@property(strong, nonatomic)UIActivityIndicatorView *myActivityIndicatorView;
 @end
 
 @implementation YYpostCardVC
@@ -53,6 +54,11 @@ static NSString *cell_id = @"cell_id";
     NSString *urlStr = [NSString stringWithFormat:@"%@/academicpaper/AddAcademicpaper.do?token=%@",mPrefixUrl,token];
     AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
     [manager POST:urlStr parameters:params constructingBodyWithBlock:^(id<AFMultipartFormData>  _Nonnull formData) {
+        UIActivityIndicatorView *myActivityIndicatorView = [[UIActivityIndicatorView alloc]initWithFrame:CGRectMake(kScreenW/2-40*kiphone6, kScreenH/2-124*kiphone6, 80*kiphone6, 80*kiphone6)];
+        [self.view addSubview:myActivityIndicatorView];
+        self.myActivityIndicatorView = myActivityIndicatorView;
+        // 动画开始
+        [myActivityIndicatorView startAnimating];
         //  图片上传
         for (NSInteger i = 0; i < self.imageArr.count; i ++) {
             UIImage *images = self.imageArr[i];
@@ -63,6 +69,7 @@ static NSString *cell_id = @"cell_id";
             [formData appendPartWithFileData:picData name:[NSString stringWithFormat:@"uploadFile%ld",(long)i] fileName:fileName mimeType:@"image/png"];
         }
     } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nonnull responseObject) {
+        [_myActivityIndicatorView stopAnimating];
 //        [MBProgressHUD hideHUDForView:self.view animated:YES];
        NSString *message = responseObject[@"message"];
         [message stringByRemovingPercentEncoding];

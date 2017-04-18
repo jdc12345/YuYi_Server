@@ -19,6 +19,7 @@
 #import "YYCardCommentDetailModel.h"
 #import "CcUserModel.h"
 #import <UShareUI/UShareUI.h>
+#import "MyActivityIndicatorView.h"
 static NSString *cellId = @"cell_id";
 @interface YYCardDetailVC ()<UITableViewDelegate,UITableViewDataSource,UITextViewDelegate>
 @property(nonatomic,weak)UITableView *tableView;
@@ -29,6 +30,7 @@ static NSString *cellId = @"cell_id";
 //
 @property(nonatomic,strong)YYCardDetailPageModel *infoModel;
 @property(nonatomic,weak)UIView *headerView;
+@property(nonatomic,strong)MyActivityIndicatorView *myActivityIndicatorView;
 @end
 
 @implementation YYCardDetailVC
@@ -51,7 +53,11 @@ static NSString *cellId = @"cell_id";
     NSString *token = model.userToken;
     NSString *urlStr = [NSString stringWithFormat:@"%@/academicpaper/academicpaperComment.do?start=0&limit=2&id=%@&token=%@",mPrefixUrl,self.info_id,token];
     [[HttpClient defaultClient]requestWithPath:urlStr method:0 parameters:nil prepareExecute:^{
-        
+        // 自带菊花方法
+        self.myActivityIndicatorView = [[MyActivityIndicatorView alloc]initWithFrame:CGRectMake(kScreenW/2-40*kiphone6, kScreenH/2-124*kiphone6, 80*kiphone6, 80*kiphone6)];
+        [self.view addSubview:_myActivityIndicatorView];
+        // 动画开始
+        [_myActivityIndicatorView startAnimating];
     } success:^(NSURLSessionDataTask *task, id responseObject) {
         NSDictionary *dic = responseObject[@"result"];
         YYCardDetailPageModel *infoModel = [YYCardDetailPageModel mj_objectWithKeyValues:dic];
@@ -62,6 +68,7 @@ static NSString *cellId = @"cell_id";
             [arr addObject:comModel];
         }
         self.commentInfos = arr;//评论数据源
+        [_myActivityIndicatorView stopAnimating];
         [self setupUI];
 
         

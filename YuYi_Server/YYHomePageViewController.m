@@ -18,7 +18,7 @@
 #import "YYInfoDetailModel.h"
 #import <MJExtension.h>
 #import <MJRefresh.h>
-
+#import "MyActivityIndicatorView.h"
 static NSString *cell_id = @"cell_id";
 static NSInteger hotStart = 0;//上拉加载起始位置
 static NSInteger recentStart = 0;
@@ -41,6 +41,7 @@ static NSInteger todayStart = 0;
 @property(weak, nonatomic)YYInformationVC *todayInfosVC;
 @property(weak, nonatomic)YYInformationVC *recentInfosVC;
 
+@property(strong, nonatomic)MyActivityIndicatorView *myActivityIndicatorView;
 @end
 
 @implementation YYHomePageViewController
@@ -71,7 +72,11 @@ static NSInteger todayStart = 0;
 }
 -(void)loadTodayInfosWithUrlStr:(NSString*)urlStr{
     [[HttpClient defaultClient]requestWithPath:urlStr method:0 parameters:nil prepareExecute:^{
-        
+        // 自带菊花方法
+        self.myActivityIndicatorView = [[MyActivityIndicatorView alloc]initWithFrame:CGRectMake(kScreenW/2-40*kiphone6, kScreenH/2-124*kiphone6, 80*kiphone6, 80*kiphone6)];
+        [self.view addSubview:_myActivityIndicatorView];
+        // 动画开始
+        [_myActivityIndicatorView startAnimating];
     } success:^(NSURLSessionDataTask *task, id responseObject) {
         NSArray *arr = responseObject[@"result"];
         NSMutableArray *mArr = [NSMutableArray array];
@@ -81,6 +86,8 @@ static NSInteger todayStart = 0;
         }
         self.todayInfos = mArr;
         todayStart = 4;
+        // 动画结束
+        [_myActivityIndicatorView stopAnimating];
         [self setupUI];
         
     } failure:^(NSURLSessionDataTask *task, NSError *error) {

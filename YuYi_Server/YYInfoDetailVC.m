@@ -22,12 +22,14 @@
 #import "YYInfoCommentVC.h"
 #import <UShareUI/UShareUI.h>
 #import "CcUserModel.h"
+#import "MyActivityIndicatorView.h"
 @interface YYInfoDetailVC ()<UIScrollViewDelegate>
 @property(nonatomic,strong)YYInfoDetailModel *infoModel;
 @property(nonatomic,weak)UILabel *praiseCountLabel;
 @property(nonatomic,weak)UILabel *shareCountLabel;
 @property(nonatomic,weak)UILabel *commentCountLabel;
 @property(nonatomic,weak)UIButton *praiseBtn;
+@property(nonatomic,strong)MyActivityIndicatorView *myActivityIndicatorView;
 @end
 
 @implementation YYInfoDetailVC
@@ -44,11 +46,17 @@
     NSString *token = model.userToken;
     NSString *urlStr = [NSString stringWithFormat:@"http://192.168.1.55:8080/yuyi/doctorlyinformation/get.do?id=%@&token=%@",self.info_id,token];
     [[HttpClient defaultClient]requestWithPath:urlStr method:0 parameters:nil prepareExecute:^{
-        
+        // 自带菊花方法
+        self.myActivityIndicatorView = [[MyActivityIndicatorView alloc]initWithFrame:CGRectMake(kScreenW/2-40*kiphone6, kScreenH/2-124*kiphone6, 80*kiphone6, 80*kiphone6)];
+        [self.view addSubview:_myActivityIndicatorView];
+        // 动画开始
+        [_myActivityIndicatorView startAnimating];
     } success:^(NSURLSessionDataTask *task, id responseObject) {
         NSDictionary *dic = responseObject;
         YYInfoDetailModel *infoModel = [YYInfoDetailModel mj_objectWithKeyValues:dic];
         self.infoModel  = infoModel;
+        // 动画结束
+        [_myActivityIndicatorView stopAnimating];
         [self setUpUI];
         
     } failure:^(NSURLSessionDataTask *task, NSError *error) {

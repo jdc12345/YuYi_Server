@@ -18,7 +18,7 @@
 #import <MJExtension.h>
 #import "CcUserModel.h"
 #import <MJRefresh.h>
-
+#import "MyActivityIndicatorView.h"
 static NSInteger hotStart = 0;//上拉加载起始位置
 static NSInteger recentStart = 0;
 static NSInteger selectStart = 0;
@@ -43,7 +43,7 @@ static NSInteger selectStart = 0;
 //optionView
 @property(weak, nonatomic)UIView *backView;
 @property(weak, nonatomic)UIView *noticeView;
-
+@property(nonatomic,strong)MyActivityIndicatorView *myActivityIndicatorView;
 @end
 
 @implementation YYSciencesViewController
@@ -71,7 +71,11 @@ static NSInteger selectStart = 0;
 }
 -(void)loadHotInfosWithUrlStr:(NSString*)urlStr{
     [[HttpClient defaultClient]requestWithPath:urlStr method:0 parameters:nil prepareExecute:^{
-        
+        // 自带菊花方法
+        self.myActivityIndicatorView = [[MyActivityIndicatorView alloc]initWithFrame:CGRectMake(kScreenW/2-40*kiphone6, kScreenH/2-124*kiphone6, 80*kiphone6, 80*kiphone6)];
+        [self.view addSubview:_myActivityIndicatorView];
+        // 动画开始
+        [_myActivityIndicatorView startAnimating];
     } success:^(NSURLSessionDataTask *task, id responseObject) {
         NSArray *arr = responseObject[@"rows"];
         NSMutableArray *mArr = [NSMutableArray array];
@@ -80,6 +84,8 @@ static NSInteger selectStart = 0;
             [mArr addObject:infoModel];
         }
         self.hotInfos = mArr;
+        // 动画结束
+        [_myActivityIndicatorView stopAnimating];
         [self setupUI];
       hotStart = 7;
     } failure:^(NSURLSessionDataTask *task, NSError *error) {

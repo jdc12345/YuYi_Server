@@ -17,7 +17,7 @@
 #import "BRPlaceholderTextView.h"
 #import "CcUserModel.h"
 #import <UShareUI/UShareUI.h>
-
+#import "MyActivityIndicatorView.h"
 static NSString *cell_Id = @"cell_id";
 @interface YYInfoCommentVC ()<UITableViewDelegate,UITableViewDataSource,UITextViewDelegate>
 @property(nonatomic,strong)NSMutableArray *commentInfoModels;
@@ -30,6 +30,7 @@ static NSString *cell_Id = @"cell_id";
 @property(weak, nonatomic)BRPlaceholderTextView *commentField;
 
 @property(nonatomic,weak)UIView *fieldBackView;
+@property(nonatomic,strong)MyActivityIndicatorView *myActivityIndicatorView;
 @end
 
 @implementation YYInfoCommentVC
@@ -45,7 +46,11 @@ static NSString *cell_Id = @"cell_id";
 - (void)loadData {
     NSString *urlStr = [NSString stringWithFormat:@"%@/comment/getConmentAll.do?id=%@&start=0&limit=6",mPrefixUrl,self.info_id];
     [[HttpClient defaultClient]requestWithPath:urlStr method:0 parameters:nil prepareExecute:^{
-        
+        // 自带菊花方法
+        self.myActivityIndicatorView = [[MyActivityIndicatorView alloc]initWithFrame:CGRectMake(kScreenW/2-40*kiphone6, kScreenH/2-124*kiphone6, 80*kiphone6, 80*kiphone6)];
+        [self.view addSubview:_myActivityIndicatorView];
+        // 动画开始
+        [_myActivityIndicatorView startAnimating];
     } success:^(NSURLSessionDataTask *task, id responseObject) {
         NSArray *arr = responseObject[@"result"];
         NSMutableArray *mArr = [NSMutableArray array];
@@ -54,6 +59,8 @@ static NSString *cell_Id = @"cell_id";
             [mArr addObject:infoModel];
         }
         self.commentInfoModels  = mArr;
+        // 动画结束
+        [_myActivityIndicatorView stopAnimating];
         [self setUpUI];
         
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
