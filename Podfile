@@ -7,6 +7,7 @@ target 'YuYi_Server' do
     pod 'MJRefresh'
     pod 'MJExtension'
     pod 'SDWebImage'
+    pod 'SVProgressHUD'
     pod 'SDCycleScrollView'
     pod 'AMapLocation'
     pod 'RongCloudIM/IMLib', '~> 2.8.3'

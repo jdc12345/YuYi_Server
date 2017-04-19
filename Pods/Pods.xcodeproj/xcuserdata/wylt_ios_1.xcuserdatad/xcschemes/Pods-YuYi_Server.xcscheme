@@ -14,7 +14,7 @@
             buildForArchiving = "YES">
             <BuildableReference
                BuildableIdentifier = 'primary'
-               BlueprintIdentifier = '746878D10E959A318E2AC60DD6EB3F00'
+               BlueprintIdentifier = 'E0A03AD2195A59A5A4DB0F82CE62492B'
                BlueprintName = 'Pods-YuYi_Server'
                ReferencedContainer = 'container:Pods.xcodeproj'
                BuildableName = 'libPods-YuYi_Server.a'>

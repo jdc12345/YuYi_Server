@@ -42,6 +42,7 @@ PODS:
   - SDWebImage (3.8.2):
     - SDWebImage/Core (= 3.8.2)
   - SDWebImage/Core (3.8.2)
+  - SVProgressHUD (2.1.2)
 
 DEPENDENCIES:
   - AFNetworking (~> 2.6.0)
@@ -56,6 +57,7 @@ DEPENDENCIES:
   - RongCloudIM/IMLib (~> 2.8.3)
   - SDCycleScrollView
   - SDWebImage
+  - SVProgressHUD
 
 SPEC CHECKSUMS:
   AFNetworking: cb8d14a848e831097108418f5d49217339d4eb60
@@ -69,7 +71,8 @@ SPEC CHECKSUMS:
   RongCloudIM: c38f0afbcb417e735afafbb011ba53c9dd5a9cf2
   SDCycleScrollView: f72904c77698a7f93a41bcbbc2d78b073bf7326c
   SDWebImage: 098e97e6176540799c27e804c96653ee0833d13c
+  SVProgressHUD: c404a55d78acbeb7ebb78b76d3faf986475a6994
 
-PODFILE CHECKSUM: 8f23fad996b53d4b2be03a45f365ae2ed1f5d60a
+PODFILE CHECKSUM: 218570d77bb0f4fcfb6d6760fadd7dc5ce83207d
 
 COCOAPODS: 1.2.0
