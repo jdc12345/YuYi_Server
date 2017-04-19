@@ -22,12 +22,14 @@
 #import "YYInfoCommentVC.h"
 #import <UShareUI/UShareUI.h>
 #import "CcUserModel.h"
+#import "MyActivityIndicatorView.h"
 @interface YYInfoDetailVC ()<UIScrollViewDelegate>
 @property(nonatomic,strong)YYInfoDetailModel *infoModel;
 @property(nonatomic,weak)UILabel *praiseCountLabel;
 @property(nonatomic,weak)UILabel *shareCountLabel;
 @property(nonatomic,weak)UILabel *commentCountLabel;
 @property(nonatomic,weak)UIButton *praiseBtn;
+@property(nonatomic,strong)MyActivityIndicatorView *myActivityIndicatorView;
 @end
 
 @implementation YYInfoDetailVC
@@ -44,11 +46,17 @@
     NSString *token = model.userToken;
     NSString *urlStr = [NSString stringWithFormat:@"http://192.168.1.55:8080/yuyi/doctorlyinformation/get.do?id=%@&token=%@",self.info_id,token];
     [[HttpClient defaultClient]requestWithPath:urlStr method:0 parameters:nil prepareExecute:^{
-        
+        // 自带菊花方法
+        self.myActivityIndicatorView = [[MyActivityIndicatorView alloc]initWithFrame:CGRectMake(kScreenW/2-40*kiphone6, kScreenH/2-124*kiphone6, 80*kiphone6, 80*kiphone6)];
+        [self.view addSubview:_myActivityIndicatorView];
+        // 动画开始
+        [_myActivityIndicatorView startAnimating];
     } success:^(NSURLSessionDataTask *task, id responseObject) {
         NSDictionary *dic = responseObject;
         YYInfoDetailModel *infoModel = [YYInfoDetailModel mj_objectWithKeyValues:dic];
         self.infoModel  = infoModel;
+        // 动画结束
+        [_myActivityIndicatorView stopAnimating];
         [self setUpUI];
         
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
@@ -216,15 +224,48 @@
     //显示分享面板
     [UMSocialUIManager showShareMenuViewInWindowWithPlatformSelectionBlock:^(UMSocialPlatformType platformType, NSDictionary *userInfo) {
         // 根据获取的platformType确定所选平台进行下一步操作
-//        if (platformType == UMSocialPlatformType_Sina) {
-//            [self shareImageAndTextToPlatformType:platformType];
-//        }else{
-//            [self shareTextToPlatformType:platformType];
-//        }
-        [self shareTextToPlatformType:platformType];
-
+        if (platformType == UMSocialPlatformType_Sina) {
+            [self shareTextToPlatformType:platformType];
+        }else{
+            [self shareWebPageToPlatformType:platformType];
+        }
+//        [self shareTextToPlatformType:platformType];
+        
     }];
 
+}
+- (void)shareWebPageToPlatformType:(UMSocialPlatformType)platformType
+{
+    //创建分享消息对象
+    UMSocialMessageObject *messageObject = [UMSocialMessageObject messageObject];
+    
+    //创建网页内容对象
+    NSString* thumbURL =  [NSString stringWithFormat:@"%@%@",mPrefixUrl,self.infoModel.picture];
+    UMShareWebpageObject *shareObject = [UMShareWebpageObject shareObjectWithTitle:self.infoModel.title descr:self.infoModel.content thumImage:thumbURL];
+    //设置网页地址
+    shareObject.webpageUrl = @"http://59.110.169.148:8080";
+    
+    //分享消息对象设置分享内容对象
+    messageObject.shareObject = shareObject;
+    
+    //调用分享接口
+    [[UMSocialManager defaultManager] shareToPlatform:platformType messageObject:messageObject currentViewController:self completion:^(id data, NSError *error) {
+        if (error) {
+            UMSocialLogInfo(@"************Share fail with error %@*********",error);
+        }else{
+            if ([data isKindOfClass:[UMSocialShareResponse class]]) {
+                UMSocialShareResponse *resp = data;
+                //分享结果消息
+                UMSocialLogInfo(@"response message is %@",resp.message);
+                //第三方原始返回的数据
+                UMSocialLogInfo(@"response originalResponse data is %@",resp.originalResponse);
+                
+            }else{
+                UMSocialLogInfo(@"response data is %@",data);
+            }
+        }
+//        [self alertWithError:error];
+    }];
 }
 //分享文本
 - (void)shareTextToPlatformType:(UMSocialPlatformType)platformType

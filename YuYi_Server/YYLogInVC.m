@@ -14,13 +14,14 @@
 #import "HttpClient.h"
 #import "CcUserModel.h"
 #import "YYTabBarController.h"
-
+#import "MyActivityIndicatorView.h"
 @interface YYLogInVC ()<UITextFieldDelegate>
 @property(nonatomic,weak)UILabel *countdownLabel;
 
 @property(nonatomic,weak)UITextField *telNumberField;
 
 @property(nonatomic,weak)UITextField *passWordField;
+@property(nonatomic,strong)MyActivityIndicatorView *myActivityIndicatorView;
 
 @end
 
@@ -225,7 +226,15 @@
 //    http://192.168.1.55:8080/yuyi/physician/login.do?id=13717883006&vcode=617307
     NSString *urlString = [mPrefixUrl stringByAppendingPathComponent:[NSString stringWithFormat:@"/physician/login.do?id=%@&vcode=%@",self.telNumberField.text,self.passWordField.text]];
     HttpClient *httpManager = [HttpClient defaultClient];
-    [httpManager requestWithPath:urlString method:HttpRequestPost parameters:nil prepareExecute:nil success:^(NSURLSessionDataTask *task, id responseObject) {
+    [httpManager requestWithPath:urlString method:HttpRequestPost parameters:nil prepareExecute:^{
+        // 自带菊花方法
+        self.myActivityIndicatorView = [[MyActivityIndicatorView alloc]initWithFrame:CGRectMake(kScreenW/2-40*kiphone6, kScreenH/2-124*kiphone6, 80*kiphone6, 80*kiphone6)];
+        [self.view addSubview:_myActivityIndicatorView];
+        // 动画开始
+        [_myActivityIndicatorView startAnimating];
+    } success:^(NSURLSessionDataTask *task, id responseObject) {
+        // 动画结束
+        [_myActivityIndicatorView stopAnimating];
         NSDictionary *dic = (NSDictionary *)responseObject;
         if ([dic[@"code"] isEqualToString:@"0"]) {
             //保存token
@@ -234,16 +243,6 @@
             userModel.telephoneNum = self.telNumberField.text;
             [userModel saveAllInfo];
             //跳转登录首页
-//            NSDictionary *personalDic = dic[@"personal"];
-//            if ([personalDic[@"trueName"] isEqualToString:@""]) {
-////                YYHomePageViewController *firstVC = [[YYHomePageViewController alloc]init];
-////                firstVC.isFirstLogin = true;
-////                YYNavigationController *nvc = [[YYNavigationController alloc]initWithRootViewController:firstVC];
-////                [self presentViewController:nvc animated:true completion:nil];
-//            }else{
-//                YYHomePageViewController *firstVC = [[YYHomePageViewController alloc]init];
-//                [UIApplication sharedApplication].keyWindow.rootViewController = firstVC;
-//            }
 
             YYTabBarController *tabBarVC = [[YYTabBarController alloc]init];
             [UIApplication sharedApplication].keyWindow.rootViewController = tabBarVC;

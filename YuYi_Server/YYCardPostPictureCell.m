@@ -36,7 +36,7 @@
     _image = image;
 //    image = [self thumbnailWithImageWithoutScale:image size:CGSizeMake(kScreenW, kScreenW)];
 //    image = [self imageCompressForWidthScale:image targetWidth:kScreenW];
-    image = [self imageCompressFitSizeScale:image targetSize:CGSizeMake(kScreenW-40*kiphone6, kScreenW-10*kiphone6)];
+    image = [self imageCompressFitSizeScale:image targetSize:CGSizeMake(kScreenW-40*kiphone6, kScreenW)];
     self.pictureView.image = image;
     
 }
@@ -203,13 +203,13 @@
     //约束
     [pictureView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.right.top.offset(0);
-        make.left.offset(-40*kiphone6);
+        //make.left.offset(-40*kiphone6);
         make.bottom.offset(-5*kiphone6);
     }];
-    [self.contentView mas_makeConstraints:^(MASConstraintMaker *make) {
+   /* [self.contentView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.bottom.equalTo(pictureView.mas_bottom).offset(5);
         make.width.offset(kScreenW);//必须加
-    }];
+    }];*/
     
 }
 -(void)layoutSubviews{
@@ -220,11 +220,11 @@
             [subView mas_remakeConstraints:^(MASConstraintMaker *make) {
                 make.top.right.offset(0);
                 make.width.offset(100*kiphone6);
-                make.height.offset(kScreenW-10*kiphone6);
+                make.height.offset(kScreenW-5*kiphone6);
             }];
             for (UIButton *btn in subView.subviews) {
                 if ([btn isKindOfClass:[UIButton class]]) {
-                    btn.frame = CGRectMake(-15*kiphone6, 0, 100*kiphone6, kScreenW-10*kiphone6);
+                    btn.frame = CGRectMake(-15*kiphone6, 0, 100*kiphone6, kScreenW-5*kiphone6);
 
                 }
             }

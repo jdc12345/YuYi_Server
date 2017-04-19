@@ -17,7 +17,12 @@
 #import "HttpClient.h"
 #import <MJExtension.h>
 #import "CcUserModel.h"
-@interface YYSciencesViewController ()<UIScrollViewDelegate>
+#import <MJRefresh.h>
+#import "MyActivityIndicatorView.h"
+static NSInteger hotStart = 0;//上拉加载起始位置
+static NSInteger recentStart = 0;
+static NSInteger selectStart = 0;
+@interface YYSciencesViewController ()<UIScrollViewDelegate,refreshDelegate>
 //跟button的监听事件有关
 @property(weak, nonatomic)UIView *cardLineView;
 //
@@ -26,9 +31,9 @@
 @property(strong, nonatomic)NSArray *cardCategoryButtons;
 //设置滚动线约束时候需要
 @property(strong, nonatomic)UIView *cardsView;
-@property(nonatomic,strong)NSArray *hotInfos;
-@property(nonatomic,strong)NSArray *selectInfos;
-@property(nonatomic,strong)NSArray *recentInfos;
+@property(nonatomic,strong)NSMutableArray *hotInfos;
+@property(nonatomic,strong)NSMutableArray *selectInfos;
+@property(nonatomic,strong)NSMutableArray *recentInfos;
 //子控制器
 @property(weak, nonatomic)YYlearningCircleVC *hotCardVC;
 @property(weak, nonatomic)YYlearningCircleVC *selectCardVC;
@@ -38,7 +43,7 @@
 //optionView
 @property(weak, nonatomic)UIView *backView;
 @property(weak, nonatomic)UIView *noticeView;
-
+@property(nonatomic,strong)MyActivityIndicatorView *myActivityIndicatorView;
 @end
 
 @implementation YYSciencesViewController
@@ -47,8 +52,10 @@
     [super viewDidLoad];
     self.title = @"学术圈";
     self.view.backgroundColor = [UIColor whiteColor];
+    
     [self loadData];
 }
+
 - (void)loadData {
 //    http://192.168.1.55:8080/yuyi/academicpaper/findhot.do?start=0&limit=6&token=EA62E69E02FABA4E4C9A0FDC1C7CAE10
 //    http://192.168.1.55:8080/yuyi/academicpaper/Selected.do?start=0&limit=1
@@ -56,7 +63,7 @@
     CcUserModel *userModel = [CcUserModel defaultClient];
     NSString *token = userModel.userToken;
     NSString *hotUrlStr = [NSString stringWithFormat:@"%@/academicpaper/findhot.do?start=0&limit=6&token=%@",mPrefixUrl,token];
-    NSString *selectUrlStr = [NSString stringWithFormat:@"%@/academicpaper/Selected.do?start=0&limit=1&token=%@",mPrefixUrl,token];
+    NSString *selectUrlStr = [NSString stringWithFormat:@"%@/academicpaper/Selected.do?start=0&limit=6&token=%@",mPrefixUrl,token];
     NSString *recentUrlStr = [NSString stringWithFormat:@"%@/academicpaper/findtime.do?start=0&limit=6&token=%@",mPrefixUrl,token];
     [self loadHotInfosWithUrlStr:hotUrlStr];
     [self loadSelectInfosWithUrlStr:selectUrlStr];
@@ -64,7 +71,11 @@
 }
 -(void)loadHotInfosWithUrlStr:(NSString*)urlStr{
     [[HttpClient defaultClient]requestWithPath:urlStr method:0 parameters:nil prepareExecute:^{
-        
+        // 自带菊花方法
+        self.myActivityIndicatorView = [[MyActivityIndicatorView alloc]initWithFrame:CGRectMake(kScreenW/2-40*kiphone6, kScreenH/2-124*kiphone6, 80*kiphone6, 80*kiphone6)];
+        [self.view addSubview:_myActivityIndicatorView];
+        // 动画开始
+        [_myActivityIndicatorView startAnimating];
     } success:^(NSURLSessionDataTask *task, id responseObject) {
         NSArray *arr = responseObject[@"rows"];
         NSMutableArray *mArr = [NSMutableArray array];
@@ -73,8 +84,10 @@
             [mArr addObject:infoModel];
         }
         self.hotInfos = mArr;
+        // 动画结束
+        [_myActivityIndicatorView stopAnimating];
         [self setupUI];
-        
+      hotStart = 7;
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
         
     }];
@@ -92,6 +105,7 @@
         }
         self.selectCardVC.infos = mArr;
         self.selectInfos = mArr;
+        selectStart = 7;
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
     }];
 }
@@ -106,6 +120,7 @@
         }
         self.recentCardVC.infos = mArr;
         self.recentInfos = mArr;
+        recentStart = 7;
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
         
     }];
@@ -169,6 +184,10 @@
     YYlearningCircleVC *hotCardVC = [[YYlearningCircleVC alloc]init];
     YYlearningCircleVC *selectCardVC = [[YYlearningCircleVC alloc]init];
     YYlearningCircleVC *recentCardVC = [[YYlearningCircleVC alloc]init];
+    //设置代理
+    hotCardVC.delegate = self;
+    selectCardVC.delegate = self;
+    recentCardVC.delegate = self;
     //传数据
     hotCardVC.infos = self.hotInfos;
     selectCardVC.infos = self.selectInfos;
@@ -285,33 +304,7 @@
 
 //按钮的监听事件
 -(void)shopCategoryButtonClick:(UIButton*)sender{
-    CcUserModel *userModel = [CcUserModel defaultClient];
-    NSString *token = userModel.userToken;
     [self.cardDetailView setContentOffset:CGPointMake(sender.tag*self.cardDetailView.bounds.size.width, 0) animated:YES];
-    if (sender.tag == 0) {
-        NSString *hotUrlStr = [NSString stringWithFormat:@"%@/academicpaper/findhot.do?start=0&limit=6&token=%@",mPrefixUrl,token];
-        [[HttpClient defaultClient]requestWithPath:hotUrlStr method:0 parameters:nil prepareExecute:^{
-            
-        } success:^(NSURLSessionDataTask *task, id responseObject) {
-            NSArray *arr = responseObject[@"rows"];
-            NSMutableArray *mArr = [NSMutableArray array];
-            for (NSDictionary *dic in arr) {
-                YYCardDetailModel *infoModel = [YYCardDetailModel mj_objectWithKeyValues:dic];
-                [mArr addObject:infoModel];
-            }
-            self.hotCardVC.infos = mArr;
-            
-        } failure:^(NSURLSessionDataTask *task, NSError *error) {
-            
-        }];
-
-    }else if (sender.tag == 1){
-        NSString *selectUrlStr = [NSString stringWithFormat:@"%@/academicpaper/Selected.do?start=0&limit=1&token=%@",mPrefixUrl,token];
-        [self loadSelectInfosWithUrlStr:selectUrlStr];
-    }else if (sender.tag == 2){
-        NSString *recentUrlStr = [NSString stringWithFormat:@"%@/academicpaper/findtime.do?start=0&limit=6&token=%@",mPrefixUrl,token];
-        [self loadRecentInfosWithUrlStr:recentUrlStr];
-    }
 }
 -(void)informationBtnClick:(UIButton*)sender{
     //大蒙布View
@@ -385,7 +378,6 @@
     [self.backView removeFromSuperview];
 }
 -(void)postMassageBtnClick:(UIButton*)sender{
-    NSLog(@"跳转发帖页面");
     YYpostCardVC *postCardVC = [[YYpostCardVC alloc]init];
     [self.navigationController pushViewController:postCardVC animated:true];
 }
@@ -422,34 +414,160 @@
     }];
 
 }
-
+#pragma refreshDelegate
+-(void)transViewController:(YYlearningCircleVC *)learningVC{
+    CcUserModel *userModel = [CcUserModel defaultClient];
+    NSString *token = userModel.userToken;
+    if (learningVC == self.hotCardVC) {
+        NSString *hotUrlStr = [NSString stringWithFormat:@"%@/academicpaper/findhot.do?start=0&limit=6&token=%@",mPrefixUrl,token];
+        [[HttpClient defaultClient]requestWithPath:hotUrlStr method:0 parameters:nil prepareExecute:^{
+            
+        } success:^(NSURLSessionDataTask *task, id responseObject) {
+            NSArray *arr = responseObject[@"rows"];
+            NSMutableArray *mArr = [NSMutableArray array];
+            for (NSDictionary *dic in arr) {
+                YYCardDetailModel *infoModel = [YYCardDetailModel mj_objectWithKeyValues:dic];
+                [mArr addObject:infoModel];
+            }
+            self.hotCardVC.infos = mArr;
+            self.hotInfos = mArr;
+            hotStart = 7;
+            [learningVC.tableView.mj_header endRefreshing];
+        } failure:^(NSURLSessionDataTask *task, NSError *error) {
+            [learningVC.tableView.mj_header endRefreshing];
+        }];
+    }else if (learningVC == self.selectCardVC){
+        NSString *selectUrlStr = [NSString stringWithFormat:@"%@/academicpaper/Selected.do?start=0&limit=6&token=%@",mPrefixUrl,token];
+        [[HttpClient defaultClient]requestWithPath:selectUrlStr method:0 parameters:nil prepareExecute:^{
+            
+        } success:^(NSURLSessionDataTask *task, id responseObject) {
+            NSArray *arr = responseObject[@"result"];
+            NSMutableArray *mArr = [NSMutableArray array];
+            for (NSDictionary *dic in arr) {
+                YYCardDetailModel *infoModel = [YYCardDetailModel mj_objectWithKeyValues:dic];
+                [mArr addObject:infoModel];
+            }
+            self.selectCardVC.infos = mArr;
+            self.selectInfos = mArr;
+            selectStart = 7;
+            [learningVC.tableView.mj_header endRefreshing];
+        } failure:^(NSURLSessionDataTask *task, NSError *error) {
+            [learningVC.tableView.mj_header endRefreshing];
+        }];
+        
+    }else if (learningVC == self.recentCardVC){
+        NSString *recentUrlStr = [NSString stringWithFormat:@"%@/academicpaper/findtime.do?start=0&limit=6&token=%@",mPrefixUrl,token];
+        [[HttpClient defaultClient]requestWithPath:recentUrlStr method:0 parameters:nil prepareExecute:^{
+            
+        } success:^(NSURLSessionDataTask *task, id responseObject) {
+            NSArray *arr = responseObject[@"rows"];
+            NSMutableArray *mArr = [NSMutableArray array];
+            for (NSDictionary *dic in arr) {
+                YYCardDetailModel *infoModel = [YYCardDetailModel mj_objectWithKeyValues:dic];
+                [mArr addObject:infoModel];
+            }
+            self.recentCardVC.infos = mArr;
+            self.recentInfos = mArr;
+            recentStart = 7;
+            [learningVC.tableView.mj_header endRefreshing];
+        } failure:^(NSURLSessionDataTask *task, NSError *error) {
+            [learningVC.tableView.mj_header endRefreshing];
+        }];
+        
+    }
+}
+-(void)transForFootRefreshWithViewController:(YYlearningCircleVC *)learningVC{
+    CcUserModel *userModel = [CcUserModel defaultClient];
+    NSString *token = userModel.userToken;
+    if (learningVC == self.hotCardVC) {
+        NSString *hotUrlStr = [NSString stringWithFormat:@"%@/academicpaper/findhot.do?start=%ld&limit=6&token=%@",mPrefixUrl,hotStart,token];
+        [[HttpClient defaultClient]requestWithPath:hotUrlStr method:0 parameters:nil prepareExecute:^{
+            
+        } success:^(NSURLSessionDataTask *task, id responseObject) {
+            NSArray *arr = responseObject[@"rows"];
+            NSMutableArray *mArr = [NSMutableArray array];
+            for (NSDictionary *dic in arr) {
+                YYCardDetailModel *infoModel = [YYCardDetailModel mj_objectWithKeyValues:dic];
+                [mArr addObject:infoModel];
+            }
+            [self.hotCardVC.infos addObjectsFromArray:mArr];
+//            [self.hotInfos addObjectsFromArray:mArr];
+            hotStart = self.hotCardVC.infos.count+1;
+            [learningVC.tableView reloadData];
+            [learningVC.tableView.mj_footer endRefreshing];
+        } failure:^(NSURLSessionDataTask *task, NSError *error) {
+            [learningVC.tableView.mj_footer endRefreshing];
+        }];
+    }else if (learningVC == self.selectCardVC){
+        NSString *selectUrlStr = [NSString stringWithFormat:@"%@/academicpaper/Selected.do?start=%ld&limit=6&token=%@",mPrefixUrl,selectStart,token];
+        [[HttpClient defaultClient]requestWithPath:selectUrlStr method:0 parameters:nil prepareExecute:^{
+            
+        } success:^(NSURLSessionDataTask *task, id responseObject) {
+            NSArray *arr = responseObject[@"result"];
+            NSMutableArray *mArr = [NSMutableArray array];
+            for (NSDictionary *dic in arr) {
+                YYCardDetailModel *infoModel = [YYCardDetailModel mj_objectWithKeyValues:dic];
+                [mArr addObject:infoModel];
+            }
+            [self.selectCardVC.infos addObjectsFromArray:mArr];
+//            [self.selectInfos addObjectsFromArray:mArr];
+            selectStart = self.selectCardVC.infos.count+1;
+            [self.selectCardVC.tableView reloadData];
+            [learningVC.tableView.mj_footer endRefreshing];
+        } failure:^(NSURLSessionDataTask *task, NSError *error) {
+            [learningVC.tableView.mj_footer endRefreshing];
+        }];
+        
+    }else if (learningVC == self.recentCardVC){
+        NSString *recentUrlStr = [NSString stringWithFormat:@"%@/academicpaper/findtime.do?start=%ld&limit=6&token=%@",mPrefixUrl,recentStart,token];
+        [[HttpClient defaultClient]requestWithPath:recentUrlStr method:0 parameters:nil prepareExecute:^{
+            
+        } success:^(NSURLSessionDataTask *task, id responseObject) {
+            NSArray *arr = responseObject[@"rows"];
+            NSMutableArray *mArr = [NSMutableArray array];
+            for (NSDictionary *dic in arr) {
+                YYCardDetailModel *infoModel = [YYCardDetailModel mj_objectWithKeyValues:dic];
+                [mArr addObject:infoModel];
+            }
+            [self.recentCardVC.infos addObjectsFromArray:mArr];
+//            [self.recentInfos addObjectsFromArray:mArr];
+            recentStart = self.recentCardVC.infos.count+1;
+            [self.recentCardVC.tableView reloadData];
+            [learningVC.tableView.mj_footer endRefreshing];
+        } failure:^(NSURLSessionDataTask *task, NSError *error) {
+            [learningVC.tableView.mj_footer endRefreshing];
+        }];
+        
+    }
+    
+}
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
     self.navigationController.navigationBar.hidden = true;
     
-    //
-    CcUserModel *userModel = [CcUserModel defaultClient];
-    NSString *token = userModel.userToken;
-    NSString *hotUrlStr = [NSString stringWithFormat:@"%@/academicpaper/findhot.do?start=0&limit=6&token=%@",mPrefixUrl,token];
-    NSString *selectUrlStr = [NSString stringWithFormat:@"%@/academicpaper/Selected.do?start=0&limit=1&token=%@",mPrefixUrl,token];
-    NSString *recentUrlStr = [NSString stringWithFormat:@"%@/academicpaper/findtime.do?start=0&limit=6&token=%@",mPrefixUrl,token];
-    [[HttpClient defaultClient]requestWithPath:hotUrlStr method:0 parameters:nil prepareExecute:^{
-        
-    } success:^(NSURLSessionDataTask *task, id responseObject) {
-        NSArray *arr = responseObject[@"rows"];
-        NSMutableArray *mArr = [NSMutableArray array];
-        for (NSDictionary *dic in arr) {
-            YYCardDetailModel *infoModel = [YYCardDetailModel mj_objectWithKeyValues:dic];
-            [mArr addObject:infoModel];
-        }
-        self.hotCardVC.infos = mArr;
-        
-    } failure:^(NSURLSessionDataTask *task, NSError *error) {
-        
-    }];
-
-    [self loadSelectInfosWithUrlStr:selectUrlStr];
-    [self loadRecentInfosWithUrlStr:recentUrlStr];
+//    //
+//    CcUserModel *userModel = [CcUserModel defaultClient];
+//    NSString *token = userModel.userToken;
+//    NSString *hotUrlStr = [NSString stringWithFormat:@"%@/academicpaper/findhot.do?start=0&limit=6&token=%@",mPrefixUrl,token];
+//    NSString *selectUrlStr = [NSString stringWithFormat:@"%@/academicpaper/Selected.do?start=0&limit=1&token=%@",mPrefixUrl,token];
+//    NSString *recentUrlStr = [NSString stringWithFormat:@"%@/academicpaper/findtime.do?start=0&limit=6&token=%@",mPrefixUrl,token];
+//    [[HttpClient defaultClient]requestWithPath:hotUrlStr method:0 parameters:nil prepareExecute:^{
+//        
+//    } success:^(NSURLSessionDataTask *task, id responseObject) {
+//        NSArray *arr = responseObject[@"rows"];
+//        NSMutableArray *mArr = [NSMutableArray array];
+//        for (NSDictionary *dic in arr) {
+//            YYCardDetailModel *infoModel = [YYCardDetailModel mj_objectWithKeyValues:dic];
+//            [mArr addObject:infoModel];
+//        }
+//        self.hotCardVC.infos = mArr;
+//        
+//    } failure:^(NSURLSessionDataTask *task, NSError *error) {
+//        
+//    }];
+//
+//    [self loadSelectInfosWithUrlStr:selectUrlStr];
+//    [self loadRecentInfosWithUrlStr:recentUrlStr];
 }
 
 -(void)viewWillDisappear:(BOOL)animated{

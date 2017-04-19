@@ -10,4 +10,5 @@
 #import "YYCardDetailModel.h"
 @interface YYCardTableViewCell : UITableViewCell
 @property(nonatomic,strong)YYCardDetailModel *model;
+@property(nonatomic,assign)BOOL likeState;//代理属性
 @end

@@ -17,9 +17,13 @@
 #import "YYInfoDetailVC.h"
 #import "YYInfoDetailModel.h"
 #import <MJExtension.h>
-
+#import <MJRefresh.h>
+#import "MyActivityIndicatorView.h"
 static NSString *cell_id = @"cell_id";
-@interface YYHomePageViewController ()<UIScrollViewDelegate>
+static NSInteger hotStart = 0;//上拉加载起始位置
+static NSInteger recentStart = 0;
+static NSInteger todayStart = 0;
+@interface YYHomePageViewController ()<UIScrollViewDelegate,refreshDelegate>
 @property(nonatomic,weak)UITableView *tableView;
 //跟button的监听事件有关
 @property(weak, nonatomic)UIView *cardLineView;
@@ -29,14 +33,15 @@ static NSString *cell_id = @"cell_id";
 @property(strong, nonatomic)NSArray *cardCategoryButtons;
 //设置滚动线约束时候需要
 @property(strong, nonatomic)UIView *infosView;
-@property(nonatomic,strong)NSArray *hotInfos;
-@property(nonatomic,strong)NSArray *todayInfos;
-@property(nonatomic,strong)NSArray *recentInfos;
+@property(nonatomic,strong)NSMutableArray *hotInfos;
+@property(nonatomic,strong)NSMutableArray *todayInfos;
+@property(nonatomic,strong)NSMutableArray *recentInfos;
 //子控制器
 @property(weak, nonatomic)YYInformationVC *hotInfosVC;
 @property(weak, nonatomic)YYInformationVC *todayInfosVC;
 @property(weak, nonatomic)YYInformationVC *recentInfosVC;
 
+@property(strong, nonatomic)MyActivityIndicatorView *myActivityIndicatorView;
 @end
 
 @implementation YYHomePageViewController
@@ -50,25 +55,28 @@ static NSString *cell_id = @"cell_id";
     [self loadData];
     
 }
+
 - (void)loadData {
 //    http://192.168.1.55:8080/yuyi/doctorlyinformation/getTodayAll.do?start=2&limit=8
 //    http://192.168.1.55:8080/yuyi/doctorlyinformation/find.do?start=0&limit=3
 //    http://192.168.1.55:8080/yuyi/doctorlyinformation/findPage.do?start=0&limit=3
     
-    NSString *todayUrlStr = [NSString stringWithFormat:@"%@/doctorlyinformation/getTodayAll.do?start=2&limit=8",mPrefixUrl];
+    NSString *todayUrlStr = [NSString stringWithFormat:@"%@/doctorlyinformation/getTodayAll.do?start=0&limit=3",mPrefixUrl];
     NSString *hotUrlStr = [NSString stringWithFormat:@"%@/doctorlyinformation/find.do?start=0&limit=3",mPrefixUrl];
     NSString *recentUrlStr = [NSString stringWithFormat:@"%@/doctorlyinformation/findPage.do?start=0&limit=3",mPrefixUrl];
     [self loadTodayInfosWithUrlStr:todayUrlStr];
     [self loadRecentInfosWithUrlStr:recentUrlStr];
     [self loadHotInfosWithUrlStr:hotUrlStr];
-//    self.hotInfos = [NSArray arrayWithObjects:@"1",@"2",@"3",@"4",@"5",@"6",@"4",@"5",@"6", nil];
-//    self.todayInfos = [NSArray arrayWithObjects:@"1",@"2",@"3", nil];
-//    self.recentInfos = [NSArray arrayWithObjects:@"1",@"2", nil];
+
     
 }
 -(void)loadTodayInfosWithUrlStr:(NSString*)urlStr{
     [[HttpClient defaultClient]requestWithPath:urlStr method:0 parameters:nil prepareExecute:^{
-        
+        // 自带菊花方法
+        self.myActivityIndicatorView = [[MyActivityIndicatorView alloc]initWithFrame:CGRectMake(kScreenW/2-40*kiphone6, kScreenH/2-124*kiphone6, 80*kiphone6, 80*kiphone6)];
+        [self.view addSubview:_myActivityIndicatorView];
+        // 动画开始
+        [_myActivityIndicatorView startAnimating];
     } success:^(NSURLSessionDataTask *task, id responseObject) {
         NSArray *arr = responseObject[@"result"];
         NSMutableArray *mArr = [NSMutableArray array];
@@ -77,6 +85,9 @@ static NSString *cell_id = @"cell_id";
             [mArr addObject:infoModel];
         }
         self.todayInfos = mArr;
+        todayStart = 4;
+        // 动画结束
+        [_myActivityIndicatorView stopAnimating];
         [self setupUI];
         
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
@@ -95,7 +106,7 @@ static NSString *cell_id = @"cell_id";
             [mArr addObject:infoModel];
         }
         self.hotInfosVC.infos = mArr;
-        
+        hotStart = 4;
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
         
     }];
@@ -112,7 +123,7 @@ static NSString *cell_id = @"cell_id";
             [mArr addObject:infoModel];
         }
         self.recentInfosVC.infos = mArr;
-        
+        recentStart = 4;
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
         
     }];
@@ -185,6 +196,10 @@ static NSString *cell_id = @"cell_id";
     YYInformationVC *hotInfoVC = [[YYInformationVC alloc]init];
     YYInformationVC *todayInfoVC = [[YYInformationVC alloc]init];
     YYInformationVC *recentInfoVC = [[YYInformationVC alloc]init];
+    //设置代理
+    hotInfoVC.delegate = self;
+    todayInfoVC.delegate = self;
+    recentInfoVC.delegate = self;
     //传数据
     hotInfoVC.infos = self.hotInfos;
     todayInfoVC.infos = self.todayInfos;
@@ -282,36 +297,13 @@ static NSString *cell_id = @"cell_id";
         make.width.equalTo(cardDetailView);
         make.height.equalTo(cardDetailView);
     }];
-    
-    
+  
 }
 
 //按钮的监听事件
 -(void)shopCategoryButtonClick:(UIButton*)sender{
+    
     [self.cardDetailView setContentOffset:CGPointMake(sender.tag*self.cardDetailView.bounds.size.width, 0) animated:YES];
-    if (sender.tag == 0) {
-        NSString *todayUrlStr = [NSString stringWithFormat:@"%@/doctorlyinformation/getTodayAll.do?start=2&limit=8",mPrefixUrl];
-        [[HttpClient defaultClient]requestWithPath:todayUrlStr method:0 parameters:nil prepareExecute:^{
-            
-        } success:^(NSURLSessionDataTask *task, id responseObject) {
-            NSArray *arr = responseObject[@"result"];
-            NSMutableArray *mArr = [NSMutableArray array];
-            for (NSDictionary *dic in arr) {
-                YYInfoDetailModel *infoModel = [YYInfoDetailModel mj_objectWithKeyValues:dic];
-                [mArr addObject:infoModel];
-            }
-            self.todayInfosVC.infos = mArr;
-            
-        } failure:^(NSURLSessionDataTask *task, NSError *error) {
-            
-        }];
-    }else if (sender.tag == 1){
-        NSString *recentUrlStr = [NSString stringWithFormat:@"%@/doctorlyinformation/findPage.do?start=0&limit=3",mPrefixUrl];
-        [self loadRecentInfosWithUrlStr:recentUrlStr];
-    }else if (sender.tag == 2){
-        NSString *hotUrlStr = [NSString stringWithFormat:@"%@/doctorlyinformation/find.do?start=0&limit=3",mPrefixUrl];
-        [self loadHotInfosWithUrlStr:hotUrlStr];
-    }
 }
 //根据偏移距离设置滚动线的位置
 -(void)scrollViewDidScroll:(UIScrollView *)scrollView{
@@ -346,6 +338,130 @@ static NSString *cell_id = @"cell_id";
     
     //
     [self.cardLineView layoutIfNeeded];
+}
+#pragma refreshDelegate
+-(void)transViewController:(YYInformationVC *)learningVC{
+    if (learningVC == self.hotInfosVC) {
+        NSString *hotUrlStr = [NSString stringWithFormat:@"%@/doctorlyinformation/find.do?start=0&limit=3",mPrefixUrl];
+        [[HttpClient defaultClient]requestWithPath:hotUrlStr method:0 parameters:nil prepareExecute:^{
+            
+        } success:^(NSURLSessionDataTask *task, id responseObject) {
+            NSArray *arr = responseObject[@"result"];
+            NSMutableArray *mArr = [NSMutableArray array];
+            for (NSDictionary *dic in arr) {
+                YYInfoDetailModel *infoModel = [YYInfoDetailModel mj_objectWithKeyValues:dic];
+                [mArr addObject:infoModel];
+            }
+            self.hotInfos = mArr;
+            self.hotInfosVC.infos = mArr;
+            hotStart = 4;
+            [learningVC.tableView.mj_header endRefreshing];
+        } failure:^(NSURLSessionDataTask *task, NSError *error) {
+            [learningVC.tableView.mj_header endRefreshing];
+        }];
+    }else if (learningVC == self.todayInfosVC){
+        NSString *todayUrlStr = [NSString stringWithFormat:@"%@/doctorlyinformation/getTodayAll.do?start=0&limit=3",mPrefixUrl];
+        [[HttpClient defaultClient]requestWithPath:todayUrlStr method:0 parameters:nil prepareExecute:^{
+            
+        } success:^(NSURLSessionDataTask *task, id responseObject) {
+            NSArray *arr = responseObject[@"result"];
+            NSMutableArray *mArr = [NSMutableArray array];
+            for (NSDictionary *dic in arr) {
+                YYInfoDetailModel *infoModel = [YYInfoDetailModel mj_objectWithKeyValues:dic];
+                [mArr addObject:infoModel];
+            }
+            self.todayInfos = mArr;
+            self.todayInfosVC.infos = mArr;
+            todayStart = 4;
+            [learningVC.tableView.mj_header endRefreshing];
+        } failure:^(NSURLSessionDataTask *task, NSError *error) {
+            [learningVC.tableView.mj_header endRefreshing];
+        }];
+        
+    }else if (learningVC == self.recentInfosVC){
+        NSString *recentUrlStr = [NSString stringWithFormat:@"%@/doctorlyinformation/findPage.do?start=0&limit=3",mPrefixUrl];
+        [[HttpClient defaultClient]requestWithPath:recentUrlStr method:0 parameters:nil prepareExecute:^{
+            
+        } success:^(NSURLSessionDataTask *task, id responseObject) {
+            NSArray *arr = responseObject[@"result"];
+            NSMutableArray *mArr = [NSMutableArray array];
+            for (NSDictionary *dic in arr) {
+                YYInfoDetailModel *infoModel = [YYInfoDetailModel mj_objectWithKeyValues:dic];
+                [mArr addObject:infoModel];
+            }
+            self.recentInfosVC.infos = mArr;
+            self.recentInfos = mArr;
+            recentStart = 4;
+            [learningVC.tableView.mj_header endRefreshing];
+        } failure:^(NSURLSessionDataTask *task, NSError *error) {
+            [learningVC.tableView.mj_header endRefreshing];
+        }];
+        
+    }
+}
+
+-(void)transForFootRefreshWithViewController:(YYInformationVC *)learningVC{
+    if (learningVC == self.hotInfosVC) {
+        NSString *hotUrlStr = [NSString stringWithFormat:@"%@/doctorlyinformation/find.do?start=%ld&limit=3",mPrefixUrl,hotStart];
+        [[HttpClient defaultClient]requestWithPath:hotUrlStr method:0 parameters:nil prepareExecute:^{
+            
+        } success:^(NSURLSessionDataTask *task, id responseObject) {
+            NSArray *arr = responseObject[@"result"];
+            NSMutableArray *mArr = [NSMutableArray array];
+            for (NSDictionary *dic in arr) {
+                YYInfoDetailModel *infoModel = [YYInfoDetailModel mj_objectWithKeyValues:dic];
+                [mArr addObject:infoModel];
+            }
+            [self.hotInfosVC.infos addObjectsFromArray:mArr];
+//            [self.hotInfos addObjectsFromArray:mArr];
+            hotStart = self.hotInfosVC.infos.count+1;
+            [learningVC.tableView reloadData];
+            [learningVC.tableView.mj_footer endRefreshing];
+        } failure:^(NSURLSessionDataTask *task, NSError *error) {
+            [learningVC.tableView.mj_footer endRefreshing];
+        }];
+    }else if (learningVC == self.todayInfosVC){
+        NSString *todayUrlStr = [NSString stringWithFormat:@"%@/doctorlyinformation/getTodayAll.do?start=%ld&limit=3",mPrefixUrl,todayStart];
+        [[HttpClient defaultClient]requestWithPath:todayUrlStr method:0 parameters:nil prepareExecute:^{
+            
+        } success:^(NSURLSessionDataTask *task, id responseObject) {
+            NSArray *arr = responseObject[@"result"];
+            NSMutableArray *mArr = [NSMutableArray array];
+            for (NSDictionary *dic in arr) {
+                YYInfoDetailModel *infoModel = [YYInfoDetailModel mj_objectWithKeyValues:dic];
+                [mArr addObject:infoModel];
+            }
+            [self.todayInfosVC.infos addObjectsFromArray:mArr];
+//            [self.todayInfos addObjectsFromArray:mArr];
+            todayStart = self.todayInfosVC.infos.count+1;
+            [learningVC.tableView reloadData];
+            [learningVC.tableView.mj_footer endRefreshing];
+        } failure:^(NSURLSessionDataTask *task, NSError *error) {
+            [learningVC.tableView.mj_footer endRefreshing];
+        }];
+        
+    }else if (learningVC == self.recentInfosVC){
+        NSString *recentUrlStr = [NSString stringWithFormat:@"%@/doctorlyinformation/findPage.do?start=%ld&limit=3",mPrefixUrl,recentStart];
+        [[HttpClient defaultClient]requestWithPath:recentUrlStr method:0 parameters:nil prepareExecute:^{
+            
+        } success:^(NSURLSessionDataTask *task, id responseObject) {
+            NSArray *arr = responseObject[@"result"];
+            NSMutableArray *mArr = [NSMutableArray array];
+            for (NSDictionary *dic in arr) {
+                YYInfoDetailModel *infoModel = [YYInfoDetailModel mj_objectWithKeyValues:dic];
+                [mArr addObject:infoModel];
+            }
+            [self.recentInfosVC.infos addObjectsFromArray:mArr];
+//            [self.recentInfos addObjectsFromArray:mArr];
+            recentStart = self.recentInfosVC.infos.count+1;
+            [learningVC.tableView reloadData];
+            [learningVC.tableView.mj_footer endRefreshing];
+        } failure:^(NSURLSessionDataTask *task, NSError *error) {
+            [learningVC.tableView.mj_footer endRefreshing];
+        }];
+        
+    }
+    
 }
 
 - (void)didReceiveMemoryWarning {

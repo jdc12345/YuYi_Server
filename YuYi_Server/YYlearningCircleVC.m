@@ -10,10 +10,10 @@
 #import <Masonry.h>
 #import "YYCardTableViewCell.h"
 #import "YYCardDetailVC.h"
-
+#import <MJRefresh.h>
 
 @interface YYlearningCircleVC ()<UITableViewDelegate,UITableViewDataSource>
-@property(nonatomic,weak)UITableView *tableView;
+
 
 @end
 
@@ -29,14 +29,42 @@ static NSString *cellId = @"cell_id";
     [self setupUI];
 }
 
--(void)setInfos:(NSArray *)infos{
+-(void)setInfos:(NSMutableArray *)infos{
     _infos = infos;
     [self.tableView reloadData];
 }
+//通知方法
+-(void)refreshLikeStateWithInfoModel:(NSNotification*)sender{
+    NSArray * arr = [self.tableView visibleCells];
+    for (YYCardTableViewCell *cell in arr) {
+        if ([cell.model.info_id isEqualToString:sender.userInfo[@"infoId"]]) {
+            cell.likeState = [sender.userInfo[@"likeState"] boolValue];
+        }
+    }
+}
+
 - (void)setupUI {
+    //添加通知
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshLikeStateWithInfoModel:) name:@"refreshLikeStateWithInfoModel:" object:nil];
     UITableView *tableView = [[UITableView alloc]init];
     [self.view addSubview:tableView];
     self.tableView = tableView;
+    __weak typeof(self) weakSelf = self;
+    self.tableView.mj_header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
+        // 进入刷新状态后会自动调用这个block
+        if (self.delegate && [self.delegate respondsToSelector:@selector(transViewController:)]) {
+            //代理存在且有这个transButIndex:方法
+            [weakSelf.delegate transViewController:self];
+        }
+    }];
+    //设置上拉加载更多
+    self.tableView.mj_footer = [MJRefreshAutoNormalFooter footerWithRefreshingBlock:^{
+        //Call this Block When enter the refresh status automatically
+        if (self.delegate && [self.delegate respondsToSelector:@selector(transForFootRefreshWithViewController:)]) {
+            //代理存在且有这个transButIndex:方法
+            [weakSelf.delegate transForFootRefreshWithViewController:self];
+        }
+    }];
     [tableView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.right.top.bottom.offset(0);
     }];
@@ -59,15 +87,13 @@ static NSString *cellId = @"cell_id";
     return cell;
 }
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    [tableView deselectRowAtIndexPath:indexPath animated:true];
      YYCardTableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
     YYCardDetailVC *cardVC = [[YYCardDetailVC alloc]initWithInfo:cell.model.info_id];
-   
 //    cardVC.info_id = cell.model.info_id;
     [self.navigationController pushViewController:cardVC animated:true];
 }
--(void)tableView:(UITableView *)tableView didDeselectRowAtIndexPath:(NSIndexPath *)indexPath{
-    [tableView deselectRowAtIndexPath:indexPath animated:true];
-}
+
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     return 150*kiphone6;
 }

@@ -47,6 +47,7 @@
 		161B04121EA0A20700095F77 /* UShareUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 161B04061EA0A20700095F77 /* UShareUI.framework */; };
 		161D63FA1E961AA800AF4998 /* YYInfoDetailModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 161D63F91E961AA800AF4998 /* YYInfoDetailModel.m */; };
 		161D63FD1E96358600AF4998 /* YYLogInVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 161D63FC1E96358600AF4998 /* YYLogInVC.m */; };
+		161D8ADB1EA46821006B6844 /* YYBackView.m in Sources */ = {isa = PBXBuildFile; fileRef = 161D8ADA1EA46821006B6844 /* YYBackView.m */; };
 		163A979A1E94A0BC007B69AD /* ZYAbstractDotView.m in Sources */ = {isa = PBXBuildFile; fileRef = 163A97991E94A0BC007B69AD /* ZYAbstractDotView.m */; };
 		163A979F1E94A0DE007B69AD /* ZYAnimatedDotView.m in Sources */ = {isa = PBXBuildFile; fileRef = 163A979C1E94A0DE007B69AD /* ZYAnimatedDotView.m */; };
 		163A97A01E94A0DE007B69AD /* ZYDotView.m in Sources */ = {isa = PBXBuildFile; fileRef = 163A979E1E94A0DE007B69AD /* ZYDotView.m */; };
@@ -61,6 +62,7 @@
 		163D61A01E8F7AB6003A27CF /* YYpostCardVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 163D619D1E8F7AB6003A27CF /* YYpostCardVC.m */; };
 		163D61A31E8F7B0D003A27CF /* UILabel+Addition.m in Sources */ = {isa = PBXBuildFile; fileRef = 163D61A21E8F7B0D003A27CF /* UILabel+Addition.m */; };
 		163D61A61E8F7CD5003A27CF /* NSObject+Formula.m in Sources */ = {isa = PBXBuildFile; fileRef = 163D61A51E8F7CD5003A27CF /* NSObject+Formula.m */; };
+		164A9F121EA5F8AE00870A90 /* MyActivityIndicatorView.m in Sources */ = {isa = PBXBuildFile; fileRef = 164A9F111EA5F8AE00870A90 /* MyActivityIndicatorView.m */; };
 		1688D7C91E9B6CEB001BBA61 /* YYCardDetailModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 1688D7C81E9B6CEB001BBA61 /* YYCardDetailModel.m */; };
 		1688D7CC1E9B97B4001BBA61 /* YYCardDetailPageModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 1688D7CB1E9B97B4001BBA61 /* YYCardDetailPageModel.m */; };
 		1688D7CF1E9BB756001BBA61 /* YYCardCommentDetailModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 1688D7CE1E9BB756001BBA61 /* YYCardCommentDetailModel.m */; };
@@ -242,6 +244,8 @@
 		161D63F91E961AA800AF4998 /* YYInfoDetailModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YYInfoDetailModel.m; sourceTree = "<group>"; };
 		161D63FB1E96358600AF4998 /* YYLogInVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YYLogInVC.h; sourceTree = "<group>"; };
 		161D63FC1E96358600AF4998 /* YYLogInVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YYLogInVC.m; sourceTree = "<group>"; };
+		161D8AD91EA46821006B6844 /* YYBackView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YYBackView.h; sourceTree = "<group>"; };
+		161D8ADA1EA46821006B6844 /* YYBackView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YYBackView.m; sourceTree = "<group>"; };
 		163A97981E94A0BC007B69AD /* ZYAbstractDotView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZYAbstractDotView.h; sourceTree = "<group>"; };
 		163A97991E94A0BC007B69AD /* ZYAbstractDotView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZYAbstractDotView.m; sourceTree = "<group>"; };
 		163A979B1E94A0DE007B69AD /* ZYAnimatedDotView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZYAnimatedDotView.h; sourceTree = "<group>"; };
@@ -270,6 +274,8 @@
 		163D61A21E8F7B0D003A27CF /* UILabel+Addition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UILabel+Addition.m"; sourceTree = "<group>"; };
 		163D61A41E8F7CD5003A27CF /* NSObject+Formula.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+Formula.h"; sourceTree = "<group>"; };
 		163D61A51E8F7CD5003A27CF /* NSObject+Formula.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+Formula.m"; sourceTree = "<group>"; };
+		164A9F101EA5F8AE00870A90 /* MyActivityIndicatorView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyActivityIndicatorView.h; sourceTree = "<group>"; };
+		164A9F111EA5F8AE00870A90 /* MyActivityIndicatorView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyActivityIndicatorView.m; sourceTree = "<group>"; };
 		1688D7C71E9B6CEB001BBA61 /* YYCardDetailModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YYCardDetailModel.h; sourceTree = "<group>"; };
 		1688D7C81E9B6CEB001BBA61 /* YYCardDetailModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YYCardDetailModel.m; sourceTree = "<group>"; };
 		1688D7CA1E9B97B4001BBA61 /* YYCardDetailPageModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YYCardDetailPageModel.h; sourceTree = "<group>"; };
@@ -661,6 +667,8 @@
 				163D61941E8F7A2E003A27CF /* YYCommentTVCell.m */,
 				161B03B81E9E129E00095F77 /* YYCardPostPictureCell.h */,
 				161B03B91E9E129E00095F77 /* YYCardPostPictureCell.m */,
+				161D8AD91EA46821006B6844 /* YYBackView.h */,
+				161D8ADA1EA46821006B6844 /* YYBackView.m */,
 			);
 			name = V;
 			sourceTree = "<group>";
@@ -698,6 +706,8 @@
 				163A979C1E94A0DE007B69AD /* ZYAnimatedDotView.m */,
 				163A979D1E94A0DE007B69AD /* ZYDotView.h */,
 				163A979E1E94A0DE007B69AD /* ZYDotView.m */,
+				164A9F101EA5F8AE00870A90 /* MyActivityIndicatorView.h */,
+				164A9F111EA5F8AE00870A90 /* MyActivityIndicatorView.m */,
 			);
 			name = tools;
 			sourceTree = "<group>";
@@ -1408,6 +1418,7 @@
 				3E2272BF1E9CA533005BF064 /* YYNotficationViewController.m in Sources */,
 				3E85EF8D1E8F38F400E7D8F1 /* YYSettingViewController.m in Sources */,
 				3EA3F4561E95E49C005670A5 /* RecardDerailViewController.m in Sources */,
+				164A9F121EA5F8AE00870A90 /* MyActivityIndicatorView.m in Sources */,
 				3EBD82321E8E389C00BDC217 /* YYTabBar.m in Sources */,
 				161B03A71E9E123E00095F77 /* HUAlbumCell.m in Sources */,
 				163D61971E8F7A2E003A27CF /* YYCommentTVCell.m in Sources */,
@@ -1415,6 +1426,7 @@
 				161B03AD1E9E123E00095F77 /* HUImagePickerRootViewController.m in Sources */,
 				163D619E1E8F7AB6003A27CF /* YYlearningCircleVC.m in Sources */,
 				3EBD82651E8E686E00BDC217 /* CcUserModel.m in Sources */,
+				161D8ADB1EA46821006B6844 /* YYBackView.m in Sources */,
 				3EBD82491E8E583200BDC217 /* HttpClient.m in Sources */,
 				163D618E1E8F79E4003A27CF /* BRPlaceholderTextView.m in Sources */,
 				3EBD82681E8E689600BDC217 /* YYHomeUserModel.m in Sources */,
