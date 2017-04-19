@@ -17,7 +17,7 @@
 #import "YYAboutUSViewController.h"
 #import "YYContactViewController.h"
 #import "CcUserModel.h"
-//#import "YYLogInVC.h"
+#import "YYLogInVC.h"
 
 @interface YYSettingViewController ()<UITableViewDataSource, UITableViewDelegate>
 
@@ -74,7 +74,7 @@
     sureBtn.layer.borderWidth = 0.5 *kiphone6;
     sureBtn.layer.borderColor = [UIColor colorWithHexString:@"e00610"].CGColor;
     sureBtn.clipsToBounds = YES;
-    [sureBtn setTitle:@"删除" forState:UIControlStateNormal];
+    [sureBtn setTitle:@"退出登陆" forState:UIControlStateNormal];
     sureBtn.backgroundColor = [UIColor clearColor];
     [sureBtn setTitleColor:[UIColor colorWithHexString:@"e00610"] forState:UIControlStateNormal];
     [sureBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateHighlighted];
@@ -98,15 +98,15 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     if (indexPath.section == 0) {
         if (indexPath.row == 0) {
-            YYContactViewController *contactVC = [[YYContactViewController alloc]init];
-            [self.navigationController pushViewController:contactVC animated:YES];
-            
-        }else if(indexPath.row == 1){
+//            YYContactViewController *contactVC = [[YYContactViewController alloc]init];
+//            [self.navigationController pushViewController:contactVC animated:YES];
             YYFeedbackViewController *feedVC = [[YYFeedbackViewController alloc]init];
             [self.navigationController pushViewController:feedVC animated:YES];
-        }else if(indexPath.row == 2){
+        }else if(indexPath.row == 1){
             YYAboutUSViewController *aboutVC = [[YYAboutUSViewController alloc]init];
             [self.navigationController pushViewController:aboutVC animated:YES];
+        }else if(indexPath.row == 2){
+
         }
     }else{
         UIAlertController *alert = [UIAlertController alertControllerWithTitle:nil message:@"你确定退出吗" preferredStyle:UIAlertControllerStyleAlert];
@@ -115,8 +115,8 @@
             CcUserModel *userModel = [CcUserModel defaultClient];
             [userModel removeUserInfo];//清除本地存储
             [CcUserModel defaultClient];//清除缓存
-//            YYLogInVC *logVC = [[YYLogInVC alloc]init];
-//            [self.navigationController presentViewController:logVC animated:true completion:nil];
+            YYLogInVC *logVC = [[YYLogInVC alloc]init];
+            [self.navigationController presentViewController:logVC animated:true completion:nil];
         }];
         
         [alert addAction:cancelAction];
@@ -165,6 +165,20 @@
     return homeTableViewCell;
     
 }
+-  (void)buttonClick1:(UIButton *)sender{
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:nil message:@"你确定退出吗" preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:nil];
+    UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDestructive handler:^(UIAlertAction * _Nonnull action) {
+        CcUserModel *userModel = [CcUserModel defaultClient];
+        [userModel removeUserInfo];//清除本地存储
+        [CcUserModel defaultClient];//清除缓存
+        YYLogInVC *logVC = [[YYLogInVC alloc]init];
+        [self.navigationController presentViewController:logVC animated:true completion:nil];
+    }];
+    
+    [alert addAction:cancelAction];
+    [alert addAction:okAction];
+    [self presentViewController:alert animated:YES completion:nil];}
 
 
 @end

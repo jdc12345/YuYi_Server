@@ -112,6 +112,10 @@
         
 //        self.tableView.tableHeaderView = [self personInfomation];
     }
+    if (![self.titleStr isEqualToString:@"search"]) {
+          [self httpRequestForUserList];
+        NSLog(@"执行网路请求123213  %@",self.titleStr);
+    }
     
     //    UIView *headView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, kScreenW, 70 *kiphone6)];
     //    headView.backgroundColor = [UIColor whiteColor];
@@ -123,7 +127,7 @@
     //        make.size.mas_equalTo(CGSizeMake((kScreenW -40*kiphone6), 30 *kiphone6));
     //    }];
 //    self.tableView.tableHeaderView = nil;//[self personInfomation];
-    [self httpRequestForUserList];
+  
     
     // [self tableView];
     
@@ -365,10 +369,29 @@
     
     
     CcUserModel *userModel = [CcUserModel defaultClient];
+    if ([self.titleStr isEqualToString:@"search"]) {
+        [[HttpClient defaultClient]requestWithPath:[NSString stringWithFormat:@"%@token=%@&trueName=1",urlStr,userModel.userToken] method:0 parameters:nil prepareExecute:^{
+            
+        } success:^(NSURLSessionDataTask *task, id responseObject) {
+            NSLog(@"%@",responseObject);
+            NSArray *patientList = responseObject[@"rows"];
+            for (NSDictionary *dict in patientList) {
+                PatientModel *patientModel = [PatientModel mj_objectWithKeyValues:dict];
+                [self.dataSource addObject:patientModel];
+            }
+            [self tableView];
+            
+            
+            
+            
+        } failure:^(NSURLSessionDataTask *task, NSError *error) {
+            NSLog(@"%@",error);
+        }];
+    }else{
     [[HttpClient defaultClient]requestWithPath:[NSString stringWithFormat:@"%@token=%@",urlStr,userModel.userToken] method:0 parameters:nil prepareExecute:^{
         
     } success:^(NSURLSessionDataTask *task, id responseObject) {
-        NSLog(@"%@",responseObject);
+        NSLog(@"123123%@",responseObject);
         NSArray *patientList = responseObject[@"rows"];
         for (NSDictionary *dict in patientList) {
             PatientModel *patientModel = [PatientModel mj_objectWithKeyValues:dict];
@@ -382,6 +405,7 @@
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
         NSLog(@"%@",error);
     }];
+    }
 }
 - (void)viewWillDisappear:(BOOL)animated{
     [super viewWillDisappear:YES];

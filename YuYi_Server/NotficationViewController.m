@@ -129,7 +129,9 @@
         homeTableViewCell.titleLabel.text = infoModel.title;
     }
          homeTableViewCell.introduceLabel.text = infoModel.content;
+        homeTableViewCell.timeLabel.text = [infoModel.createTimeString substringWithRange:NSMakeRange(5, 5)];
     }
+    
 //    homeTableViewCell.iconV.image = [UIImage imageNamed:self.iconArray[indexPath.row]];
 //    homeTableViewCell.titleLabel.text = self.titleArray[indexPath.row];
    

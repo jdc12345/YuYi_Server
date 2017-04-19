@@ -14,4 +14,9 @@
 
 @property (nonatomic, strong) NSString *titleStr;
 
+@property (nonatomic, strong) NSString *searchTrueName;
+
+
+- (void)httpRequestForUserList;
+
 @end

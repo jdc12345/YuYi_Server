@@ -46,7 +46,7 @@ static NSString *dentifier=@"cellforappliancelist";
     [btn addTarget:self action:@selector(back:) forControlEvents:UIControlEventTouchUpInside];
     [headerView addSubview:btn];
     [btn mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.right.bottom.offset(0);
+        make.right.top.bottom.offset(0);
         make.width.offset(50);
     }];
     //输入框
@@ -54,9 +54,11 @@ static NSString *dentifier=@"cellforappliancelist";
     [headerView addSubview:searchField];
     [searchField mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.offset(10);
-        make.top.bottom.offset(0);
-        make.right.equalTo(btn.mas_left);
+        make.top.offset(10);
+//        make.right.equalTo(btn.mas_left);
+        make.size.mas_equalTo(CGSizeMake(kScreenW - 60, 30));
     }];
+
     searchField.delegate = self;
     self.searchField = searchField;
     if (self.searchCayegory==1) {
@@ -106,14 +108,15 @@ static NSString *dentifier=@"cellforappliancelist";
     
     if (searchString.length >0) {
         YYPatientsViewController *dataAnalyseVC = [[YYPatientsViewController alloc]init];
-        dataAnalyseVC.view.frame = CGRectMake(0, 64, kScreenW, kScreenH -64);
         dataAnalyseVC.titleStr = @"search";
+        dataAnalyseVC.view.frame = CGRectMake(0, 64, kScreenW, kScreenH -64);
+        dataAnalyseVC.searchTrueName = searchString;
+        [dataAnalyseVC httpRequestForUserList];
         [self.view addSubview:dataAnalyseVC.view];
         
         [self addChildViewController:dataAnalyseVC];
-        
-        
         [self.searchField resignFirstResponder];
+        
     }
    
     

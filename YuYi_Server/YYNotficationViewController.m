@@ -124,6 +124,8 @@
             homeTableViewCell.titleLabel.text = infoModel.title;
         }
         homeTableViewCell.seeRecardLabel.text = infoModel.content;
+//        homeTableViewCell.timeLabel.backgroundColor = [UIColor cyanColor];
+        homeTableViewCell.timeLabel.text = [infoModel.createTimeString substringWithRange:NSMakeRange(5, 5)];
     }
     
     //    homeTableViewCell.iconV.image = [UIImage imageNamed:self.iconArray[indexPath.row]];
