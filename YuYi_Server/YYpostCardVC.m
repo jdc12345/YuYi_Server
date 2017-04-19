@@ -362,40 +362,23 @@ static NSString *cell_id = @"cell_id";
         size.height=110*kiphone6;
         //        textView.scrollEnabled = true;   // 允许滚动
     }
-    //    else{
-    //    }
-    //    self.backView.frame = CGRectMake(self.backView.frame.origin.x, self.backView.frame.origin.y, self.backView.frame.size.width, kScreenH-frame.size.height+size.height+self.imageArr.count*kScreenW);
-    [self.scrollView layoutIfNeeded];
-    [self.backView layoutIfNeeded];
     textView.scrollEnabled = false;   // 不允许滚动
     [textView mas_updateConstraints:^(MASConstraintMaker *make) {
         make.height.offset(size.height);
     }];
-    //    self.lineTwo.frame = CGRectMake(frame.origin.x, frame.origin.y+size.height, frame.size.width, 1);
     [self.tableView mas_updateConstraints:^(MASConstraintMaker *make) {
         make.left.offset(20*kiphone6);
         make.width.offset(frame.size.width);
         make.height.offset(self.imageArr.count*kScreenW);
     }];
     
-    self.scrollView.contentSize = CGSizeMake(self.view.frame.size.width, kScreenH-frame.size.height+size.height+self.imageArr.count*kScreenW);
+    self.scrollView.contentSize = CGSizeMake(self.view.frame.size.width, kScreenH-110*kiphone6+size.height+self.imageArr.count*kScreenW);
     self.scrollView.scrollEnabled = true;
-}
--(void)loadView{
-    [super loadView];
+    //解决发帖时候内容过长时候键盘遮挡内容问题
+    CGRect rect =CGRectMake(0, kScreenH+size.height-111*kiphone6, kScreenW, 1*kiphone6);
+    [self.scrollView scrollRectToVisible:rect animated:true];
 }
 
-//- (UIView *)hitTest:(CGPoint)point withEvent:(UIEvent *)event {
-//    UIView *view = [super hitTest:point withEvent:event];
-//    if (view == nil) {
-//        CGPoint tempoint = [btn convertPoint:point fromView:self];
-//        if (CGRectContainsPoint(btn.bounds, tempoint))
-//        {
-//            view = btn;
-//        }
-//    }
-//    return view;
-//}
 -(NSMutableArray *)imageArr{
     if (_imageArr == nil) {
         _imageArr = [[NSMutableArray alloc]init];

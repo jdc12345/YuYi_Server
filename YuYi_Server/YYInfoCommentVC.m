@@ -397,16 +397,50 @@ static NSString *cell_Id = @"cell_id";
     //显示分享面板
     [UMSocialUIManager showShareMenuViewInWindowWithPlatformSelectionBlock:^(UMSocialPlatformType platformType, NSDictionary *userInfo) {
         // 根据获取的platformType确定所选平台进行下一步操作
-        //        if (platformType == UMSocialPlatformType_Sina) {
-        //            [self shareImageAndTextToPlatformType:platformType];
-        //        }else{
-        //            [self shareTextToPlatformType:platformType];
-        //        }
-        [self shareTextToPlatformType:platformType];
+        if (platformType == UMSocialPlatformType_Sina) {
+            [self shareTextToPlatformType:platformType];
+        }else{
+            [self shareWebPageToPlatformType:platformType];
+        }
+//        [self shareTextToPlatformType:platformType];
         
     }];
 
 }
+- (void)shareWebPageToPlatformType:(UMSocialPlatformType)platformType
+{
+    //创建分享消息对象
+    UMSocialMessageObject *messageObject = [UMSocialMessageObject messageObject];
+    
+    //创建网页内容对象
+    NSString* thumbURL =  [NSString stringWithFormat:@"%@%@",mPrefixUrl,self.infoDetailModel.picture];
+    UMShareWebpageObject *shareObject = [UMShareWebpageObject shareObjectWithTitle:self.infoDetailModel.title descr:self.infoDetailModel.content thumImage:thumbURL];
+    //设置网页地址
+    shareObject.webpageUrl = @"http://59.110.169.148:8080";
+    
+    //分享消息对象设置分享内容对象
+    messageObject.shareObject = shareObject;
+    
+    //调用分享接口
+    [[UMSocialManager defaultManager] shareToPlatform:platformType messageObject:messageObject currentViewController:self completion:^(id data, NSError *error) {
+        if (error) {
+            UMSocialLogInfo(@"************Share fail with error %@*********",error);
+        }else{
+            if ([data isKindOfClass:[UMSocialShareResponse class]]) {
+                UMSocialShareResponse *resp = data;
+                //分享结果消息
+                UMSocialLogInfo(@"response message is %@",resp.message);
+                //第三方原始返回的数据
+                UMSocialLogInfo(@"response originalResponse data is %@",resp.originalResponse);
+                
+            }else{
+                UMSocialLogInfo(@"response data is %@",data);
+            }
+        }
+        //        [self alertWithError:error];
+    }];
+}
+
 //分享文本
 - (void)shareTextToPlatformType:(UMSocialPlatformType)platformType
 {

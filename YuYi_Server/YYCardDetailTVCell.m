@@ -136,7 +136,7 @@ static NSString *cell_id = @"cell_id";
     [praiseBtn mas_makeConstraints:^(MASConstraintMaker *make) {
         make.right.equalTo(countLabel.mas_left).offset(-5*kiphone6);
         make.centerY.equalTo(iconView);
-        make.width.height.offset(20*kiphone6);
+        make.width.height.offset(30*kiphone6);
     }];
     [titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(iconView.mas_bottom).offset(20*kiphone6);
@@ -215,12 +215,21 @@ static NSString *cell_id = @"cell_id";
             self.infoModel.isLike = true;
             self.infoModel.likeNum = [NSString stringWithFormat:@"%ld",count];
         }
+    //发通知
+    NSNumber *boolNumber = [NSNumber numberWithBool:self.infoModel.isLike];
+    [[NSNotificationCenter defaultCenter]postNotificationName:@"refreshLikeStateWithInfoModel:" object:nil userInfo:@{@"likeState":boolNumber,@"infoId":self.infoModel.info_id}];
     
 //    NSInteger count = [self.countLabel.text integerValue];
 //    count += 1;
 //    self.countLabel.text = [NSString stringWithFormat:@"%ld",count];
 }
+//将通知中心移除
 
+- (void)dealloc{
+    
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"refreshLikeStateWithInfoModel:" object:nil];
+    
+}
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
     [super setSelected:selected animated:animated];
 

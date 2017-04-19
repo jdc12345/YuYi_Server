@@ -63,7 +63,7 @@ static NSInteger selectStart = 0;
     CcUserModel *userModel = [CcUserModel defaultClient];
     NSString *token = userModel.userToken;
     NSString *hotUrlStr = [NSString stringWithFormat:@"%@/academicpaper/findhot.do?start=0&limit=6&token=%@",mPrefixUrl,token];
-    NSString *selectUrlStr = [NSString stringWithFormat:@"%@/academicpaper/Selected.do?start=0&limit=1&token=%@",mPrefixUrl,token];
+    NSString *selectUrlStr = [NSString stringWithFormat:@"%@/academicpaper/Selected.do?start=0&limit=6&token=%@",mPrefixUrl,token];
     NSString *recentUrlStr = [NSString stringWithFormat:@"%@/academicpaper/findtime.do?start=0&limit=6&token=%@",mPrefixUrl,token];
     [self loadHotInfosWithUrlStr:hotUrlStr];
     [self loadSelectInfosWithUrlStr:selectUrlStr];
@@ -105,7 +105,7 @@ static NSInteger selectStart = 0;
         }
         self.selectCardVC.infos = mArr;
         self.selectInfos = mArr;
-        selectStart = 1;
+        selectStart = 7;
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
     }];
 }
@@ -378,7 +378,6 @@ static NSInteger selectStart = 0;
     [self.backView removeFromSuperview];
 }
 -(void)postMassageBtnClick:(UIButton*)sender{
-    NSLog(@"跳转发帖页面");
     YYpostCardVC *postCardVC = [[YYpostCardVC alloc]init];
     [self.navigationController pushViewController:postCardVC animated:true];
 }
@@ -438,7 +437,7 @@ static NSInteger selectStart = 0;
             [learningVC.tableView.mj_header endRefreshing];
         }];
     }else if (learningVC == self.selectCardVC){
-        NSString *selectUrlStr = [NSString stringWithFormat:@"%@/academicpaper/Selected.do?start=0&limit=1&token=%@",mPrefixUrl,token];
+        NSString *selectUrlStr = [NSString stringWithFormat:@"%@/academicpaper/Selected.do?start=0&limit=6&token=%@",mPrefixUrl,token];
         [[HttpClient defaultClient]requestWithPath:selectUrlStr method:0 parameters:nil prepareExecute:^{
             
         } success:^(NSURLSessionDataTask *task, id responseObject) {
@@ -450,7 +449,7 @@ static NSInteger selectStart = 0;
             }
             self.selectCardVC.infos = mArr;
             self.selectInfos = mArr;
-            selectStart = 1;
+            selectStart = 7;
             [learningVC.tableView.mj_header endRefreshing];
         } failure:^(NSURLSessionDataTask *task, NSError *error) {
             [learningVC.tableView.mj_header endRefreshing];
@@ -500,7 +499,7 @@ static NSInteger selectStart = 0;
             [learningVC.tableView.mj_footer endRefreshing];
         }];
     }else if (learningVC == self.selectCardVC){
-        NSString *selectUrlStr = [NSString stringWithFormat:@"%@/academicpaper/Selected.do?start=%ld&limit=1&token=%@",mPrefixUrl,selectStart,token];
+        NSString *selectUrlStr = [NSString stringWithFormat:@"%@/academicpaper/Selected.do?start=%ld&limit=6&token=%@",mPrefixUrl,selectStart,token];
         [[HttpClient defaultClient]requestWithPath:selectUrlStr method:0 parameters:nil prepareExecute:^{
             
         } success:^(NSURLSessionDataTask *task, id responseObject) {

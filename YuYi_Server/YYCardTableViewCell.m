@@ -13,6 +13,7 @@
 #import <UIImageView+WebCache.h>
 #import "CcUserModel.h"
 #import "HttpClient.h"
+#import "YYCardDetailTVCell.h"
 @interface YYCardTableViewCell ()
 @property(nonatomic,weak)UILabel *praiseCountLabel;
 @property(nonatomic,weak)UIImageView *imagesView;
@@ -67,6 +68,7 @@
     }
 }
 - (void)setupUI{
+    
 //    self.contentView.backgroundColor = [UIColor orangeColor];
     UIView *line = [[UIView alloc]init];//分割线
     line.alpha = 0.6f;
@@ -184,6 +186,24 @@
         self.praiseCountLabel.text = [NSString stringWithFormat:@"%ld",count];
         [sender setImage:[UIImage imageNamed:@"Info-heart-icon-select-"] forState:UIControlStateNormal];
         self.model.isLike = true;
+        self.model.likeNum = [NSString stringWithFormat:@"%ld",count];
+    }
+}
+//在详情页面返回时候更新点赞状态
+-(void)setLikeState:(BOOL)likeState{
+    _likeState = likeState;
+    NSInteger count = [self.praiseCountLabel.text integerValue];
+    if (likeState) {
+        count += 1;
+        self.praiseCountLabel.text = [NSString stringWithFormat:@"%ld",count];
+        [self.praiseBtn setImage:[UIImage imageNamed:@"Info-heart-icon-select-"] forState:UIControlStateNormal];
+        self.model.isLike = true;
+        self.model.likeNum = [NSString stringWithFormat:@"%ld",count];
+    }else{
+        count -= 1;
+        self.praiseCountLabel.text = [NSString stringWithFormat:@"%ld",count];
+        [self.praiseBtn setImage:[UIImage imageNamed:@"like"] forState:UIControlStateNormal];
+        self.model.isLike = false;
         self.model.likeNum = [NSString stringWithFormat:@"%ld",count];
     }
 }
