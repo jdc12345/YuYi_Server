@@ -27,6 +27,7 @@
 #import <UIImageView+WebCache.h>
 #import "UIButton+Badge.h"
 #import "YHPullDownMenu.h"
+#import <SVProgressHUD.h>
 
 @interface YYPatientsViewController ()<UITableViewDataSource, UITableViewDelegate>
 
@@ -86,8 +87,7 @@
     
     
     
-    
-    
+
     
 
     // ,@[@"购物车",@"订单详情"] ,@[@"Personal-shopping -icon-",@"order_icon_"]
@@ -356,10 +356,12 @@
     YYSearchTableViewController *searchVC = [[YYSearchTableViewController alloc]init];
     searchVC.searchCayegory = 1;
     [self.navigationController pushViewController:searchVC animated:true];
+    
 }
 
 - (void)httpRequestForUserList{
     NSString *urlStr;
+    [SVProgressHUD showWithStatus:@"Loading..."];
     NSLog(@"%@",self.titleStr);
 //    if ([self.titleStr isEqualToString:@"all"]) {
         urlStr = mPatientListTotal;
@@ -380,12 +382,11 @@
                 [self.dataSource addObject:patientModel];
             }
             [self tableView];
-            
-            
-            
+            [SVProgressHUD dismiss];
             
         } failure:^(NSURLSessionDataTask *task, NSError *error) {
             NSLog(@"%@",error);
+            
         }];
     }else{
     [[HttpClient defaultClient]requestWithPath:[NSString stringWithFormat:@"%@token=%@",urlStr,userModel.userToken] method:0 parameters:nil prepareExecute:^{
@@ -398,7 +399,7 @@
             [self.dataSource addObject:patientModel];
         }
         [self tableView];
-
+        [SVProgressHUD dismiss];
 
         
 
@@ -410,6 +411,7 @@
 - (void)viewWillDisappear:(BOOL)animated{
     [super viewWillDisappear:YES];
     [self.pd removeFromSuperview];
+    [SVProgressHUD dismiss];
 }
 //- (void)viewWillAppear:(BOOL)animated{
 //    [super viewWillAppear:YES];

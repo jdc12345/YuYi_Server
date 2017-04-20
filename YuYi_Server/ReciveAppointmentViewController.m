@@ -343,6 +343,7 @@
     }];
 }
 - (void)httpRequestForDepartment{
+    [SVProgressHUD showWithStatus:@"Loading..."];
     [[HttpClient defaultClient]requestWithPath:[NSString stringWithFormat:@"%@token=%@",mDepartment,[CcUserModel defaultClient].userToken] method:0 parameters:nil prepareExecute:^{
         
     } success:^(NSURLSessionDataTask *task, id responseObject) {
@@ -363,6 +364,7 @@
         if (self.dapartDataSource.count != 0) {
             
         }
+        [SVProgressHUD dismiss];
         
         //        [self.tableView reloadData];
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
@@ -419,6 +421,10 @@
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
         NSLog(@"%@",error);
     }];
+}
+- (void)viewWillDisappear:(BOOL)animated{
+    [super viewWillDisappear:YES];
+    [SVProgressHUD dismiss];
 }
 
 @end

@@ -148,7 +148,7 @@
     // Dispose of any resources that can be recreated.
 }
 - (void)httpRequest{
-    
+    [SVProgressHUD showWithStatus:@"Loading..."];
     [[HttpClient defaultClient]requestWithPath:[NSString stringWithFormat:@"%@%@&start=0&limit=10",mMessages,[CcUserModel defaultClient].userToken] method:0 parameters:nil prepareExecute:^{
         
     } success:^(NSURLSessionDataTask *task, id responseObject) {
@@ -163,12 +163,16 @@
         self.tableView.tableHeaderView = headView;
         [self.tableView reloadData];
 //        [self tableView];
+        [SVProgressHUD dismiss];
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
         NSLog(@"❌");
         EmptyDataView *emptyView =[[EmptyDataView alloc]initWithFrame:CGRectMake(0, 64, kScreenW, kScreenH -64) AndImageStr:@"没有消息"];
         [self.view addSubview:emptyView];
     }];
 }
-
+- (void)viewWillDisappear:(BOOL)animated{
+    [super viewWillDisappear:YES];
+    [SVProgressHUD dismiss];
+}
 
 @end

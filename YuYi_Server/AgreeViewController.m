@@ -292,6 +292,7 @@
     NSString *token = userModel.userToken;
     [self.cardDetailView setContentOffset:CGPointMake(sender.tag*self.cardDetailView.bounds.size.width, 0) animated:YES];
     if (sender.tag == 0) {
+        [SVProgressHUD showWithStatus:@"Loading..."];
         NSString *hotUrlStr = [NSString stringWithFormat:@"%@/academicpaper/findhot.do?start=0&limit=6&token=%@",mPrefixUrl,token];
         [[HttpClient defaultClient]requestWithPath:hotUrlStr method:0 parameters:nil prepareExecute:^{
             
@@ -301,6 +302,7 @@
             for (NSDictionary *dic in arr) {
                 YYCardDetailModel *infoModel = [YYCardDetailModel mj_objectWithKeyValues:dic];
                 [mArr addObject:infoModel];
+                [SVProgressHUD dismiss];
             }
             self.hotCardVC.infos = mArr;
             
@@ -459,6 +461,7 @@
     [super viewWillDisappear:animated];
 //    self.navigationController.navigationBar.hidden = false;
     [self.postMessageBtn removeFromSuperview];
+    [SVProgressHUD dismiss];
 }
 
 - (void)didReceiveMemoryWarning {
