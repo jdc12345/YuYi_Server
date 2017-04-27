@@ -32,7 +32,7 @@ static NSInteger start = 0;
 @property(weak, nonatomic)BRPlaceholderTextView *commentField;
 
 @property(nonatomic,weak)UIView *fieldBackView;
-
+@property(nonatomic,strong)NSMutableDictionary *cellHeightCache;
 @end
 
 @implementation YYInfoCommentVC
@@ -296,6 +296,29 @@ static NSInteger start = 0;
 -(CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
     return 132*kiphone6;
 }
+-(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
+    
+    YYCardCommentDetailModel *comModel = self.commentInfoModels[indexPath.row];
+    NSString *thisId =comModel.info_id;
+    CGFloat cacheHeight = [[self.cellHeightCache valueForKey:thisId] doubleValue];
+    if (cacheHeight) {
+        return cacheHeight;
+    }
+    YYCommentTVCell *commentCell = [tableView dequeueReusableCellWithIdentifier:cell_Id];
+    commentCell.comModel = comModel;
+    [self.cellHeightCache setValue:@(commentCell.cellHeight) forKey:thisId];
+    NSLog(@"%@",self.cellHeightCache);
+    return commentCell.cellHeight;
+   
+}
+#pragma 懒加载
+-(NSMutableDictionary *)cellHeightCache{
+    if (_cellHeightCache == nil) {
+        _cellHeightCache = [[NSMutableDictionary alloc]init];
+    }
+    return _cellHeightCache;
+}
+
 -(void)layoutSubViews:(UIView *)headerView{
     UILabel *titlelabel = [UILabel labelWithText:self.infoDetailModel.title andTextColor:[UIColor colorWithHexString:@"333333"] andFontSize:15];
     titlelabel.numberOfLines = 3;

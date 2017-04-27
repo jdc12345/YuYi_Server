@@ -134,32 +134,36 @@ static NSInteger start = 0;
             return ;
         }];
     }];
-//    //设置上拉加载更多
-//    self.tableView.mj_footer = [MJRefreshAutoNormalFooter footerWithRefreshingBlock:^{
-//        // 进入加载状态后会自动调用这个block
-//        NSString *urlStr = [NSString stringWithFormat:@"%@/academicpaper/academicpaperComment.do?start=%ld&limit=2&id=%@&token=%@",mPrefixUrl,start,self.info_id,token];
-//        [[HttpClient defaultClient]requestWithPath:urlStr method:0 parameters:nil prepareExecute:^{
-//        } success:^(NSURLSessionDataTask *task, id responseObject) {
-//            NSDictionary *dic = responseObject[@"result"];
-//            YYCardDetailPageModel *infoModel = [YYCardDetailPageModel mj_objectWithKeyValues:dic];
-//            weakSelf.infoModel  = infoModel;//帖子数据
-//            NSMutableArray *arr = [NSMutableArray array];
-//            for (NSDictionary *dict in infoModel.commentList) {
-//                YYCardCommentDetailModel *comModel = [YYCardCommentDetailModel mj_objectWithKeyValues:dict];
-//                [arr addObject:comModel];
-//            }
-//            [weakSelf.commentInfos addObjectsFromArray:arr];//评论数据源
-//            [weakSelf.tableView reloadData];
-//            [weakSelf.tableView.mj_footer endRefreshing];
-//            if (self.commentInfos.count>0) {
-//                start = self.commentInfos.count;
-//            }
-//        } failure:^(NSURLSessionDataTask *task, NSError *error) {
-//            [weakSelf.tableView.mj_footer endRefreshing];
-//            [SVProgressHUD showErrorWithStatus:@"刷新失败"];
-//            return ;
-//        }];
-//    }];
+    //设置上拉加载更多
+    self.tableView.mj_footer = [MJRefreshAutoNormalFooter footerWithRefreshingBlock:^{
+        // 进入加载状态后会自动调用这个block
+        NSString *urlStr = [NSString stringWithFormat:@"%@/academicpaper/academicpaperComment.do?start=%ld&limit=2&id=%@&token=%@",mPrefixUrl,start,self.info_id,token];
+        [[HttpClient defaultClient]requestWithPath:urlStr method:0 parameters:nil prepareExecute:^{
+        } success:^(NSURLSessionDataTask *task, id responseObject) {
+            NSDictionary *dic = responseObject[@"result"];
+            YYCardDetailPageModel *infoModel = [YYCardDetailPageModel mj_objectWithKeyValues:dic];
+            weakSelf.infoModel  = infoModel;//帖子数据
+            NSMutableArray *arr = [NSMutableArray array];
+            for (NSDictionary *dict in infoModel.commentList) {
+                YYCardCommentDetailModel *comModel = [YYCardCommentDetailModel mj_objectWithKeyValues:dict];
+                [arr addObject:comModel];
+            }
+            [weakSelf.commentInfos addObjectsFromArray:arr];//评论数据源
+            [weakSelf.tableView reloadData];
+            if (weakSelf.commentInfos.count==4) {//第一次刷新需要滑动到的位置
+                NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:1];
+                [weakSelf.tableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionTop animated:NO];
+            }
+            [weakSelf.tableView.mj_footer endRefreshing];
+            if (self.commentInfos.count>0) {
+                start = self.commentInfos.count;
+            }
+        } failure:^(NSURLSessionDataTask *task, NSError *error) {
+            [weakSelf.tableView.mj_footer endRefreshing];
+            [SVProgressHUD showErrorWithStatus:@"刷新失败"];
+            return ;
+        }];
+    }];
 
     //输入框背景
     UIView *backView = [[UIView alloc]initWithFrame:CGRectMake(20,self.view.frame.size.height- 45*kiphone6, self.view.frame.size.width-40*kiphone6, 45*kiphone6)];
@@ -375,34 +379,28 @@ static NSInteger start = 0;
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     [tableView deselectRowAtIndexPath:indexPath animated:true];
 }
-//-(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-//    if (indexPath.section!=0) {
-//        YYCommentTVCell *commentCell = [[YYCommentTVCell alloc]init];
-//        commentCell.comModel = self.commentInfos[indexPath.row];
-//        NSString *thisId =commentCell.comModel.info_id;
-//        //            MTLog(@"%@",[self.cellHeightCache valueForKey:thisId]);
-//        CGFloat cacheHeight = [[self.cellHeightCache valueForKey:thisId] doubleValue];
-//        if (cacheHeight) {
-//            //            MTLog(@"返回缓存的行高");
-//            return cacheHeight;
-//        }
-//        //            MTLog(@"耗性能的行高");
-////        commentCell.comModel = self.commentInfos[indexPath.row];
-//        [commentCell.contentView mas_updateConstraints:^(MASConstraintMaker *make) {
-//            make.bottom.equalTo(commentCell.countLabel.mas_bottom).offset(20);
-//            make.width.offset([UIScreen mainScreen].bounds.size.width);//必须加
-//        }];
-//        [commentCell layoutIfNeeded];
-//        
-//        [self.cellHeightCache setValue:@(commentCell.bounds.size.height) forKey:thisId];
-//        NSLog(@"%@",self.cellHeightCache);
-//        return commentCell.bounds.size.height;
-//
-//    }else{
-//        return tableView.rowHeight;
-//    }
-//    
-//}
+-(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
+    if (indexPath.section!=0) {
+        YYCardCommentDetailModel *comModel = self.commentInfos[indexPath.row];
+        NSString *thisId =comModel.info_id;
+        CGFloat cacheHeight = [[self.cellHeightCache valueForKey:thisId] doubleValue];
+        if (cacheHeight) {
+            return cacheHeight;
+        }
+        YYCommentTVCell *commentCell = [tableView dequeueReusableCellWithIdentifier:cellId];
+        commentCell.comModel = comModel;
+        [self.cellHeightCache setValue:@(commentCell.cellHeight) forKey:thisId];
+        NSLog(@"%@",self.cellHeightCache);
+        return commentCell.cellHeight;
+        
+    }else{
+        tableView.estimatedRowHeight = 150;
+        tableView.rowHeight = UITableViewAutomaticDimension;
+        
+        return tableView.rowHeight;
+    }
+    
+}
 
 -(NSMutableDictionary *)cellHeightCache{
     if (_cellHeightCache == nil) {
