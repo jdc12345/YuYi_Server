@@ -18,7 +18,7 @@
 @property(nonatomic,weak)UILabel *nameLabel;
 @property(nonatomic,weak)UILabel *timeLabel;
 @property(nonatomic,weak)UILabel *contentLabel;
-@property(nonatomic,weak)UILabel *countLabel;
+
 @property(nonatomic,weak)UIButton *praiseBtn;
 @end
 @implementation YYCommentTVCell

@@ -17,8 +17,10 @@
 #import "BRPlaceholderTextView.h"
 #import "CcUserModel.h"
 #import <UShareUI/UShareUI.h>
-#import "MyActivityIndicatorView.h"
+#import <MJRefresh.h>
+
 static NSString *cell_Id = @"cell_id";
+static NSInteger start = 0;
 @interface YYInfoCommentVC ()<UITableViewDelegate,UITableViewDataSource,UITextViewDelegate>
 @property(nonatomic,strong)NSMutableArray *commentInfoModels;
 @property(nonatomic,weak)UILabel *titleLabel;
@@ -30,7 +32,7 @@ static NSString *cell_Id = @"cell_id";
 @property(weak, nonatomic)BRPlaceholderTextView *commentField;
 
 @property(nonatomic,weak)UIView *fieldBackView;
-@property(nonatomic,strong)MyActivityIndicatorView *myActivityIndicatorView;
+
 @end
 
 @implementation YYInfoCommentVC
@@ -45,12 +47,8 @@ static NSString *cell_Id = @"cell_id";
 //http://192.168.1.55:8080/yuyi/comment/getConmentAll.do?id=4&start=0&limit=6
 - (void)loadData {
     NSString *urlStr = [NSString stringWithFormat:@"%@/comment/getConmentAll.do?id=%@&start=0&limit=6",mPrefixUrl,self.info_id];
+    [SVProgressHUD show];// 动画开始
     [[HttpClient defaultClient]requestWithPath:urlStr method:0 parameters:nil prepareExecute:^{
-        // 自带菊花方法
-        self.myActivityIndicatorView = [[MyActivityIndicatorView alloc]initWithFrame:CGRectMake(kScreenW/2-40*kiphone6, kScreenH/2-124*kiphone6, 80*kiphone6, 80*kiphone6)];
-        [self.view addSubview:_myActivityIndicatorView];
-        // 动画开始
-        [_myActivityIndicatorView startAnimating];
     } success:^(NSURLSessionDataTask *task, id responseObject) {
         NSArray *arr = responseObject[@"result"];
         NSMutableArray *mArr = [NSMutableArray array];
@@ -59,12 +57,15 @@ static NSString *cell_Id = @"cell_id";
             [mArr addObject:infoModel];
         }
         self.commentInfoModels  = mArr;
-        // 动画结束
-        [_myActivityIndicatorView stopAnimating];
+        if (self.commentInfoModels.count>0) {
+            start = self.commentInfoModels.count;
+        }
+        [SVProgressHUD dismiss];// 动画结束
         [self setUpUI];
         
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
-        
+        [SVProgressHUD showErrorWithStatus:@"加载失败"];
+        return ;
     }];
 }
 - (void)setUpUI {
@@ -84,6 +85,56 @@ static NSString *cell_Id = @"cell_id";
     self.tableView = tableView;
     [tableView registerClass:[YYCommentTVCell class] forCellReuseIdentifier:cell_Id];
     tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    __weak typeof(self) weakSelf = self;
+    self.tableView.mj_header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
+        // 进入刷新状态后会自动调用这个block
+        NSString *urlStr = [NSString stringWithFormat:@"%@/comment/getConmentAll.do?id=%@&start=0&limit=6",mPrefixUrl,weakSelf.info_id];
+        [[HttpClient defaultClient]requestWithPath:urlStr method:0 parameters:nil prepareExecute:^{
+        } success:^(NSURLSessionDataTask *task, id responseObject) {
+            NSArray *arr = responseObject[@"result"];
+            NSMutableArray *mArr = [NSMutableArray array];
+            for (NSDictionary *dic in arr) {
+                YYCommentInfoModel *infoModel = [YYCommentInfoModel mj_objectWithKeyValues:dic];
+                [mArr addObject:infoModel];
+            }
+            weakSelf.commentInfoModels  = mArr;
+            [weakSelf.tableView reloadData];
+            [weakSelf.tableView.mj_header endRefreshing];
+            if (weakSelf.commentInfoModels.count>0) {
+                start = weakSelf.commentInfoModels.count;
+            }
+            
+        } failure:^(NSURLSessionDataTask *task, NSError *error) {
+            [weakSelf.tableView.mj_header endRefreshing];
+            [SVProgressHUD showErrorWithStatus:@"刷新失败"];
+            return ;
+        }];
+    }];
+    //设置上拉加载更多
+    self.tableView.mj_footer = [MJRefreshAutoNormalFooter footerWithRefreshingBlock:^{
+        // 进入加载状态后会自动调用这个block
+        NSString *urlStr = [NSString stringWithFormat:@"%@/comment/getConmentAll.do?id=%@&start=%ld&limit=6",mPrefixUrl,weakSelf.info_id,start];
+        [[HttpClient defaultClient]requestWithPath:urlStr method:0 parameters:nil prepareExecute:^{
+        } success:^(NSURLSessionDataTask *task, id responseObject) {
+            NSArray *arr = responseObject[@"result"];
+            NSMutableArray *mArr = [NSMutableArray array];
+            for (NSDictionary *dic in arr) {
+                YYCommentInfoModel *infoModel = [YYCommentInfoModel mj_objectWithKeyValues:dic];
+                [mArr addObject:infoModel];
+            }
+            [weakSelf.commentInfoModels addObjectsFromArray:mArr];
+            [weakSelf.tableView reloadData];
+            [weakSelf.tableView.mj_footer endRefreshing];
+            if (weakSelf.commentInfoModels.count>0) {
+                start = weakSelf.commentInfoModels.count;
+            }
+        } failure:^(NSURLSessionDataTask *task, NSError *error) {
+            [weakSelf.tableView.mj_footer endRefreshing];
+            [SVProgressHUD showErrorWithStatus:@"刷新失败"];
+            return ;
+        }];
+    }];
+
     //评论框
     UIView *fieldBackView = [[UIView alloc]initWithFrame:CGRectMake(20,self.view.frame.size.height- 45*kiphone6, self.view.frame.size.width-40*kiphone6, 45*kiphone6)];
     self.fieldBackView = fieldBackView;
@@ -112,11 +163,9 @@ static NSString *cell_Id = @"cell_id";
         
         NSLog(@"----------");
     }];
-    
     [commentField addTextViewBeginEvent:^(BRPlaceholderTextView *text) {
         NSLog(@"begin");
     }];
-    
     [commentField addTextViewEndEvent:^(BRPlaceholderTextView *text) {
         NSLog(@"end");
     }];
@@ -125,19 +174,17 @@ static NSString *cell_Id = @"cell_id";
     commentField.layer.borderColor=[UIColor colorWithHexString:@"#f3f3f3"].CGColor;
 }
 - (void)keyboardWillChangeFrame:(NSNotification *)noti{
-    
-    
-//    if (!self.isSwitchKeyboard) {
+
         //从userInfo里面取出来键盘最终的位置
         NSValue *rectValue = noti.userInfo[UIKeyboardFrameEndUserInfoKey];
         
         CGRect rect = [rectValue CGRectValue];
         CGRect rectField = self.fieldBackView.frame;
-        CGRect newRect = CGRectMake(rectField.origin.x, rect.origin.y - rectField.size.height-70*kiphone6, rectField.size.width, rectField.size.height) ;
+        CGRect newRect = CGRectMake(rectField.origin.x, rect.origin.y - rectField.size.height-64*kiphone6, rectField.size.width, rectField.size.height) ;
         [UIView animateWithDuration:0.25 animations:^{
             self.fieldBackView.frame = newRect;
         }];
-//    }
+
 }
 - (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text{
     
@@ -147,24 +194,23 @@ static NSString *cell_Id = @"cell_id";
     
     NSUInteger location = replacementTextRange.location;
     
-    if (textView.text.length + text.length > 140){
+    if (textView.text.length + text.length > 500){
         
         if (location != NSNotFound){
             
             [textView resignFirstResponder];
-            
             }
-        
         return NO;
         
         }  else if (location != NSNotFound){
             
         [textView resignFirstResponder];
-    if (textView.text!=nil||![textView.text isEqualToString:@""]) {
+    if (textView.text!=nil&&![textView.text isEqualToString:@""]) {
         CcUserModel *userModel = [CcUserModel defaultClient];
         NSString *telePhoneNumber = userModel.telephoneNum;
         //            http://192.168.1.55:8080/yuyi/comment/AddConment.do?telephone=18782931355&content_id=1&Content=haha
         NSString *urlStr = [NSString stringWithFormat:@"%@/comment/AddConment.do?telephone=%@&content_id=%@&Content=%@",mPrefixUrl,telePhoneNumber,self.info_id,[textView.text stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]]];
+        [SVProgressHUD show];// 动画开始
         [[HttpClient defaultClient]requestWithPath:urlStr method:HttpRequestPost parameters:nil prepareExecute:^{
 
                 } success:^(NSURLSessionDataTask *task, id responseObject) {
@@ -173,34 +219,38 @@ static NSString *cell_Id = @"cell_id";
                         NSString *urlStr = [NSString stringWithFormat:@"%@/comment/getConmentAll.do?id=%@&start=0&limit=6",mPrefixUrl,self.info_id];
         [[HttpClient defaultClient]requestWithPath:urlStr method:0 parameters:nil prepareExecute:^{
                             
-                        } success:^(NSURLSessionDataTask *task, id responseObject) {
-            NSArray *arr = responseObject[@"result"];
-            NSMutableArray *mArr = [NSMutableArray array];
-            for (NSDictionary *dic in arr) {
-        YYCommentInfoModel *infoModel = [YYCommentInfoModel mj_objectWithKeyValues:dic];
-        [mArr addObject:infoModel];
-                }
-        self.commentInfoModels  = mArr;
-        NSInteger count = [self.commentCountLabel.text integerValue];
-        count += 1;
-        self.commentCountLabel.text = [NSString stringWithFormat:@"%ld",count];//评论数加一
-        [self.tableView reloadData];
-        self.commentField.text = nil;
-        self.commentField.placeholder = @"说点什么吧";
-        self.commentField.imagePlaceholder = @"writing";
-
-        } failure:^(NSURLSessionDataTask *task, NSError *error) {
-                            
-        }];
-        }else{
-        [self showAlertWithMessage:@"评论未成功，请稍后再试"];
-        }
-                    
-        } failure:^(NSURLSessionDataTask *task, NSError *error) {
-                    
+        } success:^(NSURLSessionDataTask *task, id responseObject) {
+                    [SVProgressHUD dismiss];//结束动画
+                    NSArray *arr = responseObject[@"result"];
+                    NSMutableArray *mArr = [NSMutableArray array];
+                    for (NSDictionary *dic in arr) {
+                    YYCommentInfoModel *infoModel = [YYCommentInfoModel mj_objectWithKeyValues:dic];
+                     [mArr addObject:infoModel];
+                         }
+                     self.commentInfoModels  = mArr;
+            if (self.commentInfoModels.count>0) {
+                start = self.commentInfoModels.count;
+            }//更新加载起始位置
+                     NSInteger count = [self.commentCountLabel.text integerValue];
+                     count += 1;
+                     self.commentCountLabel.text = [NSString stringWithFormat:@"%ld",count];//评论数加一
+                      [self.tableView reloadData];
+                      self.commentField.text = nil;
+                      self.commentField.placeholder = @"说点什么吧";
+                      self.commentField.imagePlaceholder = @"writing";
+                    } failure:^(NSURLSessionDataTask *task, NSError *error) {
+                       [SVProgressHUD showErrorWithStatus:@"评论已上传,请下拉刷新"];
+                       return ;
+                   }];
+               }else{
+        [SVProgressHUD showErrorWithStatus:@"评论未成功，请稍后再试"];
+                    }
+                 } failure:^(NSURLSessionDataTask *task, NSError *error) {
+                   [SVProgressHUD showErrorWithStatus:@"评论未成功，请稍后再试"];
+                   return ;
                 }];
 
-            }else{
+              }else{
                 [self showAlertWithMessage:@"评论内容不能为空，请重新输入"];
             }
         return NO;
@@ -211,16 +261,12 @@ static NSString *cell_Id = @"cell_id";
     CGRect frame = textView.frame;
     CGSize constraintSize = CGSizeMake(frame.size.width, MAXFLOAT);
     CGSize size = [textView sizeThatFits:constraintSize];
-    if (size.height<=frame.size.height) {
-        size.height=frame.size.height;
-        //        textView.scrollEnabled = true;   // 允许滚动
+    if (size.height<45*kiphone6) {
+        size.height = 45*kiphone6;
     }
-    else if(size.height>100*kiphone6){
-        size.height=100*kiphone6;
-    }
-//    textView.scrollEnabled = false;   // 不允许滚动
+        textView.scrollEnabled = false;   // 不允许滚动
     textView.frame = CGRectMake(frame.origin.x, frame.origin.y-(size.height-frame.size.height), frame.size.width, size.height);
-    textView.scrollEnabled = true;   // 允许滚动
+    
 }
 //弹出alert
 -(void)showAlertWithMessage:(NSString*)message{
@@ -420,12 +466,15 @@ static NSString *cell_Id = @"cell_id";
     
     //分享消息对象设置分享内容对象
     messageObject.shareObject = shareObject;
-    
+    [SVProgressHUD show];//动画开始
     //调用分享接口
     [[UMSocialManager defaultManager] shareToPlatform:platformType messageObject:messageObject currentViewController:self completion:^(id data, NSError *error) {
         if (error) {
             UMSocialLogInfo(@"************Share fail with error %@*********",error);
+            [SVProgressHUD dismiss];
+            [SVProgressHUD showErrorWithStatus:@"分享出了错误"];
         }else{
+            
             if ([data isKindOfClass:[UMSocialShareResponse class]]) {
                 UMSocialShareResponse *resp = data;
                 //分享结果消息
@@ -437,7 +486,7 @@ static NSString *cell_Id = @"cell_id";
                 UMSocialLogInfo(@"response data is %@",data);
             }
         }
-        //        [self alertWithError:error];
+        [SVProgressHUD dismiss];
     }];
 }
 
@@ -448,14 +497,17 @@ static NSString *cell_Id = @"cell_id";
     UMSocialMessageObject *messageObject = [UMSocialMessageObject messageObject];
     //设置文本
     messageObject.text = self.infoDetailModel.content;
-    
+    [SVProgressHUD show];
     //调用分享接口
     [UMSocialGlobal shareInstance].isTruncateShareText=NO;//不允许新浪截取文字
     [[UMSocialManager defaultManager] shareToPlatform:platformType messageObject:messageObject currentViewController:self completion:^(id data, NSError *error) {
         if (error) {
             NSLog(@"************Share fail with error %@*********",error);
+            [SVProgressHUD dismiss];
+            [SVProgressHUD showErrorWithStatus:@"分享出了错误"];
         }else{
             NSLog(@"response data is %@",data);
+            [SVProgressHUD dismiss];
             NSInteger count = [self.shareCountLabel.text integerValue];
             count += 1;
             self.shareCountLabel.text = [NSString stringWithFormat:@"%ld",count];
@@ -474,10 +526,9 @@ static NSString *cell_Id = @"cell_id";
             [[HttpClient defaultClient]requestWithPath:urlStr method:0 parameters:nil prepareExecute:^{
                 
             } success:^(NSURLSessionDataTask *task, id responseObject) {
-//                NSArray *arr = responseObject[@"result"];
-                NSLog(@"%@",responseObject);
+
             } failure:^(NSURLSessionDataTask *task, NSError *error) {
-                
+                return ;
             }];
 
         }
@@ -497,13 +548,16 @@ static NSString *cell_Id = @"cell_id";
     
     //分享消息对象设置分享内容对象
     messageObject.shareObject = shareObject;
-    
+    [SVProgressHUD show];
     //调用分享接口
     [[UMSocialManager defaultManager] shareToPlatform:platformType messageObject:messageObject currentViewController:self completion:^(id data, NSError *error) {
         if (error) {
             NSLog(@"************Share fail with error %@*********",error);
+            [SVProgressHUD dismiss];
+            [SVProgressHUD showErrorWithStatus:@"分享出了错误"];
         }else{
             NSLog(@"response data is %@",data);
+            [SVProgressHUD dismiss];
         }
     }];
 }
@@ -524,23 +578,29 @@ static NSString *cell_Id = @"cell_id";
     
     //分享消息对象设置分享内容对象
     messageObject.shareObject = shareObject;
-    
+    [SVProgressHUD show];
     //调用分享接口
     [[UMSocialManager defaultManager] shareToPlatform:platformType messageObject:messageObject currentViewController:self completion:^(id data, NSError *error) {
         if (error) {
             NSLog(@"************Share fail with error %@*********",error);
+            [SVProgressHUD dismiss];
+            [SVProgressHUD showErrorWithStatus:@"分享出了错误"];
         }else{
             NSLog(@"response data is %@",data);
+            [SVProgressHUD dismiss];
         }
     }];
 }
-
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+-(void)viewWillDisappear:(BOOL)animated{
+    [super viewWillDisappear:animated];
+    [SVProgressHUD dismiss];
 }
 -(void)dealloc{
      [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillChangeFrameNotification object:nil];
+}
+- (void)didReceiveMemoryWarning {
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
 }
 /*
 #pragma mark - Navigation

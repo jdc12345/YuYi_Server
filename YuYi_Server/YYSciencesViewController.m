@@ -18,7 +18,7 @@
 #import <MJExtension.h>
 #import "CcUserModel.h"
 #import <MJRefresh.h>
-#import "MyActivityIndicatorView.h"
+
 static NSInteger hotStart = 0;//上拉加载起始位置
 static NSInteger recentStart = 0;
 static NSInteger selectStart = 0;
@@ -43,7 +43,7 @@ static NSInteger selectStart = 0;
 //optionView
 @property(weak, nonatomic)UIView *backView;
 @property(weak, nonatomic)UIView *noticeView;
-@property(nonatomic,strong)MyActivityIndicatorView *myActivityIndicatorView;
+
 @end
 
 @implementation YYSciencesViewController
@@ -65,17 +65,13 @@ static NSInteger selectStart = 0;
     NSString *hotUrlStr = [NSString stringWithFormat:@"%@/academicpaper/findhot.do?start=0&limit=6&token=%@",mPrefixUrl,token];
     NSString *selectUrlStr = [NSString stringWithFormat:@"%@/academicpaper/Selected.do?start=0&limit=6&token=%@",mPrefixUrl,token];
     NSString *recentUrlStr = [NSString stringWithFormat:@"%@/academicpaper/findtime.do?start=0&limit=6&token=%@",mPrefixUrl,token];
+    [SVProgressHUD show];// 动画开始
     [self loadHotInfosWithUrlStr:hotUrlStr];
     [self loadSelectInfosWithUrlStr:selectUrlStr];
     [self loadRecentInfosWithUrlStr:recentUrlStr];
 }
 -(void)loadHotInfosWithUrlStr:(NSString*)urlStr{
     [[HttpClient defaultClient]requestWithPath:urlStr method:0 parameters:nil prepareExecute:^{
-        // 自带菊花方法
-        self.myActivityIndicatorView = [[MyActivityIndicatorView alloc]initWithFrame:CGRectMake(kScreenW/2-40*kiphone6, kScreenH/2-124*kiphone6, 80*kiphone6, 80*kiphone6)];
-        [self.view addSubview:_myActivityIndicatorView];
-        // 动画开始
-        [_myActivityIndicatorView startAnimating];
     } success:^(NSURLSessionDataTask *task, id responseObject) {
         NSArray *arr = responseObject[@"rows"];
         NSMutableArray *mArr = [NSMutableArray array];
@@ -84,12 +80,15 @@ static NSInteger selectStart = 0;
             [mArr addObject:infoModel];
         }
         self.hotInfos = mArr;
-        // 动画结束
-        [_myActivityIndicatorView stopAnimating];
+        [SVProgressHUD dismiss];// 动画结束
         [self setupUI];
-      hotStart = 7;
+        if (self.hotInfos.count>0) {
+            hotStart = self.hotInfos.count;
+        }
+      
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
-        
+        [SVProgressHUD showErrorWithStatus:@"加载失败"];
+        return ;
     }];
     
 }
@@ -103,10 +102,13 @@ static NSInteger selectStart = 0;
             YYCardDetailModel *infoModel = [YYCardDetailModel mj_objectWithKeyValues:dic];
             [mArr addObject:infoModel];
         }
-        self.selectCardVC.infos = mArr;
         self.selectInfos = mArr;
-        selectStart = 7;
+        self.selectCardVC.infos = mArr;
+        if (self.selectCardVC.infos.count>0) {
+            selectStart = self.selectCardVC.infos.count;
+        }
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
+        return ;
     }];
 }
 -(void)loadRecentInfosWithUrlStr:(NSString*)urlStr{
@@ -118,11 +120,13 @@ static NSInteger selectStart = 0;
             YYCardDetailModel *infoModel = [YYCardDetailModel mj_objectWithKeyValues:dic];
             [mArr addObject:infoModel];
         }
-        self.recentCardVC.infos = mArr;
         self.recentInfos = mArr;
-        recentStart = 7;
+        self.recentCardVC.infos = mArr;
+        if (self.selectCardVC.infos.count>0) {
+            recentStart = self.recentCardVC.infos.count;
+        }
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
-        
+        return ;
     }];
 }
 //
@@ -429,12 +433,15 @@ static NSInteger selectStart = 0;
                 YYCardDetailModel *infoModel = [YYCardDetailModel mj_objectWithKeyValues:dic];
                 [mArr addObject:infoModel];
             }
-            self.hotCardVC.infos = mArr;
             self.hotInfos = mArr;
-            hotStart = 7;
+            self.hotCardVC.infos = mArr;
+            if (self.hotCardVC.infos.count>0) {
+                hotStart = self.hotCardVC.infos.count;
+            }
             [learningVC.tableView.mj_header endRefreshing];
         } failure:^(NSURLSessionDataTask *task, NSError *error) {
             [learningVC.tableView.mj_header endRefreshing];
+            return ;
         }];
     }else if (learningVC == self.selectCardVC){
         NSString *selectUrlStr = [NSString stringWithFormat:@"%@/academicpaper/Selected.do?start=0&limit=6&token=%@",mPrefixUrl,token];
@@ -447,12 +454,15 @@ static NSInteger selectStart = 0;
                 YYCardDetailModel *infoModel = [YYCardDetailModel mj_objectWithKeyValues:dic];
                 [mArr addObject:infoModel];
             }
-            self.selectCardVC.infos = mArr;
             self.selectInfos = mArr;
-            selectStart = 7;
+            self.selectCardVC.infos = mArr;
+            if (self.selectCardVC.infos.count>0) {
+                selectStart = self.selectCardVC.infos.count;
+            }
             [learningVC.tableView.mj_header endRefreshing];
         } failure:^(NSURLSessionDataTask *task, NSError *error) {
             [learningVC.tableView.mj_header endRefreshing];
+            return ;
         }];
         
     }else if (learningVC == self.recentCardVC){
@@ -468,10 +478,13 @@ static NSInteger selectStart = 0;
             }
             self.recentCardVC.infos = mArr;
             self.recentInfos = mArr;
-            recentStart = 7;
+            if (self.recentCardVC.infos.count>0) {
+                recentStart = self.recentCardVC.infos.count;
+            }
             [learningVC.tableView.mj_header endRefreshing];
         } failure:^(NSURLSessionDataTask *task, NSError *error) {
             [learningVC.tableView.mj_header endRefreshing];
+            return ;
         }];
         
     }
@@ -492,11 +505,12 @@ static NSInteger selectStart = 0;
             }
             [self.hotCardVC.infos addObjectsFromArray:mArr];
 //            [self.hotInfos addObjectsFromArray:mArr];
-            hotStart = self.hotCardVC.infos.count+1;
+            hotStart = self.hotCardVC.infos.count;
             [learningVC.tableView reloadData];
             [learningVC.tableView.mj_footer endRefreshing];
         } failure:^(NSURLSessionDataTask *task, NSError *error) {
             [learningVC.tableView.mj_footer endRefreshing];
+            return ;
         }];
     }else if (learningVC == self.selectCardVC){
         NSString *selectUrlStr = [NSString stringWithFormat:@"%@/academicpaper/Selected.do?start=%ld&limit=6&token=%@",mPrefixUrl,selectStart,token];
@@ -511,11 +525,12 @@ static NSInteger selectStart = 0;
             }
             [self.selectCardVC.infos addObjectsFromArray:mArr];
 //            [self.selectInfos addObjectsFromArray:mArr];
-            selectStart = self.selectCardVC.infos.count+1;
+            selectStart = self.selectCardVC.infos.count;
             [self.selectCardVC.tableView reloadData];
             [learningVC.tableView.mj_footer endRefreshing];
         } failure:^(NSURLSessionDataTask *task, NSError *error) {
             [learningVC.tableView.mj_footer endRefreshing];
+            return ;
         }];
         
     }else if (learningVC == self.recentCardVC){
@@ -531,11 +546,12 @@ static NSInteger selectStart = 0;
             }
             [self.recentCardVC.infos addObjectsFromArray:mArr];
 //            [self.recentInfos addObjectsFromArray:mArr];
-            recentStart = self.recentCardVC.infos.count+1;
+            recentStart = self.recentCardVC.infos.count;
             [self.recentCardVC.tableView reloadData];
             [learningVC.tableView.mj_footer endRefreshing];
         } failure:^(NSURLSessionDataTask *task, NSError *error) {
             [learningVC.tableView.mj_footer endRefreshing];
+            return ;
         }];
         
     }
@@ -545,34 +561,12 @@ static NSInteger selectStart = 0;
     [super viewWillAppear:animated];
     self.navigationController.navigationBar.hidden = true;
     
-//    //
-//    CcUserModel *userModel = [CcUserModel defaultClient];
-//    NSString *token = userModel.userToken;
-//    NSString *hotUrlStr = [NSString stringWithFormat:@"%@/academicpaper/findhot.do?start=0&limit=6&token=%@",mPrefixUrl,token];
-//    NSString *selectUrlStr = [NSString stringWithFormat:@"%@/academicpaper/Selected.do?start=0&limit=1&token=%@",mPrefixUrl,token];
-//    NSString *recentUrlStr = [NSString stringWithFormat:@"%@/academicpaper/findtime.do?start=0&limit=6&token=%@",mPrefixUrl,token];
-//    [[HttpClient defaultClient]requestWithPath:hotUrlStr method:0 parameters:nil prepareExecute:^{
-//        
-//    } success:^(NSURLSessionDataTask *task, id responseObject) {
-//        NSArray *arr = responseObject[@"rows"];
-//        NSMutableArray *mArr = [NSMutableArray array];
-//        for (NSDictionary *dic in arr) {
-//            YYCardDetailModel *infoModel = [YYCardDetailModel mj_objectWithKeyValues:dic];
-//            [mArr addObject:infoModel];
-//        }
-//        self.hotCardVC.infos = mArr;
-//        
-//    } failure:^(NSURLSessionDataTask *task, NSError *error) {
-//        
-//    }];
-//
-//    [self loadSelectInfosWithUrlStr:selectUrlStr];
-//    [self loadRecentInfosWithUrlStr:recentUrlStr];
 }
 
 -(void)viewWillDisappear:(BOOL)animated{
     [super viewWillDisappear:animated];
     self.navigationController.navigationBar.hidden = false;
+    [SVProgressHUD dismiss];// 动画结束
 }
 
 - (void)didReceiveMemoryWarning {

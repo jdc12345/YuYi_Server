@@ -49,10 +49,20 @@
 			<key>orderHint</key>
 			<integer>9</integer>
 		</dict>
+		<key>SVProgressHUD.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>10</integer>
+		</dict>
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
 		<key>04CF549EBEEE7BC87AEAE35397184D94</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>1300C817156F8E065C5E3201D3D1C1D7</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -77,6 +87,11 @@
 			<key>primary</key>
 			<true/>
 		</dict>
+		<key>91EFED2553F5C38C6033958D6CECA568</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 		<key>9DC8D9E02903E93BD0B2FEC9D846EA20</key>
 		<dict>
 			<key>primary</key>
@@ -88,6 +103,16 @@
 			<true/>
 		</dict>
 		<key>AFAFB55453D161D2BB5CFB30C68A54D5</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>B86657D15F2208ED8186E7C0AE0DEBB1</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>E0A03AD2195A59A5A4DB0F82CE62492B</key>
 		<dict>
 			<key>primary</key>
 			<true/>
