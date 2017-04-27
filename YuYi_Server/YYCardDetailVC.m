@@ -150,13 +150,13 @@ static NSInteger start = 0;
             }
             [weakSelf.commentInfos addObjectsFromArray:arr];//评论数据源
             [weakSelf.tableView reloadData];
-            if (weakSelf.commentInfos.count==4) {//第一次刷新需要滑动到的位置
+            if (weakSelf.commentInfos.count==3||weakSelf.commentInfos.count==4) {//第一次刷新需要滑动到的位置
                 NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:1];
                 [weakSelf.tableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionTop animated:NO];
             }
             [weakSelf.tableView.mj_footer endRefreshing];
-            if (self.commentInfos.count>0) {
-                start = self.commentInfos.count;
+            if (weakSelf.commentInfos.count>0) {
+                start = weakSelf.commentInfos.count;
             }
         } failure:^(NSURLSessionDataTask *task, NSError *error) {
             [weakSelf.tableView.mj_footer endRefreshing];
@@ -256,6 +256,8 @@ static NSInteger start = 0;
                         }
                         self.commentInfos = arr;//评论数据源
                         [self.tableView reloadData];
+//                        NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:1];
+//                        [self.tableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionTop animated:NO];//滑动到当前评论行
                         NSInteger count = [self.countLabel.text integerValue];
                         count += 1;
                         self.countLabel.text = [NSString stringWithFormat:@"%ld",count];//评论数加一
@@ -390,7 +392,7 @@ static NSInteger start = 0;
         YYCommentTVCell *commentCell = [tableView dequeueReusableCellWithIdentifier:cellId];
         commentCell.comModel = comModel;
         [self.cellHeightCache setValue:@(commentCell.cellHeight) forKey:thisId];
-        NSLog(@"%@",self.cellHeightCache);
+//        NSLog(@"%@",self.cellHeightCache);
         return commentCell.cellHeight;
         
     }else{

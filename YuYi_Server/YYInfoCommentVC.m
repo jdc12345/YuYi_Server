@@ -307,7 +307,7 @@ static NSInteger start = 0;
     YYCommentTVCell *commentCell = [tableView dequeueReusableCellWithIdentifier:cell_Id];
     commentCell.comModel = comModel;
     [self.cellHeightCache setValue:@(commentCell.cellHeight) forKey:thisId];
-    NSLog(@"%@",self.cellHeightCache);
+//    NSLog(@"%@",self.cellHeightCache);
     return commentCell.cellHeight;
    
 }
