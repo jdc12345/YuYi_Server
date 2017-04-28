@@ -22,14 +22,14 @@
 #import "YYInfoCommentVC.h"
 #import <UShareUI/UShareUI.h>
 #import "CcUserModel.h"
-#import "MyActivityIndicatorView.h"
+
 @interface YYInfoDetailVC ()<UIScrollViewDelegate>
 @property(nonatomic,strong)YYInfoDetailModel *infoModel;
 @property(nonatomic,weak)UILabel *praiseCountLabel;
 @property(nonatomic,weak)UILabel *shareCountLabel;
 @property(nonatomic,weak)UILabel *commentCountLabel;
 @property(nonatomic,weak)UIButton *praiseBtn;
-@property(nonatomic,strong)MyActivityIndicatorView *myActivityIndicatorView;
+
 @end
 
 @implementation YYInfoDetailVC
@@ -44,23 +44,19 @@
 - (void)loadData {
     CcUserModel *model = [CcUserModel defaultClient];
     NSString *token = model.userToken;
-    NSString *urlStr = [NSString stringWithFormat:@"http://192.168.1.55:8080/yuyi/doctorlyinformation/get.do?id=%@&token=%@",self.info_id,token];
+    NSString *urlStr = [NSString stringWithFormat:@"%@/doctorlyinformation/get.do?id=%@&token=%@",mPrefixUrl,self.info_id,token];
+    [SVProgressHUD show];// 动画开始
     [[HttpClient defaultClient]requestWithPath:urlStr method:0 parameters:nil prepareExecute:^{
-        // 自带菊花方法
-        self.myActivityIndicatorView = [[MyActivityIndicatorView alloc]initWithFrame:CGRectMake(kScreenW/2-40*kiphone6, kScreenH/2-124*kiphone6, 80*kiphone6, 80*kiphone6)];
-        [self.view addSubview:_myActivityIndicatorView];
-        // 动画开始
-        [_myActivityIndicatorView startAnimating];
     } success:^(NSURLSessionDataTask *task, id responseObject) {
         NSDictionary *dic = responseObject;
         YYInfoDetailModel *infoModel = [YYInfoDetailModel mj_objectWithKeyValues:dic];
         self.infoModel  = infoModel;
-        // 动画结束
-        [_myActivityIndicatorView stopAnimating];
+        [SVProgressHUD dismiss];// 动画结束
         [self setUpUI];
         
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
-        
+       [SVProgressHUD showErrorWithStatus:@"加载失败"];
+        return ;
     }];
 
 }
@@ -83,9 +79,9 @@
     titleLabel.numberOfLines = 2;
     [backView addSubview:titleLabel];
     [titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.offset(10);
-        make.top.equalTo(imageView.mas_bottom).offset(25);
-        make.right.offset(-10);
+        make.left.offset(10*kiphone6);
+        make.top.equalTo(imageView.mas_bottom).offset(25*kiphone6);
+        make.right.offset(-10*kiphone6);
     }];
     UILabel *contentLabel = [UILabel labelWithText:self.infoModel.content andTextColor:[UIColor colorWithHexString:@"666666"] andFontSize:13];
     contentLabel.numberOfLines = NSNotFound;
@@ -247,11 +243,13 @@
     
     //分享消息对象设置分享内容对象
     messageObject.shareObject = shareObject;
-    
+    [SVProgressHUD show];
     //调用分享接口
     [[UMSocialManager defaultManager] shareToPlatform:platformType messageObject:messageObject currentViewController:self completion:^(id data, NSError *error) {
         if (error) {
             UMSocialLogInfo(@"************Share fail with error %@*********",error);
+            [SVProgressHUD dismiss];
+            [SVProgressHUD showErrorWithStatus:@"分享出了错误"];
         }else{
             if ([data isKindOfClass:[UMSocialShareResponse class]]) {
                 UMSocialShareResponse *resp = data;
@@ -264,7 +262,7 @@
                 UMSocialLogInfo(@"response data is %@",data);
             }
         }
-//        [self alertWithError:error];
+        [SVProgressHUD dismiss];
     }];
 }
 //分享文本
@@ -274,11 +272,13 @@
     UMSocialMessageObject *messageObject = [UMSocialMessageObject messageObject];
     //设置文本
     messageObject.text = self.infoModel.content;
-    
+    [SVProgressHUD show];
     //调用分享接口
     [[UMSocialManager defaultManager] shareToPlatform:platformType messageObject:messageObject currentViewController:self completion:^(id data, NSError *error) {
         if (error) {
             NSLog(@"************Share fail with error %@*********",error);
+            [SVProgressHUD dismiss];
+            [SVProgressHUD showErrorWithStatus:@"分享出了错误"];
         }else{
             NSLog(@"response data is %@",data);
             NSInteger count = [self.shareCountLabel.text integerValue];
@@ -302,9 +302,9 @@
                 //                NSArray *arr = responseObject[@"result"];
                 NSLog(@"%@",responseObject);
             } failure:^(NSURLSessionDataTask *task, NSError *error) {
-                
+                return ;
             }];
-
+            [SVProgressHUD dismiss];
         }
     }];
 }
@@ -322,13 +322,16 @@
     
     //分享消息对象设置分享内容对象
     messageObject.shareObject = shareObject;
-    
+    [SVProgressHUD show];
     //调用分享接口
     [[UMSocialManager defaultManager] shareToPlatform:platformType messageObject:messageObject currentViewController:self completion:^(id data, NSError *error) {
         if (error) {
             NSLog(@"************Share fail with error %@*********",error);
+            [SVProgressHUD dismiss];
+            [SVProgressHUD showErrorWithStatus:@"分享出了错误"];
         }else{
             NSLog(@"response data is %@",data);
+            [SVProgressHUD dismiss];
         }
     }];
 }
@@ -349,13 +352,16 @@
     
     //分享消息对象设置分享内容对象
     messageObject.shareObject = shareObject;
-    
+    [SVProgressHUD show];
     //调用分享接口
     [[UMSocialManager defaultManager] shareToPlatform:platformType messageObject:messageObject currentViewController:self completion:^(id data, NSError *error) {
         if (error) {
             NSLog(@"************Share fail with error %@*********",error);
+            [SVProgressHUD dismiss];
+            [SVProgressHUD showErrorWithStatus:@"分享出了错误"];
         }else{
             NSLog(@"response data is %@",data);
+            [SVProgressHUD dismiss];
         }
     }];
 }
@@ -364,7 +370,7 @@
     [super viewWillAppear:animated];
     CcUserModel *model = [CcUserModel defaultClient];
     NSString *token = model.userToken;
-    NSString *urlStr = [NSString stringWithFormat:@"http://192.168.1.55:8080/yuyi/doctorlyinformation/get.do?id=%@&token=%@",self.info_id,token];
+    NSString *urlStr = [NSString stringWithFormat:@"%@/doctorlyinformation/get.do?id=%@&token=%@",mPrefixUrl,self.info_id,token];
     [[HttpClient defaultClient]requestWithPath:urlStr method:0 parameters:nil prepareExecute:^{
         
     } success:^(NSURLSessionDataTask *task, id responseObject) {
@@ -385,6 +391,10 @@
         
     }];
 
+}
+-(void)viewWillDisappear:(BOOL)animated{
+    [super viewWillDisappear:animated];
+    [SVProgressHUD dismiss];
 }
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

@@ -12,4 +12,7 @@
 @interface YYCommentTVCell : UITableViewCell
 @property(nonatomic,strong)YYCommentInfoModel *infoCommentModel;
 @property(nonatomic,strong)YYCardCommentDetailModel *comModel;
+
+@property (nonatomic, assign) CGFloat cellHeight;
+
 @end

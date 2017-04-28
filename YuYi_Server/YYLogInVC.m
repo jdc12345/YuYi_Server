@@ -14,14 +14,13 @@
 #import "HttpClient.h"
 #import "CcUserModel.h"
 #import "YYTabBarController.h"
-#import "MyActivityIndicatorView.h"
+
 @interface YYLogInVC ()<UITextFieldDelegate>
 @property(nonatomic,weak)UILabel *countdownLabel;
 
 @property(nonatomic,weak)UITextField *telNumberField;
 
 @property(nonatomic,weak)UITextField *passWordField;
-@property(nonatomic,strong)MyActivityIndicatorView *myActivityIndicatorView;
 
 @end
 
@@ -169,6 +168,7 @@
     [httpManager requestWithPath:urlString method:HttpRequestPost parameters:nil prepareExecute:nil success:^(NSURLSessionDataTask *task, id responseObject) {
         NSDictionary *getCodeDic = (NSDictionary*)responseObject;
         if ([getCodeDic[@"code"] isEqualToString:@"0"]) {
+            [self.passWordField becomeFirstResponder];
             self.countdownLabel.hidden = false;
 //            self.passWordField.text = getCodeDic[@"result"];
             //倒计时时间
@@ -226,15 +226,9 @@
 //    http://192.168.1.55:8080/yuyi/physician/login.do?id=13717883006&vcode=617307
     NSString *urlString = [mPrefixUrl stringByAppendingPathComponent:[NSString stringWithFormat:@"/physician/login.do?id=%@&vcode=%@",self.telNumberField.text,self.passWordField.text]];
     HttpClient *httpManager = [HttpClient defaultClient];
+    [SVProgressHUD show];// 动画开始
     [httpManager requestWithPath:urlString method:HttpRequestPost parameters:nil prepareExecute:^{
-        // 自带菊花方法
-        self.myActivityIndicatorView = [[MyActivityIndicatorView alloc]initWithFrame:CGRectMake(kScreenW/2-40*kiphone6, kScreenH/2-124*kiphone6, 80*kiphone6, 80*kiphone6)];
-        [self.view addSubview:_myActivityIndicatorView];
-        // 动画开始
-        [_myActivityIndicatorView startAnimating];
-    } success:^(NSURLSessionDataTask *task, id responseObject) {
-        // 动画结束
-        [_myActivityIndicatorView stopAnimating];
+        } success:^(NSURLSessionDataTask *task, id responseObject) {
         NSDictionary *dic = (NSDictionary *)responseObject;
         if ([dic[@"code"] isEqualToString:@"0"]) {
             //保存token
@@ -243,21 +237,22 @@
             userModel.telephoneNum = self.telNumberField.text;
             [userModel saveAllInfo];
             //跳转登录首页
-
             YYTabBarController *tabBarVC = [[YYTabBarController alloc]init];
+            [SVProgressHUD dismiss];// 动画结束
             [UIApplication sharedApplication].keyWindow.rootViewController = tabBarVC;
         }else{
             if ([dic[@"result"] isEqualToString:@""]) {
                 [self showAlertWithMessage:@"请确认电话号码正确以及网络是否正常"];
             }else{
                 
-                [self showAlertWithMessage:dic[@"result"]];
+                [self showAlertWithMessage:@"请输入正确的验证码"];
             }
 
             self.passWordField.text = nil;
-            
+            [SVProgressHUD dismiss];// 动画结束
         }
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
+        [SVProgressHUD showErrorWithStatus:@"登录失败,请重新登录"];
         return ;
     }];
 
@@ -365,6 +360,10 @@
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
     [self.telNumberField becomeFirstResponder];
+}
+-(void)viewWillDisappear:(BOOL)animated{
+    [super viewWillDisappear:animated];
+    [SVProgressHUD dismiss];
 }
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

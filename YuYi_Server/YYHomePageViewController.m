@@ -18,7 +18,7 @@
 #import "YYInfoDetailModel.h"
 #import <MJExtension.h>
 #import <MJRefresh.h>
-#import "MyActivityIndicatorView.h"
+
 static NSString *cell_id = @"cell_id";
 static NSInteger hotStart = 0;//上拉加载起始位置
 static NSInteger recentStart = 0;
@@ -41,7 +41,6 @@ static NSInteger todayStart = 0;
 @property(weak, nonatomic)YYInformationVC *todayInfosVC;
 @property(weak, nonatomic)YYInformationVC *recentInfosVC;
 
-@property(strong, nonatomic)MyActivityIndicatorView *myActivityIndicatorView;
 @end
 
 @implementation YYHomePageViewController
@@ -64,6 +63,7 @@ static NSInteger todayStart = 0;
     NSString *todayUrlStr = [NSString stringWithFormat:@"%@/doctorlyinformation/getTodayAll.do?start=0&limit=3",mPrefixUrl];
     NSString *hotUrlStr = [NSString stringWithFormat:@"%@/doctorlyinformation/find.do?start=0&limit=3",mPrefixUrl];
     NSString *recentUrlStr = [NSString stringWithFormat:@"%@/doctorlyinformation/findPage.do?start=0&limit=3",mPrefixUrl];
+    [SVProgressHUD show];// 动画开始
     [self loadTodayInfosWithUrlStr:todayUrlStr];
     [self loadRecentInfosWithUrlStr:recentUrlStr];
     [self loadHotInfosWithUrlStr:hotUrlStr];
@@ -72,11 +72,6 @@ static NSInteger todayStart = 0;
 }
 -(void)loadTodayInfosWithUrlStr:(NSString*)urlStr{
     [[HttpClient defaultClient]requestWithPath:urlStr method:0 parameters:nil prepareExecute:^{
-        // 自带菊花方法
-        self.myActivityIndicatorView = [[MyActivityIndicatorView alloc]initWithFrame:CGRectMake(kScreenW/2-40*kiphone6, kScreenH/2-124*kiphone6, 80*kiphone6, 80*kiphone6)];
-        [self.view addSubview:_myActivityIndicatorView];
-        // 动画开始
-        [_myActivityIndicatorView startAnimating];
     } success:^(NSURLSessionDataTask *task, id responseObject) {
         NSArray *arr = responseObject[@"result"];
         NSMutableArray *mArr = [NSMutableArray array];
@@ -85,13 +80,14 @@ static NSInteger todayStart = 0;
             [mArr addObject:infoModel];
         }
         self.todayInfos = mArr;
-        todayStart = 4;
-        // 动画结束
-        [_myActivityIndicatorView stopAnimating];
+        [SVProgressHUD dismiss];// 动画结束
         [self setupUI];
-        
+        if (self.todayInfos.count>0) {
+            todayStart = self.todayInfos.count;
+        }
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
-        
+       [SVProgressHUD showErrorWithStatus:@"加载失败"];
+        return ;
     }];
 
 }
@@ -106,9 +102,11 @@ static NSInteger todayStart = 0;
             [mArr addObject:infoModel];
         }
         self.hotInfosVC.infos = mArr;
-        hotStart = 4;
+        if (self.hotInfosVC.infos.count>0) {
+            hotStart = self.hotInfosVC.infos.count;
+        }
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
-        
+        return ;
     }];
     
 }
@@ -123,9 +121,11 @@ static NSInteger todayStart = 0;
             [mArr addObject:infoModel];
         }
         self.recentInfosVC.infos = mArr;
-        recentStart = 4;
+        if (self.recentInfosVC.infos.count>0) {
+            recentStart = self.recentInfosVC.infos.count;
+        }
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
-        
+        return ;
     }];
     
 }
@@ -354,10 +354,13 @@ static NSInteger todayStart = 0;
             }
             self.hotInfos = mArr;
             self.hotInfosVC.infos = mArr;
-            hotStart = 4;
+            if (self.hotInfosVC.infos.count>0) {
+                hotStart = self.hotInfosVC.infos.count;
+            }
             [learningVC.tableView.mj_header endRefreshing];
         } failure:^(NSURLSessionDataTask *task, NSError *error) {
             [learningVC.tableView.mj_header endRefreshing];
+            return ;
         }];
     }else if (learningVC == self.todayInfosVC){
         NSString *todayUrlStr = [NSString stringWithFormat:@"%@/doctorlyinformation/getTodayAll.do?start=0&limit=3",mPrefixUrl];
@@ -372,10 +375,13 @@ static NSInteger todayStart = 0;
             }
             self.todayInfos = mArr;
             self.todayInfosVC.infos = mArr;
-            todayStart = 4;
+            if (self.todayInfosVC.infos.count>0) {
+                todayStart = self.todayInfosVC.infos.count;
+            }
             [learningVC.tableView.mj_header endRefreshing];
         } failure:^(NSURLSessionDataTask *task, NSError *error) {
             [learningVC.tableView.mj_header endRefreshing];
+            return ;
         }];
         
     }else if (learningVC == self.recentInfosVC){
@@ -391,10 +397,13 @@ static NSInteger todayStart = 0;
             }
             self.recentInfosVC.infos = mArr;
             self.recentInfos = mArr;
-            recentStart = 4;
+            if (self.recentInfosVC.infos.count>0) {
+                recentStart = self.recentInfosVC.infos.count;
+            }
             [learningVC.tableView.mj_header endRefreshing];
         } failure:^(NSURLSessionDataTask *task, NSError *error) {
             [learningVC.tableView.mj_header endRefreshing];
+            return ;
         }];
         
     }
@@ -414,7 +423,7 @@ static NSInteger todayStart = 0;
             }
             [self.hotInfosVC.infos addObjectsFromArray:mArr];
 //            [self.hotInfos addObjectsFromArray:mArr];
-            hotStart = self.hotInfosVC.infos.count+1;
+            hotStart = self.hotInfosVC.infos.count;
             [learningVC.tableView reloadData];
             [learningVC.tableView.mj_footer endRefreshing];
         } failure:^(NSURLSessionDataTask *task, NSError *error) {
@@ -433,7 +442,7 @@ static NSInteger todayStart = 0;
             }
             [self.todayInfosVC.infos addObjectsFromArray:mArr];
 //            [self.todayInfos addObjectsFromArray:mArr];
-            todayStart = self.todayInfosVC.infos.count+1;
+            todayStart = self.todayInfosVC.infos.count;
             [learningVC.tableView reloadData];
             [learningVC.tableView.mj_footer endRefreshing];
         } failure:^(NSURLSessionDataTask *task, NSError *error) {
@@ -453,7 +462,7 @@ static NSInteger todayStart = 0;
             }
             [self.recentInfosVC.infos addObjectsFromArray:mArr];
 //            [self.recentInfos addObjectsFromArray:mArr];
-            recentStart = self.recentInfosVC.infos.count+1;
+            recentStart = self.recentInfosVC.infos.count;
             [learningVC.tableView reloadData];
             [learningVC.tableView.mj_footer endRefreshing];
         } failure:^(NSURLSessionDataTask *task, NSError *error) {
@@ -463,7 +472,10 @@ static NSInteger todayStart = 0;
     }
     
 }
-
+-(void)viewWillDisappear:(BOOL)animated{
+    [super viewWillDisappear:animated];
+    [SVProgressHUD dismiss];
+}
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
