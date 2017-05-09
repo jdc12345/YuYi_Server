@@ -103,6 +103,8 @@
 		3E85EFA31E8F951500E7D8F1 /* NotficationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E85EF9E1E8F951500E7D8F1 /* NotficationViewController.m */; };
 		3E85EFA41E8F951500E7D8F1 /* NotficationTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E85EFA01E8F951500E7D8F1 /* NotficationTableViewCell.m */; };
 		3E85EFA51E8F951500E7D8F1 /* NoyficationModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E85EFA21E8F951500E7D8F1 /* NoyficationModel.m */; };
+		3E984FC21EC1697C0094CBE4 /* 启动页.png in Resources */ = {isa = PBXBuildFile; fileRef = 3E984FC11EC1697C0094CBE4 /* 启动页.png */; };
+		3E984FC51EC16A970094CBE4 /* ZYAlertSView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E984FC41EC16A970094CBE4 /* ZYAlertSView.m */; };
 		3EA3F4441E95E388005670A5 /* YYCycleView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EA3F4431E95E388005670A5 /* YYCycleView.m */; };
 		3EA3F4471E95E3D0005670A5 /* ZYPageControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EA3F4461E95E3D0005670A5 /* ZYPageControl.m */; };
 		3EA3F44A1E95E413005670A5 /* YYTrendView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EA3F4491E95E413005670A5 /* YYTrendView.m */; };
@@ -129,7 +131,6 @@
 		3EBD821F1E8E37E600BDC217 /* NSDictionary+Log.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EBD821B1E8E37E600BDC217 /* NSDictionary+Log.m */; };
 		3EBD82201E8E37E600BDC217 /* NSString+unicode.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EBD821D1E8E37E600BDC217 /* NSString+unicode.m */; };
 		3EBD82231E8E383500BDC217 /* UIBarButtonItem+Helper.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EBD82221E8E383500BDC217 /* UIBarButtonItem+Helper.m */; };
-		3EBD82261E8E385E00BDC217 /* ZYAlertSView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EBD82251E8E385E00BDC217 /* ZYAlertSView.m */; };
 		3EBD82301E8E389C00BDC217 /* YYNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EBD82291E8E389C00BDC217 /* YYNavigationController.m */; };
 		3EBD82311E8E389C00BDC217 /* YYTabBarController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EBD822B1E8E389C00BDC217 /* YYTabBarController.m */; };
 		3EBD82321E8E389C00BDC217 /* YYTabBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EBD822D1E8E389C00BDC217 /* YYTabBar.m */; };
@@ -335,6 +336,9 @@
 		3E85EFA01E8F951500E7D8F1 /* NotficationTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NotficationTableViewCell.m; sourceTree = "<group>"; };
 		3E85EFA11E8F951500E7D8F1 /* NoyficationModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NoyficationModel.h; sourceTree = "<group>"; };
 		3E85EFA21E8F951500E7D8F1 /* NoyficationModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NoyficationModel.m; sourceTree = "<group>"; };
+		3E984FC11EC1697C0094CBE4 /* 启动页.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "启动页.png"; sourceTree = "<group>"; };
+		3E984FC31EC16A970094CBE4 /* ZYAlertSView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZYAlertSView.h; sourceTree = "<group>"; };
+		3E984FC41EC16A970094CBE4 /* ZYAlertSView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZYAlertSView.m; sourceTree = "<group>"; };
 		3EA3F4421E95E388005670A5 /* YYCycleView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = YYCycleView.h; path = YuYi_Server/YYCycleView.h; sourceTree = "<group>"; };
 		3EA3F4431E95E388005670A5 /* YYCycleView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = YYCycleView.m; path = YuYi_Server/YYCycleView.m; sourceTree = "<group>"; };
 		3EA3F4451E95E3D0005670A5 /* ZYPageControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ZYPageControl.h; path = YuYi_Server/ZYPageControl.h; sourceTree = "<group>"; };
@@ -386,8 +390,6 @@
 		3EBD821D1E8E37E600BDC217 /* NSString+unicode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+unicode.m"; sourceTree = "<group>"; };
 		3EBD82211E8E383500BDC217 /* UIBarButtonItem+Helper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIBarButtonItem+Helper.h"; sourceTree = "<group>"; };
 		3EBD82221E8E383500BDC217 /* UIBarButtonItem+Helper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIBarButtonItem+Helper.m"; sourceTree = "<group>"; };
-		3EBD82241E8E385E00BDC217 /* ZYAlertSView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZYAlertSView.h; sourceTree = "<group>"; };
-		3EBD82251E8E385E00BDC217 /* ZYAlertSView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZYAlertSView.m; sourceTree = "<group>"; };
 		3EBD82281E8E389C00BDC217 /* YYNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YYNavigationController.h; sourceTree = "<group>"; };
 		3EBD82291E8E389C00BDC217 /* YYNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YYNavigationController.m; sourceTree = "<group>"; };
 		3EBD822A1E8E389C00BDC217 /* YYTabBarController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YYTabBarController.h; sourceTree = "<group>"; };
@@ -933,6 +935,7 @@
 				1614C0C81E94D31D004CF952 /* info.png */,
 				3E85EF9B1E8F47DA00E7D8F1 /* avatar.jpg */,
 				3EA3F4641E95ECAE005670A5 /* cell1.png */,
+				3E984FC11EC1697C0094CBE4 /* 启动页.png */,
 				3EBD81EB1E8E2D9400BDC217 /* LaunchScreen.storyboard */,
 				3EBD81EE1E8E2D9400BDC217 /* Info.plist */,
 			);
@@ -964,8 +967,8 @@
 				3EBD821D1E8E37E600BDC217 /* NSString+unicode.m */,
 				3EBD82211E8E383500BDC217 /* UIBarButtonItem+Helper.h */,
 				3EBD82221E8E383500BDC217 /* UIBarButtonItem+Helper.m */,
-				3EBD82241E8E385E00BDC217 /* ZYAlertSView.h */,
-				3EBD82251E8E385E00BDC217 /* ZYAlertSView.m */,
+				3E984FC31EC16A970094CBE4 /* ZYAlertSView.h */,
+				3E984FC41EC16A970094CBE4 /* ZYAlertSView.m */,
 				3EBD82441E8E583200BDC217 /* UIColor+Extension.h */,
 				3EBD82451E8E583200BDC217 /* UIColor+Extension.m */,
 				3EBD82461E8E583200BDC217 /* HttpClient.h */,
@@ -1170,6 +1173,7 @@
 			files = (
 				3E85EF9C1E8F47DA00E7D8F1 /* avatar.jpg in Resources */,
 				3EBD81ED1E8E2D9400BDC217 /* LaunchScreen.storyboard in Resources */,
+				3E984FC21EC1697C0094CBE4 /* 启动页.png in Resources */,
 				3EBD81EA1E8E2D9400BDC217 /* Assets.xcassets in Resources */,
 				3EA3F4651E95ECAE005670A5 /* cell1.png in Resources */,
 				161B040F1EA0A20700095F77 /* UMSocialSDKPromptResources.bundle in Resources */,
@@ -1372,6 +1376,7 @@
 				1688D7CF1E9BB756001BBA61 /* YYCardCommentDetailModel.m in Sources */,
 				3E85EF951E8F391400E7D8F1 /* YYAboutUSViewController.m in Sources */,
 				163D618A1E8F790E003A27CF /* UIButton+Badge.m in Sources */,
+				3E984FC51EC16A970094CBE4 /* ZYAlertSView.m in Sources */,
 				3EA3F44A1E95E413005670A5 /* YYTrendView.m in Sources */,
 				163A979A1E94A0BC007B69AD /* ZYAbstractDotView.m in Sources */,
 				3EBD82391E8E568600BDC217 /* YYPersonalViewController.m in Sources */,
@@ -1388,7 +1393,6 @@
 				161B03A41E9E123E00095F77 /* HUPhotoBrowser.m in Sources */,
 				163D61A61E8F7CD5003A27CF /* NSObject+Formula.m in Sources */,
 				1614C0CC1E94D3DA004CF952 /* YYInformationTableViewCell.m in Sources */,
-				3EBD82261E8E385E00BDC217 /* ZYAlertSView.m in Sources */,
 				163D61951E8F7A2E003A27CF /* YYCardDetailTVCell.m in Sources */,
 				3EBD82231E8E383500BDC217 /* UIBarButtonItem+Helper.m in Sources */,
 				3EA3F4471E95E3D0005670A5 /* ZYPageControl.m in Sources */,
@@ -1609,7 +1613,8 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 9F660235B8593BB07FBFA4AC /* Pods-YuYi_Server.debug.xcconfig */;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon-2";
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_ENTITLEMENTS = YuYi_Server/YuYi_Server.entitlements;
 				DEVELOPMENT_TEAM = HM3WX6CXQ7;
 				ENABLE_BITCODE = NO;
@@ -1641,7 +1646,8 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 562FCB2765EB8EA4F257D670 /* Pods-YuYi_Server.release.xcconfig */;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon-2";
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_ENTITLEMENTS = YuYi_Server/YuYi_Server.entitlements;
 				DEVELOPMENT_TEAM = HM3WX6CXQ7;
 				ENABLE_BITCODE = NO;
