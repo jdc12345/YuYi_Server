@@ -239,7 +239,7 @@
     NSString* thumbURL =  [NSString stringWithFormat:@"%@%@",mPrefixUrl,self.infoModel.picture];
     UMShareWebpageObject *shareObject = [UMShareWebpageObject shareObjectWithTitle:self.infoModel.title descr:self.infoModel.content thumImage:thumbURL];
     //设置网页地址
-    shareObject.webpageUrl = @"http://59.110.169.148:8080";
+    shareObject.webpageUrl = @"http://59.110.169.148:8080/static/html/sharejump.html";
     
     //分享消息对象设置分享内容对象
     messageObject.shareObject = shareObject;
@@ -264,6 +264,7 @@
         }
         [SVProgressHUD dismiss];
     }];
+    [SVProgressHUD dismiss];
 }
 //分享文本
 - (void)shareTextToPlatformType:(UMSocialPlatformType)platformType
