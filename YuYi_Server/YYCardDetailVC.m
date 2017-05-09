@@ -137,6 +137,11 @@ static NSInteger start = 0;
     //设置上拉加载更多
     self.tableView.mj_footer = [MJRefreshAutoNormalFooter footerWithRefreshingBlock:^{
         // 进入加载状态后会自动调用这个block
+        if (self.commentInfos.count==0) {
+            [weakSelf.tableView.mj_footer endRefreshing];
+            return ;
+        }
+        
         NSString *urlStr = [NSString stringWithFormat:@"%@/academicpaper/academicpaperComment.do?start=%ld&limit=2&id=%@&token=%@",mPrefixUrl,start,self.info_id,token];
         [[HttpClient defaultClient]requestWithPath:urlStr method:0 parameters:nil prepareExecute:^{
         } success:^(NSURLSessionDataTask *task, id responseObject) {
