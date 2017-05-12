@@ -137,6 +137,11 @@ static NSInteger start = 0;
     //设置上拉加载更多
     self.tableView.mj_footer = [MJRefreshAutoNormalFooter footerWithRefreshingBlock:^{
         // 进入加载状态后会自动调用这个block
+        if (self.commentInfos.count==0) {
+            [weakSelf.tableView.mj_footer endRefreshing];
+            return ;
+        }
+        
         NSString *urlStr = [NSString stringWithFormat:@"%@/academicpaper/academicpaperComment.do?start=%ld&limit=2&id=%@&token=%@",mPrefixUrl,start,self.info_id,token];
         [[HttpClient defaultClient]requestWithPath:urlStr method:0 parameters:nil prepareExecute:^{
         } success:^(NSURLSessionDataTask *task, id responseObject) {
@@ -458,7 +463,7 @@ static NSInteger start = 0;
     NSString* thumbURL =  [NSString stringWithFormat:@"%@%@",mPrefixUrl,self.infoModel.picture];
     UMShareWebpageObject *shareObject = [UMShareWebpageObject shareObjectWithTitle:self.infoModel.title descr:self.infoModel.content thumImage:thumbURL];
     //设置网页地址
-    shareObject.webpageUrl = @"http://59.110.169.148:8080";
+    shareObject.webpageUrl = @"http://59.110.169.148:8080/static/html/sharejump.html";
     
     //分享消息对象设置分享内容对象
     messageObject.shareObject = shareObject;
