@@ -60,7 +60,7 @@ static NSInteger start = 0;
         if (self.commentInfoModels.count>0) {
             start = self.commentInfoModels.count;
         }
-        [SVProgressHUD dismiss];// 动画结束
+        [SVProgressHUD dismiss]; // 动画结束
         [self setUpUI];
         
     } failure:^(NSURLSessionDataTask *task, NSError *error) {

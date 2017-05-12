@@ -336,6 +336,9 @@
 		3E85EFA01E8F951500E7D8F1 /* NotficationTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NotficationTableViewCell.m; sourceTree = "<group>"; };
 		3E85EFA11E8F951500E7D8F1 /* NoyficationModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NoyficationModel.h; sourceTree = "<group>"; };
 		3E85EFA21E8F951500E7D8F1 /* NoyficationModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NoyficationModel.m; sourceTree = "<group>"; };
+		3E90B72E1EC2BE0000CC49D7 /* YYAVViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YYAVViewController.h; sourceTree = "<group>"; };
+		3E90B72F1EC2BE1400CC49D7 /* YYSpeechViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YYSpeechViewController.h; sourceTree = "<group>"; };
+		3E90B7301EC2BE2C00CC49D7 /* YYWordsViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YYWordsViewController.h; sourceTree = "<group>"; };
 		3E984FC11EC1697C0094CBE4 /* 启动页.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "启动页.png"; sourceTree = "<group>"; };
 		3E984FC31EC16A970094CBE4 /* ZYAlertSView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZYAlertSView.h; sourceTree = "<group>"; };
 		3E984FC41EC16A970094CBE4 /* ZYAlertSView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZYAlertSView.m; sourceTree = "<group>"; };
@@ -1018,9 +1021,12 @@
 				3E22729C1E9C7835005BF064 /* RCDChatListCell.m */,
 				3E22729D1E9C7835005BF064 /* RCDHttpTool.m */,
 				3E22729E1E9C7835005BF064 /* RCDUserInfo.m */,
+				3E90B72E1EC2BE0000CC49D7 /* YYAVViewController.h */,
 				3E22729F1E9C7835005BF064 /* YYAVViewController.m */,
-				3E2272A01E9C7835005BF064 /* YYSearchTableViewController.m */,
+				3E90B72F1EC2BE1400CC49D7 /* YYSpeechViewController.h */,
 				3E2272A11E9C7835005BF064 /* YYSpeechViewController.m */,
+				3E2272A01E9C7835005BF064 /* YYSearchTableViewController.m */,
+				3E90B7301EC2BE2C00CC49D7 /* YYWordsViewController.h */,
 				3E2272991E9C77AB005BF064 /* YYWordsViewController.m */,
 				3E2272951E9C76EF005BF064 /* pinyin.c */,
 				3E2272961E9C76EF005BF064 /* pinyin.h */,
@@ -1639,6 +1645,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "com.technology.YuYi-Server";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -1672,6 +1679,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "com.technology.YuYi-Server";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};

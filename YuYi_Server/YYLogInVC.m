@@ -235,6 +235,7 @@
             CcUserModel *userModel = [CcUserModel defaultClient];
             userModel.userToken = dic[@"result"];
             userModel.telephoneNum = self.telNumberField.text;
+            userModel.userToken = @"A03507C88E674D227AB2B6D1C8E76BAC";
             [userModel saveAllInfo];
             //跳转登录首页
             YYTabBarController *tabBarVC = [[YYTabBarController alloc]init];

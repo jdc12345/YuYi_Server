@@ -23,6 +23,8 @@
 //友盟
 #import <UMSocialCore/UMSocialCore.h>
 #define USHARE_YUYI_APPKEY @"58f031411c5dd010b3001006"
+#import "HttpClient.h"
+//#import "RCUserModel.h"
 @interface AppDelegate ()<JPUSHRegisterDelegate,RCIMReceiveMessageDelegate, UNUserNotificationCenterDelegate>
 @property (nonatomic, strong) YYTabBarController *yyTabBar;
 @end
@@ -56,12 +58,19 @@
     [[RCIM sharedRCIM] initWithAppKey:@"25wehl3u2qo7w"];
     
    //   登陆融云
-    
-        [[RCIM sharedRCIM] connectWithToken:mRCToken     success:^(NSString *userId) {
+    [[HttpClient defaultClient]requestWithPath:[NSString stringWithFormat:@"%@%@",mRCtokenUrl,userModel.telephoneNum] method:0 parameters:nil prepareExecute:^{
+        
+    } success:^(NSURLSessionDataTask *task, id responseObject) {
+//        RCUserModel *userModel_rc = [RCUserModel defaultClient];
+//        userModel_rc.token = responseObject[@"token"];
+//        userModel_rc.Avatar = responseObject[@"Avatar"];
+//        userModel_rc.TrueName = responseObject[@"TrueName"];
+//        userModel_rc.info_id = responseObject[@"id"];
+        
+        
+        [[RCIM sharedRCIM] connectWithToken:responseObject[@"token"]     success:^(NSString *userId) {
             NSLog(@"登陆成功。当前登录的用户ID：%@", userId);
-//            [[RCIMClient sharedRCIMClient] setReceiveMessageDelegate:self object:nil];
             [[RCIM sharedRCIM] setReceiveMessageDelegate:self];
-            [[RCIM sharedRCIM] setDisableMessageNotificaiton:NO];
         } error:^(RCConnectErrorCode status) {
             NSLog(@"登陆的错误码为:%d", status);
         } tokenIncorrect:^{
@@ -70,7 +79,10 @@
             //如果没有设置token有效期却提示token错误，请检查您客户端和服务器的appkey是否匹配，还有检查您获取token的流程。
             NSLog(@"token错误");
         }];
-    
+        
+    } failure:^(NSURLSessionDataTask *task, NSError *error) {
+        NSLog(@"%@",error);
+    }];
     
     // 融云控制台输出信息种类
     [RCIMClient sharedRCIMClient].logLevel = RC_Log_Level_Error;
