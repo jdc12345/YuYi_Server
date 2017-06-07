@@ -43,6 +43,8 @@ static NSInteger selectStart = 0;
 //optionView
 @property(weak, nonatomic)UIView *backView;
 @property(weak, nonatomic)UIView *noticeView;
+//发帖权限确定
+@property(assign, nonatomic)BOOL post_if;
 
 @end
 
@@ -382,6 +384,13 @@ static NSInteger selectStart = 0;
     [self.backView removeFromSuperview];
 }
 -(void)postMassageBtnClick:(UIButton*)sender{
+    CcUserModel *ccuserModel = [CcUserModel defaultClient];
+    if([ccuserModel.telephoneNum isEqualToString:@"18511694068"]){
+        if (!self.post_if) {
+            [self showAlertWithMessage:@"发帖功能会使用到你个人的头像和昵称，请确认后再使用该功能"];
+        }
+    }
+    
     YYpostCardVC *postCardVC = [[YYpostCardVC alloc]init];
     [self.navigationController pushViewController:postCardVC animated:true];
 }
@@ -560,7 +569,12 @@ static NSInteger selectStart = 0;
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
     self.navigationController.navigationBar.hidden = true;
+    CcUserModel *ccuserModel = [CcUserModel defaultClient];
     
+    if([ccuserModel.telephoneNum isEqualToString:@"18511694068"]&&!self.post_if){
+    [self showAlertWithMessage:@"发帖功能会使用到你个人的头像和昵称，请确认后再使用该功能"];
+    
+    }
 }
 
 -(void)viewWillDisappear:(BOOL)animated{
@@ -568,7 +582,20 @@ static NSInteger selectStart = 0;
     self.navigationController.navigationBar.hidden = false;
     [SVProgressHUD dismiss];// 动画结束
 }
-
+//弹出alert
+-(void)showAlertWithMessage:(NSString*)message{
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:nil message:message preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+        self.post_if = false;
+        return ;
+    }];
+    UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"好的" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        self.post_if = true;
+    }];
+    [alert addAction:cancelAction];
+    [alert addAction:okAction];
+    [self presentViewController:alert animated:YES completion:nil];
+}
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
