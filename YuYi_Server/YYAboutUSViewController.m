@@ -5,7 +5,7 @@
 //  Created by wylt_ios_1 on 2017/3/1.
 //  Copyright © 2017年 wylt_ios_1. All rights reserved.
 //
-#define bLoodStr  @"宇医app，希望通过网上医疗的形式能够解决用户的一些医疗的基本需求，包括：测量监控自己及家人的健康数据；足不出户解决购药问题；提前预约专家挂号问题；在家与医生面对面交流，解决一些简单的问诊等。"
+#define bLoodStr  @"宇医医生app，希望通过网上医疗的形式能够解决用户的一些医疗的基本需求，包括：测量监控自己及家人的健康数据；足不出户解决购药问题；提前预约专家挂号问题；在家与医生面对面交流，解决一些简单的问诊等。"
 #import "YYAboutUSViewController.h"
 #import "UIColor+Extension.h"
 #import  <Masonry.h>
@@ -37,7 +37,7 @@
     }];
     
     UILabel *titleLabel = [[UILabel alloc]init];
-    titleLabel.text = @"宇医1.0";
+    titleLabel.text = @"宇医医生1.0"; 
     titleLabel.textColor = [UIColor colorWithHexString:@"333333"];
     titleLabel.font = [UIFont systemFontOfSize:17];
     titleLabel.textAlignment = NSTextAlignmentCenter;
