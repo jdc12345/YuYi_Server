@@ -8,8 +8,8 @@
 
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
-#import <AMapFoundationKit/AMapFoundationKit.h>
-#import <AMapLocationKit/AMapLocationKit.h>
+//#import <AMapFoundationKit/AMapFoundationKit.h>
+//#import <AMapLocationKit/AMapLocationKit.h>
 
 @interface CcUserModel : NSObject
 
@@ -30,7 +30,7 @@
 @property (nonatomic,strong) UIImage *imageAfterChoose;
 
 
-@property (nonatomic, strong) CLLocation *loation;
+//@property (nonatomic, strong) CLLocation *loation;
 
 + (CcUserModel *)defaultClient;
 - (void)saveAllInfo;

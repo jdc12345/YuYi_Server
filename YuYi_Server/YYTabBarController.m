@@ -9,6 +9,7 @@
 #import "YYSciencesViewController.h"
 #import "YYPatientsViewController.h"
 #import "YYPersonalViewController.h"
+#import "CcUserModel.h"
 
 #define kTabbarItemTag 100
 @interface YYTabBarController () <UITabBarControllerDelegate>
@@ -23,10 +24,16 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-
-    self.tabBarView = [YYTabBar initWithTabs:4 systemTabBarHeight:self.tabBar.bounds.size.height selected:^(NSUInteger index) {
-        self.selectedIndex = index;
-    }];
+    CcUserModel *ccuserModel = [CcUserModel defaultClient];
+    if(![ccuserModel.telephoneNum isEqualToString:@"18511694068"]){
+        self.tabBarView = [YYTabBar initWithTabs:4 systemTabBarHeight:self.tabBar.bounds.size.height selected:^(NSUInteger index) {
+            self.selectedIndex = index;
+        }];
+    }else{
+        self.tabBarView = [YYTabBar initWithTabs:3 systemTabBarHeight:self.tabBar.bounds.size.height selected:^(NSUInteger index) {
+            self.selectedIndex = index;
+        }];
+    }
     [self setupMainContents];
     [self setValue:self.tabBarView forKey:@"tabBar"];
 }
@@ -49,6 +56,8 @@
 }
 
 - (void)setupMainContents {
+    
+    CcUserModel *ccuserModel = [CcUserModel defaultClient];
     // 首页
     YYHomePageViewController *homeVC = [[YYHomePageViewController alloc] init];
     [self addChildViewControllerAtIndex:0 childViewController:homeVC title:@"资讯" normalImage:@"information" selectedImage:@"information-selected"];
@@ -56,14 +65,21 @@
     // 学术圈
     YYSciencesViewController *measureVC = [[YYSciencesViewController alloc] init];
     [self addChildViewControllerAtIndex:1 childViewController:measureVC title:@"学术圈" normalImage:@"Academiccircles" selectedImage:@"Academiccircles-selected"];
+    if(![ccuserModel.telephoneNum isEqualToString:@"18511694068"]){
+        // 患者
+        YYPatientsViewController *consultVC = [[YYPatientsViewController alloc] init];
+        [self addChildViewControllerAtIndex:2 childViewController:consultVC title:@"患者" normalImage:@"patient" selectedImage:@"patient-selected"];
+        // 我的
+        YYPersonalViewController *personalVC = [[YYPersonalViewController alloc] init];
+        [self addChildViewControllerAtIndex:3 childViewController:personalVC title:@"我的" normalImage:@"my" selectedImage:@"my-selected"];
+    }else{
+        // 我的
+        YYPersonalViewController *personalVC = [[YYPersonalViewController alloc] init];
+        [self addChildViewControllerAtIndex:2 childViewController:personalVC title:@"我的" normalImage:@"my" selectedImage:@"my-selected"];
+    }
+
     
-    // 患者
-    YYPatientsViewController *consultVC = [[YYPatientsViewController alloc] init];
-    [self addChildViewControllerAtIndex:2 childViewController:consultVC title:@"患者" normalImage:@"patient" selectedImage:@"patient-selected"];
-    
-    // 我的
-    YYPersonalViewController *personalVC = [[YYPersonalViewController alloc] init];
-    [self addChildViewControllerAtIndex:3 childViewController:personalVC title:@"我的" normalImage:@"my" selectedImage:@"my-selected"];
+
 }
 
 /**

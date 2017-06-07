@@ -9,7 +9,6 @@ target 'YuYi_Server' do
     pod 'SDWebImage'
     pod 'SVProgressHUD'
     pod 'SDCycleScrollView'
-    pod 'AMapLocation-NO-IDFA'
     pod 'RongCloudIM/IMLib', '~> 2.8.3'
     pod 'RongCloudIM/IMKit', '~> 2.8.3'
     pod 'RongCloudIM/CallLib', '~> 2.8.3'
