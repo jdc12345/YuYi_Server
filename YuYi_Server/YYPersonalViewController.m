@@ -86,7 +86,7 @@
     if(![ccuserModel.telephoneNum isEqualToString:@"18511694068"]){
         self.dataSource = [[NSMutableArray alloc]initWithArray:@[@[@"我的帖子",@"我的点赞"],@[@"咨询",@"查看数据",@"挂号接收"]]];}
     else{
-        self.dataSource = [[NSMutableArray alloc]initWithArray:@[@[@"我的点赞"]]];
+        self.dataSource = [[NSMutableArray alloc]initWithArray:@[@[@"我的帖子",@"我的点赞"]]];
     }
     self.iconList =@[@[@"Personal-EMR-icon-",@"Personal-message-icon-"],@[@"family-icon--1",@"equipment-icon-"],@[@"goods-icon-",@"Set-icon-"]];
     

@@ -119,6 +119,9 @@
 		3EA3F46F1E976BDA005670A5 /* RecardModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EA3F46E1E976BDA005670A5 /* RecardModel.m */; };
 		3EA3F4721E9770FD005670A5 /* YYDetailRecardViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EA3F4711E9770FD005670A5 /* YYDetailRecardViewController.m */; };
 		3EA3F4751E977135005670A5 /* RecardDetailModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EA3F4741E977135005670A5 /* RecardDetailModel.m */; };
+		3EBB7FDA1EE7CBB8004D1B02 /* selected-login@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3EBB7FD81EE7CBB8004D1B02 /* selected-login@2x.png */; };
+		3EBB7FDB1EE7CBB8004D1B02 /* selected-login@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3EBB7FD91EE7CBB8004D1B02 /* selected-login@3x.png */; };
+		3EBB7FDE1EE7CFB8004D1B02 /* PrivacyViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EBB7FDD1EE7CFB8004D1B02 /* PrivacyViewController.m */; };
 		3EBD81DF1E8E2D9400BDC217 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EBD81DE1E8E2D9400BDC217 /* main.m */; };
 		3EBD81E21E8E2D9400BDC217 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EBD81E11E8E2D9400BDC217 /* AppDelegate.m */; };
 		3EBD81E51E8E2D9400BDC217 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EBD81E41E8E2D9400BDC217 /* ViewController.m */; };
@@ -369,6 +372,10 @@
 		3EA3F4711E9770FD005670A5 /* YYDetailRecardViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YYDetailRecardViewController.m; sourceTree = "<group>"; };
 		3EA3F4731E977135005670A5 /* RecardDetailModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RecardDetailModel.h; sourceTree = "<group>"; };
 		3EA3F4741E977135005670A5 /* RecardDetailModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RecardDetailModel.m; sourceTree = "<group>"; };
+		3EBB7FD81EE7CBB8004D1B02 /* selected-login@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "selected-login@2x.png"; sourceTree = "<group>"; };
+		3EBB7FD91EE7CBB8004D1B02 /* selected-login@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "selected-login@3x.png"; sourceTree = "<group>"; };
+		3EBB7FDC1EE7CFB8004D1B02 /* PrivacyViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PrivacyViewController.h; sourceTree = "<group>"; };
+		3EBB7FDD1EE7CFB8004D1B02 /* PrivacyViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PrivacyViewController.m; sourceTree = "<group>"; };
 		3EBD81DA1E8E2D9400BDC217 /* YuYi_Server.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = YuYi_Server.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3EBD81DE1E8E2D9400BDC217 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		3EBD81E01E8E2D9400BDC217 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -831,6 +838,8 @@
 				161B03EA1EA0A20700095F77 /* UMSocial */,
 				161D63FB1E96358600AF4998 /* YYLogInVC.h */,
 				161D63FC1E96358600AF4998 /* YYLogInVC.m */,
+				3EBB7FDC1EE7CFB8004D1B02 /* PrivacyViewController.h */,
+				3EBB7FDD1EE7CFB8004D1B02 /* PrivacyViewController.m */,
 				3EBD82341E8E565500BDC217 /* YYHomePageViewController.h */,
 				3EBD82351E8E565500BDC217 /* YYHomePageViewController.m */,
 				16873A891E94921A00BD354E /* C */,
@@ -935,6 +944,8 @@
 				3EBD81E41E8E2D9400BDC217 /* ViewController.m */,
 				3EBD81E61E8E2D9400BDC217 /* Main.storyboard */,
 				3EBD81E91E8E2D9400BDC217 /* Assets.xcassets */,
+				3EBB7FD81EE7CBB8004D1B02 /* selected-login@2x.png */,
+				3EBB7FD91EE7CBB8004D1B02 /* selected-login@3x.png */,
 				1614C0C81E94D31D004CF952 /* info.png */,
 				3E85EF9B1E8F47DA00E7D8F1 /* avatar.jpg */,
 				3EA3F4641E95ECAE005670A5 /* cell1.png */,
@@ -1178,11 +1189,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				3E85EF9C1E8F47DA00E7D8F1 /* avatar.jpg in Resources */,
+				3EBB7FDA1EE7CBB8004D1B02 /* selected-login@2x.png in Resources */,
 				3EBD81ED1E8E2D9400BDC217 /* LaunchScreen.storyboard in Resources */,
 				3E984FC21EC1697C0094CBE4 /* 启动页.png in Resources */,
 				3EBD81EA1E8E2D9400BDC217 /* Assets.xcassets in Resources */,
 				3EA3F4651E95ECAE005670A5 /* cell1.png in Resources */,
 				161B040F1EA0A20700095F77 /* UMSocialSDKPromptResources.bundle in Resources */,
+				3EBB7FDB1EE7CBB8004D1B02 /* selected-login@3x.png in Resources */,
 				161B04111EA0A20700095F77 /* UMSocialSDKResources.bundle in Resources */,
 				161B03AC1E9E123E00095F77 /* HUImagePickerCell.xib in Resources */,
 				161B03A81E9E123E00095F77 /* HUAlbumCell.xib in Resources */,
@@ -1417,6 +1430,7 @@
 				3EA3F46F1E976BDA005670A5 /* RecardModel.m in Sources */,
 				3EBD82521E8E64DF00BDC217 /* YYPersonalTableViewCell.m in Sources */,
 				161D63FD1E96358600AF4998 /* YYLogInVC.m in Sources */,
+				3EBB7FDE1EE7CFB8004D1B02 /* PrivacyViewController.m in Sources */,
 				3EBD82201E8E37E600BDC217 /* NSString+unicode.m in Sources */,
 				3EBD82311E8E389C00BDC217 /* YYTabBarController.m in Sources */,
 				3E85EF9A1E8F3CBE00E7D8F1 /* YYPInfomationTableViewCell.m in Sources */,

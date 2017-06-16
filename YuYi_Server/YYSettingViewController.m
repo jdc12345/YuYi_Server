@@ -62,8 +62,12 @@
     self.title = @"设置";
     self.view.backgroundColor = [UIColor colorWithHexString:@"f2f2f2"];
     
-    
-    self.dataSource = [[NSMutableArray alloc]initWithArray:@[@[@"意见反馈",@"关于我们"]]];
+    CcUserModel *ccuserModel = [CcUserModel defaultClient];
+    if(![ccuserModel.telephoneNum isEqualToString:@"18511694068"]){
+        self.dataSource = [[NSMutableArray alloc]initWithArray:@[@[@"意见反馈",@"关于我们"]]];}
+    else{
+        self.dataSource = [[NSMutableArray alloc]initWithArray:@[@[@"意见反馈"]]];
+    }
     self.iconList =@[@[@"18511694068",@"男",@"布依族",@"24"],@[@"黑龙江哈尔滨",@"程序员",@"未婚"],@[@"2016-10-23"]];
     
     

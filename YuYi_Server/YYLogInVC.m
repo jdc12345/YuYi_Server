@@ -14,6 +14,7 @@
 #import "HttpClient.h"
 #import "CcUserModel.h"
 #import "YYTabBarController.h"
+#import "PrivacyViewController.h"
 
 @interface YYLogInVC ()<UITextFieldDelegate>
 @property(nonatomic,weak)UILabel *countdownLabel;
@@ -21,6 +22,9 @@
 @property(nonatomic,weak)UITextField *telNumberField;
 
 @property(nonatomic,weak)UITextField *passWordField;
+
+
+@property (nonatomic, weak) UIButton *privacyBtn;
 
 @end
 
@@ -101,6 +105,39 @@
         make.width.offset(110);
     }];
     self.passWordField = passWordField;
+    
+    //////////////////
+    UIButton *agreeBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    [agreeBtn setImage:[UIImage imageNamed:@"selected-login"] forState:UIControlStateSelected];
+    [agreeBtn setImage:[UIImage imageNamed:@"white"] forState:UIControlStateNormal];
+    [agreeBtn addTarget:self action:@selector(imageClick:) forControlEvents:UIControlEventTouchUpInside];
+    //    [agreeBtn sizeToFit];
+    self.privacyBtn = agreeBtn;
+    [self.view addSubview:agreeBtn];
+    
+    [agreeBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(passWordImageView.mas_bottom).with.offset(10);
+        make.left.equalTo(passWordImageView).with.offset(0);
+        make.size.mas_equalTo(CGSizeMake(12, 12));
+    }];
+    
+    UIButton *agreeMoreBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    [agreeMoreBtn setTitle:@"我已确认阅读并同意《使用条款和隐私协议》" forState:UIControlStateNormal];
+    [agreeMoreBtn setTitleColor:[UIColor colorWithHexString:@"333333"] forState:UIControlStateNormal];
+    agreeMoreBtn.titleLabel.font = [UIFont systemFontOfSize:11];
+    agreeMoreBtn.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
+    [agreeMoreBtn addTarget:self action:@selector(privacyShow) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:agreeMoreBtn];
+    
+    [agreeMoreBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerY.equalTo(agreeBtn).with.offset(0);
+        make.left.equalTo(agreeBtn.mas_right).with.offset(5);
+        make.size.mas_equalTo(CGSizeMake(250, 11));
+    }];
+    
+    
+    
+    /////////////////
     
     //添加获取验证码Btn
     UIButton *getCodeBtn = [[UIButton alloc]init];
@@ -219,6 +256,9 @@
 }
 
 -(void)logIn:(UIButton*)sender{
+    if (self.privacyBtn.selected) {
+        
+    
     if ([self.telNumberField.text isEqualToString:@"18511694068"]) {
         CcUserModel *userModel = [CcUserModel defaultClient];
         userModel.userToken = @"FA3C7B06324937DD4E099A4215BC6BBD";
@@ -267,6 +307,7 @@
         [SVProgressHUD showErrorWithStatus:@"登录失败,请重新登录"];
         return ;
     }];
+    }
     }
 }
 
@@ -381,7 +422,14 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
-
+- (void)imageClick:(UIButton *)sender{
+    sender.selected = !sender.selected;
+}
+- (void)privacyShow{
+    [self presentViewController:[[PrivacyViewController alloc]init] animated:YES completion:^{
+        
+    }];
+}
 /*
 #pragma mark - Navigation
 
