@@ -18,6 +18,7 @@
 #import <MJExtension.h>
 #import "CcUserModel.h"
 #import <MJRefresh.h>
+#import "YYNoticeListVC.h"
 
 static NSInteger hotStart = 0;//上拉加载起始位置
 static NSInteger recentStart = 0;
@@ -52,8 +53,8 @@ static NSInteger selectStart = 0;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.title = @"学术圈";
-    self.view.backgroundColor = [UIColor whiteColor];
+//    self.title = @"学术圈";
+    self.view.backgroundColor = [UIColor colorWithHexString:@"f1f1f1"];
     
     [self loadData];
 }
@@ -155,8 +156,8 @@ static NSInteger selectStart = 0;
     //循环把各个按钮通用的部分设置
     for (int i = 0; i < cardCategoryButtons.count; i ++) {
         UIButton *btn = cardCategoryButtons[i];
-        btn.titleLabel.font = [UIFont systemFontOfSize:15];
-        [btn setTitleColor:[UIColor darkGrayColor] forState:UIControlStateNormal];
+        btn.titleLabel.font = [UIFont systemFontOfSize:17];
+        [btn setTitleColor:[UIColor colorWithHexString:@"6a6a6a"] forState:UIControlStateNormal];
         [btn setBackgroundColor:[UIColor whiteColor]];
         //
         btn.tag = i;
@@ -164,10 +165,10 @@ static NSInteger selectStart = 0;
         [btn addTarget:self action:@selector(shopCategoryButtonClick:) forControlEvents:UIControlEventTouchUpInside];
         [cardsView addSubview:btn];
     }
-    
+    [hotCardButton setTitleColor:[UIColor colorWithHexString:@"1ebeec"] forState:UIControlStateNormal];
     //添加滑动线
     UIView *cardLineView = [[UIView alloc]init];
-    [cardLineView setBackgroundColor:[UIColor greenColor]];
+    [cardLineView setBackgroundColor:[UIColor colorWithHexString:@"1ebeec"]];
     [cardsView addSubview:cardLineView];
     self.cardLineView = cardLineView;
     
@@ -222,14 +223,14 @@ static NSInteger selectStart = 0;
     //添加右侧消息中心按钮
     UIButton *informationBtn = [[UIButton alloc]init];
     [self.view addSubview:informationBtn];
-    [informationBtn setImage:[UIImage imageNamed:@"notice"] forState:UIControlStateNormal];
-    informationBtn.badgeValue = @" ";
-    informationBtn.badgeBGColor = [UIColor redColor];
-    informationBtn.badgeFont = [UIFont systemFontOfSize:0.1];
-    informationBtn.badgeOriginX = 16;
-    informationBtn.badgeOriginY = 1;
-    informationBtn.badgePadding = 0.1;
-    informationBtn.badgeMinSize = 5;
+    [informationBtn setImage:[UIImage imageNamed:@"notfiy_select"] forState:UIControlStateNormal];
+//    informationBtn.badgeValue = @" ";
+//    informationBtn.badgeBGColor = [UIColor redColor];
+//    informationBtn.badgeFont = [UIFont systemFontOfSize:0.1];
+//    informationBtn.badgeOriginX = 16;
+//    informationBtn.badgeOriginY = 1;
+//    informationBtn.badgePadding = 0.1;
+//    informationBtn.badgeMinSize = 5;
     [informationBtn addTarget:self action:@selector(informationBtnClick:) forControlEvents:UIControlEventTouchUpInside];
     //设置帖子分类约束
     [cardsView mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -273,7 +274,7 @@ static NSInteger selectStart = 0;
     [cardDetailView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.right.offset(0);
         make.top.equalTo(cardsView.mas_bottom);
-        make.bottom.offset(-64*kiphone6);
+        make.bottom.offset(-44);
     }];
     [cardDetailView layoutIfNeeded];
     [hotCardVC.view mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -310,79 +311,87 @@ static NSInteger selectStart = 0;
 
 //按钮的监听事件
 -(void)shopCategoryButtonClick:(UIButton*)sender{
+    [sender setTitleColor:[UIColor colorWithHexString:@"1ebeec"] forState:UIControlStateNormal];
+    for (UIButton *btn in self.cardCategoryButtons) {
+        if (btn.tag != sender.tag) {
+            [btn setTitleColor:[UIColor colorWithHexString:@"6a6a6a"] forState:UIControlStateNormal];
+        }
+    }
     [self.cardDetailView setContentOffset:CGPointMake(sender.tag*self.cardDetailView.bounds.size.width, 0) animated:YES];
 }
 -(void)informationBtnClick:(UIButton*)sender{
-    //大蒙布View
-    UIView *backView = [[UIView alloc]init];
-    backView.backgroundColor = [UIColor colorWithHexString:@"#333333"];
-    backView.alpha = 0.2;
-    [self.view addSubview:backView];
-    self.backView = backView;
-    [backView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.left.bottom.right.offset(0);
-    }];
-    backView.userInteractionEnabled = YES;
-    //添加tap手势：
-    //    UITapGestureRecognizer *tapGesture=[[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(event:)];
-    //将手势添加至需要相应的view中
-    //    [backView addGestureRecognizer:tapGesture];
-    
-    //提示框
-    UIView *noticeView = [[UIView alloc]init];
-    noticeView.backgroundColor = [UIColor whiteColor];
-    [self.view addSubview:noticeView];
-    self.noticeView = noticeView;
-    [noticeView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.center.equalTo(backView);
-        make.width.offset(300*kiphone6);
-        make.height.offset(200*kiphone6);
-    }];
-    //noticeLabel
-    UILabel *noticeLabel = [[UILabel alloc]init];
-    noticeLabel.text = @"提示";
-    noticeLabel.font = [UIFont systemFontOfSize:17];
-    noticeLabel.textColor = [UIColor colorWithHexString:@"333333"];
-    [noticeView addSubview:noticeLabel];
-    [noticeLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.centerX.equalTo(noticeView);
-        make.top.offset(25*kiphone6);
-    }];
-    //contentLabel
-    UILabel *contentLabel = [[UILabel alloc]init];
-    //提示内容
-    contentLabel.text = @"此功能暂时只对专业医生开放，你暂时还没有权限，去看看别的吧";
-    contentLabel.numberOfLines = 2;
-    contentLabel.font = [UIFont systemFontOfSize:15];
-    contentLabel.textColor = [UIColor colorWithHexString:@"333333"];
-    [noticeView addSubview:contentLabel];
-    [contentLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.offset(25*kiphone6);
-        make.top.equalTo(noticeLabel.mas_bottom).offset(25*kiphone6);
-        make.right.offset(-25*kiphone6);
-    }];
-    //confirmButton
-    UIButton *confirmButton = [[UIButton alloc]init];
-    [confirmButton setTitle:@"确定" forState:UIControlStateNormal];
-    [confirmButton setTitleColor:[UIColor colorWithHexString:@"ffffff"] forState:UIControlStateNormal];
-    confirmButton.titleLabel.font = [UIFont systemFontOfSize:17];
-    confirmButton.backgroundColor = [UIColor colorWithHexString:@"#25f368"];
-    [noticeView addSubview:confirmButton];
-    [confirmButton mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.right.bottom.offset(0);
-        make.height.offset(60*kiphone6);
-    }];
-    //添加关闭提示框按钮的点击事件
-    [confirmButton addTarget:self action:@selector(closeNoticeView:) forControlEvents:UIControlEventTouchUpInside];
+    YYNoticeListVC *noticeVC = [[YYNoticeListVC alloc]init];
+    [self.navigationController pushViewController:noticeVC animated:true];
+//    //大蒙布View
+//    UIView *backView = [[UIView alloc]init];
+//    backView.backgroundColor = [UIColor colorWithHexString:@"#333333"];
+//    backView.alpha = 0.2;
+//    [self.view addSubview:backView];
+//    self.backView = backView;
+//    [backView mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.top.left.bottom.right.offset(0);
+//    }];
+//    backView.userInteractionEnabled = YES;
+//    //添加tap手势：
+//    //    UITapGestureRecognizer *tapGesture=[[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(event:)];
+//    //将手势添加至需要相应的view中
+//    //    [backView addGestureRecognizer:tapGesture];
+//    
+//    //提示框
+//    UIView *noticeView = [[UIView alloc]init];
+//    noticeView.backgroundColor = [UIColor whiteColor];
+//    [self.view addSubview:noticeView];
+//    self.noticeView = noticeView;
+//    [noticeView mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.center.equalTo(backView);
+//        make.width.offset(300*kiphone6);
+//        make.height.offset(200*kiphone6);
+//    }];
+//    //noticeLabel
+//    UILabel *noticeLabel = [[UILabel alloc]init];
+//    noticeLabel.text = @"提示";
+//    noticeLabel.font = [UIFont systemFontOfSize:17];
+//    noticeLabel.textColor = [UIColor colorWithHexString:@"333333"];
+//    [noticeView addSubview:noticeLabel];
+//    [noticeLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.centerX.equalTo(noticeView);
+//        make.top.offset(25*kiphone6);
+//    }];
+//    //contentLabel
+//    UILabel *contentLabel = [[UILabel alloc]init];
+//    //提示内容
+//    contentLabel.text = @"此功能暂时只对专业医生开放，你暂时还没有权限，去看看别的吧";
+//    contentLabel.numberOfLines = 2;
+//    contentLabel.font = [UIFont systemFontOfSize:15];
+//    contentLabel.textColor = [UIColor colorWithHexString:@"333333"];
+//    [noticeView addSubview:contentLabel];
+//    [contentLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.left.offset(25*kiphone6);
+//        make.top.equalTo(noticeLabel.mas_bottom).offset(25*kiphone6);
+//        make.right.offset(-25*kiphone6);
+//    }];
+//    //confirmButton
+//    UIButton *confirmButton = [[UIButton alloc]init];
+//    [confirmButton setTitle:@"确定" forState:UIControlStateNormal];
+//    [confirmButton setTitleColor:[UIColor colorWithHexString:@"ffffff"] forState:UIControlStateNormal];
+//    confirmButton.titleLabel.font = [UIFont systemFontOfSize:17];
+//    confirmButton.backgroundColor = [UIColor colorWithHexString:@"#25f368"];
+//    [noticeView addSubview:confirmButton];
+//    [confirmButton mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.left.right.bottom.offset(0);
+//        make.height.offset(60*kiphone6);
+//    }];
+//    //添加关闭提示框按钮的点击事件
+//    [confirmButton addTarget:self action:@selector(closeNoticeView:) forControlEvents:UIControlEventTouchUpInside];
     
 }
--(void)closeNoticeView:(UIButton*)sender{
-    for (UIView *view in self.noticeView.subviews) {
-        [view removeFromSuperview];
-    }
-    [self.noticeView removeFromSuperview];
-    [self.backView removeFromSuperview];
-}
+//-(void)closeNoticeView:(UIButton*)sender{
+//    for (UIView *view in self.noticeView.subviews) {
+//        [view removeFromSuperview];
+//    }
+//    [self.noticeView removeFromSuperview];
+//    [self.backView removeFromSuperview];
+//}
 -(void)postMassageBtnClick:(UIButton*)sender{
     CcUserModel *ccuserModel = [CcUserModel defaultClient];
     if([ccuserModel.telephoneNum isEqualToString:@"18511694068"]){
@@ -400,7 +409,7 @@ static NSInteger selectStart = 0;
     
     //获取偏移量
     CGFloat offSetX = self.cardDetailView.contentOffset.x;
-    // NSLog(@"%f",offSetX);
+     NSLog(@"%f",offSetX);
     //找到按钮数组的第一个按钮和最后一个按钮
     UIButton *firstBtn = self.cardCategoryButtons.firstObject;
     UIButton *lastBtn = self.cardCategoryButtons.lastObject;
@@ -420,11 +429,30 @@ static NSInteger selectStart = 0;
     CGFloat d = self.view.center.x - secondBtn.center.x;
     //根据偏移距离设置滚动线的位置
     [self.cardLineView mas_remakeConstraints:^(MASConstraintMaker *make) {
-        make.width.offset(30*kiphone6);
+        make.width.offset(32*kiphone6);
         make.height.offset(2*kiphone6);
         make.bottom.equalTo(self.cardsView);
         make.centerX.offset(res-d);
     }];
+    //滑动改变相应btn'的文字颜色
+    UIButton *hotBtn = self.cardCategoryButtons[0];
+    UIButton *selectBtn = self.cardCategoryButtons[1];
+    UIButton *newBtn = self.cardCategoryButtons[2];
+    if (offSetX == 0) {
+        [hotBtn setTitleColor:[UIColor colorWithHexString:@"1ebeec"] forState:UIControlStateNormal];
+        [selectBtn setTitleColor:[UIColor colorWithHexString:@"6a6a6a"] forState:UIControlStateNormal];
+        [newBtn setTitleColor:[UIColor colorWithHexString:@"6a6a6a"] forState:UIControlStateNormal];
+    }
+    if (offSetX == kScreenW) {
+        [selectBtn setTitleColor:[UIColor colorWithHexString:@"1ebeec"] forState:UIControlStateNormal];
+        [hotBtn setTitleColor:[UIColor colorWithHexString:@"6a6a6a"] forState:UIControlStateNormal];
+        [newBtn setTitleColor:[UIColor colorWithHexString:@"6a6a6a"] forState:UIControlStateNormal];
+    }
+    if (offSetX == kScreenW*2) {
+        [newBtn setTitleColor:[UIColor colorWithHexString:@"1ebeec"] forState:UIControlStateNormal];
+        [selectBtn setTitleColor:[UIColor colorWithHexString:@"6a6a6a"] forState:UIControlStateNormal];
+        [hotBtn setTitleColor:[UIColor colorWithHexString:@"6a6a6a"] forState:UIControlStateNormal];
+    }
 
 }
 #pragma refreshDelegate
@@ -499,10 +527,8 @@ static NSInteger selectStart = 0;
     }
 }
 -(void)transForFootRefreshWithViewController:(YYlearningCircleVC *)learningVC{
-    CcUserModel *userModel = [CcUserModel defaultClient];
-    NSString *token = userModel.userToken;
     if (learningVC == self.hotCardVC) {
-        NSString *hotUrlStr = [NSString stringWithFormat:@"%@/academicpaper/findhot.do?start=%ld&limit=6&token=%@",mPrefixUrl,hotStart,token];
+        NSString *hotUrlStr = [NSString stringWithFormat:@"%@/academicpaper/findhot.do?start=%ld&limit=6&token=%@",mPrefixUrl,hotStart,mDefineToken];
         [[HttpClient defaultClient]requestWithPath:hotUrlStr method:0 parameters:nil prepareExecute:^{
             
         } success:^(NSURLSessionDataTask *task, id responseObject) {
@@ -512,17 +538,21 @@ static NSInteger selectStart = 0;
                 YYCardDetailModel *infoModel = [YYCardDetailModel mj_objectWithKeyValues:dic];
                 [mArr addObject:infoModel];
             }
-            [self.hotCardVC.infos addObjectsFromArray:mArr];
-//            [self.hotInfos addObjectsFromArray:mArr];
-            hotStart = self.hotCardVC.infos.count;
-            [learningVC.tableView reloadData];
+            if (mArr.count>0) {
+                [self.hotCardVC.infos addObjectsFromArray:mArr];
+                hotStart = self.hotCardVC.infos.count;
+                [learningVC.tableView reloadData];
+            }else{
+                [learningVC.tableView.mj_footer endRefreshingWithNoMoreData];
+            }
+            
             [learningVC.tableView.mj_footer endRefreshing];
         } failure:^(NSURLSessionDataTask *task, NSError *error) {
             [learningVC.tableView.mj_footer endRefreshing];
             return ;
         }];
     }else if (learningVC == self.selectCardVC){
-        NSString *selectUrlStr = [NSString stringWithFormat:@"%@/academicpaper/Selected.do?start=%ld&limit=6&token=%@",mPrefixUrl,selectStart,token];
+        NSString *selectUrlStr = [NSString stringWithFormat:@"%@/academicpaper/Selected.do?start=%ld&limit=6&token=%@",mPrefixUrl,selectStart,mDefineToken];
         [[HttpClient defaultClient]requestWithPath:selectUrlStr method:0 parameters:nil prepareExecute:^{
             
         } success:^(NSURLSessionDataTask *task, id responseObject) {
@@ -532,10 +562,17 @@ static NSInteger selectStart = 0;
                 YYCardDetailModel *infoModel = [YYCardDetailModel mj_objectWithKeyValues:dic];
                 [mArr addObject:infoModel];
             }
-            [self.selectCardVC.infos addObjectsFromArray:mArr];
-//            [self.selectInfos addObjectsFromArray:mArr];
-            selectStart = self.selectCardVC.infos.count;
-            [self.selectCardVC.tableView reloadData];
+            if (mArr.count>0) {
+                [self.selectCardVC.infos addObjectsFromArray:mArr];
+                selectStart = self.selectCardVC.infos.count;
+                [learningVC.tableView reloadData];
+            }else{
+                [learningVC.tableView.mj_footer endRefreshingWithNoMoreData];
+            }
+//            [self.selectCardVC.infos addObjectsFromArray:mArr];
+////            [self.selectInfos addObjectsFromArray:mArr];
+//            selectStart = self.selectCardVC.infos.count;
+//            [self.selectCardVC.tableView reloadData];
             [learningVC.tableView.mj_footer endRefreshing];
         } failure:^(NSURLSessionDataTask *task, NSError *error) {
             [learningVC.tableView.mj_footer endRefreshing];
@@ -543,7 +580,7 @@ static NSInteger selectStart = 0;
         }];
         
     }else if (learningVC == self.recentCardVC){
-        NSString *recentUrlStr = [NSString stringWithFormat:@"%@/academicpaper/findtime.do?start=%ld&limit=6&token=%@",mPrefixUrl,recentStart,token];
+        NSString *recentUrlStr = [NSString stringWithFormat:@"%@/academicpaper/findtime.do?start=%ld&limit=6&token=%@",mPrefixUrl,recentStart,mDefineToken];
         [[HttpClient defaultClient]requestWithPath:recentUrlStr method:0 parameters:nil prepareExecute:^{
             
         } success:^(NSURLSessionDataTask *task, id responseObject) {
@@ -553,10 +590,17 @@ static NSInteger selectStart = 0;
                 YYCardDetailModel *infoModel = [YYCardDetailModel mj_objectWithKeyValues:dic];
                 [mArr addObject:infoModel];
             }
-            [self.recentCardVC.infos addObjectsFromArray:mArr];
-//            [self.recentInfos addObjectsFromArray:mArr];
-            recentStart = self.recentCardVC.infos.count;
-            [self.recentCardVC.tableView reloadData];
+            if (mArr.count>0) {
+                [self.recentCardVC.infos addObjectsFromArray:mArr];
+                recentStart = self.recentCardVC.infos.count;
+                [learningVC.tableView reloadData];
+            }else{
+                [learningVC.tableView.mj_footer endRefreshingWithNoMoreData];
+            }
+//            [self.recentCardVC.infos addObjectsFromArray:mArr];
+////            [self.recentInfos addObjectsFromArray:mArr];
+//            recentStart = self.recentCardVC.infos.count;
+//            [self.recentCardVC.tableView reloadData];
             [learningVC.tableView.mj_footer endRefreshing];
         } failure:^(NSURLSessionDataTask *task, NSError *error) {
             [learningVC.tableView.mj_footer endRefreshing];

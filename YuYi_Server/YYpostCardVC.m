@@ -72,10 +72,10 @@ static NSString *cell_id = @"cell_id";
         [message stringByRemovingPercentEncoding];
         NSLog(@"宝宝头像上传== %@,%@", responseObject,message);
         if ([responseObject[@"code"] isEqualToString:@"0"]) {
-            [self showSuccessAlertWithMessage:@"已上传成功，你可以在学术圈最新帖子处查看"];
+            [self showSuccessAlertWithMessage:@"已发帖成功，你可以在学术圈最新帖子处查看"];
             btn.enabled = true;
         }else{
-            [self showAlertWithMessage:[NSString stringWithFormat:@"上传失败:%@",message]];
+            [self showAlertWithMessage:[NSString stringWithFormat:@"发帖失败:%@",message]];
             btn.enabled = true;
         }
       

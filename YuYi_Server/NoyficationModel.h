@@ -4,7 +4,7 @@
 //
 //  Created by wylt_ios_1 on 2017/3/30.
 //  Copyright © 2017年 wylt_ios_1. All rights reserved.
-//
+//公告数据模型
 
 #import <Foundation/Foundation.h>
 

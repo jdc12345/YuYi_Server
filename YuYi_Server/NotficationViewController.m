@@ -9,20 +9,13 @@
 #import "NotficationViewController.h"
 #import "UIColor+Extension.h"
 #import "NotficationTableViewCell.h"
-//#import "FMActionSheet.h"
-//#import "YYAutoMeasureViewController.h"
-//#import "YYHandleMeasureViewController.h"
-//#import "YYConnectViewController.h"
-#import "HttpClient.h"
-//#import "YYInfomationModel.h"
-#import "CcUserModel.h"
 #import <MJExtension.h>
-#import "NoyficationModel.h"
+#import "YJNoticeListModel.h"
+
 @interface NotficationViewController ()<UITableViewDataSource, UITableViewDelegate>
 
 @property (nonatomic, strong) UITableView *tableView;
 @property (nonatomic, strong) NSMutableArray *dataSource;
-//@property (nonatomic, strong) FMActionSheet *fmActionS;
 @property (nonatomic, assign) NSInteger currentRow;
 
 
@@ -69,7 +62,7 @@
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
     self.title = @"宇医公告";
-    [self httpRequest];
+//    [self httpRequest];
     [self tableView];
     self.rowHArray = @[@"130",@"160",@"130"];
     self.titleArray = @[@"宇医公告",@"血压测量",@"挂号通知"];
@@ -81,6 +74,10 @@
     
     // Do any additional setup after loading the view.
 }
+-(void)setPublicNoticesArr:(NSMutableArray *)publicNoticesArr{
+    _publicNoticesArr = publicNoticesArr;
+    self.dataSource = publicNoticesArr;
+}
 #pragma mark -
 #pragma mark ------------TableView Delegate----------------------
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -90,10 +87,10 @@
 #pragma mark -
 #pragma mark ------------TableView DataSource----------------------
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    NSLog(@"%ld",self.dataSource.count);
-    if (self.dataSource.count == 0) {
-        return 3;
-    }
+//    NSLog(@"%ld",self.dataSource.count);
+//    if (self.dataSource.count == 0) {
+//        return 3;
+//    }
     return self.dataSource.count;
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -103,45 +100,16 @@
 }
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     NotficationTableViewCell *homeTableViewCell = [tableView dequeueReusableCellWithIdentifier:@"NotficationTableViewCell" forIndexPath:indexPath];
-    
-//    NSString *rowHStr = self.rowHArray[indexPath.row];
-//    CGFloat rowHeight = [rowHStr floatValue];
-//    if (rowHeight == 160) {
-//        homeTableViewCell.isHeight = YES;
-//    }else{
-//        homeTableViewCell.isHeight = NO;
-//    }
+
     homeTableViewCell.isHeight = NO;
    
-    
-
-    if (self.dataSource.count == 0) {
-//        homeTableViewCell.iconV.image = [UIImage imageNamed:self.iconArray[indexPath.row]];
-        homeTableViewCell.titleLabel.text = self.titleArray[indexPath.row];
-        homeTableViewCell.introduceLabel.text = self.contentArray[indexPath.row];
-    }else{
-         NoyficationModel *infoModel = self.dataSource[indexPath.row];
-    if ([infoModel.msgType isEqualToString:@"1"]) {
-//        homeTableViewCell.iconV.image = [UIImage imageNamed:@"inform"];
-        homeTableViewCell.titleLabel.text = infoModel.title;
-    }else{
-//        homeTableViewCell.iconV.image = [UIImage imageNamed:@"registration"];
-        homeTableViewCell.titleLabel.text = infoModel.title;
-    }
-         homeTableViewCell.introduceLabel.text = infoModel.content;
-        homeTableViewCell.timeLabel.text = [infoModel.createTimeString substringWithRange:NSMakeRange(5, 5)];
-    }
-    
-//    homeTableViewCell.iconV.image = [UIImage imageNamed:self.iconArray[indexPath.row]];
-//    homeTableViewCell.titleLabel.text = self.titleArray[indexPath.row];
-   
-    
+    YJNoticeListModel *infoModel = self.dataSource[indexPath.row];
+    homeTableViewCell.titleLabel.text = infoModel.title;
+    homeTableViewCell.introduceLabel.text = infoModel.content;
+    homeTableViewCell.timeLabel.text = [infoModel.createTimeString substringWithRange:NSMakeRange(5, 5)];
     
     [homeTableViewCell setSelectionStyle:UITableViewCellSelectionStyleNone];
-    
 
-    
-    
     return homeTableViewCell;
     
 }
@@ -151,25 +119,25 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
-- (void)httpRequest{
-    
-    [[HttpClient defaultClient]requestWithPath:[NSString stringWithFormat:@"%@%@&start=0&limit=10&msgType=1",mMessages,[CcUserModel defaultClient].userToken] method:0 parameters:nil prepareExecute:^{
-        
-    } success:^(NSURLSessionDataTask *task, id responseObject) {
-        NSLog(@"%@",responseObject);
-        NSArray *rowArray = responseObject[@"rows"];
-        for (NSDictionary *dict in rowArray){
-            NoyficationModel *infoModel = [NoyficationModel mj_objectWithKeyValues:dict];
-            [self.dataSource addObject:infoModel];
-        }
-        UIView *headView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, kScreenW, 0 *kiphone6)];
-        headView.backgroundColor = [UIColor clearColor];
-        self.tableView.tableHeaderView = headView;
-        [self.tableView reloadData];
-    } failure:^(NSURLSessionDataTask *task, NSError *error) {
-        
-    }];
-}
+//- (void)httpRequest{
+//    
+//    [[HttpClient defaultClient]requestWithPath:[NSString stringWithFormat:@"%@%@&start=0&limit=10&msgType=1",mMessages,[CcUserModel defaultClient].userToken] method:0 parameters:nil prepareExecute:^{
+//        
+//    } success:^(NSURLSessionDataTask *task, id responseObject) {
+//        NSLog(@"%@",responseObject);
+//        NSArray *rowArray = responseObject[@"rows"];
+//        for (NSDictionary *dict in rowArray){
+//            NoyficationModel *infoModel = [NoyficationModel mj_objectWithKeyValues:dict];
+//            [self.dataSource addObject:infoModel];
+//        }
+////        UIView *headView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, kScreenW, 0 *kiphone6)];
+////        headView.backgroundColor = [UIColor clearColor];
+////        self.tableView.tableHeaderView = headView;
+//        [self.tableView reloadData];
+//    } failure:^(NSURLSessionDataTask *task, NSError *error) {
+//        
+//    }];
+//}
 
 
 

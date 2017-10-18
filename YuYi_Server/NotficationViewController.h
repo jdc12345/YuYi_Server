@@ -9,5 +9,5 @@
 #import <UIKit/UIKit.h>
 
 @interface NotficationViewController : UIViewController
-
+@property(nonatomic,strong)NSMutableArray *publicNoticesArr;//公告消息数据源
 @end

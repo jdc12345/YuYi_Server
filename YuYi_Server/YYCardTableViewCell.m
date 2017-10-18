@@ -15,6 +15,8 @@
 #import "HttpClient.h"
 #import "YYCardDetailTVCell.h"
 @interface YYCardTableViewCell ()
+@property(nonatomic,weak)UIImageView *iconView;
+@property(nonatomic,weak)UILabel *nameLabel;
 @property(nonatomic,weak)UILabel *praiseCountLabel;
 @property(nonatomic,weak)UIImageView *imagesView;
 @property(nonatomic,weak)UILabel *titleLabel;
@@ -36,6 +38,9 @@
 
 -(void)setModel:(YYCardDetailModel *)model{
     _model = model;
+    NSString *iconUrlStr = [NSString stringWithFormat:@"%@%@",mPrefixUrl,model.avatar];
+    [self.iconView sd_setImageWithURL:[NSURL URLWithString:iconUrlStr]];
+    self.nameLabel.text = model.trueName;
     self.titleLabel.text = model.title;
     if ([model.picture isEqualToString:@""]) {
         [self.imagesView mas_updateConstraints:^(MASConstraintMaker *make) {
@@ -60,24 +65,31 @@
     self.timeLabel.text = model.createTimeString;
     self.praiseCountLabel.text = model.likeNum;
     self.repliesLabel.text = model.commentNum;
-    if (model.isLike) {
-        [self.praiseBtn setImage:[UIImage imageNamed:@"Info-heart-icon-select-"] forState:UIControlStateNormal];
-    }else{
-        [self.praiseBtn setImage:[UIImage imageNamed:@"like"] forState:UIControlStateNormal];
-        
-    }
+    self.praiseBtn.selected = self.model.isLike;
+
 }
 - (void)setupUI{
     
 //    self.contentView.backgroundColor = [UIColor orangeColor];
-    UIView *line = [[UIView alloc]init];//分割线
-    line.alpha = 0.6f;
-    line.backgroundColor = [UIColor colorWithHexString:@"999999"];
-    [self.contentView addSubview:line];
-    [line mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.right.bottom.equalTo(self.contentView);
-        make.height.offset(0.5*kiphone6);
+    //分割线
+    UIView *sepView = [[UIView alloc]init];
+    sepView.backgroundColor = [UIColor colorWithHexString:@"f1f1f1"];
+    [self.contentView addSubview:sepView];
+    [sepView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.right.top.offset(0);
+        make.height.offset(10*kiphone6H);
     }];
+    //icon
+    UIImageView *iconView = [[UIImageView alloc]init];
+    iconView.layer.masksToBounds = true;
+    iconView.layer.cornerRadius = 12.5*kiphone6H;
+    iconView.image = [UIImage imageNamed:@"avatar"];
+    [self.contentView addSubview:iconView];
+    self.iconView = iconView;
+    //名字
+    UILabel *nameLabel = [UILabel labelWithText:@"LIMIN" andTextColor:[UIColor colorWithHexString:@"6a6a6a"] andFontSize:12];
+    [self.contentView addSubview:nameLabel];
+    self.nameLabel = nameLabel;
     //帖子标题
     UILabel *titleLabel = [UILabel labelWithText:@"帖子标题" andTextColor:[UIColor colorWithHexString:@"2b2b2b"] andFontSize:14];
     [self.contentView addSubview:titleLabel];
@@ -97,8 +109,8 @@
     self.timeLabel = timeLabel;
     //赞btn
     UIButton *praiseBtn = [[UIButton alloc]init];
-    [praiseBtn setImage:[UIImage imageNamed:@"like"] forState:UIControlStateNormal];
-    [praiseBtn setImage:[UIImage imageNamed:@"like-selected"] forState:UIControlStateHighlighted];
+    [praiseBtn setImage:[UIImage imageNamed:@"cycle_like"] forState:UIControlStateNormal];
+    [praiseBtn setImage:[UIImage imageNamed:@"cycle_like_selected"] forState:UIControlStateSelected];
     [praiseBtn addTarget:self action:@selector(praisePlus:) forControlEvents:UIControlEventTouchUpInside];
     [self.contentView addSubview:praiseBtn];
     self.praiseBtn = praiseBtn;
@@ -116,8 +128,18 @@
     [self.contentView addSubview:repliesLabel];
     self.repliesLabel = repliesLabel;
     //约束布局
+    [iconView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.offset(20*kiphone6);
+        make.top.equalTo(sepView.mas_bottom).offset(15*kiphone6H);
+        make.width.height.offset(25*kiphone6H);
+    }];
+    [nameLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerY.equalTo(iconView);
+        make.left.equalTo(iconView.mas_right).offset(10*kiphone6);
+    }];
     [titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.top.offset(20*kiphone6);
+        make.left.offset(20*kiphone6);
+        make.top.equalTo(iconView.mas_bottom).offset(15*kiphone6H);
         make.right.offset(-20*kiphone6);
     }];
     [self.imagesView mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -159,7 +181,7 @@
 
 }
 - (void)praisePlus:(UIButton*)sender{
-    
+    sender.selected = !sender.selected;
     CcUserModel *model = [CcUserModel defaultClient];
     NSString *token = model.userToken;
     NSString *urlStr = [NSString stringWithFormat:@"%@/likes/LikeNum.do?id=%@&token=%@",mPrefixUrl,self.model.info_id,token];
@@ -178,32 +200,26 @@
     if (self.model.isLike) {
         count -= 1;
         self.praiseCountLabel.text = [NSString stringWithFormat:@"%ld",count];
-        [sender setImage:[UIImage imageNamed:@"like"] forState:UIControlStateNormal];
-        self.model.isLike = false;
         self.model.likeNum = [NSString stringWithFormat:@"%ld",count];
     }else{
         count += 1;
         self.praiseCountLabel.text = [NSString stringWithFormat:@"%ld",count];
-        [sender setImage:[UIImage imageNamed:@"Info-heart-icon-select-"] forState:UIControlStateNormal];
-        self.model.isLike = true;
         self.model.likeNum = [NSString stringWithFormat:@"%ld",count];
     }
+    self.model.isLike = sender.selected;
 }
 //在详情页面返回时候更新点赞状态
 -(void)setLikeState:(BOOL)likeState{
     _likeState = likeState;
+    self.praiseBtn.selected = likeState;
     NSInteger count = [self.praiseCountLabel.text integerValue];
     if (likeState) {
         count += 1;
         self.praiseCountLabel.text = [NSString stringWithFormat:@"%ld",count];
-        [self.praiseBtn setImage:[UIImage imageNamed:@"Info-heart-icon-select-"] forState:UIControlStateNormal];
-        self.model.isLike = true;
         self.model.likeNum = [NSString stringWithFormat:@"%ld",count];
     }else{
         count -= 1;
         self.praiseCountLabel.text = [NSString stringWithFormat:@"%ld",count];
-        [self.praiseBtn setImage:[UIImage imageNamed:@"like"] forState:UIControlStateNormal];
-        self.model.isLike = false;
         self.model.likeNum = [NSString stringWithFormat:@"%ld",count];
     }
 }

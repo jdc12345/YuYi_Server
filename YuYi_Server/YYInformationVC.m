@@ -63,7 +63,7 @@ static NSString *cellId = @"cell_id";
     tableView.estimatedRowHeight = 150;
     tableView.rowHeight = UITableViewAutomaticDimension;
     [tableView registerClass:[YYInformationTableViewCell class] forCellReuseIdentifier:cellId];
-    
+    tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
 }
 #pragma tableViewDatasource
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
@@ -86,7 +86,7 @@ static NSString *cellId = @"cell_id";
     [tableView deselectRowAtIndexPath:indexPath animated:true];
 }
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-    return 100*kiphone6;
+    return 105*kiphone6H;
 }
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

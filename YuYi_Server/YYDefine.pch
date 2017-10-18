@@ -12,13 +12,17 @@
 #ifdef __OBJC__ // 只被object－c文件所引用
 #import "EmptyDataView.h"
 #import <SVProgressHUD.h>
+#import "CcUserModel.h"
+#import "UIColor+Extension.h"
+#import "HttpClient.h"
+#import <Masonry.h>
 #pragma mark -
 #pragma mark  ------------Size----------------------
 
 #define kScreenW [UIScreen mainScreen].bounds.size.width
 #define kScreenH [UIScreen mainScreen].bounds.size.height
 #define kiphone6 [UIScreen mainScreen].bounds.size.width/375.0
-
+#define kiphone6H [UIScreen mainScreen].bounds.size.height/667.0
 
 #pragma mark --------------Color--------------------
 #define kColor_DefaultGray [UIColor  colorWithRed:246/255.0 green:246/255.0 blue:246/255.0 alpha:1]
@@ -30,11 +34,12 @@
 
 #pragma mark -
 #pragma mark ---------------Dev - Url------------------
-//#define mPrefixUrl @"http://192.168.1.55:8080/yuyi"
+#define mPrefixUrl @"http://192.168.1.168:8082/yuyi"
+//#define mPrefixUrl @"http://192.168.1.53:8080/yuyi"
 #pragma mark -
 #pragma mark ---------------Dis - Url------------------
-#define mPrefixUrl @"http://59.110.169.148:8080"
-
+//#define mPrefixUrl @"http://59.110.169.148:8080"
+#define mDefineToken [CcUserModel defaultClient].userToken
 
 // 首页资讯2条数据接口
 #define mHomepageInfo [NSString stringWithFormat:@"%@%@",mPrefixUrl,@"/article/findList.do?start=0&limit=2"]

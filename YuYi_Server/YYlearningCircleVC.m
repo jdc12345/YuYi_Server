@@ -95,7 +95,7 @@ static NSString *cellId = @"cell_id";
 }
 
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-    return 150*kiphone6;
+    return 195*kiphone6H;
 }
 -(void)viewWillDisappear:(BOOL)animated{
     [super viewWillDisappear:animated];

@@ -21,5 +21,5 @@
 
 @property (nonatomic, assign) BOOL isHeight;
 
-- (void)addOtherCell;
+//- (void)addOtherCell;
 @end

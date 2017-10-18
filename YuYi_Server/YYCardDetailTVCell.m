@@ -7,13 +7,11 @@
 //
 
 #import "YYCardDetailTVCell.h"
-#import <Masonry.h>
 #import "UILabel+Addition.h"
 #import "UIColor+colorValues.h"
 #import <UIImageView+WebCache.h>
-#import "CcUserModel.h"
-#import "HttpClient.h"
 #import "YYCardPostPictureCell.h"
+
 static NSString *cell_id = @"cell_id";
 @interface YYCardDetailTVCell()<UITableViewDelegate,UITableViewDataSource>
 @property(nonatomic,weak)UIImageView *iconView;
@@ -55,15 +53,7 @@ static NSString *cell_id = @"cell_id";
         }];
         [self.tableView reloadData];
     }
-//    NSString *imageUrlStr = [NSString stringWithFormat:@"%@%@",mPrefixUrl,infoModel.picture];
-//    [self.bigImageView sd_setImageWithURL:[NSURL URLWithString:imageUrlStr]];
-    if (infoModel.isLike) {
-        [self.praiseBtn setImage:[UIImage imageNamed:@"Info-heart-icon-select-"] forState:UIControlStateNormal];
-    }else{
-        [self.praiseBtn setImage:[UIImage imageNamed:@"like"] forState:UIControlStateNormal];
-        
-    }
-
+    self.praiseBtn.selected = infoModel.isLike;
 }
 - (void)setupUI{
     //icon
@@ -87,8 +77,8 @@ static NSString *cell_id = @"cell_id";
     self.countLabel = countLabel;
     //赞btn
     UIButton *praiseBtn = [[UIButton alloc]init];
-    [praiseBtn setImage:[UIImage imageNamed:@"like"] forState:UIControlStateNormal];
-    [praiseBtn setImage:[UIImage imageNamed:@"like-selected"] forState:UIControlStateHighlighted];
+    [praiseBtn setImage:[UIImage imageNamed:@"cycle_like"] forState:UIControlStateNormal];
+    [praiseBtn setImage:[UIImage imageNamed:@"cycle_like_selected"] forState:UIControlStateSelected];
     [praiseBtn addTarget:self action:@selector(praisePlus:) forControlEvents:UIControlEventTouchUpInside];
     [self.contentView addSubview:praiseBtn];
     self.praiseBtn = praiseBtn;
@@ -153,6 +143,7 @@ static NSString *cell_id = @"cell_id";
         make.left.offset(20*kiphone6);
         make.right.offset(-20*kiphone6);
         make.height.offset(self.imagesArr.count*kScreenW);
+        make.bottom.offset(0);
 
     }];
 //    [imageView mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -161,10 +152,7 @@ static NSString *cell_id = @"cell_id";
 //        make.right.offset(-20*kiphone6);
 //        make.height.offset(335*kiphone6);
 //    }];
-    [self.contentView mas_updateConstraints:^(MASConstraintMaker *make) {
-        make.bottom.equalTo(tableView.mas_bottom);
-        make.width.offset([UIScreen mainScreen].bounds.size.width);//必须加
-    }];
+
 }
 #pragma UItableView
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
@@ -187,9 +175,8 @@ static NSString *cell_id = @"cell_id";
     return kScreenW;
 }
 - (void)praisePlus:(UIButton*)sender{
-        CcUserModel *model = [CcUserModel defaultClient];
-        NSString *token = model.userToken;
-        NSString *urlStr = [NSString stringWithFormat:@"%@/likes/LikeNum.do?id=%@&token=%@",mPrefixUrl,self.infoModel.info_id,token];
+    sender.selected = !sender.selected;
+        NSString *urlStr = [NSString stringWithFormat:@"%@/likes/LikeNum.do?id=%@&token=%@",mPrefixUrl,self.infoModel.info_id,mDefineToken];
         [[HttpClient defaultClient]requestWithPath:urlStr method:HttpRequestPost parameters:nil prepareExecute:^{
     
         } success:^(NSURLSessionDataTask *task, id responseObject) {
@@ -202,26 +189,20 @@ static NSString *cell_id = @"cell_id";
     
         }];
         NSInteger count = [self.countLabel.text integerValue];
+    self.infoModel.isLike = sender.selected;
         if (self.infoModel.isLike) {
-            count -= 1;
-            self.countLabel.text = [NSString stringWithFormat:@"%ld",count];
-            [sender setImage:[UIImage imageNamed:@"like"] forState:UIControlStateNormal];
-            self.infoModel.isLike = false;
-            self.infoModel.likeNum = [NSString stringWithFormat:@"%ld",count];
-        }else{
             count += 1;
             self.countLabel.text = [NSString stringWithFormat:@"%ld",count];
-            [sender setImage:[UIImage imageNamed:@"Info-heart-icon-select-"] forState:UIControlStateNormal];
-            self.infoModel.isLike = true;
+            self.infoModel.likeNum = [NSString stringWithFormat:@"%ld",count];
+  
+        }else{
+            count -= 1;
+            self.countLabel.text = [NSString stringWithFormat:@"%ld",count];
             self.infoModel.likeNum = [NSString stringWithFormat:@"%ld",count];
         }
     //发通知
     NSNumber *boolNumber = [NSNumber numberWithBool:self.infoModel.isLike];
     [[NSNotificationCenter defaultCenter]postNotificationName:@"refreshLikeStateWithInfoModel:" object:nil userInfo:@{@"likeState":boolNumber,@"infoId":self.infoModel.info_id}];
-    
-//    NSInteger count = [self.countLabel.text integerValue];
-//    count += 1;
-//    self.countLabel.text = [NSString stringWithFormat:@"%ld",count];
 }
 //将通知中心移除
 

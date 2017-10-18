@@ -35,7 +35,7 @@
     }
     return self;
 }
-
+//资讯评论数据
 -(void)setInfoCommentModel:(YYCommentInfoModel *)infoCommentModel{
     _infoCommentModel = infoCommentModel;
     NSString *urlStr = [NSString stringWithFormat:@"%@%@",mPrefixUrl,infoCommentModel.avatar];
@@ -46,7 +46,7 @@
     self.praiseBtn.hidden = true;
     self.countLabel.hidden = true;
 }
-
+//学术圈评论数据
 -(void)setComModel:(YYCardCommentDetailModel *)comModel{
     _comModel = comModel;
     NSString *urlStr = [NSString stringWithFormat:@"%@%@",mPrefixUrl,comModel.avatar];

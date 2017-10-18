@@ -30,4 +30,7 @@
 @property (nonatomic, copy) NSString *picture;
 @property (nonatomic, assign) BOOL isLike;
 @property (nonatomic, copy) NSString *physicianId;
+//改
+@property (nonatomic, copy) NSString *avatar;
+@property (nonatomic, copy) NSString *trueName;
 @end

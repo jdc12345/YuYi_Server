@@ -47,7 +47,7 @@ static NSInteger todayStart = 0;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.title = @"资讯";
+//    self.title = @"资讯";
     self.view.backgroundColor = [UIColor whiteColor];
     self.navigationController.navigationBar.translucent = false;
     self.automaticallyAdjustsScrollViewInsets = false;
@@ -143,9 +143,9 @@ static NSInteger todayStart = 0;
     //    cycleView.frame = CGRectMake(0, 0, kScreenW, 200*kiphone6);
     [self.view addSubview:cycleView];
     //添加帖子分类
-    UIView *infosView = [[UIView alloc]init];
+    UIView *infosView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, kScreenW, 44)];
     infosView.backgroundColor = [UIColor whiteColor];
-    [self.view addSubview:infosView];
+    [self.navigationController.navigationBar addSubview:infosView];
     //
     self.infosView = infosView;
     //添加商家分类按钮
@@ -154,7 +154,7 @@ static NSInteger todayStart = 0;
     UIButton *hotInfoButton = [[UIButton alloc]init];
     //设置按钮标题
     [hotInfoButton setTitle:@"热门" forState:UIControlStateNormal];
-    [todyInfoButton setTitle:@"今日推荐" forState:UIControlStateNormal];
+    [todyInfoButton setTitle:@"推荐" forState:UIControlStateNormal];
     [recentInfoButton setTitle:@"最新" forState:UIControlStateNormal];
     //把按钮添加到一个数组中
     NSArray *cardCategoryButtons = @[todyInfoButton,recentInfoButton,hotInfoButton];
@@ -175,7 +175,7 @@ static NSInteger todayStart = 0;
     
     //添加滑动线
     UIView *cardLineView = [[UIView alloc]init];
-    [cardLineView setBackgroundColor:[UIColor greenColor]];
+    [cardLineView setBackgroundColor:[UIColor colorWithHexString:@"333333"]];
     [infosView addSubview:cardLineView];
     self.cardLineView = cardLineView;
     
@@ -231,15 +231,16 @@ static NSInteger todayStart = 0;
         make.width.offset(kScreenW);
         make.height.offset(200*kiphone6);
     }];
-    //设置帖子分类约束
-    [infosView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(cycleView.mas_bottom);
-        make.left.right.offset(0);
-        make.height.offset(44*kiphone6);
-    }];
+//    //设置帖子分类约束
+//    [infosView mas_makeConstraints:^(MASConstraintMaker *make) {
+////        make.top.equalTo(cycleView.mas_bottom);
+////        make.left.right.offset(0);
+////        make.height.offset(44*kiphone6);
+//        make.top.left.right.bottom.offset(0);
+//    }];
     //设置按钮约束
     [cardCategoryButtons mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.offset(18*kiphone6);
+        make.height.offset(44);
         make.bottom.offset(0);
     }];
     //循环设置按钮的等宽
@@ -249,13 +250,13 @@ static NSInteger todayStart = 0;
         //
         if (i==0) {
             [currentBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.left.offset(10*kiphone6);
+                make.left.offset(0);
             }];
             
         }
         if (i==cardCategoryButtons.count-2) {
             [nextBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.right.offset(-(kScreenW-240*kiphone6));
+                make.right.offset(0);
             }];
         }
         [nextBtn mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -266,16 +267,16 @@ static NSInteger todayStart = 0;
     }
     //设置滑动线的约束
     [cardLineView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.width.offset(64*kiphone6);
-        make.height.offset(2);
+        make.width.offset(34*kiphone6);
+        make.height.offset(3);
         make.bottom.equalTo(todyInfoButton);
         make.centerX.equalTo(todyInfoButton);
     }];
     //约束
     [cardDetailView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.right.offset(0);
-        make.top.equalTo(infosView.mas_bottom);
-        make.bottom.offset(-64*kiphone6);
+        make.top.equalTo(cycleView.mas_bottom);
+        make.bottom.offset(-44);
     }];
     [cardDetailView layoutIfNeeded];
     [todayInfoVC.view mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -330,8 +331,8 @@ static NSInteger todayStart = 0;
     CGFloat d = self.view.center.x - secondBtn.center.x;
     //根据偏移距离设置滚动线的位置
     [self.cardLineView mas_remakeConstraints:^(MASConstraintMaker *make) {
-        make.width.offset(64*kiphone6);
-        make.height.offset(2);
+        make.width.offset(34*kiphone6);
+        make.height.offset(3);
         make.bottom.equalTo(self.infosView);
         make.centerX.offset(res-d);
     }];
@@ -474,7 +475,12 @@ static NSInteger todayStart = 0;
 }
 -(void)viewWillDisappear:(BOOL)animated{
     [super viewWillDisappear:animated];
+    self.infosView.hidden = true;
     [SVProgressHUD dismiss];
+}
+-(void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+    self.infosView.hidden = false;
 }
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

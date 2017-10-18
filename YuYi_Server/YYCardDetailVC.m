@@ -7,17 +7,14 @@
 //
 
 #import "YYCardDetailVC.h"
-#import <Masonry.h>
 #import "YYCardDetailTVCell.h"
 #import "YYCommentTVCell.h"
 #import "UILabel+Addition.h"
 #import "UIColor+colorValues.h"
 #import "BRPlaceholderTextView.h"
-#import "HttpClient.h"
 #import <MJExtension.h>
 #import "YYCardDetailPageModel.h"
 #import "YYCardCommentDetailModel.h"
-#import "CcUserModel.h"
 #import <UShareUI/UShareUI.h>
 #import <MJRefresh.h>
 
@@ -99,8 +96,8 @@ static NSInteger start = 0;
     tableView.delegate = self;
     tableView.dataSource = self;
     tableView.backgroundColor = [UIColor whiteColor];
-    tableView.estimatedRowHeight = 150;
     tableView.rowHeight = UITableViewAutomaticDimension;
+    tableView.estimatedRowHeight = 150;
     tableView.separatorStyle = UITableViewCellAccessoryNone;
     [tableView registerClass:[YYCommentTVCell class] forCellReuseIdentifier:cellId];
     tableView.tableHeaderView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kScreenW, CGFLOAT_MIN)];//解决group样式顶部留白问题
@@ -127,7 +124,6 @@ static NSInteger start = 0;
             if (weakSelf.commentInfos.count>0) {
                 start = weakSelf.commentInfos.count;
             }
-            
         } failure:^(NSURLSessionDataTask *task, NSError *error) {
             [weakSelf.tableView.mj_header endRefreshing];
             [SVProgressHUD showErrorWithStatus:@"刷新失败"];
@@ -145,6 +141,7 @@ static NSInteger start = 0;
         NSString *urlStr = [NSString stringWithFormat:@"%@/academicpaper/academicpaperComment.do?start=%ld&limit=2&id=%@&token=%@",mPrefixUrl,start,self.info_id,token];
         [[HttpClient defaultClient]requestWithPath:urlStr method:0 parameters:nil prepareExecute:^{
         } success:^(NSURLSessionDataTask *task, id responseObject) {
+            [weakSelf.tableView.mj_footer endRefreshing];
             NSDictionary *dic = responseObject[@"result"];
             YYCardDetailPageModel *infoModel = [YYCardDetailPageModel mj_objectWithKeyValues:dic];
             weakSelf.infoModel  = infoModel;//帖子数据
@@ -152,17 +149,19 @@ static NSInteger start = 0;
             for (NSDictionary *dict in infoModel.commentList) {
                 YYCardCommentDetailModel *comModel = [YYCardCommentDetailModel mj_objectWithKeyValues:dict];
                 [arr addObject:comModel];
+                [weakSelf.commentInfos addObject:comModel];
             }
-            [weakSelf.commentInfos addObjectsFromArray:arr];//评论数据源
-            [weakSelf.tableView reloadData];
-            if (weakSelf.commentInfos.count==3||weakSelf.commentInfos.count==4) {//第一次刷新需要滑动到的位置
-                NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:1];
-                [weakSelf.tableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionTop animated:NO];
+            if (arr.count>0) {
+                [weakSelf.commentInfos addObjectsFromArray:arr];//评论数据源
+                [weakSelf.tableView reloadData];
+            }else{
+                [weakSelf.tableView.mj_footer endRefreshingWithNoMoreData];
             }
-            [weakSelf.tableView.mj_footer endRefreshing];
+            
             if (weakSelf.commentInfos.count>0) {
                 start = weakSelf.commentInfos.count;
             }
+            
         } failure:^(NSURLSessionDataTask *task, NSError *error) {
             [weakSelf.tableView.mj_footer endRefreshing];
             [SVProgressHUD showErrorWithStatus:@"刷新失败"];
@@ -302,7 +301,7 @@ static NSInteger start = 0;
     [self presentViewController:alert animated:YES completion:nil];
 }
 
-#pragma tableViewDatasource
+#pragma mark- tableViewDatasource
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
     return 2;
 }
@@ -401,8 +400,8 @@ static NSInteger start = 0;
         return commentCell.cellHeight;
         
     }else{
-        tableView.estimatedRowHeight = 150;
         tableView.rowHeight = UITableViewAutomaticDimension;
+        tableView.estimatedRowHeight = 150;
         
         return tableView.rowHeight;
     }
@@ -415,7 +414,7 @@ static NSInteger start = 0;
     }
     return _cellHeightCache;
 }
-#pragma textView
+#pragma mark - textView(评论)
 -(void)textViewDidChange:(UITextView *)textView{
     CGRect frame = textView.frame;
     CGSize textSize = [textView.text boundingRectWithSize:CGSizeMake(textView.frame.size.width, MAXFLOAT) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName : [UIFont systemFontOfSize:14.0]} context:nil].size;
@@ -437,7 +436,7 @@ static NSInteger start = 0;
         self.backView.frame = newRect;
     }];
 }
-#pragma - 分享
+#pragma mark - 分享
 //分享按钮点击事件
 - (void)shareBtnClick{
     [UMSocialUIManager setPreDefinePlatforms:@[@(UMSocialPlatformType_WechatTimeLine),@(UMSocialPlatformType_Sina),@(UMSocialPlatformType_Qzone)]];
