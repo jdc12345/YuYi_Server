@@ -69,6 +69,13 @@
 		1688D7C91E9B6CEB001BBA61 /* YYCardDetailModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 1688D7C81E9B6CEB001BBA61 /* YYCardDetailModel.m */; };
 		1688D7CC1E9B97B4001BBA61 /* YYCardDetailPageModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 1688D7CB1E9B97B4001BBA61 /* YYCardDetailPageModel.m */; };
 		1688D7CF1E9BB756001BBA61 /* YYCardCommentDetailModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 1688D7CE1E9BB756001BBA61 /* YYCardCommentDetailModel.m */; };
+		16B5FD191F998DD100D112CA /* YYRecardViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 16B5FD171F998DD100D112CA /* YYRecardViewController.m */; };
+		16B5FD1C1F998EA900D112CA /* YYPatientRecordModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 16B5FD1B1F998EA900D112CA /* YYPatientRecordModel.m */; };
+		16B5FD1F1F99942400D112CA /* YYPatientRecordTVCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 16B5FD1E1F99942400D112CA /* YYPatientRecordTVCell.m */; };
+		16B5FD251F999F1800D112CA /* YYRecordDetailVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 16B5FD241F999F1800D112CA /* YYRecordDetailVC.m */; };
+		16B5FD2A1F99A45000D112CA /* YYMedicalRecoderPhotoDisplayCVCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 16B5FD271F99A45000D112CA /* YYMedicalRecoderPhotoDisplayCVCell.m */; };
+		16B5FD2B1F99A45000D112CA /* YYMedicalRecoderPhotoFlowLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 16B5FD291F99A45000D112CA /* YYMedicalRecoderPhotoFlowLayout.m */; };
+		16B5FD2E1F99A92000D112CA /* YYRecordInfoDisplayTVCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 16B5FD2D1F99A92000D112CA /* YYRecordInfoDisplayTVCell.m */; };
 		3E1ABC701EA0649B00F66BC3 /* EmptyNetView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E1ABC6F1EA0649B00F66BC3 /* EmptyNetView.m */; };
 		3E1ABC731EA064AF00F66BC3 /* EmptyDataView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E1ABC721EA064AF00F66BC3 /* EmptyDataView.m */; };
 		3E1FC7231E97915800838F9E /* YYSettingTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E1FC7221E97915800838F9E /* YYSettingTableViewCell.m */; };
@@ -114,7 +121,6 @@
 		3EA3F44A1E95E413005670A5 /* YYTrendView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EA3F4491E95E413005670A5 /* YYTrendView.m */; };
 		3EA3F44D1E95E432005670A5 /* PatientsTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EA3F44C1E95E432005670A5 /* PatientsTableViewCell.m */; };
 		3EA3F4531E95E486005670A5 /* PatientDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EA3F4521E95E486005670A5 /* PatientDetailViewController.m */; };
-		3EA3F4561E95E49C005670A5 /* RecardDerailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EA3F4551E95E49C005670A5 /* RecardDerailViewController.m */; };
 		3EA3F4591E95E4BE005670A5 /* YYDataAnalyseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EA3F4581E95E4BE005670A5 /* YYDataAnalyseViewController.m */; };
 		3EA3F4631E95E73E005670A5 /* YYPatientsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EA3F4621E95E73E005670A5 /* YYPatientsViewController.m */; };
 		3EA3F4651E95ECAE005670A5 /* cell1.png in Resources */ = {isa = PBXBuildFile; fileRef = 3EA3F4641E95ECAE005670A5 /* cell1.png */; };
@@ -295,6 +301,20 @@
 		1688D7CB1E9B97B4001BBA61 /* YYCardDetailPageModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YYCardDetailPageModel.m; sourceTree = "<group>"; };
 		1688D7CD1E9BB756001BBA61 /* YYCardCommentDetailModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YYCardCommentDetailModel.h; sourceTree = "<group>"; };
 		1688D7CE1E9BB756001BBA61 /* YYCardCommentDetailModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YYCardCommentDetailModel.m; sourceTree = "<group>"; };
+		16B5FD161F998DD100D112CA /* YYRecardViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YYRecardViewController.h; sourceTree = "<group>"; };
+		16B5FD171F998DD100D112CA /* YYRecardViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YYRecardViewController.m; sourceTree = "<group>"; };
+		16B5FD1A1F998EA900D112CA /* YYPatientRecordModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YYPatientRecordModel.h; sourceTree = "<group>"; };
+		16B5FD1B1F998EA900D112CA /* YYPatientRecordModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YYPatientRecordModel.m; sourceTree = "<group>"; };
+		16B5FD1D1F99942400D112CA /* YYPatientRecordTVCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YYPatientRecordTVCell.h; sourceTree = "<group>"; };
+		16B5FD1E1F99942400D112CA /* YYPatientRecordTVCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YYPatientRecordTVCell.m; sourceTree = "<group>"; };
+		16B5FD231F999F1800D112CA /* YYRecordDetailVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YYRecordDetailVC.h; sourceTree = "<group>"; };
+		16B5FD241F999F1800D112CA /* YYRecordDetailVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YYRecordDetailVC.m; sourceTree = "<group>"; };
+		16B5FD261F99A45000D112CA /* YYMedicalRecoderPhotoDisplayCVCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YYMedicalRecoderPhotoDisplayCVCell.h; sourceTree = "<group>"; };
+		16B5FD271F99A45000D112CA /* YYMedicalRecoderPhotoDisplayCVCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YYMedicalRecoderPhotoDisplayCVCell.m; sourceTree = "<group>"; };
+		16B5FD281F99A45000D112CA /* YYMedicalRecoderPhotoFlowLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YYMedicalRecoderPhotoFlowLayout.h; sourceTree = "<group>"; };
+		16B5FD291F99A45000D112CA /* YYMedicalRecoderPhotoFlowLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YYMedicalRecoderPhotoFlowLayout.m; sourceTree = "<group>"; };
+		16B5FD2C1F99A92000D112CA /* YYRecordInfoDisplayTVCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YYRecordInfoDisplayTVCell.h; sourceTree = "<group>"; };
+		16B5FD2D1F99A92000D112CA /* YYRecordInfoDisplayTVCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YYRecordInfoDisplayTVCell.m; sourceTree = "<group>"; };
 		3E1ABC6E1EA0649B00F66BC3 /* EmptyNetView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EmptyNetView.h; sourceTree = "<group>"; };
 		3E1ABC6F1EA0649B00F66BC3 /* EmptyNetView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EmptyNetView.m; sourceTree = "<group>"; };
 		3E1ABC711EA064AF00F66BC3 /* EmptyDataView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EmptyDataView.h; sourceTree = "<group>"; };
@@ -367,8 +387,6 @@
 		3EA3F44C1E95E432005670A5 /* PatientsTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PatientsTableViewCell.m; sourceTree = "<group>"; };
 		3EA3F4511E95E486005670A5 /* PatientDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PatientDetailViewController.h; sourceTree = "<group>"; };
 		3EA3F4521E95E486005670A5 /* PatientDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PatientDetailViewController.m; sourceTree = "<group>"; };
-		3EA3F4541E95E49C005670A5 /* RecardDerailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RecardDerailViewController.h; sourceTree = "<group>"; };
-		3EA3F4551E95E49C005670A5 /* RecardDerailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RecardDerailViewController.m; sourceTree = "<group>"; };
 		3EA3F4571E95E4BE005670A5 /* YYDataAnalyseViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YYDataAnalyseViewController.h; sourceTree = "<group>"; };
 		3EA3F4581E95E4BE005670A5 /* YYDataAnalyseViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YYDataAnalyseViewController.m; sourceTree = "<group>"; };
 		3EA3F4611E95E73E005670A5 /* YYPatientsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YYPatientsViewController.h; sourceTree = "<group>"; };
@@ -770,6 +788,51 @@
 			name = M;
 			sourceTree = "<group>";
 		};
+		16B5FD201F999B5600D112CA /* C */ = {
+			isa = PBXGroup;
+			children = (
+				3EA3F4611E95E73E005670A5 /* YYPatientsViewController.h */,
+				3EA3F4621E95E73E005670A5 /* YYPatientsViewController.m */,
+				3EA3F4511E95E486005670A5 /* PatientDetailViewController.h */,
+				3EA3F4521E95E486005670A5 /* PatientDetailViewController.m */,
+				16B5FD161F998DD100D112CA /* YYRecardViewController.h */,
+				16B5FD171F998DD100D112CA /* YYRecardViewController.m */,
+				16B5FD231F999F1800D112CA /* YYRecordDetailVC.h */,
+				16B5FD241F999F1800D112CA /* YYRecordDetailVC.m */,
+				3EA3F4571E95E4BE005670A5 /* YYDataAnalyseViewController.h */,
+				3EA3F4581E95E4BE005670A5 /* YYDataAnalyseViewController.m */,
+			);
+			name = C;
+			sourceTree = "<group>";
+		};
+		16B5FD211F999B6100D112CA /* V */ = {
+			isa = PBXGroup;
+			children = (
+				3EA3F44B1E95E432005670A5 /* PatientsTableViewCell.h */,
+				3EA3F44C1E95E432005670A5 /* PatientsTableViewCell.m */,
+				16B5FD1D1F99942400D112CA /* YYPatientRecordTVCell.h */,
+				16B5FD1E1F99942400D112CA /* YYPatientRecordTVCell.m */,
+				3EA3F4481E95E413005670A5 /* YYTrendView.h */,
+				3EA3F4491E95E413005670A5 /* YYTrendView.m */,
+				16B5FD261F99A45000D112CA /* YYMedicalRecoderPhotoDisplayCVCell.h */,
+				16B5FD271F99A45000D112CA /* YYMedicalRecoderPhotoDisplayCVCell.m */,
+				16B5FD281F99A45000D112CA /* YYMedicalRecoderPhotoFlowLayout.h */,
+				16B5FD291F99A45000D112CA /* YYMedicalRecoderPhotoFlowLayout.m */,
+				16B5FD2C1F99A92000D112CA /* YYRecordInfoDisplayTVCell.h */,
+				16B5FD2D1F99A92000D112CA /* YYRecordInfoDisplayTVCell.m */,
+			);
+			name = V;
+			sourceTree = "<group>";
+		};
+		16B5FD221F999B6700D112CA /* M */ = {
+			isa = PBXGroup;
+			children = (
+				16B5FD1A1F998EA900D112CA /* YYPatientRecordModel.h */,
+				16B5FD1B1F998EA900D112CA /* YYPatientRecordModel.m */,
+			);
+			name = M;
+			sourceTree = "<group>";
+		};
 		3E85EF971E8F3CA700E7D8F1 /* View */ = {
 			isa = PBXGroup;
 			children = (
@@ -895,18 +958,9 @@
 		3EBD82121E8E2F9600BDC217 /* PatientsPage */ = {
 			isa = PBXGroup;
 			children = (
-				3EA3F4611E95E73E005670A5 /* YYPatientsViewController.h */,
-				3EA3F4621E95E73E005670A5 /* YYPatientsViewController.m */,
-				3EA3F4571E95E4BE005670A5 /* YYDataAnalyseViewController.h */,
-				3EA3F4581E95E4BE005670A5 /* YYDataAnalyseViewController.m */,
-				3EA3F4541E95E49C005670A5 /* RecardDerailViewController.h */,
-				3EA3F4551E95E49C005670A5 /* RecardDerailViewController.m */,
-				3EA3F4511E95E486005670A5 /* PatientDetailViewController.h */,
-				3EA3F4521E95E486005670A5 /* PatientDetailViewController.m */,
-				3EA3F44B1E95E432005670A5 /* PatientsTableViewCell.h */,
-				3EA3F44C1E95E432005670A5 /* PatientsTableViewCell.m */,
-				3EA3F4481E95E413005670A5 /* YYTrendView.h */,
-				3EA3F4491E95E413005670A5 /* YYTrendView.m */,
+				16B5FD201F999B5600D112CA /* C */,
+				16B5FD221F999B6700D112CA /* M */,
+				16B5FD211F999B6100D112CA /* V */,
 			);
 			name = PatientsPage;
 			sourceTree = "<group>";
@@ -1404,6 +1458,7 @@
 				3E2272A31E9C7835005BF064 /* RCDChatListCell.m in Sources */,
 				3E2272A41E9C7835005BF064 /* RCDHttpTool.m in Sources */,
 				3E2272A51E9C7835005BF064 /* RCDUserInfo.m in Sources */,
+				16B5FD1C1F998EA900D112CA /* YYPatientRecordModel.m in Sources */,
 				162E1BFF1F96073F0046F1B8 /* YJNoticeListModel.m in Sources */,
 				3E2272A61E9C7835005BF064 /* YYAVViewController.m in Sources */,
 				3E2272A71E9C7835005BF064 /* YYSearchTableViewController.m in Sources */,
@@ -1459,14 +1514,15 @@
 				3E85EF9A1E8F3CBE00E7D8F1 /* YYPInfomationTableViewCell.m in Sources */,
 				3E2272BF1E9CA533005BF064 /* YYNotficationViewController.m in Sources */,
 				3E85EF8D1E8F38F400E7D8F1 /* YYSettingViewController.m in Sources */,
-				3EA3F4561E95E49C005670A5 /* RecardDerailViewController.m in Sources */,
 				3EBD82321E8E389C00BDC217 /* YYTabBar.m in Sources */,
 				161B03A71E9E123E00095F77 /* HUAlbumCell.m in Sources */,
 				163D61971E8F7A2E003A27CF /* YYCommentTVCell.m in Sources */,
 				163A97A01E94A0DE007B69AD /* ZYDotView.m in Sources */,
 				161B03AD1E9E123E00095F77 /* HUImagePickerRootViewController.m in Sources */,
 				163D619E1E8F7AB6003A27CF /* YYlearningCircleVC.m in Sources */,
+				16B5FD2A1F99A45000D112CA /* YYMedicalRecoderPhotoDisplayCVCell.m in Sources */,
 				3EBD82651E8E686E00BDC217 /* CcUserModel.m in Sources */,
+				16B5FD2E1F99A92000D112CA /* YYRecordInfoDisplayTVCell.m in Sources */,
 				161D8ADB1EA46821006B6844 /* YYBackView.m in Sources */,
 				3EBD82491E8E583200BDC217 /* HttpClient.m in Sources */,
 				162E1BFC1F9606AA0046F1B8 /* YJNoticeListTVCell.m in Sources */,
@@ -1483,8 +1539,10 @@
 				3EA3F4591E95E4BE005670A5 /* YYDataAnalyseViewController.m in Sources */,
 				3EA3F4691E97647C005670A5 /* YYChatListViewController.m in Sources */,
 				3E85EFA51E8F951500E7D8F1 /* NoyficationModel.m in Sources */,
+				16B5FD1F1F99942400D112CA /* YYPatientRecordTVCell.m in Sources */,
 				3E85EF901E8F390500E7D8F1 /* YYFeedbackViewController.m in Sources */,
 				161B03BA1E9E129E00095F77 /* YYCardPostPictureCell.m in Sources */,
+				16B5FD2B1F99A45000D112CA /* YYMedicalRecoderPhotoFlowLayout.m in Sources */,
 				3EBD821F1E8E37E600BDC217 /* NSDictionary+Log.m in Sources */,
 				163D61A01E8F7AB6003A27CF /* YYpostCardVC.m in Sources */,
 				161B03B31E9E123E00095F77 /* HUWebImageDownloader.m in Sources */,
@@ -1493,11 +1551,13 @@
 				161B03A51E9E123E00095F77 /* HUPhotoBrowserCell.m in Sources */,
 				163D61961E8F7A2E003A27CF /* YYCardTableViewCell.m in Sources */,
 				3EBD82611E8E67C800BDC217 /* ReciveAppointmentViewController.m in Sources */,
+				16B5FD191F998DD100D112CA /* YYRecardViewController.m in Sources */,
 				3EA3F4721E9770FD005670A5 /* YYDetailRecardViewController.m in Sources */,
 				3E1FC7231E97915800838F9E /* YYSettingTableViewCell.m in Sources */,
 				161B03B21E9E123E00095F77 /* HUToast.m in Sources */,
 				3EBD82331E8E389C00BDC217 /* YYTabBarItem.m in Sources */,
 				3EA3F46C1E976BBF005670A5 /* YYRecardTableViewCell.m in Sources */,
+				16B5FD251F999F1800D112CA /* YYRecordDetailVC.m in Sources */,
 				1614C0D21E94F49D004CF952 /* YYCycleViewModel.m in Sources */,
 				3E85EFA41E8F951500E7D8F1 /* NotficationTableViewCell.m in Sources */,
 				163D61A31E8F7B0D003A27CF /* UILabel+Addition.m in Sources */,

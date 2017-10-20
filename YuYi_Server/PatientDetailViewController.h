@@ -7,9 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "PatientModel.h"
 
 @interface PatientDetailViewController : UIViewController
 
-@property (nonatomic, strong) NSString *info_id;
-
+@property (nonatomic, strong) PatientModel *patientModel;
 @end

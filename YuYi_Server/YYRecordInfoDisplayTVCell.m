@@ -1,17 +1,15 @@
 //
-//  YYPInfomationTableViewCell.m
-//  YuYi_Client
+//  YYRecordInfoDisplayTVCell.m
+//  YuYi_Server
 //
-//  Created by wylt_ios_1 on 2017/2/24.
+//  Created by 万宇 on 2017/10/20.
 //  Copyright © 2017年 wylt_ios_1. All rights reserved.
 //
 
-#import "YYPInfomationTableViewCell.h"
-#import <Masonry.h>
-#import "UIColor+Extension.h"
+#import "YYRecordInfoDisplayTVCell.h"
 
+@implementation YYRecordInfoDisplayTVCell
 
-@implementation YYPInfomationTableViewCell
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
@@ -36,8 +34,7 @@
     self.seeRecardLabel = [[UILabel alloc]init];
     self.seeRecardLabel.textColor = [UIColor colorWithHexString:@"333333"];
     self.seeRecardLabel.font = [UIFont systemFontOfSize:14];
-    self.seeRecardLabel.textAlignment = NSTextAlignmentLeft;
-//    self.seeRecardLabel.backgroundColor = [UIColor cyanColor];
+    self.seeRecardLabel.textAlignment = NSTextAlignmentRight;
     
     self.editInfoText = [[UITextField alloc]init];
     self.editInfoText.textColor = [UIColor colorWithHexString:@"333333"];
@@ -54,20 +51,20 @@
     
     
     [lineL mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.contentView);
-        make.left.equalTo(self.contentView).with.offset(0 *kiphone6);
+        make.bottom.equalTo(self.contentView);
+        make.left.offset(0);
         make.size.mas_equalTo(CGSizeMake(kScreenW, 1));
     }];
     [self.titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerY.equalTo(self.contentView);
-        make.left.offset(10 *kiphone6);
-        make.size.mas_equalTo(CGSizeMake(45, 14 ));
+        make.left.equalTo(self.contentView).with.offset(10 *kiphone6);
+        make.size.mas_equalTo(CGSizeMake(100, 14 *kiphone6));
     }];
     
     [self.seeRecardLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerY.equalTo(self.contentView);
-        make.left.equalTo(self.titleLabel.mas_right).with.offset(1 *kiphone6);
-        make.size.mas_equalTo(CGSizeMake(260 *kiphone6, 14 *kiphone6));
+        make.right.equalTo(self.contentView).with.offset(-10 *kiphone6);
+        make.size.mas_equalTo(CGSizeMake(200 *kiphone6, 14 *kiphone6));
     }];
     [self.editInfoText mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerY.equalTo(self.contentView);

@@ -49,9 +49,7 @@ static NSInteger start = 0;
 }
 - (void)loadData{
 //    http://192.168.1.55:8080/yuyi/academicpaper/academicpaperComment.do?start=0&limit=2&id=1
-    CcUserModel *model = [CcUserModel defaultClient];
-    NSString *token = model.userToken;
-    NSString *urlStr = [NSString stringWithFormat:@"%@/academicpaper/academicpaperComment.do?start=0&limit=2&id=%@&token=%@",mPrefixUrl,self.info_id,token];
+    NSString *urlStr = [NSString stringWithFormat:@"%@/academicpaper/academicpaperComment.do?start=0&limit=6&id=%@&token=%@",mPrefixUrl,self.info_id,mDefineToken];
     [SVProgressHUD show];// 动画开始
     [[HttpClient defaultClient]requestWithPath:urlStr method:0 parameters:nil prepareExecute:^{
     } success:^(NSURLSessionDataTask *task, id responseObject) {
@@ -68,6 +66,9 @@ static NSInteger start = 0;
         [self setupUI];
         if (self.commentInfos.count>0) {
             start = self.commentInfos.count;
+        }
+        if (start % 6 != 0) {//显示没有更多数据了
+            [self.tableView.mj_footer endRefreshingWithNoMoreData];
         }
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
         [SVProgressHUD showErrorWithStatus:@"加载失败"];
@@ -101,13 +102,11 @@ static NSInteger start = 0;
     tableView.separatorStyle = UITableViewCellAccessoryNone;
     [tableView registerClass:[YYCommentTVCell class] forCellReuseIdentifier:cellId];
     tableView.tableHeaderView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kScreenW, CGFLOAT_MIN)];//解决group样式顶部留白问题
-    CcUserModel *model = [CcUserModel defaultClient];
-    NSString *token = model.userToken;
     __weak typeof(self) weakSelf = self;
     self.tableView.mj_header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
         // 进入刷新状态后会自动调用这个block
         
-        NSString *urlStr = [NSString stringWithFormat:@"%@/academicpaper/academicpaperComment.do?start=0&limit=2&id=%@&token=%@",mPrefixUrl,self.info_id,token];
+        NSString *urlStr = [NSString stringWithFormat:@"%@/academicpaper/academicpaperComment.do?start=0&limit=6&id=%@&token=%@",mPrefixUrl,self.info_id,mDefineToken];
         [[HttpClient defaultClient]requestWithPath:urlStr method:0 parameters:nil prepareExecute:^{
         } success:^(NSURLSessionDataTask *task, id responseObject) {
             NSDictionary *dic = responseObject[@"result"];
@@ -133,12 +132,15 @@ static NSInteger start = 0;
     //设置上拉加载更多
     self.tableView.mj_footer = [MJRefreshAutoNormalFooter footerWithRefreshingBlock:^{
         // 进入加载状态后会自动调用这个block
-        if (self.commentInfos.count==0) {
+        if (weakSelf.commentInfos.count==0) {
             [weakSelf.tableView.mj_footer endRefreshing];
             return ;
         }
-        
-        NSString *urlStr = [NSString stringWithFormat:@"%@/academicpaper/academicpaperComment.do?start=%ld&limit=2&id=%@&token=%@",mPrefixUrl,start,self.info_id,token];
+        if (start % 6 != 0) {//已经没有数据了，分页请求是按页请求的，只要已有数据数量没有超过最后一页的最大数量，再请求依然会返回最后一页的数据
+            [weakSelf.tableView.mj_footer endRefreshing];
+            return;
+        }
+        NSString *urlStr = [NSString stringWithFormat:@"%@/academicpaper/academicpaperComment.do?start=%ld&limit=6&id=%@&token=%@",mPrefixUrl,start,self.info_id,mDefineToken];
         [[HttpClient defaultClient]requestWithPath:urlStr method:0 parameters:nil prepareExecute:^{
         } success:^(NSURLSessionDataTask *task, id responseObject) {
             [weakSelf.tableView.mj_footer endRefreshing];
@@ -153,14 +155,18 @@ static NSInteger start = 0;
             }
             if (arr.count>0) {
                 [weakSelf.commentInfos addObjectsFromArray:arr];//评论数据源
+                start = weakSelf.commentInfos.count;
                 [weakSelf.tableView reloadData];
+                if (start % 6 != 0) {//显示没有更多数据了
+                    [weakSelf.tableView.mj_footer endRefreshingWithNoMoreData];
+                }
             }else{
                 [weakSelf.tableView.mj_footer endRefreshingWithNoMoreData];
             }
             
-            if (weakSelf.commentInfos.count>0) {
-                start = weakSelf.commentInfos.count;
-            }
+//            if (weakSelf.commentInfos.count>0) {
+//                start = weakSelf.commentInfos.count;
+//            }
             
         } failure:^(NSURLSessionDataTask *task, NSError *error) {
             [weakSelf.tableView.mj_footer endRefreshing];

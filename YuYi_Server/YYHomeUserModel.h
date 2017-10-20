@@ -29,6 +29,6 @@
 @property (nonatomic, copy) NSArray *bloodpressureList;
 @property (nonatomic, copy) NSArray *temperatureList;
 @property (nonatomic, copy) NSString *telephone;
-
+@property (nonatomic, copy) NSString *age;
 
 @end

@@ -180,9 +180,9 @@
 // 获取患者列表接口
 #define mPatientListTotal [NSString stringWithFormat:@"%@%@",mPrefixUrl,@"/homeuser/findAllUserList.do?"]
 // 获取我的患者列表接口
-#define mPatientListMine [NSString stringWithFormat:@"%@%@",mPrefixUrl,@"/findMyUserList.do?"]
+#define mPatientListMine [NSString stringWithFormat:@"%@%@",mPrefixUrl,@"/homeuser/findMyUserList.do?"]
 // 获取患者电子病历信息接口
-#define mRecardDetail [NSString stringWithFormat:@"%@%@",mPrefixUrl,@"/medical/findOnePh.do?"]
+#define mRecardDetail [NSString stringWithFormat:@"%@%@",mPrefixUrl,@"/medical/homeuserMedicalTime.do?"]
 // 获取患者测量数据信息接口
 #define mMeasure [NSString stringWithFormat:@"%@%@",mPrefixUrl,@"/homeuser/findOnePh.do?"]
 // 获取消息信息接口

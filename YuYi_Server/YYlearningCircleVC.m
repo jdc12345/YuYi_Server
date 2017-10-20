@@ -75,7 +75,7 @@ static NSString *cellId = @"cell_id";
     [tableView registerClass:[YYCardTableViewCell class] forCellReuseIdentifier:cellId];
     tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
 }
-#pragma tableViewDatasource
+#pragma mark - tableViewDatasource
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     return self.infos.count;
 }

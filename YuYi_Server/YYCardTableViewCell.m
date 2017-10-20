@@ -197,6 +197,7 @@
         
     }];
     NSInteger count = [self.praiseCountLabel.text integerValue];
+    self.model.isLike = sender.selected;
     if (self.model.isLike) {
         count -= 1;
         self.praiseCountLabel.text = [NSString stringWithFormat:@"%ld",count];

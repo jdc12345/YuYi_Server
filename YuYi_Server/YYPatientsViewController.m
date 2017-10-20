@@ -7,22 +7,15 @@
 //
 
 #import "YYPatientsViewController.h"
-#import "UIColor+Extension.h"
 #import "YYHomeNewTableViewCell.h"
-#import <Masonry.h>
 #import "PatientsTableViewCell.h"
 #import "YYSettingViewController.h"
 #import "NotficationViewController.h"
-#import "HttpClient.h"
-#import <MJExtension.h>
 #import <UIImageView+WebCache.h>
-#import "CcUserModel.h"
 #import "YYHomeUserModel.h"
 #import "PatientDetailViewController.h"
 #import "YYSearchTableViewController.h"
-#import "CcUserModel.h"
 #import <MJExtension.h>
-#import "HttpClient.h"
 #import "PatientModel.h"
 #import <UIImageView+WebCache.h>
 #import "UIButton+Badge.h"
@@ -85,11 +78,6 @@
     //    [self httpRequest];
     self.view.backgroundColor = [UIColor colorWithHexString:@"f2f2f2"];
     
-    
-    
-
-    
-
     // ,@[@"购物车",@"订单详情"] ,@[@"Personal-shopping -icon-",@"order_icon_"]
 //    self.dataSource = [[NSMutableArray alloc]initWithArray:@[@[@"电子病例",@"消息",@"家庭用户管理",@"用户设备管理",@"收货地址",@"设置"]]];
 //    self.iconList =@[@[@"Personal-EMR-icon-",@"Personal-message-icon-",@"family-icon--1",@"equipment-icon-",@"goods-icon-",@"Set-icon-"]];
@@ -286,14 +274,14 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     PatientModel *patient = self.dataSource[indexPath.row];
     PatientDetailViewController *patientDVC = [[PatientDetailViewController alloc]init];
-    patientDVC.info_id = patient.info_id;
+    patientDVC.patientModel = patient;
     [self.navigationController pushViewController:patientDVC animated:YES];
     [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 #pragma mark -
 #pragma mark ------------TableView DataSource----------------------
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
-    NSLog(@"source count = %ld",self.dataSource.count);
+//    NSLog(@"source count = %ld",self.dataSource.count);
     return 1;
 }
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
@@ -302,7 +290,7 @@
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     
-    return 60 *kiphone6;
+    return 83 *kiphone6H;
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
     return 0;
@@ -364,11 +352,10 @@
     [SVProgressHUD showWithStatus:@"Loading..."];
     NSLog(@"%@",self.titleStr);
 //    if ([self.titleStr isEqualToString:@"all"]) {
-        urlStr = mPatientListTotal;
+//        urlStr = mPatientListTotal;
 //    }else{
-//        urlStr = mPatientListMine;
+        urlStr = mPatientListMine;
 //    }
-    
     
     CcUserModel *userModel = [CcUserModel defaultClient];
     if ([self.titleStr isEqualToString:@"search"]) {
@@ -392,19 +379,38 @@
     [[HttpClient defaultClient]requestWithPath:[NSString stringWithFormat:@"%@token=%@",urlStr,userModel.userToken] method:0 parameters:nil prepareExecute:^{
         
     } success:^(NSURLSessionDataTask *task, id responseObject) {
-        NSLog(@"123123%@",responseObject);
         NSArray *patientList = responseObject[@"rows"];
-        for (NSDictionary *dict in patientList) {
-            PatientModel *patientModel = [PatientModel mj_objectWithKeyValues:dict];
-            [self.dataSource addObject:patientModel];
+        if (patientList.count > 0) {
+            for (NSDictionary *dict in patientList) {
+                PatientModel *patientModel = [PatientModel mj_objectWithKeyValues:dict];
+                [self.dataSource addObject:patientModel];
+            }
+            [self tableView];
+        }else{
+            UIImage *image = [UIImage imageNamed:@"没有消息"];
+            UIImageView *emptyImage = [[UIImageView alloc]init];
+            emptyImage.image = image;
+            [self.view addSubview:emptyImage];
+            [emptyImage mas_makeConstraints:^(MASConstraintMaker *make) {
+                make.center.offset(0);
+                make.width.offset(image.size.width);
+                make.height.offset(image.size.height);
+            }];
+            UILabel *label = [[UILabel alloc]init];
+            label.text = @"你还没有添加患者";
+            [self.view addSubview:label];
+            [label mas_makeConstraints:^(MASConstraintMaker *make) {
+                make.top.equalTo(emptyImage.mas_bottom).offset(10);
+                make.centerX.offset(0);
+            }];
         }
-        [self tableView];
         [SVProgressHUD dismiss];
 
         
 
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
         NSLog(@"%@",error);
+        [SVProgressHUD showErrorWithStatus:@"加载失败"];
     }];
     }
 }

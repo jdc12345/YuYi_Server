@@ -27,17 +27,17 @@
 @property (nonatomic, weak) UILabel *greenLabel;
 
 
-@property (nonatomic, strong) NSMutableArray *bloodpressureList;
-@property (nonatomic, strong) NSMutableArray *temperatureList;
+@property (nonatomic, strong) NSMutableArray *bloodpressureList;//当前用户血压数据集
+@property (nonatomic, strong) NSMutableArray *temperatureList;//当前用户体温数据集
 
 @property (nonatomic, strong) NSArray *listlist;
 
-@property (nonatomic, weak) YYTrendView *bloodpressureTrendView;
-@property (nonatomic, weak) YYTrendView *temperatureTrendView;
+@property (nonatomic, weak) YYTrendView *bloodpressureTrendView;//当前用户血压图表
+@property (nonatomic, weak) YYTrendView *temperatureTrendView;//当前用户体温图表
 
 
-@property (nonatomic, weak) UILabel *statusLabel;
-@property (nonatomic, weak) UILabel *statusLabel_temperature;
+@property (nonatomic, weak) UIImageView *bloodImage;//血压数据是否正常图片
+@property (nonatomic, weak) UIImageView *temperatureImage;//体温数据是否正常图片
 @property (nonatomic, weak) UILabel *hihgBloodLabel;
 @property (nonatomic, weak) UILabel *lowBloodLabel;
 @property (nonatomic, weak) UILabel *temperatureLabel;
@@ -64,9 +64,9 @@
     self.view.backgroundColor = [UIColor whiteColor];
     self.title = @"我的数据分析";
 //    [self createSubView];
-    
+    //背景需要加一个大的scrollow以便能滑动显示全部
     self.trendS = [[UIScrollView alloc]init];
-    self.trendS.contentSize = CGSizeMake(kScreenW *2, kScreenH -64 -44 -27);
+    self.trendS.contentSize = CGSizeMake(kScreenW *2, kScreenH -(130+35+64)*kiphone6H);
     self.trendS.backgroundColor = [UIColor whiteColor];
     self.trendS.pagingEnabled = YES;
     self.trendS.showsHorizontalScrollIndicator = NO;
@@ -79,28 +79,26 @@
     [self.view addSubview:topLine];
     
     [topLine mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.view).with.offset(27);
-        make.left.equalTo(self.view).with.offset(0 *kiphone6);
-        make.size.mas_equalTo(CGSizeMake(kScreenW, 1 *kiphone6));
+        make.top.offset(35*kiphone6H);
+        make.left.offset(0);
+        make.size.mas_equalTo(CGSizeMake(kScreenW, 1));
     }];
     
     UIButton *bloodBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    [bloodBtn setImage:[UIImage imageNamed:@"椭圆6拷贝"] forState:UIControlStateNormal];
+    [bloodBtn setImage:[UIImage imageNamed:@"patient_click_circular"] forState:UIControlStateNormal];
     [bloodBtn setTitle:@"血压" forState:UIControlStateNormal];
-    [bloodBtn setTitleColor:[UIColor colorWithHexString:@"666666"] forState:UIControlStateNormal];
+    [bloodBtn setTitleColor:[UIColor colorWithHexString:@"333333"] forState:UIControlStateNormal];
     bloodBtn.titleLabel.font = [UIFont systemFontOfSize:15];
     [bloodBtn addTarget:self action:@selector(buttonClick:) forControlEvents:UIControlEventTouchUpInside];
     bloodBtn.titleEdgeInsets = UIEdgeInsetsMake(0, 5, 0, -5);
     [self.view addSubview:bloodBtn];
-     WS(ws);
     [bloodBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(ws.view).with.offset(0);
-        make.left.equalTo(ws.view).with.offset(0);
-        make.size.mas_equalTo(CGSizeMake(70 ,27));
+        make.left.top.offset(0);
+        make.size.mas_equalTo(CGSizeMake(70*kiphone6 ,35*kiphone6H));
     }];
     
     UIButton *temperatureBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    [temperatureBtn setImage:[UIImage imageNamed:@"椭圆6"] forState:UIControlStateNormal];
+    [temperatureBtn setImage:[UIImage imageNamed:@"patient_circular"] forState:UIControlStateNormal];
     [temperatureBtn setTitle:@"体温" forState:UIControlStateNormal];
     [temperatureBtn setTitleColor:[UIColor colorWithHexString:@"666666"] forState:UIControlStateNormal];
     temperatureBtn.titleLabel.font = [UIFont systemFontOfSize:15];
@@ -108,9 +106,9 @@
     temperatureBtn.titleEdgeInsets = UIEdgeInsetsMake(0, 5, 0, -5);
     [self.view addSubview:temperatureBtn];
     [temperatureBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(ws.view).with.offset(0);
-        make.left.equalTo(bloodBtn.mas_right).with.offset(0);
-        make.size.mas_equalTo(CGSizeMake(70 ,27));
+        make.top.offset(0);
+        make.left.equalTo(bloodBtn.mas_right).offset(0);
+        make.size.mas_equalTo(CGSizeMake(70*kiphone6 ,35*kiphone6H));
     }];
     
     self.bloodBtn = bloodBtn;
@@ -119,9 +117,9 @@
     
    
     [self.trendS mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(ws.view).with.offset(27);
-        make.left.equalTo(ws.view).with.offset(0);
-        make.size.mas_equalTo(CGSizeMake(kScreenW ,kScreenH -64 -44 -27));
+        make.top.offset(35*kiphone6H);
+        make.left.offset(0);
+        make.size.mas_equalTo(CGSizeMake(kScreenW ,kScreenH -(130+64+35)*kiphone6H));
     }];
     [self createTrendView];
     [self createTemperatureTrendView];
@@ -130,100 +128,86 @@
     [self.view bringSubviewToFront:topLine];
     // Do any additional setup after loading the view.
 }
-- (void)createSubView{
-    UIButton *bloodBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    [bloodBtn setTitleColor:[UIColor colorWithHexString:@"23f368"] forState:UIControlStateSelected];
-    [bloodBtn setTitleColor:[UIColor colorWithHexString:@"6a6a6a"] forState:UIControlStateNormal];
-    bloodBtn.titleLabel.font = [UIFont systemFontOfSize:15];
-    [bloodBtn setTitle:@"血压" forState:UIControlStateNormal];
-    [bloodBtn addTarget:self action:@selector(buttonClick:) forControlEvents:UIControlEventTouchUpInside];
-    bloodBtn.selected = YES;
-    
-    UIButton *temperBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    [temperBtn setTitleColor:[UIColor colorWithHexString:@"6a6a6a"] forState:UIControlStateNormal];
-    [temperBtn setTitleColor:[UIColor colorWithHexString:@"23f368"] forState:UIControlStateSelected];
-    temperBtn.titleLabel.font = [UIFont systemFontOfSize:15];
-    [temperBtn setTitle:@"体温" forState:UIControlStateNormal];
-    [temperBtn addTarget:self action:@selector(buttonClick:) forControlEvents:UIControlEventTouchUpInside];
-    
-    UILabel *grayLine= [[UILabel alloc]init];
-    grayLine.backgroundColor = [UIColor colorWithHexString:@"f2f2f2"];
-    
-    UILabel *greenLine = [[UILabel alloc]init];
-    greenLine.backgroundColor = [UIColor colorWithHexString:@"23f368"];
-    
-    [self.view addSubview:bloodBtn];
-    [self.view addSubview:temperBtn];
-    [self.view addSubview:grayLine];
-    [self.view addSubview:greenLine];
-    
-    self.bloodBtn = bloodBtn;
-    self.temperBtn = temperBtn;
-    self.greenLabel = greenLine;
-    
-    WS(ws);
-    [bloodBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(ws.view).with.offset(0);
-        make.left.equalTo(ws.view).with.offset(0);
-        make.size.mas_equalTo(CGSizeMake(kScreenW/2.0 ,44));
-    }];
-    [temperBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(bloodBtn.mas_top).with.offset(0);
-        make.left.equalTo(bloodBtn.mas_right).with.offset(0);
-        make.size.mas_equalTo(CGSizeMake(kScreenW/2.0 ,44));
-    }];
-    
-    [grayLine mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.bottom.equalTo(bloodBtn.mas_bottom).with.offset(0);
-        make.left.equalTo(ws.view).with.offset(0);
-        make.size.mas_equalTo(CGSizeMake(kScreenW ,0.5));
-    }];
-    
-    [greenLine mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.bottom.equalTo(bloodBtn.mas_bottom).with.offset(0);
-        make.left.equalTo(ws.view).with.offset(0);
-        make.size.mas_equalTo(CGSizeMake(kScreenW/2.0 ,2));
-    }];
-    
-    
-    
-}
+//- (void)createSubView{
+//    UIButton *bloodBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+//    [bloodBtn setTitleColor:[UIColor colorWithHexString:@"23f368"] forState:UIControlStateSelected];
+//    [bloodBtn setTitleColor:[UIColor colorWithHexString:@"6a6a6a"] forState:UIControlStateNormal];
+//    bloodBtn.titleLabel.font = [UIFont systemFontOfSize:15];
+//    [bloodBtn setTitle:@"血压" forState:UIControlStateNormal];
+//    [bloodBtn addTarget:self action:@selector(buttonClick:) forControlEvents:UIControlEventTouchUpInside];
+//    bloodBtn.selected = YES;
+//    
+//    UIButton *temperBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+//    [temperBtn setTitleColor:[UIColor colorWithHexString:@"6a6a6a"] forState:UIControlStateNormal];
+//    [temperBtn setTitleColor:[UIColor colorWithHexString:@"23f368"] forState:UIControlStateSelected];
+//    temperBtn.titleLabel.font = [UIFont systemFontOfSize:15];
+//    [temperBtn setTitle:@"体温" forState:UIControlStateNormal];
+//    [temperBtn addTarget:self action:@selector(buttonClick:) forControlEvents:UIControlEventTouchUpInside];
+//    
+//    UILabel *grayLine= [[UILabel alloc]init];
+//    grayLine.backgroundColor = [UIColor colorWithHexString:@"f2f2f2"];
+//    
+//    UILabel *greenLine = [[UILabel alloc]init];
+//    greenLine.backgroundColor = [UIColor colorWithHexString:@"23f368"];
+//    
+//    [self.view addSubview:bloodBtn];
+//    [self.view addSubview:temperBtn];
+//    [self.view addSubview:grayLine];
+//    [self.view addSubview:greenLine];
+//    
+//    self.bloodBtn = bloodBtn;
+//    self.temperBtn = temperBtn;
+//    self.greenLabel = greenLine;
+//    
+//    WS(ws);
+//    [bloodBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.top.equalTo(ws.view).with.offset(0);
+//        make.left.equalTo(ws.view).with.offset(0);
+//        make.size.mas_equalTo(CGSizeMake(kScreenW/2.0 ,44));
+//    }];
+//    [temperBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.top.equalTo(bloodBtn.mas_top).with.offset(0);
+//        make.left.equalTo(bloodBtn.mas_right).with.offset(0);
+//        make.size.mas_equalTo(CGSizeMake(kScreenW/2.0 ,44));
+//    }];
+//    
+//    [grayLine mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.bottom.equalTo(bloodBtn.mas_bottom).with.offset(0);
+//        make.left.equalTo(ws.view).with.offset(0);
+//        make.size.mas_equalTo(CGSizeMake(kScreenW ,0.5));
+//    }];
+//    
+//    [greenLine mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.bottom.equalTo(bloodBtn.mas_bottom).with.offset(0);
+//        make.left.equalTo(ws.view).with.offset(0);
+//        make.size.mas_equalTo(CGSizeMake(kScreenW/2.0 ,2));
+//    }];
+//    
+//    
+//    
+//}
+
+//血压表
 - (void)createTrendView{
     self.bloodView = [[UIView alloc]init];
     //information View
     UIView *infoView = [[UIView alloc] init];
     infoView.backgroundColor = [UIColor whiteColor];
     
-    NSArray *testDataArray = @[@"129",@"87",@"38℃"];
-    NSArray *titleArray = @[@"收缩压(高压)",@"舒张压(低压)",@"体温"];
-    NSString *statusTest = @"正常";
-    
+    NSArray *testDataArray = @[@"129",@"87"];
+    NSArray *titleArray = @[@"收缩压(高压)",@"舒张压(低压)"];
     
     CGFloat kLabelW = kScreenW /3.0;
-    UIImageView *imageV = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"normal_select"]];
-    UILabel *statusLabel = [[UILabel alloc]init];
-    statusLabel.text = statusTest;
-    statusLabel.font = [UIFont systemFontOfSize:9];
-    statusLabel.textColor = [UIColor colorWithHexString:@"25f368"];
-    statusLabel.textAlignment = NSTextAlignmentCenter;
+    UIImageView *imageV = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"data_test"]];
     
     [infoView addSubview:imageV];
-    [infoView addSubview:statusLabel];
-    self.statusLabel = statusLabel;
     
     [imageV mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(infoView).with.offset(26.5 *kiphone6);
-        make.left.equalTo(infoView).with.offset((kLabelW -17*kiphone6) /2.0);
-        make.size.mas_equalTo(CGSizeMake(17 *kiphone6, 17 *kiphone6));
+        make.centerY.offset(0);
+        make.left.offset((kLabelW -40*kiphone6) /2.0);
+        make.size.mas_equalTo(CGSizeMake(40 *kiphone6, 40 *kiphone6));
     }];
-    [statusLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(imageV.mas_bottom).with.offset(5 *kiphone6);
-        make.left.equalTo(infoView).with.offset(0);
-        make.size.mas_equalTo(CGSizeMake(kLabelW, 9));
-    }];
-    
-    
-    
+    self.bloodImage = imageV;
     
     for (int i = 0; i < 2; i++) {
         
@@ -245,14 +229,13 @@
         [infoView addSubview:label_banner];
         
         
-        
         [test_banner mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.top.equalTo(infoView).with.offset(25 *kiphone6);
-            make.left.equalTo(infoView).with.offset((i +1) *kLabelW);
+            make.top.equalTo(imageV.mas_top);
+            make.left.offset((i +1) *kLabelW);
             make.size.mas_equalTo(CGSizeMake(kLabelW *kiphone6, 15));
         }];
         [label_banner mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.top.equalTo(test_banner.mas_bottom).with.offset(10 *kiphone6);
+            make.top.equalTo(test_banner.mas_bottom).offset(12 *kiphone6);
             make.left.equalTo(test_banner);
             make.size.mas_equalTo(CGSizeMake(kLabelW *kiphone6 , 9));
         }];
@@ -267,31 +250,28 @@
     [self.bloodView addSubview:infoView];
 
     [infoView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.bloodView).with.offset(0 *kiphone6);
-        make.left.equalTo(self.bloodView).with.offset(0 *kiphone6);
-        make.size.mas_equalTo(CGSizeMake(kScreenW, 84 *kiphone6));
+        make.top.left.offset(0);
+        make.size.mas_equalTo(CGSizeMake(kScreenW, 70*kiphone6H));
     }];
     
     YYTrendView *trendView = [[YYTrendView alloc]init];
-    trendView.layer.cornerRadius = 5;
-    trendView.clipsToBounds = YES;
-    trendView.backgroundColor = [UIColor colorWithHexString:@"8bfad4"];
+    trendView.backgroundColor = [UIColor colorWithHexString:@"30323a"];
     
     [self.bloodView addSubview:trendView];
     self.bloodpressureTrendView = trendView;
     [trendView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(infoView.mas_bottom).with.offset(0 *kiphone6);
-        make.left.equalTo(self.bloodView).with.offset(10 *kiphone6);
-        make.size.mas_equalTo(CGSizeMake(kScreenW -20, 270 *kiphone6));
+        make.left.offset(0);
+        make.top.equalTo(infoView.mas_bottom);
+        make.size.mas_equalTo(CGSizeMake(kScreenW, 280 *kiphone6H));
     }];
     
-    UILabel *greenLabel = [[UILabel alloc]init];
-    greenLabel.backgroundColor = [UIColor colorWithHexString:@"25f368"];
+    UILabel *blackLabel = [[UILabel alloc]init];
+    blackLabel.backgroundColor = [UIColor colorWithHexString:@"30323a"];
     
-    [self.bloodView addSubview:greenLabel];
-    [greenLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(trendView.mas_bottom).with.offset(30 *kiphone6);
-        make.left.equalTo(self.bloodView).with.offset(20 *kiphone6);
+    [self.bloodView addSubview:blackLabel];
+    [blackLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(trendView.mas_bottom).offset(30 *kiphone6H);
+        make.left.equalTo(self.bloodView).offset(20 *kiphone6);
         make.size.mas_equalTo(CGSizeMake(3, 11));
     }];
     
@@ -314,8 +294,8 @@
     [self.bloodView addSubview:promptLabel];
     
     [promptLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(trendView.mas_bottom).with.offset(20 *kiphone6);
-        make.left.equalTo(greenLabel.mas_right).with.offset(7 *kiphone6);
+        make.top.equalTo(trendView.mas_bottom).offset(20 *kiphone6H);
+        make.left.equalTo(blackLabel.mas_right).offset(7 *kiphone6);
         make.size.mas_equalTo(CGSizeMake(kScreenW -50, 77 *kiphone6));
     }];
     
@@ -323,9 +303,8 @@
     
     [self.trendS addSubview:self.bloodView];
     [self.bloodView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.trendS).with.offset(0);
-        make.left.equalTo(self.trendS).with.offset(0 *kiphone6);
-        make.size.mas_equalTo(CGSizeMake(kScreenW *kiphone6, kScreenH - 64 -44));
+        make.top.left.offset(0);
+        make.size.mas_equalTo(CGSizeMake(kScreenW ,kScreenH -(130+64+35)*kiphone6H));
     }];
     
 }
@@ -337,33 +316,20 @@
     
     NSArray *testDataArray = @[@"38℃"];
     NSArray *titleArray = @[@"体温"];
-    NSString *statusTest = @"正常";
+//    NSString *statusTest = @"正常";
     
     
     CGFloat kLabelW = kScreenW /2.0;
-    UIImageView *imageV = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"normal_select"]];
-    UILabel *statusLabel = [[UILabel alloc]init];
-    statusLabel.text = statusTest;
-    statusLabel.font = [UIFont systemFontOfSize:9];
-    statusLabel.textColor = [UIColor colorWithHexString:@"25f368"];
-    statusLabel.textAlignment = NSTextAlignmentCenter;
-    self.statusLabel_temperature = statusLabel;
+    UIImageView *imageV = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"data_test"]];
+
     [infoView addSubview:imageV];
-    [infoView addSubview:statusLabel];
     
     [imageV mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(infoView).with.offset(26.5 *kiphone6);
-        make.left.equalTo(infoView).with.offset((kLabelW -17*kiphone6) /2.0);
-        make.size.mas_equalTo(CGSizeMake(17 *kiphone6, 17 *kiphone6));
+        make.centerY.offset(0);
+        make.left.offset((kLabelW -40*kiphone6) /2.0);
+        make.size.mas_equalTo(CGSizeMake(40 *kiphone6, 40 *kiphone6));
     }];
-    [statusLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(imageV.mas_bottom).with.offset(5 *kiphone6);
-        make.left.equalTo(infoView).with.offset(0);
-        make.size.mas_equalTo(CGSizeMake(kLabelW, 9));
-    }];
-    
-    
-    
+    self.temperatureImage = imageV;
     
     for (int i = 0; i < 1; i++) {
         
@@ -387,15 +353,25 @@
         
         
         [test_banner mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.top.equalTo(infoView).with.offset(25 *kiphone6);
-            make.left.equalTo(infoView).with.offset((i +1) *kLabelW);
+            make.top.equalTo(imageV.mas_top);
+            make.left.offset((i +1) *kLabelW);
             make.size.mas_equalTo(CGSizeMake(kLabelW *kiphone6, 15));
         }];
         [label_banner mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.top.equalTo(test_banner.mas_bottom).with.offset(10 *kiphone6);
+            make.top.equalTo(test_banner.mas_bottom).offset(12 *kiphone6);
             make.left.equalTo(test_banner);
             make.size.mas_equalTo(CGSizeMake(kLabelW *kiphone6 , 9));
         }];
+//        [test_banner mas_makeConstraints:^(MASConstraintMaker *make) {
+//            make.top.equalTo(infoView).with.offset(25 *kiphone6);
+//            make.left.equalTo(infoView).with.offset((i +1) *kLabelW);
+//            make.size.mas_equalTo(CGSizeMake(kLabelW *kiphone6, 15));
+//        }];
+//        [label_banner mas_makeConstraints:^(MASConstraintMaker *make) {
+//            make.top.equalTo(test_banner.mas_bottom).with.offset(10 *kiphone6);
+//            make.left.equalTo(test_banner);
+//            make.size.mas_equalTo(CGSizeMake(kLabelW *kiphone6 , 9));
+//        }];
         
         
     }
@@ -403,32 +379,29 @@
     [self.temperature addSubview:infoView];
     
     [infoView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.temperature).with.offset(0 *kiphone6);
-        make.left.equalTo(self.temperature).with.offset(0 *kiphone6);
-        make.size.mas_equalTo(CGSizeMake(kScreenW, 84 *kiphone6));
+        make.top.left.offset(0);
+        make.size.mas_equalTo(CGSizeMake(kScreenW, 70*kiphone6H));
     }];
     
     YYTrendView *trendView = [[YYTrendView alloc]init];
-    trendView.layer.cornerRadius = 5;
-    trendView.clipsToBounds = YES;
-    trendView.backgroundColor = [UIColor colorWithHexString:@"8bfad4"];
+    trendView.backgroundColor = [UIColor colorWithHexString:@"30323a"];
     
     [self.temperature addSubview:trendView];
     self.temperatureTrendView = trendView;
     
     [trendView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(infoView.mas_bottom).with.offset(0 *kiphone6);
-        make.left.equalTo(self.temperature).with.offset(10 *kiphone6);
-        make.size.mas_equalTo(CGSizeMake(kScreenW -20, 270 *kiphone6));
+        make.top.equalTo(infoView.mas_bottom);
+        make.left.offset(0);
+        make.size.mas_equalTo(CGSizeMake(kScreenW, 280 *kiphone6H));
     }];
     
-    UILabel *greenLabel = [[UILabel alloc]init];
-    greenLabel.backgroundColor = [UIColor colorWithHexString:@"25f368"];
+    UILabel *blackLabel = [[UILabel alloc]init];
+    blackLabel.backgroundColor = [UIColor colorWithHexString:@"30323a"];
     
-    [self.temperature addSubview:greenLabel];
-    [greenLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(trendView.mas_bottom).with.offset(30 *kiphone6);
-        make.left.equalTo(self.temperature).with.offset(20 *kiphone6);
+    [self.temperature addSubview:blackLabel];
+    [blackLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(trendView.mas_bottom).offset(30 *kiphone6H);
+        make.left.offset(20 *kiphone6);
         make.size.mas_equalTo(CGSizeMake(3, 11));
     }];
     
@@ -451,18 +424,16 @@
     [self.temperature addSubview:promptLabel];
     
     [promptLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(trendView.mas_bottom).with.offset(30 *kiphone6);
-        make.left.equalTo(greenLabel.mas_right).with.offset(7 *kiphone6);
+        make.top.equalTo(trendView.mas_bottom).offset(30 *kiphone6H);
+        make.left.equalTo(blackLabel.mas_right).with.offset(7 *kiphone6);
         //        make.size.mas_equalTo(CGSizeMake(kScreenW -20, 100 *kiphone6));
     }];
     
-    
-    
     [self.trendS addSubview:self.temperature];
     [self.temperature mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.trendS).with.offset(0);
-        make.left.equalTo(self.trendS).with.offset(kScreenW);
-        make.size.mas_equalTo(CGSizeMake(kScreenW *kiphone6, kScreenH - 64 -44));
+        make.top.offset(0);
+        make.left.offset(kScreenW);
+        make.size.mas_equalTo(CGSizeMake(kScreenW, kScreenH -(130+64+35)*kiphone6H));
     }];
     
 }
@@ -470,15 +441,15 @@
 - (void)buttonClick:(UIButton *)sender{
 
     if ([sender.currentTitle isEqualToString:@"血压"]) {
-        [self.bloodBtn setImage:[UIImage imageNamed:@"椭圆6拷贝"] forState:UIControlStateNormal];
-        [self.temperBtn setImage:[UIImage imageNamed:@"椭圆6"] forState:UIControlStateNormal];
+        [self.bloodBtn setImage:[UIImage imageNamed:@"patient_click_circular"] forState:UIControlStateNormal];
+        [self.temperBtn setImage:[UIImage imageNamed:@"patient_circular"] forState:UIControlStateNormal];
         
         [UIView animateWithDuration:0.3f animations:^{
             self.trendS.contentOffset = CGPointMake(0, 0);
         }];
     }else{
-        [self.temperBtn setImage:[UIImage imageNamed:@"椭圆6拷贝"] forState:UIControlStateNormal];
-        [self.bloodBtn setImage:[UIImage imageNamed:@"椭圆6"] forState:UIControlStateNormal];
+        [self.temperBtn setImage:[UIImage imageNamed:@"patient_click_circular"] forState:UIControlStateNormal];
+        [self.bloodBtn setImage:[UIImage imageNamed:@"patient_circular"] forState:UIControlStateNormal];
         
         
         [UIView animateWithDuration:0.3f animations:^{
@@ -494,8 +465,8 @@
     } success:^(NSURLSessionDataTask *task, id responseObject) {
         NSDictionary *result = responseObject[@"result"];
         YYHomeUserModel *userModel = [YYHomeUserModel mj_objectWithKeyValues:result];
-        self.temperatureList = userModel.temperatureList;
-        self.bloodpressureList = userModel.bloodpressureList;
+        self.temperatureList = [userModel.temperatureList mutableCopy];
+        self.bloodpressureList = [userModel.bloodpressureList mutableCopy];
         NSMutableArray *highBlood = [[NSMutableArray alloc]initWithCapacity:2];
         NSMutableArray *lowBlood = [[NSMutableArray alloc]initWithCapacity:2];
         NSMutableArray *measureDate = [[NSMutableArray alloc]initWithCapacity:2];
@@ -512,6 +483,7 @@
         
         
         // 刷新显示数据
+//        血压图表
         NSMutableArray *lateData = [[NSMutableArray alloc]initWithCapacity:2];
         
         
@@ -532,24 +504,37 @@
             [lateData addObject:@"0"];
             isEmptyMeasure = YES;
         }
+        //体温图表
         if (self.temperatureList.count != 0) {
-            self.statusLabel_temperature.text = @"正常";
             [lateData addObject:[NSString stringWithFormat:@"%@",dict_temperature[@"temperaturet"]]];
+            NSInteger temp = [dict_temperature[@"temperaturet"] integerValue];//体温
+            if (temp>36&&temp<37.3){//正常
+                self.temperatureImage.image = [UIImage imageNamed:@"data_normal"];
+            }else{//异常
+                self.temperatureImage.image = [UIImage imageNamed:@"data_abnormal"];
+            }
         }else{
             [lateData addObject:@"0"];
-            self.statusLabel_temperature.text = @"待测";
+            self.temperatureImage.image = [UIImage imageNamed:@"data_test"];
         }
-        
-        
+   
         self.hihgBloodLabel.text = lateData[0];
         self.lowBloodLabel.text = lateData[1];
         self.temperatureLabel.text = lateData[2];
         if (isEmptyMeasure) {
-            self.statusLabel.text = @"待测";
+            self.bloodImage.image = [UIImage imageNamed:@"data_test"];
         }else{
-            self.statusLabel.text = @"正常";
+            NSInteger maxP = [dict_blood[@"systolic"] integerValue];//高压
+            NSInteger minP = [dict_blood[@"diastolic"] integerValue];//低压
+            if (maxP>90&&maxP<140&&minP>60&&minP<90){//正常
+                self.bloodImage.image = [UIImage imageNamed:@"data_normal"];
+            }else{//异常
+                self.bloodImage.image = [UIImage imageNamed:@"data_abnormal"];
+            }
+
         }
         
+
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
         
     }];

@@ -7,25 +7,21 @@
 //
 
 #import "PatientDetailViewController.h"
-#import "UIColor+Extension.h"
-#import <Masonry.h>
 #import "YYDataAnalyseViewController.h"
-#import "RecardDerailViewController.h"
-#import "CcUserModel.h"
 #import <MJExtension.h>
-#import "HttpClient.h"
-#import "PatientModel.h"
 #import <UIImageView+WebCache.h>
-
+#import "YYPatientRecordModel.h"
+#import "YYRecardViewController.h"
 
 @interface PatientDetailViewController ()
 @property (nonatomic, weak) UIButton *recardBtn;
 @property (nonatomic, weak) UIButton *trendBtn;
 @property (nonatomic, weak) UILabel *nameLabel;
 @property (nonatomic, weak) UILabel *ageLabel;
-@property (nonatomic, weak) UILabel *genderLabel;
+@property (nonatomic, weak) UIImageView *genderIcon;
 @property (nonatomic, weak) UIImageView *iconImageV;
-@property (nonatomic, strong) PatientModel *patientModel;
+@property (nonatomic, weak) CAGradientLayer *gradientLayer;//按钮渐变色图层
+@property (nonatomic, strong) NSMutableArray *recordArr;//病人记录数据
 @end
 
 @implementation PatientDetailViewController
@@ -35,12 +31,13 @@
     self.title = @"患者详情";
     self.view.backgroundColor = [UIColor whiteColor];
     
-    [self httpRequest];
+    [self httpRequestForRecord];
+    [self createHeadView];
 
     // Do any additional setup after loading the view.
 }
 - (void)createHeadView{
-    UIView *personV = [[UIView alloc]initWithFrame:CGRectMake(0, 64, kScreenW, 100 *kiphone6)];
+    UIView *personV = [[UIView alloc]initWithFrame:CGRectMake(0, 64, kScreenW, 130 *kiphone6H)];
     personV.backgroundColor = [UIColor whiteColor];
     
     
@@ -58,65 +55,68 @@
     iconV.clipsToBounds = YES;
     //
     UILabel *nameLabel = [[UILabel alloc]init];
-    nameLabel.text = @"李美丽";
+    nameLabel.text = self.patientModel.trueName;
     nameLabel.textColor = [UIColor colorWithHexString:@"333333"];
-    nameLabel.font = [UIFont systemFontOfSize:15];
+    nameLabel.font = [UIFont systemFontOfSize:14];
     
     //
-    UILabel *idName = [[UILabel alloc]init];
-    idName.text = @"性别：女";
-    idName.textColor = [UIColor colorWithHexString:@"333333"];
-    idName.font = [UIFont systemFontOfSize:12];
-    
+    UIImageView *genderIcon = [[UIImageView alloc]init];
+    if ([self.patientModel.gender isEqualToString:@"1"]) {
+        genderIcon.image = [UIImage imageNamed:@"gender_boy"];
+    }else{
+        genderIcon.image = [UIImage imageNamed:@"gender_girl"];
+    }
+    [self.iconImageV sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@%@",mPrefixUrl,self.patientModel.avatar]]];
     
     UILabel *ageName = [[UILabel alloc]init];
-    ageName.text = @"年龄：27岁";
+    ageName.text = [NSString stringWithFormat:@"年龄：%@",self.patientModel.age];
     ageName.textColor = [UIColor colorWithHexString:@"333333"];
-    ageName.font = [UIFont systemFontOfSize:12];
+    ageName.font = [UIFont systemFontOfSize:14];
     //
     [personV addSubview:iconV];
     [personV addSubview:nameLabel];
-    [personV addSubview:idName];
+    [personV addSubview:genderIcon];
     [personV addSubview:ageName];
     
     self.nameLabel = nameLabel;
     self.ageLabel = ageName;
     self.iconImageV = iconV;
-    self.genderLabel = idName;
+    self.genderIcon = genderIcon;
+    
+    
     //
     [iconV mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(personV).with.offset(10);
-        make.left.equalTo(personV).with.offset(10 *kiphone6);
+        make.top.left.offset(10 *kiphone6);
         make.size.mas_equalTo(CGSizeMake(55 *kiphone6, 55 *kiphone6));
     }];
     //
     [nameLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(personV).with.offset(10 *kiphone6);
-        make.left.equalTo(iconV.mas_right).with.offset(10 *kiphone6);
-        make.size.mas_equalTo(CGSizeMake(140 *kiphone6, 15 *kiphone6));
+        make.bottom.equalTo(iconV.mas_centerY).offset(-2.5 *kiphone6);
+        make.left.equalTo(iconV.mas_right).offset(15 *kiphone6);
     }];
     //
-    [idName mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(nameLabel.mas_bottom).with.offset(10 *kiphone6);
-        make.left.equalTo(nameLabel.mas_left);
-        make.size.mas_equalTo(CGSizeMake(260 *kiphone6, 12 *kiphone6));
+    [genderIcon mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerY.equalTo(nameLabel);
+        make.left.equalTo(nameLabel.mas_right).offset(5);
     }];
     [ageName mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(idName.mas_bottom).with.offset(10 *kiphone6);
+        make.top.equalTo(nameLabel.mas_bottom).offset(5);
         make.left.equalTo(nameLabel.mas_left);
-        make.size.mas_equalTo(CGSizeMake(260 *kiphone6, 12 *kiphone6));
     }];
-    
+    //电子病历
     UIButton *recardBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    recardBtn.backgroundColor = [UIColor colorWithHexString:@"25f368"];
     [recardBtn setTitle:@"电子病历" forState:UIControlStateNormal];
+    recardBtn.titleLabel.font = [UIFont systemFontOfSize:15];
     [recardBtn setTitleColor:[UIColor colorWithHexString:@"ffffff"] forState:UIControlStateNormal];
+//    recardBtn.backgroundColor = [UIColor colorWithHexString:@"1ebeec"];
+
     [recardBtn addTarget:self action:@selector(btnClick:) forControlEvents:UIControlEventTouchUpInside];
-    
+    //患者数据
     UIButton *trendBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    trendBtn.backgroundColor = [UIColor colorWithHexString:@"ffffff"];
     [trendBtn setTitle:@"患者数据" forState:UIControlStateNormal];
-    [trendBtn setTitleColor:[UIColor colorWithHexString:@"666666"] forState:UIControlStateNormal];
+    trendBtn.titleLabel.font = [UIFont systemFontOfSize:15];
+    [trendBtn setTitleColor:[UIColor colorWithHexString:@"333333"] forState:UIControlStateNormal];
+    trendBtn.backgroundColor = [UIColor colorWithHexString:@"ffffff"];
     [trendBtn addTarget:self action:@selector(btnClick:) forControlEvents:UIControlEventTouchUpInside];
     
     
@@ -126,15 +126,22 @@
     self.trendBtn = trendBtn;
     
     [recardBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.bottom.equalTo(personV).with.offset(0);
-        make.left.equalTo(personV).with.offset(0 *kiphone6);
-        make.size.mas_equalTo(CGSizeMake(kScreenW/2.0, 25 *kiphone6));
+        make.left.bottom.offset(0);
+        make.size.mas_equalTo(CGSizeMake(kScreenW/2.0, 55 *kiphone6H));
     }];
     [trendBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.bottom.equalTo(personV).with.offset(0);
-        make.left.equalTo(recardBtn.mas_right).with.offset(0 *kiphone6);
-        make.size.mas_equalTo(CGSizeMake(kScreenW/2.0, 25 *kiphone6));
+        make.bottom.right.offset(0);
+        make.size.mas_equalTo(CGSizeMake(kScreenW/2.0, 55 *kiphone6H));
     }];
+    
+    CAGradientLayer *gradientLayer = [CAGradientLayer layer];
+    gradientLayer.colors = @[(__bridge id)[UIColor colorWithHexString:@"2feaeb"].CGColor, (__bridge id)[UIColor colorWithHexString:@"1ebeec"].CGColor];
+    gradientLayer.locations = @[@0.3, @1.0];
+    gradientLayer.startPoint = CGPointMake(0, 0);
+    gradientLayer.endPoint = CGPointMake(0, 1.0);
+    gradientLayer.frame = CGRectMake(0, 0, kScreenW*0.5, 55*kiphone6H);
+    [recardBtn.layer insertSublayer:gradientLayer atIndex:0];
+    self.gradientLayer = gradientLayer;
     
     UILabel *topLine = [[UILabel alloc]init];
     topLine.backgroundColor = [UIColor colorWithHexString:@"eeeeee"];
@@ -166,40 +173,53 @@
     
     YYDataAnalyseViewController *dataAnalyseVC = [[YYDataAnalyseViewController alloc]init];
     dataAnalyseVC.view.frame = CGRectMake(0, 100 +64, kScreenW, kScreenH -100 -64);
-    dataAnalyseVC.userHome_id = self.info_id;
+    dataAnalyseVC.userHome_id = self.patientModel.info_id;
     [self.view addSubview:dataAnalyseVC.view];
+    [dataAnalyseVC.view mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.right.bottom.offset(0);
+        make.top.equalTo(self.recardBtn.mas_bottom);
+    }];
     [dataAnalyseVC httpRequest];
     
     [self addChildViewController:dataAnalyseVC];
     
     
-    RecardDerailViewController *recardVC = [[RecardDerailViewController alloc]init];
+    YYRecardViewController *recardVC = [[YYRecardViewController alloc]init];
     recardVC.view.frame = CGRectMake(0, 100 +64, kScreenW, kScreenH -100 -64);
-    recardVC.patientModel = self.patientModel;
-    [recardVC createSubView];
+    recardVC.dataSource = self.recordArr;
     [self.view addSubview:recardVC.view];
     [self addChildViewController:recardVC];
-    
+    [recardVC.view mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.right.bottom.offset(0);
+        make.top.equalTo(self.recardBtn.mas_bottom);
+    }];
 
 }
 
 - (void)btnClick:(UIButton *)sender{
+    //从原来的按钮移除渐变色
+    [self.gradientLayer removeFromSuperlayer];
+    //添加新的渐变色
+    CAGradientLayer *gradientLayer = [CAGradientLayer layer];
+    gradientLayer.colors = @[(__bridge id)[UIColor colorWithHexString:@"2feaeb"].CGColor, (__bridge id)[UIColor colorWithHexString:@"1ebeec"].CGColor];
+    gradientLayer.locations = @[@0.3, @1.0];
+    gradientLayer.startPoint = CGPointMake(0, 0);
+    gradientLayer.endPoint = CGPointMake(0, 1.0);
+    gradientLayer.frame = CGRectMake(0, 0, kScreenW*0.5, 55*kiphone6H);
+    [sender.layer insertSublayer:gradientLayer atIndex:0];
+    //重新赋值
+    self.gradientLayer = gradientLayer;
+    
+    [sender setTitleColor:[UIColor colorWithHexString:@"ffffff"] forState:UIControlStateNormal];
     if([sender.currentTitle isEqualToString:@"电子病历"]){
-        self.recardBtn.backgroundColor = [UIColor colorWithHexString:@"25f368"];
-        [self.recardBtn setTitleColor:[UIColor colorWithHexString:@"ffffff"] forState:UIControlStateNormal];
-        
-        self.trendBtn.backgroundColor = [UIColor colorWithHexString:@"ffffff"];
-        [self.trendBtn setTitleColor:[UIColor colorWithHexString:@"666666"] forState:UIControlStateNormal];
+    
+        [self.trendBtn setTitleColor:[UIColor colorWithHexString:@"333333"] forState:UIControlStateNormal];
         UIViewController *vC = (UIViewController *)self.childViewControllers[0];
         UIViewController *vC2 = (UIViewController *)self.childViewControllers[1];
         vC.view.hidden = YES;
         vC2.view.hidden = NO;
     }else{
-        self.trendBtn.backgroundColor = [UIColor colorWithHexString:@"25f368"];
-        [self.trendBtn setTitleColor:[UIColor colorWithHexString:@"ffffff"] forState:UIControlStateNormal];
-        
-        self.recardBtn.backgroundColor = [UIColor colorWithHexString:@"ffffff"];
-        [self.recardBtn setTitleColor:[UIColor colorWithHexString:@"666666"] forState:UIControlStateNormal];
+        [self.recardBtn setTitleColor:[UIColor colorWithHexString:@"333333"] forState:UIControlStateNormal];
         
         UIViewController *vC = (UIViewController *)self.childViewControllers[0];
         UIViewController *vC2 = (UIViewController *)self.childViewControllers[1];
@@ -212,41 +232,34 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
-- (void)httpRequest{
-    NSLog(@"asdasd%@",self.info_id);
-    CcUserModel *userModel = [CcUserModel defaultClient];
-    [[HttpClient defaultClient]requestWithPath:[NSString stringWithFormat:@"%@token=%@&humeuserId=%@",mRecardDetail,userModel.userToken,self.info_id] method:0 parameters:nil prepareExecute:^{
+- (void)httpRequestForRecord{
+//    NSLog(@"asdasd%@",self.patientModel.info_id);
+    [SVProgressHUD show];
+    [[HttpClient defaultClient]requestWithPath:[NSString stringWithFormat:@"%@id=%@",mRecardDetail,self.patientModel.info_id] method:0 parameters:nil prepareExecute:^{
         
     } success:^(NSURLSessionDataTask *task, id responseObject) {
         NSLog(@"%@",responseObject);
+        [SVProgressHUD dismiss];
+       NSArray *arr = responseObject[@"result"];
+        for (NSDictionary *dict in arr) {
+            YYPatientRecordModel *patient = [YYPatientRecordModel mj_objectWithKeyValues:dict];
+            [self.recordArr addObject:patient];
+        }
         
-        
-
-        
-        
-        NSDictionary *dict = responseObject[@"result"];
-        
-        PatientModel *patient = [PatientModel mj_objectWithKeyValues:dict];
-        
-        self.patientModel = patient;
-        
-        
-        [self createHeadView];
+        //数据view
         [self createDataView];
         
-        self.nameLabel.text = patient.trueName;
-        self.ageLabel.text = [NSString stringWithFormat:@"年龄：%@",patient.age];
-        if ([patient.gender isEqualToString:@"1"]) {
-            self.genderLabel.text = @"性别：男";
-        }else{
-            self.genderLabel.text = @"性别：女";
-        }
-        [self.iconImageV sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@%@",mPrefixUrl,patient.avatar]]];
-     
-
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
         NSLog(@"%@",error);
+        [SVProgressHUD dismiss];
     }];
+}
+//懒加载
+-(NSMutableArray *)recordArr{
+    if (_recordArr == nil) {
+        _recordArr = [NSMutableArray array];
+    }
+    return _recordArr;
 }
 /*
 #pragma mark - Navigation

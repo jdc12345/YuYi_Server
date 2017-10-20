@@ -83,6 +83,10 @@ static NSString* tableCell = @"table_cell";
             [weakSelf.tableView.mj_footer endRefreshing];
             return ;
         }
+        if (start % 10 != 0) {//已经没有数据了，分页请求是按页请求的，只要已有数据数量没有超过最后一页的最大数量，再请求依然会返回最后一页的数据
+            [weakSelf.tableView.mj_footer endRefreshing];
+            return;
+        }
         NSString *noticeUrlStr = [NSString stringWithFormat:@"%@/messagePhysician/findPage.do?token=%@&start=%ld&limit=10",mPrefixUrl,mDefineToken,start];
         [[HttpClient defaultClient]requestWithPath:noticeUrlStr method:0 parameters:nil prepareExecute:^{
         } success:^(NSURLSessionDataTask *task, id responseObject) {
@@ -104,9 +108,19 @@ static NSString* tableCell = @"table_cell";
                         [weakSelf.publicNoticesArr addObject:infoModel];//公告消息数据源
                     }
                 }
-                [weakSelf.noticesArr addObjectsFromArray:mArr];
-                start = weakSelf.noticesArr.count;
-                [weakSelf.tableView reloadData];
+                if (mArr.count>0) {
+                    [weakSelf.noticesArr addObjectsFromArray:mArr];//消息数据源
+                    [weakSelf.tableView reloadData];
+                    start = weakSelf.noticesArr.count;
+                    if (start % 10 != 0) {
+                       [weakSelf.tableView.mj_footer endRefreshingWithNoMoreData];
+                    }
+                }else{
+                    [weakSelf.tableView.mj_footer endRefreshingWithNoMoreData];
+                }
+//                [weakSelf.noticesArr addObjectsFromArray:mArr];
+//                start = weakSelf.noticesArr.count;
+//                [weakSelf.tableView reloadData];
             }else if ([responseObject[@"code"] isEqualToString:@"-1"]){
                 [SVProgressHUD showErrorWithStatus:responseObject[@"message"]];
             }else{
@@ -152,6 +166,9 @@ static NSString* tableCell = @"table_cell";
             self.noticesArr = mArr;
             start = self.noticesArr.count;
             [self.tableView reloadData];
+            if (start % 10 != 0) {//显示没有更多数据了
+                [self.tableView.mj_footer endRefreshingWithNoMoreData];
+            }
         }else if ([responseObject[@"code"] isEqualToString:@"-1"]){
             [SVProgressHUD showErrorWithStatus:responseObject[@"message"]];
         }else{

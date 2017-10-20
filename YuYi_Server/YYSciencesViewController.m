@@ -528,6 +528,10 @@ static NSInteger selectStart = 0;
 }
 -(void)transForFootRefreshWithViewController:(YYlearningCircleVC *)learningVC{
     if (learningVC == self.hotCardVC) {
+        if (hotStart % 6 != 0) {//已经没有数据了，分页请求是按页请求的，只要已有数据数量没有超过最后一页的最大数量，再请求依然会返回最后一页的数据
+            [learningVC.tableView.mj_footer endRefreshing];
+            return;
+        }
         NSString *hotUrlStr = [NSString stringWithFormat:@"%@/academicpaper/findhot.do?start=%ld&limit=6&token=%@",mPrefixUrl,hotStart,mDefineToken];
         [[HttpClient defaultClient]requestWithPath:hotUrlStr method:0 parameters:nil prepareExecute:^{
             
@@ -552,6 +556,10 @@ static NSInteger selectStart = 0;
             return ;
         }];
     }else if (learningVC == self.selectCardVC){
+        if (selectStart % 6 != 0) {//已经没有数据了，分页请求是按页请求的，只要已有数据数量没有超过最后一页的最大数量，再请求依然会返回最后一页的数据
+            [learningVC.tableView.mj_footer endRefreshing];
+            return;
+        }
         NSString *selectUrlStr = [NSString stringWithFormat:@"%@/academicpaper/Selected.do?start=%ld&limit=6&token=%@",mPrefixUrl,selectStart,mDefineToken];
         [[HttpClient defaultClient]requestWithPath:selectUrlStr method:0 parameters:nil prepareExecute:^{
             
@@ -569,10 +577,6 @@ static NSInteger selectStart = 0;
             }else{
                 [learningVC.tableView.mj_footer endRefreshingWithNoMoreData];
             }
-//            [self.selectCardVC.infos addObjectsFromArray:mArr];
-////            [self.selectInfos addObjectsFromArray:mArr];
-//            selectStart = self.selectCardVC.infos.count;
-//            [self.selectCardVC.tableView reloadData];
             [learningVC.tableView.mj_footer endRefreshing];
         } failure:^(NSURLSessionDataTask *task, NSError *error) {
             [learningVC.tableView.mj_footer endRefreshing];
@@ -580,6 +584,10 @@ static NSInteger selectStart = 0;
         }];
         
     }else if (learningVC == self.recentCardVC){
+        if (recentStart % 6 != 0) {//已经没有数据了，分页请求是按页请求的，只要已有数据数量没有超过最后一页的最大数量，再请求依然会返回最后一页的数据
+            [learningVC.tableView.mj_footer endRefreshing];
+            return;
+        }
         NSString *recentUrlStr = [NSString stringWithFormat:@"%@/academicpaper/findtime.do?start=%ld&limit=6&token=%@",mPrefixUrl,recentStart,mDefineToken];
         [[HttpClient defaultClient]requestWithPath:recentUrlStr method:0 parameters:nil prepareExecute:^{
             
@@ -597,10 +605,6 @@ static NSInteger selectStart = 0;
             }else{
                 [learningVC.tableView.mj_footer endRefreshingWithNoMoreData];
             }
-//            [self.recentCardVC.infos addObjectsFromArray:mArr];
-////            [self.recentInfos addObjectsFromArray:mArr];
-//            recentStart = self.recentCardVC.infos.count;
-//            [self.recentCardVC.tableView reloadData];
             [learningVC.tableView.mj_footer endRefreshing];
         } failure:^(NSURLSessionDataTask *task, NSError *error) {
             [learningVC.tableView.mj_footer endRefreshing];

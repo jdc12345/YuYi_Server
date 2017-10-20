@@ -7,27 +7,26 @@
 //
 
 #import "PatientsTableViewCell.h"
-#import <Masonry.h>
-#import "UIColor+Extension.h"
+
 @implementation PatientsTableViewCell
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
-        self.contentView.backgroundColor = [UIColor whiteColor];//[UIColor colorWithHexString:@"#f6f6f6"];
+        self.contentView.backgroundColor = [UIColor colorWithHexString:@"f2f2f2"];//[UIColor colorWithHexString:@"#f6f6f6"];
         [self createDetailView];
     }
     return self;
 }
 - (void)createDetailView{
     
-    //..邪恶的分割线
-    UILabel *lineL = [[UILabel alloc]init];
-    lineL.backgroundColor = [UIColor colorWithHexString:@"eeeeee"];
+    //backView
+    UIView *backView = [[UIView alloc]init];
+    backView.backgroundColor = [UIColor whiteColor];
     
     self.iconV = [[UIImageView alloc]init];
     self.iconV.image = [UIImage imageNamed:@"cell1"];
-    self.iconV.layer.cornerRadius = 15 *kiphone6;
+    self.iconV.layer.cornerRadius = 45 *0.5;
     self.iconV.clipsToBounds = YES;
     
     
@@ -36,35 +35,32 @@
     self.titleLabel.textColor = [UIColor colorWithHexString:@"333333"];
     self.titleLabel.font = [UIFont fontWithName:@"PingFangSC-Medium"size:14];
     self.titleLabel.text = @"李美丽";
-    UIImageView *imageV = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"disclosure-arrow-拷贝-2"]];
+    UIImageView *imageV = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"Patient_arrow"]];
     
-    [self.contentView addSubview:lineL];
-    [self.contentView addSubview:self.iconV];
-    [self.contentView addSubview:self.titleLabel];
-    [self.contentView addSubview:imageV];
+    [self.contentView addSubview:backView];
+    [backView addSubview:self.iconV];
+    [backView addSubview:self.titleLabel];
+    [backView addSubview:imageV];
     
-    
-    
-    [lineL mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.contentView);
-        make.left.equalTo(self.contentView).with.offset(20 *kiphone6);
-        make.size.mas_equalTo(CGSizeMake(kScreenW, 1));
+    [backView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.left.offset(10 *kiphone6);
+        make.right.offset(-10*kiphone6);
+        make.bottom.offset(0);
     }];
     [self.iconV mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerY.equalTo(self.contentView);
-        make.left.equalTo(self.contentView).with.offset(20 *kiphone6);
-        make.size.mas_equalTo(CGSizeMake(30 *kiphone6, 30 *kiphone6));
+        make.left.offset(10 *kiphone6);
+        make.size.mas_equalTo(CGSizeMake(45 *kiphone6, 45 *kiphone6));
     }];
     
     [self.titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerY.equalTo(self.contentView);
-        make.left.equalTo(self.iconV.mas_right).with.offset(15 *kiphone6);
-        make.size.mas_equalTo(CGSizeMake(100 *kiphone6, 14 *kiphone6));
+        make.left.equalTo(self.iconV.mas_right).offset(10 *kiphone6);
     }];
     [imageV mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerY.equalTo(self.contentView);
-        make.right.equalTo(self.contentView).with.offset(-10 *kiphone6);
-        make.size.mas_equalTo(CGSizeMake(7.5 *kiphone6, 13 *kiphone6));
+        make.right.offset(-10 *kiphone6);
+//        make.size.mas_equalTo(CGSizeMake(7.5 *kiphone6, 13 *kiphone6));
     }];
     
 }
