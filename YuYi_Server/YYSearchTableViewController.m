@@ -13,13 +13,10 @@
 #import "HttpClient.h"
 #import "YYModel.h"
 #import "YYPatientsViewController.h"
-//#import "YYMedinicalDetailModel.h"
-//#import "YYMedicinalDetailVC.h"
-//#import "YYHospitalInfoViewController.h"
-//#import "YYInfomationModel.h"
+
 
 static NSString *dentifier=@"cellforappliancelist";
-@interface YYSearchTableViewController ()<UITableViewDelegate,UITableViewDataSource,UITextFieldDelegate>
+@interface YYSearchTableViewController ()<UITextFieldDelegate>
 @property (strong,nonatomic) NSMutableArray  *searchingList;//新搜索出的数据
 @property (strong,nonatomic) NSMutableArray  *searchedList;//搜索记录数据
 @property(nonatomic,strong)NSUserDefaults *defaults;
@@ -42,7 +39,7 @@ static NSString *dentifier=@"cellforappliancelist";
     //取消按钮
     UIButton *btn = [[UIButton alloc]init];
     [btn setTitle:@"取消" forState:UIControlStateNormal];
-    [btn setTitleColor:[UIColor colorWithHexString:@"25f368"] forState:UIControlStateNormal];
+    [btn setTitleColor:[UIColor colorWithHexString:@"1ebeec"] forState:UIControlStateNormal];
     [btn addTarget:self action:@selector(back:) forControlEvents:UIControlEventTouchUpInside];
     [headerView addSubview:btn];
     [btn mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -108,15 +105,18 @@ static NSString *dentifier=@"cellforappliancelist";
     
     if (searchString.length >0) {
         YYPatientsViewController *dataAnalyseVC = [[YYPatientsViewController alloc]init];
-        dataAnalyseVC.titleStr = @"search";
-        dataAnalyseVC.view.frame = CGRectMake(0, 64, kScreenW, kScreenH -64);
         dataAnalyseVC.searchTrueName = searchString;
-        [dataAnalyseVC httpRequestForUserList];
+        dataAnalyseVC.titleStr = @"search";
+        dataAnalyseVC.view.frame = CGRectMake(0, 64, kScreenW, kScreenH -64);        
+//        [dataAnalyseVC httpRequestForUserList];
         [self.view addSubview:dataAnalyseVC.view];
         
         [self addChildViewController:dataAnalyseVC];
         [self.searchField resignFirstResponder];
-        
+        [dataAnalyseVC.view mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.left.right.bottom.offset(0);
+            make.top.offset(64);
+        }];
     }
    
     

@@ -20,8 +20,9 @@
 #import <UIImageView+WebCache.h>
 #import "UIButton+Badge.h"
 #import "YHPullDownMenu.h"
-#import <SVProgressHUD.h>
+#import <MJRefresh.h>
 
+static NSInteger start = 0;
 @interface YYPatientsViewController ()<UITableViewDataSource, UITableViewDelegate>
 
 @property (nonatomic, strong) UITableView *tableView;
@@ -42,15 +43,16 @@
 
 - (UITableView *)tableView{
     if (_tableView == nil) {
-        if ([self.titleStr isEqualToString:@"search"]) {
-            _tableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, kScreenW, kScreenH -64) style:UITableViewStylePlain];
-        }else{
-            _tableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 64, kScreenW, kScreenH -64) style:UITableViewStylePlain];
-    }
+//        if ([self.titleStr isEqualToString:@"search"]) {
+//            _tableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, kScreenW, kScreenH -64) style:UITableViewStylePlain];
+//        }else{
+//            _tableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 64, kScreenW, kScreenH -64) style:UITableViewStylePlain];
+//    }
+        _tableView = [[UITableView alloc]initWithFrame:CGRectZero style:UITableViewStylePlain];
         _tableView.backgroundColor = [UIColor colorWithHexString:@"f2f2f2"];
         _tableView.dataSource = self;
         _tableView.delegate = self;
-        _tableView.bounces = NO;
+//        _tableView.bounces = NO;
         _tableView.indicatorStyle =
         _tableView.rowHeight = kScreenW *77/320.0 +10;
         _tableView.tableFooterView = [[UIView alloc]init];
@@ -60,6 +62,16 @@
         [_tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"UITableViewCell"];
         [self.view addSubview:_tableView];
         [self.view sendSubviewToBack:_tableView];
+        if (self.searchTrueName.length > 0) {
+            [_tableView mas_makeConstraints:^(MASConstraintMaker *make) {
+                make.top.left.right.bottom.offset(0);
+            }];
+        }else{
+            [_tableView mas_makeConstraints:^(MASConstraintMaker *make) {
+                make.top.offset(64);
+                make.left.right.bottom.offset(0);
+            }];
+        }
         
     }
     return _tableView;
@@ -78,9 +90,6 @@
     //    [self httpRequest];
     self.view.backgroundColor = [UIColor colorWithHexString:@"f2f2f2"];
     
-    // ,@[@"购物车",@"订单详情"] ,@[@"Personal-shopping -icon-",@"order_icon_"]
-//    self.dataSource = [[NSMutableArray alloc]initWithArray:@[@[@"电子病例",@"消息",@"家庭用户管理",@"用户设备管理",@"收货地址",@"设置"]]];
-//    self.iconList =@[@[@"Personal-EMR-icon-",@"Personal-message-icon-",@"family-icon--1",@"equipment-icon-",@"goods-icon-",@"Set-icon-"]];
     if (self.isTotal) {
         // 右侧搜索按钮
         UIButton *rightButton = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -97,13 +106,164 @@
         
         [rightButton sizeToFit];
         
-        
 //        self.tableView.tableHeaderView = [self personInfomation];
     }
-    if (![self.titleStr isEqualToString:@"search"]) {
-          [self httpRequestForUserList];
-        NSLog(@"执行网路请求123213  %@",self.titleStr);
-    }
+    [self httpRequestForUserList];
+    __weak typeof(self) weakSelf = self;
+    self.tableView.mj_header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
+        // 进入刷新状态后会自动调用这个block
+        NSString *urlStr;
+        if ([weakSelf.titleStr isEqualToString:@"search"]) {//从个人功能部分查看数据跳转过来
+            if (weakSelf.searchTrueName.length > 0) {
+                NSString *searchName = [self.searchTrueName stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+                urlStr = [NSString stringWithFormat:@"%@token=%@&trueName=%@&start=0&limit=6",mPatientListTotal,mDefineToken,searchName];
+            }else{
+                urlStr = [NSString stringWithFormat:@"%@token=%@&start=0&limit=6",mPatientListTotal,mDefineToken];
+            }
+            
+        }else{//患者功能模块
+            urlStr = mPatientListMine;
+        }
+        
+        if ([weakSelf.titleStr isEqualToString:@"search"]) {
+            
+            [[HttpClient defaultClient]requestWithPath:urlStr method:0 parameters:nil prepareExecute:^{
+                
+            } success:^(NSURLSessionDataTask *task, id responseObject) {
+                [weakSelf.dataSource removeAllObjects];
+                NSLog(@"%@",responseObject);
+                NSArray *patientList = responseObject[@"rows"];
+                if (patientList.count > 0) {
+                    for (NSDictionary *dict in patientList) {
+                        PatientModel *patientModel = [PatientModel mj_objectWithKeyValues:dict];
+                        [weakSelf.dataSource addObject:patientModel];
+                    }
+                    start = weakSelf.dataSource.count;
+                    [weakSelf.tableView reloadData];
+                    if (patientList.count < 6) {
+                        [weakSelf.tableView.mj_footer endRefreshingWithNoMoreData];
+                    }
+                }else{
+                    EmptyDataView *emptyView =[[EmptyDataView alloc]initWithFrame:CGRectMake(0, 64, kScreenW, kScreenH -64) AndImageStr:@"没有消息"];
+                    [weakSelf.view addSubview:emptyView];
+                }
+                [weakSelf.tableView.mj_header endRefreshing];
+                
+            } failure:^(NSURLSessionDataTask *task, NSError *error) {
+                NSLog(@"%@",error);
+                [weakSelf.tableView.mj_header endRefreshing];
+            }];
+        }else{
+            [[HttpClient defaultClient]requestWithPath:[NSString stringWithFormat:@"%@token=%@&start=0&limit=6",urlStr,mDefineToken] method:0 parameters:nil prepareExecute:^{
+                
+            } success:^(NSURLSessionDataTask *task, id responseObject) {
+                [weakSelf.dataSource removeAllObjects];
+                NSArray *patientList = responseObject[@"rows"];
+                if (patientList.count > 0) {
+                    for (NSDictionary *dict in patientList) {
+                        PatientModel *patientModel = [PatientModel mj_objectWithKeyValues:dict];
+                        [weakSelf.dataSource addObject:patientModel];
+                    }
+                    start = weakSelf.dataSource.count;
+                    [weakSelf.tableView reloadData];
+                    if (patientList.count < 6) {
+                        [weakSelf.tableView.mj_footer endRefreshingWithNoMoreData];
+                    }
+                }else{
+                    EmptyDataView *emptyView =[[EmptyDataView alloc]initWithFrame:CGRectMake(0, 64, kScreenW, kScreenH -64) AndImageStr:@"没有消息"];
+                    [weakSelf.view addSubview:emptyView];
+                }
+                [weakSelf.tableView.mj_header endRefreshing];
+            } failure:^(NSURLSessionDataTask *task, NSError *error) {
+                NSLog(@"%@",error);
+                [weakSelf.tableView.mj_header endRefreshing];
+                [SVProgressHUD showErrorWithStatus:@"加载失败"];
+            }];
+        }
+
+        }];
+    //设置上拉加载更多
+    self.tableView.mj_footer = [MJRefreshAutoNormalFooter footerWithRefreshingBlock:^{
+        // 进入加载状态后会自动调用这个block
+        if (weakSelf.dataSource.count==0) {
+            [weakSelf.tableView.mj_footer endRefreshingWithNoMoreData];
+            return ;
+        }
+        if (start % 6 != 0) {//已经没有数据了，分页请求是按页请求的，只要已有数据数量没有超过最后一页的最大数量，再请求依然会返回最后一页的数据
+            [weakSelf.tableView.mj_footer endRefreshingWithNoMoreData];
+            return;
+        }
+        NSString *urlStr;
+        if ([weakSelf.titleStr isEqualToString:@"search"]) {//从个人功能部分查看数据跳转过来
+            if (weakSelf.searchTrueName.length > 0) {
+                NSString *searchName = [self.searchTrueName stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+                urlStr = [NSString stringWithFormat:@"%@token=%@&trueName=%@&start=%ld&limit=6",mPatientListTotal,mDefineToken,searchName,start];
+            }else{
+                urlStr = [NSString stringWithFormat:@"%@token=%@&start=%ld&limit=6",mPatientListTotal,mDefineToken,start];
+            }
+            
+        }else{//患者功能模块
+            urlStr = mPatientListMine;
+        }
+        
+        if ([weakSelf.titleStr isEqualToString:@"search"]) {
+            
+            [[HttpClient defaultClient]requestWithPath:urlStr method:0 parameters:nil prepareExecute:^{
+                
+            } success:^(NSURLSessionDataTask *task, id responseObject) {
+                NSLog(@"%@",responseObject);
+                NSArray *patientList = responseObject[@"rows"];
+                if (patientList.count > 0) {
+                    for (NSDictionary *dict in patientList) {
+                        PatientModel *patientModel = [PatientModel mj_objectWithKeyValues:dict];
+                        [weakSelf.dataSource addObject:patientModel];
+                    }
+                    start = weakSelf.dataSource.count;
+                    [weakSelf.tableView reloadData];
+                    if (start % 6 != 0) {//显示没有更多数据了
+                        [weakSelf.tableView.mj_footer endRefreshingWithNoMoreData];
+                    }
+                }else{
+                    [weakSelf.tableView.mj_footer endRefreshingWithNoMoreData];
+                }
+                [weakSelf.tableView.mj_footer endRefreshing];
+                
+            } failure:^(NSURLSessionDataTask *task, NSError *error) {
+                NSLog(@"%@",error);
+                [weakSelf.tableView.mj_footer endRefreshing];
+            }];
+        }else{
+            [[HttpClient defaultClient]requestWithPath:[NSString stringWithFormat:@"%@token=%@&start=%ld&limit=6",urlStr,mDefineToken,start] method:0 parameters:nil prepareExecute:^{
+                
+            } success:^(NSURLSessionDataTask *task, id responseObject) {
+                NSArray *patientList = responseObject[@"rows"];
+                if (patientList.count > 0) {
+                    for (NSDictionary *dict in patientList) {
+                        PatientModel *patientModel = [PatientModel mj_objectWithKeyValues:dict];
+                        [weakSelf.dataSource addObject:patientModel];
+                    }
+                    start = weakSelf.dataSource.count;
+                    [weakSelf.tableView reloadData];
+                    if (start % 6 != 0) {//显示没有更多数据了
+                        [weakSelf.tableView.mj_footer endRefreshingWithNoMoreData];
+                    }
+                }else{
+                    [weakSelf.tableView.mj_footer endRefreshingWithNoMoreData];
+                }
+                [weakSelf.tableView.mj_footer endRefreshing];
+            } failure:^(NSURLSessionDataTask *task, NSError *error) {
+                NSLog(@"%@",error);
+                [weakSelf.tableView.mj_footer endRefreshing];
+                [SVProgressHUD showErrorWithStatus:@"加载失败"];
+            }];
+        }
+
+    }];
+
+//    if (![self.titleStr isEqualToString:@"search"]) {
+//          [self httpRequestForUserList];
+//        NSLog(@"执行网路请求123213  %@",self.titleStr);
+//    }
     
     //    UIView *headView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, kScreenW, 70 *kiphone6)];
     //    headView.backgroundColor = [UIColor whiteColor];
@@ -121,70 +281,7 @@
     
     // Do any additional setup after loading the view.
 }
-//- (void)createMeau{
-//    UIView *meauView = [[UIView alloc]initWithFrame:CGRectMake(0, 64, kScreenW, 60)];
-//    meauView.backgroundColor = [UIColor colorWithHexString:@"f2f2f2"];
-//    [self.view addSubview:meauView];
-//    
-//    UILabel *titleLabel = [[UILabel alloc]init];
-//    titleLabel.text = @"科室";
-//    titleLabel.textColor = [UIColor colorWithHexString:@"333333"];
-//    titleLabel.font = [UIFont systemFontOfSize:13];
-//    
-//    [meauView addSubview:titleLabel];
-//    
-//    [titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-//        make.centerY.equalTo(meauView).with.offset(0);
-//        make.left.equalTo(meauView).with.offset(10 *kiphone6);
-//        make.size.mas_equalTo(CGSizeMake(30 , 13 ));
-//    }];
-//    
-//    UIView *cardView = [[UIView alloc]init];
-//    cardView.backgroundColor = [UIColor whiteColor];
-//    cardView.layer.shadowColor = [UIColor colorWithHexString:@"d5d5d5"].CGColor;
-//    cardView.layer.shadowRadius = 1 *kiphone6;
-//    cardView.layer.shadowOffset = CGSizeMake(1, 1);
-//    cardView.layer.shadowOpacity = 1;
-//    
-//    [meauView addSubview:cardView];
-//    
-//    [cardView mas_makeConstraints:^(MASConstraintMaker *make) {
-//        make.centerY.equalTo(meauView).with.offset(0);
-//        make.left.equalTo(titleLabel.mas_right).with.offset(10);
-//        make.right.equalTo(meauView).with.offset(-10);
-//        make.size.mas_equalTo(CGSizeMake(kScreenW - 60 , 29 ));
-//    }];
-//    
-//    UILabel *nameLabel = [[UILabel alloc]init];
-//    nameLabel.text = @"全部";
-//    nameLabel.textColor = [UIColor colorWithHexString:@"333333"];
-//    nameLabel.font = [UIFont systemFontOfSize:13];
-//    
-//    [cardView addSubview:nameLabel];
-//    
-//    [nameLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-//        make.centerY.equalTo(cardView).with.offset(0);
-//        make.left.equalTo(cardView).with.offset(10 *kiphone6);
-//        make.size.mas_equalTo(CGSizeMake(30 , 13 ));
-//    }];
-//    
-//    UIImageView *imageV = [[UIImageView alloc]init];
-//    imageV.image = [UIImage imageNamed:@"展开"];
-//    [imageV sizeToFit];
-//    
-//    [cardView addSubview:imageV];
-//    [imageV mas_makeConstraints:^(MASConstraintMaker *make) {
-//        make.centerY.equalTo(cardView).with.offset(0);
-//        make.right.equalTo(cardView).with.offset(-10 *kiphone6);
-////        make.size.mas_equalTo(CGSizeMake(30 , 13 ));
-//    }];
-//    
-//    
-//   
-//
-//    UITapGestureRecognizer *tapGest = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(headViewClick)];
-//    [cardView addGestureRecognizer:tapGest];
-//}
+
 - (UIView *)personInfomation{
     
     UIView *personV = [[UIView alloc]initWithFrame:CGRectMake(0, 0, kScreenW, 90 *kiphone6)];
@@ -350,25 +447,40 @@
 - (void)httpRequestForUserList{
     NSString *urlStr;
     [SVProgressHUD showWithStatus:@"Loading..."];
-    NSLog(@"%@",self.titleStr);
-//    if ([self.titleStr isEqualToString:@"all"]) {
-//        urlStr = mPatientListTotal;
-//    }else{
+    if ([self.titleStr isEqualToString:@"search"]) {//从个人功能部分查看数据跳转过来
+        if (self.searchTrueName.length > 0) {//搜索跳转
+            NSString *searchName = [self.searchTrueName stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+            urlStr = [NSString stringWithFormat:@"%@token=%@&trueName=%@&start=0&limit=6",mPatientListTotal,mDefineToken,searchName];
+        }else{//查看数据
+            urlStr = [NSString stringWithFormat:@"%@token=%@&start=0&limit=6",mPatientListTotal,mDefineToken];
+        }
+        
+    }else{//患者功能模块
         urlStr = mPatientListMine;
-//    }
+    }
     
-    CcUserModel *userModel = [CcUserModel defaultClient];
     if ([self.titleStr isEqualToString:@"search"]) {
-        [[HttpClient defaultClient]requestWithPath:[NSString stringWithFormat:@"%@token=%@&trueName=1",urlStr,userModel.userToken] method:0 parameters:nil prepareExecute:^{
+        
+        [[HttpClient defaultClient]requestWithPath:urlStr method:0 parameters:nil prepareExecute:^{
             
         } success:^(NSURLSessionDataTask *task, id responseObject) {
             NSLog(@"%@",responseObject);
             NSArray *patientList = responseObject[@"rows"];
+            if (patientList.count > 0) {
             for (NSDictionary *dict in patientList) {
                 PatientModel *patientModel = [PatientModel mj_objectWithKeyValues:dict];
                 [self.dataSource addObject:patientModel];
             }
-            [self tableView];
+                start = self.dataSource.count;
+            [self.tableView reloadData];
+                if (start % 6 != 0) {//显示没有更多数据了
+                    [self.tableView.mj_footer endRefreshingWithNoMoreData];
+                }
+
+        }else{
+            EmptyDataView *emptyView =[[EmptyDataView alloc]initWithFrame:CGRectMake(0, 64, kScreenW, kScreenH -64) AndImageStr:@"没有消息"];
+            [self.view addSubview:emptyView];
+        }
             [SVProgressHUD dismiss];
             
         } failure:^(NSURLSessionDataTask *task, NSError *error) {
@@ -376,7 +488,7 @@
             
         }];
     }else{
-    [[HttpClient defaultClient]requestWithPath:[NSString stringWithFormat:@"%@token=%@",urlStr,userModel.userToken] method:0 parameters:nil prepareExecute:^{
+    [[HttpClient defaultClient]requestWithPath:[NSString stringWithFormat:@"%@token=%@&start=0&limit=6",urlStr,mDefineToken] method:0 parameters:nil prepareExecute:^{
         
     } success:^(NSURLSessionDataTask *task, id responseObject) {
         NSArray *patientList = responseObject[@"rows"];
@@ -385,28 +497,16 @@
                 PatientModel *patientModel = [PatientModel mj_objectWithKeyValues:dict];
                 [self.dataSource addObject:patientModel];
             }
-            [self tableView];
+            start = self.dataSource.count;
+            [self.tableView reloadData];
+            if (start % 6 != 0) {//显示没有更多数据了
+                [self.tableView.mj_footer endRefreshingWithNoMoreData];
+            }
         }else{
-            UIImage *image = [UIImage imageNamed:@"没有消息"];
-            UIImageView *emptyImage = [[UIImageView alloc]init];
-            emptyImage.image = image;
-            [self.view addSubview:emptyImage];
-            [emptyImage mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.center.offset(0);
-                make.width.offset(image.size.width);
-                make.height.offset(image.size.height);
-            }];
-            UILabel *label = [[UILabel alloc]init];
-            label.text = @"你还没有添加患者";
-            [self.view addSubview:label];
-            [label mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.top.equalTo(emptyImage.mas_bottom).offset(10);
-                make.centerX.offset(0);
-            }];
+            EmptyDataView *emptyView =[[EmptyDataView alloc]initWithFrame:CGRectMake(0, 64, kScreenW, kScreenH -64) AndImageStr:@"没有消息"];
+            [self.view addSubview:emptyView];
         }
         [SVProgressHUD dismiss];
-
-        
 
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
         NSLog(@"%@",error);

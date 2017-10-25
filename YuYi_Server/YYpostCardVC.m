@@ -8,14 +8,13 @@
 
 #import "YYpostCardVC.h"
 #import "UIColor+colorValues.h"
-#import <Masonry.h>
 #import "BRPlaceholderTextView.h"
 #import "UILabel+Addition.h"
 #import "HUImagePickerViewController.h"
 #import "YYCardPostPictureCell.h"
 #import "AFNetworking.h"
-#import "CcUserModel.h"
 #import "YYBackView.h"
+
 static NSString *cell_id = @"cell_id";
 @interface YYpostCardVC ()<UITextViewDelegate,HUImagePickerViewControllerDelegate,UITableViewDelegate,UITableViewDataSource,UINavigationControllerDelegate>
 @property(nonatomic,weak)BRPlaceholderTextView *titleView;
@@ -152,7 +151,7 @@ static NSString *cell_id = @"cell_id";
     //添加右侧发布按钮
     UIButton *postBtn = [[UIButton alloc]initWithFrame:CGRectMake(0, 0, 30*kiphone6, 30*kiphone6)];
     [postBtn setTitle:@"发布" forState:UIControlStateNormal];
-    [postBtn setTitleColor:[UIColor colorWithHexString:@"25f368"] forState:UIControlStateNormal];
+    [postBtn setTitleColor:[UIColor colorWithHexString:@"1ebeec"] forState:UIControlStateNormal];
     postBtn.titleLabel.font = [UIFont systemFontOfSize:17];
     [postBtn sizeToFit];
     UIBarButtonItem *postBtnItem = [[UIBarButtonItem alloc]initWithCustomView:postBtn];

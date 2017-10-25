@@ -7,16 +7,12 @@
 //
 
 #import "InvitationViewController.h"
-#import <Masonry.h>
-#import "UIButton+Badge.h"
-#import "UIColor+Extension.h"
-#import "YYpostCardVC.h"
-#import "NSObject+Formula.h"
+//#import "UIButton+Badge.h"
+//#import "YYpostCardVC.h"
+//#import "NSObject+Formula.h"
 #import "YYCardTableViewCell.h"
 #import "YYCardDetailVC.h"
-#import "HttpClient.h"
 #import <MJExtension.h>
-#import "CcUserModel.h"
 
 @interface InvitationViewController ()<UITableViewDelegate,UITableViewDataSource>
 @property (nonatomic, strong) NSArray *infos;
@@ -30,14 +26,12 @@ static NSString *cellId = @"cell_id";
     [super viewDidLoad];
     self.automaticallyAdjustsScrollViewInsets = NO;
     self.title = self.titleStr;
-    self.view.backgroundColor = [UIColor whiteColor];
-    CcUserModel *userModel = [CcUserModel defaultClient];
-    NSString *token = userModel.userToken;
+    self.view.backgroundColor = [UIColor colorWithHexString:@"f2f2f2"];
     NSString *hotUrlStr;
     if ([self.titleStr isEqualToString:@"我的帖子"]) {
-        hotUrlStr = [NSString stringWithFormat:@"%@start=0&limit=6&token=%@",mMyAcademicpaper,token];
+        hotUrlStr = [NSString stringWithFormat:@"%@start=0&limit=6&token=%@",mMyAcademicpaper,mDefineToken];
     }else{
-        hotUrlStr = [NSString stringWithFormat:@"%@start=0&limit=6&token=%@",mMyLike,token];
+        hotUrlStr = [NSString stringWithFormat:@"%@start=0&limit=6&token=%@",mMyLike,mDefineToken];
     }
     
     [self loadHotInfosWithUrlStr:hotUrlStr];
@@ -53,7 +47,7 @@ static NSString *cellId = @"cell_id";
 }
 - (void)setupUI {
     UITableView *tableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 64, kScreenW, kScreenH -64) style:UITableViewStylePlain];
-//    tableView.backgroundColor = [UIColor cyanColor];
+    tableView.backgroundColor = [UIColor colorWithHexString:@"f2f2f2"];
     [self.view addSubview:tableView];
     self.tableView = tableView;
 //    [tableView mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -72,7 +66,8 @@ static NSString *cellId = @"cell_id";
     return self.infos.count;
 }
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-    return 150*kiphone6;
+    
+    return 195*kiphone6H;
 }
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     YYCardTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellId forIndexPath:indexPath];
@@ -92,6 +87,7 @@ static NSString *cellId = @"cell_id";
     [tableView deselectRowAtIndexPath:indexPath animated:true];
 }
 -(void)loadHotInfosWithUrlStr:(NSString*)urlStr{
+    [SVProgressHUD show];
     [[HttpClient defaultClient]requestWithPath:urlStr method:0 parameters:nil prepareExecute:^{
         
     } success:^(NSURLSessionDataTask *task, id responseObject) {
@@ -102,18 +98,28 @@ static NSString *cellId = @"cell_id";
             [mArr addObject:infoModel];
         }
         self.infos = mArr;
-        [self setupUI];
-        [self.tableView reloadData];
+        if (mArr.count>0) {
+            [self setupUI];
+            [self.tableView reloadData];
+        }else{
+            EmptyDataView *emptyView =[[EmptyDataView alloc]initWithFrame:CGRectMake(0, 64, kScreenW, kScreenH -64) AndImageStr:@"没有消息"];
+            [self.view addSubview:emptyView];
+
+        }
         
+        [SVProgressHUD dismiss];
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
-        
+        [SVProgressHUD dismiss];
+        EmptyDataView *emptyView =[[EmptyDataView alloc]initWithFrame:CGRectMake(0, 64, kScreenW, kScreenH -64) AndImageStr:@"没有消息"];
+        [self.view addSubview:emptyView];
+  
     }];
     
 }
 - (void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:YES];
     self.automaticallyAdjustsScrollViewInsets = NO;
-    self.navigationController.navigationBar.translucent = YES;
+    self.navigationController.navigationBar.translucent = true;
 }
 /*
  #pragma mark - Navigation

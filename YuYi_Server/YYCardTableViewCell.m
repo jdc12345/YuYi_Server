@@ -8,12 +8,9 @@
 
 #import "YYCardTableViewCell.h"
 #import "UILabel+Addition.h"
-#import "UIColor+colorValues.h"
-#import <Masonry.h>
 #import <UIImageView+WebCache.h>
-#import "CcUserModel.h"
-#import "HttpClient.h"
 #import "YYCardDetailTVCell.h"
+
 @interface YYCardTableViewCell ()
 @property(nonatomic,weak)UIImageView *iconView;
 @property(nonatomic,weak)UILabel *nameLabel;
@@ -199,15 +196,14 @@
     NSInteger count = [self.praiseCountLabel.text integerValue];
     self.model.isLike = sender.selected;
     if (self.model.isLike) {
-        count -= 1;
-        self.praiseCountLabel.text = [NSString stringWithFormat:@"%ld",count];
-        self.model.likeNum = [NSString stringWithFormat:@"%ld",count];
-    }else{
         count += 1;
         self.praiseCountLabel.text = [NSString stringWithFormat:@"%ld",count];
         self.model.likeNum = [NSString stringWithFormat:@"%ld",count];
+    }else{
+        count -= 1;
+        self.praiseCountLabel.text = [NSString stringWithFormat:@"%ld",count];
+        self.model.likeNum = [NSString stringWithFormat:@"%ld",count];
     }
-    self.model.isLike = sender.selected;
 }
 //在详情页面返回时候更新点赞状态
 -(void)setLikeState:(BOOL)likeState{

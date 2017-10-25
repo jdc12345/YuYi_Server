@@ -172,7 +172,8 @@ static NSString* tableCell = @"table_cell";
         }else if ([responseObject[@"code"] isEqualToString:@"-1"]){
             [SVProgressHUD showErrorWithStatus:responseObject[@"message"]];
         }else{
-            [SVProgressHUD showInfoWithStatus:@"你目前没有消息可以查看"];
+            EmptyDataView *emptyView =[[EmptyDataView alloc]initWithFrame:CGRectMake(0, 64, kScreenW, kScreenH -64) AndImageStr:@"没有消息"];
+            [self.view addSubview:emptyView];
         }
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
         [SVProgressHUD dismiss];// 动画结束
@@ -303,7 +304,7 @@ static NSString* tableCell = @"table_cell";
 //    return @[action1];
 //}
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-    return 90*kiphone6;
+    return 70*kiphone6H;
 }
 #pragma -懒加载
 -(NSMutableArray *)noticesArr{

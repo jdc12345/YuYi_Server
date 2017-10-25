@@ -322,67 +322,6 @@ static NSInteger selectStart = 0;
 -(void)informationBtnClick:(UIButton*)sender{
     YYNoticeListVC *noticeVC = [[YYNoticeListVC alloc]init];
     [self.navigationController pushViewController:noticeVC animated:true];
-//    //大蒙布View
-//    UIView *backView = [[UIView alloc]init];
-//    backView.backgroundColor = [UIColor colorWithHexString:@"#333333"];
-//    backView.alpha = 0.2;
-//    [self.view addSubview:backView];
-//    self.backView = backView;
-//    [backView mas_makeConstraints:^(MASConstraintMaker *make) {
-//        make.top.left.bottom.right.offset(0);
-//    }];
-//    backView.userInteractionEnabled = YES;
-//    //添加tap手势：
-//    //    UITapGestureRecognizer *tapGesture=[[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(event:)];
-//    //将手势添加至需要相应的view中
-//    //    [backView addGestureRecognizer:tapGesture];
-//    
-//    //提示框
-//    UIView *noticeView = [[UIView alloc]init];
-//    noticeView.backgroundColor = [UIColor whiteColor];
-//    [self.view addSubview:noticeView];
-//    self.noticeView = noticeView;
-//    [noticeView mas_makeConstraints:^(MASConstraintMaker *make) {
-//        make.center.equalTo(backView);
-//        make.width.offset(300*kiphone6);
-//        make.height.offset(200*kiphone6);
-//    }];
-//    //noticeLabel
-//    UILabel *noticeLabel = [[UILabel alloc]init];
-//    noticeLabel.text = @"提示";
-//    noticeLabel.font = [UIFont systemFontOfSize:17];
-//    noticeLabel.textColor = [UIColor colorWithHexString:@"333333"];
-//    [noticeView addSubview:noticeLabel];
-//    [noticeLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-//        make.centerX.equalTo(noticeView);
-//        make.top.offset(25*kiphone6);
-//    }];
-//    //contentLabel
-//    UILabel *contentLabel = [[UILabel alloc]init];
-//    //提示内容
-//    contentLabel.text = @"此功能暂时只对专业医生开放，你暂时还没有权限，去看看别的吧";
-//    contentLabel.numberOfLines = 2;
-//    contentLabel.font = [UIFont systemFontOfSize:15];
-//    contentLabel.textColor = [UIColor colorWithHexString:@"333333"];
-//    [noticeView addSubview:contentLabel];
-//    [contentLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-//        make.left.offset(25*kiphone6);
-//        make.top.equalTo(noticeLabel.mas_bottom).offset(25*kiphone6);
-//        make.right.offset(-25*kiphone6);
-//    }];
-//    //confirmButton
-//    UIButton *confirmButton = [[UIButton alloc]init];
-//    [confirmButton setTitle:@"确定" forState:UIControlStateNormal];
-//    [confirmButton setTitleColor:[UIColor colorWithHexString:@"ffffff"] forState:UIControlStateNormal];
-//    confirmButton.titleLabel.font = [UIFont systemFontOfSize:17];
-//    confirmButton.backgroundColor = [UIColor colorWithHexString:@"#25f368"];
-//    [noticeView addSubview:confirmButton];
-//    [confirmButton mas_makeConstraints:^(MASConstraintMaker *make) {
-//        make.left.right.bottom.offset(0);
-//        make.height.offset(60*kiphone6);
-//    }];
-//    //添加关闭提示框按钮的点击事件
-//    [confirmButton addTarget:self action:@selector(closeNoticeView:) forControlEvents:UIControlEventTouchUpInside];
     
 }
 //-(void)closeNoticeView:(UIButton*)sender{
@@ -529,13 +468,14 @@ static NSInteger selectStart = 0;
 -(void)transForFootRefreshWithViewController:(YYlearningCircleVC *)learningVC{
     if (learningVC == self.hotCardVC) {
         if (hotStart % 6 != 0) {//已经没有数据了，分页请求是按页请求的，只要已有数据数量没有超过最后一页的最大数量，再请求依然会返回最后一页的数据
-            [learningVC.tableView.mj_footer endRefreshing];
+            [learningVC.tableView.mj_footer endRefreshingWithNoMoreData];
             return;
         }
         NSString *hotUrlStr = [NSString stringWithFormat:@"%@/academicpaper/findhot.do?start=%ld&limit=6&token=%@",mPrefixUrl,hotStart,mDefineToken];
         [[HttpClient defaultClient]requestWithPath:hotUrlStr method:0 parameters:nil prepareExecute:^{
             
         } success:^(NSURLSessionDataTask *task, id responseObject) {
+            [learningVC.tableView.mj_footer endRefreshing];
             NSArray *arr = responseObject[@"rows"];
             NSMutableArray *mArr = [NSMutableArray array];
             for (NSDictionary *dic in arr) {
@@ -546,24 +486,27 @@ static NSInteger selectStart = 0;
                 [self.hotCardVC.infos addObjectsFromArray:mArr];
                 hotStart = self.hotCardVC.infos.count;
                 [learningVC.tableView reloadData];
+                if (hotStart % 6 != 0) {
+                    [learningVC.tableView.mj_footer endRefreshingWithNoMoreData];
+                }
             }else{
                 [learningVC.tableView.mj_footer endRefreshingWithNoMoreData];
             }
             
-            [learningVC.tableView.mj_footer endRefreshing];
         } failure:^(NSURLSessionDataTask *task, NSError *error) {
             [learningVC.tableView.mj_footer endRefreshing];
             return ;
         }];
     }else if (learningVC == self.selectCardVC){
         if (selectStart % 6 != 0) {//已经没有数据了，分页请求是按页请求的，只要已有数据数量没有超过最后一页的最大数量，再请求依然会返回最后一页的数据
-            [learningVC.tableView.mj_footer endRefreshing];
+            [learningVC.tableView.mj_footer endRefreshingWithNoMoreData];
             return;
         }
         NSString *selectUrlStr = [NSString stringWithFormat:@"%@/academicpaper/Selected.do?start=%ld&limit=6&token=%@",mPrefixUrl,selectStart,mDefineToken];
         [[HttpClient defaultClient]requestWithPath:selectUrlStr method:0 parameters:nil prepareExecute:^{
             
         } success:^(NSURLSessionDataTask *task, id responseObject) {
+            [learningVC.tableView.mj_footer endRefreshing];
             NSArray *arr = responseObject[@"result"];
             NSMutableArray *mArr = [NSMutableArray array];
             for (NSDictionary *dic in arr) {
@@ -574,10 +517,12 @@ static NSInteger selectStart = 0;
                 [self.selectCardVC.infos addObjectsFromArray:mArr];
                 selectStart = self.selectCardVC.infos.count;
                 [learningVC.tableView reloadData];
+                if (selectStart % 6 != 0) {
+                    [learningVC.tableView.mj_footer endRefreshingWithNoMoreData];
+                }
             }else{
                 [learningVC.tableView.mj_footer endRefreshingWithNoMoreData];
             }
-            [learningVC.tableView.mj_footer endRefreshing];
         } failure:^(NSURLSessionDataTask *task, NSError *error) {
             [learningVC.tableView.mj_footer endRefreshing];
             return ;
@@ -585,13 +530,14 @@ static NSInteger selectStart = 0;
         
     }else if (learningVC == self.recentCardVC){
         if (recentStart % 6 != 0) {//已经没有数据了，分页请求是按页请求的，只要已有数据数量没有超过最后一页的最大数量，再请求依然会返回最后一页的数据
-            [learningVC.tableView.mj_footer endRefreshing];
+            [learningVC.tableView.mj_footer endRefreshingWithNoMoreData];
             return;
         }
         NSString *recentUrlStr = [NSString stringWithFormat:@"%@/academicpaper/findtime.do?start=%ld&limit=6&token=%@",mPrefixUrl,recentStart,mDefineToken];
         [[HttpClient defaultClient]requestWithPath:recentUrlStr method:0 parameters:nil prepareExecute:^{
             
         } success:^(NSURLSessionDataTask *task, id responseObject) {
+            [learningVC.tableView.mj_footer endRefreshing];
             NSArray *arr = responseObject[@"rows"];
             NSMutableArray *mArr = [NSMutableArray array];
             for (NSDictionary *dic in arr) {
@@ -602,10 +548,13 @@ static NSInteger selectStart = 0;
                 [self.recentCardVC.infos addObjectsFromArray:mArr];
                 recentStart = self.recentCardVC.infos.count;
                 [learningVC.tableView reloadData];
+                if (recentStart % 6 != 0) {
+                    [learningVC.tableView.mj_footer endRefreshingWithNoMoreData];
+                }
             }else{
                 [learningVC.tableView.mj_footer endRefreshingWithNoMoreData];
             }
-            [learningVC.tableView.mj_footer endRefreshing];
+            
         } failure:^(NSURLSessionDataTask *task, NSError *error) {
             [learningVC.tableView.mj_footer endRefreshing];
             return ;

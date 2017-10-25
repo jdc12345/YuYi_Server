@@ -12,7 +12,7 @@
 #import <UIImageView+WebCache.h>
 #import "YYPatientRecordModel.h"
 #import "YYRecardViewController.h"
-
+#define NULL_TO_NIL(obj) ({ __typeof__ (obj) __obj = (obj); __obj == [NSNull null] ? nil : obj; })//处理数据中NSNULL值
 @interface PatientDetailViewController ()
 @property (nonatomic, weak) UIButton *recardBtn;
 @property (nonatomic, weak) UIButton *trendBtn;
@@ -30,7 +30,7 @@
     [super viewDidLoad];
     self.title = @"患者详情";
     self.view.backgroundColor = [UIColor whiteColor];
-    
+    self.automaticallyAdjustsScrollViewInsets = NO;
     [self httpRequestForRecord];
     [self createHeadView];
 
@@ -172,7 +172,7 @@
 - (void)createDataView{
     
     YYDataAnalyseViewController *dataAnalyseVC = [[YYDataAnalyseViewController alloc]init];
-    dataAnalyseVC.view.frame = CGRectMake(0, 100 +64, kScreenW, kScreenH -100 -64);
+//    dataAnalyseVC.view.frame = CGRectMake(0, 100 +64, kScreenW, kScreenH -100 -64);
     dataAnalyseVC.userHome_id = self.patientModel.info_id;
     [self.view addSubview:dataAnalyseVC.view];
     [dataAnalyseVC.view mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -185,7 +185,7 @@
     
     
     YYRecardViewController *recardVC = [[YYRecardViewController alloc]init];
-    recardVC.view.frame = CGRectMake(0, 100 +64, kScreenW, kScreenH -100 -64);
+//    recardVC.view.frame = CGRectMake(0, 100 +64, kScreenW, kScreenH -100 -64);
     recardVC.dataSource = self.recordArr;
     [self.view addSubview:recardVC.view];
     [self addChildViewController:recardVC];
@@ -193,6 +193,11 @@
         make.left.right.bottom.offset(0);
         make.top.equalTo(self.recardBtn.mas_bottom);
     }];
+    if (self.recordArr.count == 0) {
+        EmptyDataView *emptyView =[[EmptyDataView alloc]initWithFrame:CGRectMake(0, 0, kScreenW, kScreenH -64) AndImageStr:@"没有消息"];
+        [recardVC.view addSubview:emptyView];
+    }
+
 
 }
 
@@ -240,14 +245,19 @@
     } success:^(NSURLSessionDataTask *task, id responseObject) {
         NSLog(@"%@",responseObject);
         [SVProgressHUD dismiss];
-       NSArray *arr = responseObject[@"result"];
-        for (NSDictionary *dict in arr) {
-            YYPatientRecordModel *patient = [YYPatientRecordModel mj_objectWithKeyValues:dict];
-            [self.recordArr addObject:patient];
-        }
-        
+        if (NULL_TO_NIL(responseObject[@"result"]) ) {//不为空
+            NSArray *arr = responseObject[@"result"];
+            for (NSDictionary *dict in arr) {
+                YYPatientRecordModel *patient = [YYPatientRecordModel mj_objectWithKeyValues:dict];
+                [self.recordArr addObject:patient];
+            }
+//            //数据view
+//            [self createDataView];
+            
+    }
         //数据view
         [self createDataView];
+   
         
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
         NSLog(@"%@",error);
@@ -261,6 +271,14 @@
     }
     return _recordArr;
 }
+-(void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+    self.navigationController.navigationBar.translucent = true;
+}
+//-(void)viewWillDisappear:(BOOL)animated{
+//    [super viewWillDisappear:animated];
+//    self.navigationController.navigationBar.translucent = false;
+//}
 /*
 #pragma mark - Navigation
 

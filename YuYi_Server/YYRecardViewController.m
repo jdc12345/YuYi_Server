@@ -7,12 +7,6 @@
 //
 
 #import "YYRecardViewController.h"
-//#import "YYHomeNewTableViewCell.h"
-//#import "YYSectionViewController.h"
-//#import "YYPersonalTableViewCell.h"
-//#import "YYRecardTableViewCell.h"
-//#import "YYDetailRecardViewController.h"
-//#import "RecardModel.h"
 #import <MJExtension.h>
 #import "YYPatientRecordModel.h"
 #import "YYPatientRecordTVCell.h"
@@ -131,7 +125,14 @@
     return homeTableViewCell;
     
 }
-
+//-(void)viewWillAppear:(BOOL)animated{
+//    [super viewWillAppear:animated];
+//    self.navigationController.navigationBar.translucent = true;
+//}
+//-(void)viewWillDisappear:(BOOL)animated{
+//    [super viewWillDisappear:animated];
+//    self.navigationController.navigationBar.translucent = false;
+//}
 #pragma mark -
 #pragma mark ------------Http client----------------------
 

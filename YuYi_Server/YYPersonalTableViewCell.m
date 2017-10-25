@@ -7,8 +7,7 @@
 //
 
 #import "YYPersonalTableViewCell.h"
-#import <Masonry.h>
-#import "UIColor+Extension.h"
+
 @implementation YYPersonalTableViewCell
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
@@ -25,8 +24,8 @@
     UILabel *lineL = [[UILabel alloc]init];
     lineL.backgroundColor = [UIColor colorWithHexString:@"f2f2f2"];
     
-//    self.iconV = [[UIImageView alloc]init];
-//    self.iconV.image = [UIImage imageNamed:@"cell1"];
+    self.iconV = [[UIImageView alloc]init];
+    self.iconV.image = [UIImage imageNamed:@"Patient_arrow"];
 
     
     
@@ -37,7 +36,7 @@
     
     
     [self.contentView addSubview:lineL];
-//    [self.contentView addSubview:self.iconV];
+    [self.contentView addSubview:self.iconV];
     [self.contentView addSubview:self.titleLabel];
 
     
@@ -47,11 +46,12 @@
         make.left.equalTo(self.contentView).with.offset(20 *kiphone6);
         make.size.mas_equalTo(CGSizeMake(kScreenW, 1));
     }];
-//    [self.iconV mas_makeConstraints:^(MASConstraintMaker *make) {
-//        make.centerY.equalTo(self.contentView);
+    [self.iconV mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerY.equalTo(self.contentView);
+        make.right.offset(-15*kiphone6);
 //        make.left.equalTo(self.contentView).with.offset(25 *kiphone6);
 //        make.size.mas_equalTo(CGSizeMake(15 *kiphone6, 15 *kiphone6));
-//    }];
+    }];
 
     [self.titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerY.equalTo(self.contentView);

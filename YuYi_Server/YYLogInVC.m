@@ -7,12 +7,8 @@
 //
 
 #import "YYLogInVC.h"
-#import "UIColor+colorValues.h"
-#import <Masonry.h>
 #import "UILabel+Addition.h"
 #import "YYTabBarController.h"
-#import "HttpClient.h"
-#import "CcUserModel.h"
 #import "YYTabBarController.h"
 #import "PrivacyViewController.h"
 

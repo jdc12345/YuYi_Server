@@ -7,25 +7,22 @@
 //
 
 #import "ReciveAppointmentViewController.h"
-#import "UIColor+Extension.h"
 #import "YYHomeNewTableViewCell.h"
-#import <Masonry.h>
 #import "YYRecardTableViewCell.h"
 #import "YYDetailRecardViewController.h"
-#import "HttpClient.h"
-#import "CcUserModel.h"
 #import "RecardModel.h"
 #import <MJExtension.h>
 #import "YHPullDownMenu.h"
 #import "AppointmentModel.h"
 #import "DeparmentModel.h"
+
 @interface ReciveAppointmentViewController ()<UITableViewDataSource, UITableViewDelegate>
 
 @property (nonatomic, strong) UITableView *tableView;
 @property (nonatomic, strong) NSMutableArray *dataSource;
-@property (nonatomic, strong) NSMutableArray *appointmentDataSource;
-@property (nonatomic, strong) NSMutableArray *dapartDataSource;
-@property (nonatomic, strong) NSMutableArray *clinicDataSource;
+@property (nonatomic, strong) NSMutableArray *appointmentDataSource;//挂号数据源
+@property (nonatomic, strong) NSMutableArray *dapartDataSource;//科室分类数据源
+@property (nonatomic, strong) NSMutableArray *clinicDataSource;//门诊分类数据源
 @property (nonatomic, strong) NSArray *iconList;
 
 @property (nonatomic, weak) UILabel *nameLabel;
@@ -110,25 +107,12 @@
     // Do any additional setup after loading the view.
 }
 - (void)createMeau{
-    UIView *meauView = [[UIView alloc]initWithFrame:CGRectMake(0, 64, kScreenW, 60)];
-    meauView.backgroundColor = [UIColor colorWithHexString:@"f2f2f2"];
+    UIView *meauView = [[UIView alloc]initWithFrame:CGRectMake(0, 64, kScreenW, 86*kiphone6H)];
+    meauView.backgroundColor = [UIColor colorWithHexString:@"ffffff"];
     [self.view addSubview:meauView];
 
-    UILabel *titleLabel = [[UILabel alloc]init];
-    titleLabel.text = @"科室";
-    titleLabel.textColor = [UIColor colorWithHexString:@"333333"];
-    titleLabel.font = [UIFont systemFontOfSize:13];
-
-    [meauView addSubview:titleLabel];
-
-    [titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.centerY.equalTo(meauView).with.offset(0);
-        make.left.equalTo(meauView).with.offset(10 *kiphone6);
-        make.size.mas_equalTo(CGSizeMake(30 , 13 ));
-    }];
-
     UIView *cardView = [[UIView alloc]init];
-    cardView.backgroundColor = [UIColor whiteColor];
+    cardView.backgroundColor = [UIColor colorWithHexString:@"f2f2f2"];
     cardView.layer.shadowColor = [UIColor colorWithHexString:@"d5d5d5"].CGColor;
     cardView.layer.shadowRadius = 1 *kiphone6;
     cardView.layer.shadowOffset = CGSizeMake(1, 1);
@@ -137,38 +121,81 @@
     [meauView addSubview:cardView];
 
     [cardView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.centerY.equalTo(meauView).with.offset(0);
-        make.left.equalTo(titleLabel.mas_right).with.offset(10);
-        make.right.equalTo(meauView).with.offset(-10);
-        make.size.mas_equalTo(CGSizeMake(kScreenW - 60 , 29 ));
+        make.top.offset(10*kiphone6H);
+        make.left.offset(46*kiphone6);
+        make.right.offset(-10*kiphone6);
+        make.height.offset(30*kiphone6H);
     }];
 
     UILabel *nameLabel = [[UILabel alloc]init];
     nameLabel.text = @"全部";
     nameLabel.textColor = [UIColor colorWithHexString:@"333333"];
-    nameLabel.font = [UIFont systemFontOfSize:13];
+    nameLabel.font = [UIFont systemFontOfSize:14];
     self.nameLabel = nameLabel;
     [cardView addSubview:nameLabel];
 
     [nameLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.centerY.equalTo(cardView).with.offset(0);
-        make.left.equalTo(cardView).with.offset(10 *kiphone6);
-        make.size.mas_equalTo(CGSizeMake(100 , 13 ));
+        make.centerY.equalTo(cardView);
+        make.left.offset(10 *kiphone6);
+//        make.size.mas_equalTo(CGSizeMake(100 , 13 ));
     }];
 
     UIImageView *imageV = [[UIImageView alloc]init];
-    imageV.image = [UIImage imageNamed:@"展开"];
+    imageV.image = [UIImage imageNamed:@"Appointment_open"];
     [imageV sizeToFit];
 
     [cardView addSubview:imageV];
     [imageV mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.centerY.equalTo(cardView).with.offset(0);
-        make.right.equalTo(cardView).with.offset(-10 *kiphone6);
+        make.centerY.equalTo(cardView);
+        make.right.offset(-10 *kiphone6);
 //        make.size.mas_equalTo(CGSizeMake(30 , 13 ));
     }];
-
-
-
+    
+    UILabel *titleLabel = [[UILabel alloc]init];
+    titleLabel.text = @"科室";
+    titleLabel.textColor = [UIColor colorWithHexString:@"333333"];
+    titleLabel.font = [UIFont systemFontOfSize:14];
+    
+    [meauView addSubview:titleLabel];
+    
+    [titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerY.equalTo(cardView);
+        make.left.offset(10 *kiphone6);
+    }];
+    
+    //分割线
+    UIView *line = [[UIView alloc]init];
+    line.backgroundColor = [UIColor colorWithHexString:@"e5e5e5"];
+    [meauView addSubview:line];
+    
+    [line mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.right.offset(0);
+        make.top.equalTo(cardView.mas_bottom).offset(10*kiphone6H);
+        make.height.offset(1/[UIScreen mainScreen].scale);
+    }];
+    
+    UILabel *timeLabel = [[UILabel alloc]init];
+    timeLabel.text = @"X月X日X午";
+    timeLabel.textColor = [UIColor colorWithHexString:@"333333"];
+    timeLabel.font = [UIFont systemFontOfSize:15];
+//    self.nameLabel = nameLabel;
+    [meauView addSubview:timeLabel];
+    
+    [timeLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerY.equalTo(line.mas_bottom).offset(18*kiphone6H);
+        make.left.offset(10 *kiphone6);
+        //        make.size.mas_equalTo(CGSizeMake(100 , 13 ));
+    }];
+    
+    UIButton *timeSelectBtn = [[UIButton alloc]init];
+    [timeSelectBtn setImage:[UIImage imageNamed:@"Appointment_calendar"] forState:UIControlStateNormal];
+    [meauView addSubview:timeSelectBtn];
+    [timeSelectBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerY.equalTo(timeLabel);
+        make.right.offset(-10 *kiphone6);
+        //        make.size.mas_equalTo(CGSizeMake(30 , 13 ));
+    }];
+    [timeSelectBtn addTarget:self action:@selector(selectTimeBtnClick:) forControlEvents:UIControlEventTouchUpInside];
 
     UITapGestureRecognizer *tapGest = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(headViewClick)];
     [cardView addGestureRecognizer:tapGest];
@@ -222,7 +249,9 @@
     
     return personV;
 }
-
+-(void)selectTimeBtnClick:(UIButton*)sender{
+    
+}
 #pragma mark -
 #pragma mark ------------Tableview Delegate----------------------
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -299,9 +328,8 @@
     
 }
 - (void)headViewClick{
-    NSLog(@"123");
-    NSArray *items = @[@"东方不败", @"步惊云", @"女娲大帝"];
-    YHPullDownMenu *pd=[[YHPullDownMenu alloc]initPullDownMenuWithItems:self.dapartDataSource clinicLisy:self.clinicDataSource cellHeight:30 menuFrame:CGRectMake(50, 10 +108.5, kScreenW -60, 300) clickIndexHandle:^(NSInteger index ,NSInteger section) {
+//    NSArray *items = @[@"东方不败", @"步惊云", @"女娲大帝"];
+    YHPullDownMenu *pd=[[YHPullDownMenu alloc]initPullDownMenuWithItems:self.dapartDataSource clinicLisy:self.clinicDataSource cellHeight:30 menuFrame:CGRectMake(50, 144*kiphone6H, kScreenW -60, 300) clickIndexHandle:^(NSInteger index ,NSInteger section) {
         if (index == -1) {
             self.nameLabel.text = self.dapartDataSource[section];
             [self httpRequestForSection:section];
@@ -342,6 +370,7 @@
         
     }];
 }
+//科室门诊分类数据源
 - (void)httpRequestForDepartment{
     [SVProgressHUD showWithStatus:@"Loading..."];
     [[HttpClient defaultClient]requestWithPath:[NSString stringWithFormat:@"%@token=%@",mDepartment,[CcUserModel defaultClient].userToken] method:0 parameters:nil prepareExecute:^{
@@ -371,6 +400,7 @@
         
     }];
 }
+//不同门诊的挂号数据源
 - (void)httpRequestForClasses:(NSInteger )row
                    AndSection:(NSInteger )section{
     DeparmentModel *appointmentModel = self.appointmentDataSource[section];

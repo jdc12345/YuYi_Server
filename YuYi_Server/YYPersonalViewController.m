@@ -7,16 +7,10 @@
 //
 
 #import "YYPersonalViewController.h"
-#import "UIColor+Extension.h"
 #import "YYHomeNewTableViewCell.h"
-#import <Masonry.h>
-// #import "YYSectionViewController.h"
 #import "YYPersonalTableViewCell.h"
-// #import "NotficationViewController.h"
-#import "HttpClient.h"
 #import <MJExtension.h>
 #import <UIImageView+WebCache.h>
-#import "CcUserModel.h"
 #import "YYHomeUserModel.h"
 #import "InvitationViewController.h"
 #import "AgreeViewController.h"
@@ -24,12 +18,12 @@
 #import "YYPatientsViewController.h"
 #import "ReciveAppointmentViewController.h"
 #import "YYSettingViewController.h"
-#import "YYNotficationViewController.h"
 #import "UIBarButtonItem+Helper.h"
 #import "UIButton+Badge.h"
+#import "YYNoticeListVC.h"
+#import "YYPInfomartionViewController.h"
 
-
-#define myToken @"6DD620E22A92AB0AED590DB66F84D064"
+//#define myToken @"6DD620E22A92AB0AED590DB66F84D064"
 @interface YYPersonalViewController ()<UITableViewDataSource, UITableViewDelegate>
 
 @property (nonatomic, strong) UITableView *tableView;
@@ -76,8 +70,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    NSLog(@"我存在了");
-        [self httpRequest];
+    [self httpRequest];
     self.view.backgroundColor = [UIColor colorWithHexString:@"f2f2f2"];
     self.automaticallyAdjustsScrollViewInsets = NO;
     
@@ -88,14 +81,7 @@
     else{
         self.dataSource = [[NSMutableArray alloc]initWithArray:@[@[@"我的帖子",@"我的点赞"]]];
     }
-    self.iconList =@[@[@"Personal-EMR-icon-",@"Personal-message-icon-"],@[@"family-icon--1",@"equipment-icon-"],@[@"goods-icon-",@"Set-icon-"]];
-    
-    
-//    self.navigationItem. leftBarButtonItem = [[UIBarButtonItem alloc]initWithTitle:@"设置" normalColor:[UIColor colorWithHexString:@"25f368"] highlightedColor:[UIColor colorWithHexString:@"25f368"] target:self action:@selector(pushSettingVC)];
-//    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithTitle:@"消息" normalColor:[UIColor colorWithHexString:@"25f368"] highlightedColor:[UIColor colorWithHexString:@"25f368"] target:self action:@selector(pushNotficVC)]; 
-    
-    
-    
+//    self.iconList =@[@[@"Personal-EMR-icon-",@"Personal-message-icon-"],@[@"family-icon--1",@"equipment-icon-"],@[@"goods-icon-",@"Set-icon-"]];    
     
     // 左侧地址按钮   测
     UIButton *leftButton = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -137,32 +123,33 @@
 }
 - (UIView *)personInfomation{
     
-    UIView *personV = [[UIView alloc]initWithFrame:CGRectMake(0, 0, kScreenW, 170 *kiphone6)];
-    personV.backgroundColor = [UIColor whiteColor];
-    personV.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"personal_color"]];
-    
-    UITapGestureRecognizer *tapGest = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(headViewClick)];
-    [personV addGestureRecognizer:tapGest];
-    
-    
-//    UIView *headerView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, kScreenW, 10)];
-//    headerView.backgroundColor = [UIColor colorWithHexString:@"f2f2f2"];
-//    
-//    [personV addSubview:headerView];
+    UIView *personV = [[UIView alloc]initWithFrame:CGRectMake(0, 0, kScreenW, 225 *kiphone6H)];
+    //渐变色
+    CAGradientLayer *gradientLayer = [CAGradientLayer layer];
+    gradientLayer.colors = @[(__bridge id)[UIColor colorWithHexString:@"2feaeb"].CGColor, (__bridge id)[UIColor colorWithHexString:@"1ebeec"].CGColor];
+    gradientLayer.locations = @[@0.3, @1.0];
+    gradientLayer.startPoint = CGPointMake(0, 0);
+    gradientLayer.endPoint = CGPointMake(0, 1.0);
+    gradientLayer.frame = CGRectMake(0, 0, kScreenW, 225 *kiphone6H);
+    [personV.layer insertSublayer:gradientLayer atIndex:0];
     
     UIImageView *iconV = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"avatar.jpg"]];
-    iconV.layer.cornerRadius = 32.5 *kiphone6;
-    iconV.clipsToBounds = YES;
+    iconV.layer.cornerRadius = 40 *kiphone6;
+    iconV.clipsToBounds = true;
+    iconV.userInteractionEnabled = true;
+    UITapGestureRecognizer *tapGest = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(headViewClick)];
+    [iconV addGestureRecognizer:tapGest];
+
     //
     UILabel *nameLabel = [[UILabel alloc]init];
-    nameLabel.text = @"赵启平  主任医师";
-    nameLabel.textColor = [UIColor colorWithHexString:@"6a6a6a"];
+    nameLabel.text = @"医生  职级";
+    nameLabel.textColor = [UIColor colorWithHexString:@"ffffff"];
     nameLabel.font = [UIFont systemFontOfSize:14];
     nameLabel.textAlignment = NSTextAlignmentCenter;
     //
     UILabel *idName = [[UILabel alloc]init];
-    idName.text = @"涿州市中医院  检验科";
-    idName.textColor = [UIColor colorWithHexString:@"6a6a6a"];
+    idName.text = @"医院  科室";
+    idName.textColor = [UIColor colorWithHexString:@"ffffff"];
     idName.font = [UIFont systemFontOfSize:12];
     idName.textAlignment = NSTextAlignmentCenter;
     
@@ -185,31 +172,22 @@
     [personV addSubview:notficVC];
     //
     [iconV mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(personV).with.offset(35);
+        make.top.offset(64);
         make.centerX.equalTo(personV);
-        make.size.mas_equalTo(CGSizeMake(65 *kiphone6, 65 *kiphone6));
+        make.size.mas_equalTo(CGSizeMake(80 *kiphone6, 80 *kiphone6));
     }];
-//    [settingBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-//        make.left.equalTo(personV).with.offset(15);
-//        make.top.equalTo(personV).with.offset(35);
-//        make.size.mas_equalTo(CGSizeMake(20 *kiphone6, 20 *kiphone6));
-//    }];
-//    [notficVC mas_makeConstraints:^(MASConstraintMaker *make) {
-//        make.top.equalTo(personV).with.offset(35);
-//        make.right.equalTo(personV).with.offset(-15);
-//        make.size.mas_equalTo(CGSizeMake(20 *kiphone6, 20 *kiphone6));
-//    }];
+
     //
     [nameLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(iconV.mas_bottom).with.offset(15 *kiphone6);
-        make.left.equalTo(personV).with.offset(0 *kiphone6);
-        make.size.mas_equalTo(CGSizeMake(kScreenW, 14 *kiphone6));
+        make.top.equalTo(iconV.mas_bottom).offset(12.5 *kiphone6);
+        make.centerX.offset(0);
+//        make.size.mas_equalTo(CGSizeMake(kScreenW, 14 *kiphone6));
     }];
     //
     [idName mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(nameLabel.mas_bottom).with.offset(10 *kiphone6);
-        make.left.equalTo(personV).with.offset(0 *kiphone6);
-        make.size.mas_equalTo(CGSizeMake(kScreenW, 14 *kiphone6));;
+        make.top.equalTo(nameLabel.mas_bottom).offset(10 *kiphone6);
+        make.centerX.offset(0);
+//        make.size.mas_equalTo(CGSizeMake(kScreenW, 14 *kiphone6));;
     }];
     
     self.nameLabel = nameLabel;
@@ -219,10 +197,9 @@
     return personV;
 }
 - (void)headViewClick{
-    NSLog(@"123");
-//    YYPInfomartionViewController *pInfoVC = [[YYPInfomartionViewController alloc]init];
-//    pInfoVC.personalModel = self.personalModel;
-//    [self.navigationController pushViewController:pInfoVC animated:YES];
+    YYPInfomartionViewController *pInfoVC = [[YYPInfomartionViewController alloc]init];
+    pInfoVC.personalModel = self.personalModel;
+    [self.navigationController pushViewController:pInfoVC animated:YES];
 }
 
 #pragma mark -
@@ -249,10 +226,10 @@
             [self.navigationController pushViewController:familyVC animated:YES];
         }else if(indexPath.row == 1){
             YYPatientsViewController *equipmentVC = [[YYPatientsViewController alloc]init];
-            equipmentVC.titleStr = @"all";
+            equipmentVC.titleStr = @"search";
             equipmentVC.isTotal = YES;
             [self.navigationController pushViewController:equipmentVC animated:YES];
-        }else{
+        }else{//挂号
             ReciveAppointmentViewController *equipmentVC = [[ReciveAppointmentViewController alloc]init];
             [self.navigationController pushViewController:equipmentVC animated:YES];
         }
@@ -338,29 +315,25 @@
         
     }];
 }
-//- (void)viewWillAppear:(BOOL)animated{
-//    [super viewWillAppear:YES];
-//    [self httpRequest];
-//}
+
 //防止导航栏设置影响其他页面
 -(void)viewWillAppear:(BOOL)animated{
     //把导航栏变透明
     [self.navigationController.navigationBar setBackgroundImage:[[UIImage alloc]init] forBarMetrics:UIBarMetricsDefault];
     [self.navigationController.navigationBar setShadowImage:[[UIImage alloc]init]];
-    self.navigationController.navigationBar.translucent = true;
+//    self.navigationController.navigationBar.translucent = true;
 }
 -(void)viewWillDisappear:(BOOL)animated{
     [self.navigationController.navigationBar setBackgroundImage:nil forBarMetrics:UIBarMetricsDefault];
     [self.navigationController.navigationBar setShadowImage:nil];
-    //    self.navigationController.navigationBar.translucent = false;
+//        self.navigationController.navigationBar.translucent = false;
 }
 - (void)pushSettingVC{
-    NSLog(@"123");
     [self.navigationController pushViewController:[[YYSettingViewController alloc]init] animated:YES];
 }
 - (void)pushNotficVC{
-    NSLog(@"435");
-    [self.navigationController pushViewController:[[YYNotficationViewController alloc]init] animated:YES];
+    YYNoticeListVC *noticeVC = [[YYNoticeListVC alloc]init];
+    [self.navigationController pushViewController:noticeVC animated:YES];
 }
 /*
  #pragma mark - Navigation

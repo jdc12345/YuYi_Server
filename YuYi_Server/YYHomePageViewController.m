@@ -8,12 +8,9 @@
 
 #import "YYHomePageViewController.h"
 #import "YYCycleView.h"
-#import <Masonry.h>
 #import "YYInformationVC.h"
 #import "YYInformationTableViewCell.h"
 #import "NSObject+Formula.h"
-#import "UIColor+colorValues.h"
-#import "HttpClient.h"
 #import "YYInfoDetailVC.h"
 #import "YYInfoDetailModel.h"
 #import <MJExtension.h>
@@ -340,7 +337,7 @@ static NSInteger todayStart = 0;
     //
     [self.cardLineView layoutIfNeeded];
 }
-#pragma refreshDelegate
+#pragma mark- refreshDelegate
 -(void)transViewController:(YYInformationVC *)learningVC{
     if (learningVC == self.hotInfosVC) {
         NSString *hotUrlStr = [NSString stringWithFormat:@"%@/doctorlyinformation/find.do?start=0&limit=3",mPrefixUrl];
@@ -412,6 +409,10 @@ static NSInteger todayStart = 0;
 
 -(void)transForFootRefreshWithViewController:(YYInformationVC *)learningVC{
     if (learningVC == self.hotInfosVC) {
+        if (hotStart % 3 != 0) {//已经没有数据了，分页请求是按页请求的，只要已有数据数量没有超过最后一页的最大数量，再请求依然会返回最后一页的数据
+            [learningVC.tableView.mj_footer endRefreshingWithNoMoreData];
+            return;
+        }
         NSString *hotUrlStr = [NSString stringWithFormat:@"%@/doctorlyinformation/find.do?start=%ld&limit=3",mPrefixUrl,hotStart];
         [[HttpClient defaultClient]requestWithPath:hotUrlStr method:0 parameters:nil prepareExecute:^{
             
@@ -431,6 +432,10 @@ static NSInteger todayStart = 0;
             [learningVC.tableView.mj_footer endRefreshing];
         }];
     }else if (learningVC == self.todayInfosVC){
+        if (todayStart % 3 != 0) {//已经没有数据了，分页请求是按页请求的，只要已有数据数量没有超过最后一页的最大数量，再请求依然会返回最后一页的数据
+            [learningVC.tableView.mj_footer endRefreshingWithNoMoreData];
+            return;
+        }
         NSString *todayUrlStr = [NSString stringWithFormat:@"%@/doctorlyinformation/getTodayAll.do?start=%ld&limit=3",mPrefixUrl,todayStart];
         [[HttpClient defaultClient]requestWithPath:todayUrlStr method:0 parameters:nil prepareExecute:^{
             
@@ -451,6 +456,10 @@ static NSInteger todayStart = 0;
         }];
         
     }else if (learningVC == self.recentInfosVC){
+        if (recentStart % 3 != 0) {//已经没有数据了，分页请求是按页请求的，只要已有数据数量没有超过最后一页的最大数量，再请求依然会返回最后一页的数据
+            [learningVC.tableView.mj_footer endRefreshingWithNoMoreData];
+            return;
+        }
         NSString *recentUrlStr = [NSString stringWithFormat:@"%@/doctorlyinformation/findPage.do?start=%ld&limit=3",mPrefixUrl,recentStart];
         [[HttpClient defaultClient]requestWithPath:recentUrlStr method:0 parameters:nil prepareExecute:^{
             

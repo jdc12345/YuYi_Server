@@ -83,7 +83,7 @@
     UIImageView *iconView = [[UIImageView alloc]init];
     iconView.image = [UIImage imageNamed:@"icon"];
     iconView.layer.masksToBounds = true;
-    iconView.layer.cornerRadius = 25*kiphone6;
+    iconView.layer.cornerRadius = 20*kiphone6;
     [self.contentView addSubview:iconView];
     //nameTitle
     UILabel *nameLabel = [UILabel labelWithText:@"TIAN" andTextColor:[UIColor colorWithHexString:@"#333333"] andFontSize:14];
@@ -96,9 +96,9 @@
     [self.contentView addSubview:timeLabel];
     //约束
     [iconView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.offset(10*kiphone6);
+        make.left.offset(15*kiphone6);
         make.centerY.equalTo(self.contentView);
-        make.width.height.offset(50*kiphone6);
+        make.width.height.offset(40*kiphone6);
     }];
     [nameLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(iconView.mas_right).offset(15*kiphone6);
@@ -118,8 +118,9 @@
     line.backgroundColor = [UIColor colorWithHexString:@"#cccccc"];
     [self.contentView addSubview:line];
     [line mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.right.bottom.offset(0);
-        make.height.offset(1*kiphone6);
+        make.left.equalTo(nameLabel.mas_left);
+        make.right.bottom.offset(0);
+        make.height.offset(1/[UIScreen mainScreen].scale);
     }];
     UIView *backBage = [[UIView alloc]init];//bage的背景
     backBage.backgroundColor = [UIColor whiteColor];

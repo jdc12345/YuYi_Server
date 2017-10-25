@@ -7,8 +7,6 @@
 //
 
 #import "NotficationTableViewCell.h"
-#import <Masonry.h>
-#import "UIColor+Extension.h"
 
 @implementation NotficationTableViewCell
 
@@ -73,47 +71,40 @@
     self.introduceLabel.textColor = [UIColor colorWithHexString:@"333333"];
     self.introduceLabel.numberOfLines = 2;
     
-    
-    
-    
-//    [self.cardView addSubview:self.iconV];
     [self.cardView  addSubview:self.titleLabel];
     [self.cardView addSubview:self.timeLabel];
     [self.cardView addSubview:lineL];
     [self.cardView addSubview:self.introduceLabel];
     
     
-    WS(ws);
-//    [self.iconV mas_makeConstraints:^(MASConstraintMaker *make) {
-//        make.top.equalTo(ws.cardView).with.offset(14 *kiphone6);
-//        make.left.equalTo(ws.cardView).with.offset(15 *kiphone6);
-//        make.size.mas_equalTo(CGSizeMake(32 *kiphone6, 32 *kiphone6));
-//    }];
     [self.titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(ws.cardView).with.offset(23 *kiphone6);
-        make.left.equalTo(ws.cardView).with.offset(15 *kiphone6);
-        make.size.mas_equalTo(CGSizeMake(64 , 14 ));
+//        make.top.offset(23 *kiphone6);
+        make.top.left.offset(15 *kiphone6);
+//        make.size.mas_equalTo(CGSizeMake(64 , 14 ));
     }];
     
     [self.timeLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(ws.cardView).with.offset(23 *kiphone6);
-        make.right.equalTo(ws.cardView.mas_right).with.offset(-15 *kiphone6);
-        make.size.mas_equalTo(CGSizeMake(64 , 12 ));
+        make.top.offset(15 *kiphone6);
+        make.right.offset(-15 *kiphone6);
+//        make.size.mas_equalTo(CGSizeMake(64 , 12 ));
     }];
     
     
     [lineL mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(ws.cardView).with.offset(60 *kiphone6);
-        make.left.equalTo(ws.cardView).with.offset(15 *kiphone6);
-        make.size.mas_equalTo(CGSizeMake(kScreenW - 15 *kiphone6, 1 *kiphone6));
+        make.top.offset(45 *kiphone6);
+        make.left.offset(15 *kiphone6);
+        make.height.offset(1/[UIScreen mainScreen].scale);
+        make.right.offset(-15*kiphone6);
     }];
     
     
     
     [self.introduceLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(lineL.mas_bottom).with.offset(15 *kiphone6);
-        make.left.equalTo(ws.titleLabel.mas_left);
-        make.size.mas_equalTo(CGSizeMake( kScreenW - 50 *kiphone6, 30));
+        make.top.equalTo(lineL.mas_bottom).offset(15 *kiphone6);
+        make.left.equalTo(self.titleLabel.mas_left);
+        make.right.offset(-15*kiphone6);
+        make.bottom.offset(-13*kiphone6);
+//        make.size.mas_equalTo(CGSizeMake( kScreenW - 50 *kiphone6, 30));
     }];
     
     
@@ -124,8 +115,8 @@
         [self.cardView addSubview:lineL2];
         
         [lineL2 mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.bottom.equalTo(ws.cardView).with.offset(-30 *kiphone6);
-            make.left.equalTo(ws.cardView).with.offset(15 *kiphone6);
+            make.bottom.offset(-30 *kiphone6);
+            make.left.offset(15 *kiphone6);
             make.size.mas_equalTo(CGSizeMake(kScreenW - 15 *kiphone6, 1 *kiphone6));
         }];
         
@@ -138,8 +129,7 @@
         
         
         [self.moreButton mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.bottom.equalTo(ws.cardView);
-            make.left.equalTo(ws.cardView);
+            make.left.bottom.offset(0);
             make.size.mas_equalTo(CGSizeMake(kScreenW - 20 *kiphone6, 30 *kiphone6));
         }];
     }

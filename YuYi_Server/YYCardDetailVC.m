@@ -10,7 +10,7 @@
 #import "YYCardDetailTVCell.h"
 #import "YYCommentTVCell.h"
 #import "UILabel+Addition.h"
-#import "UIColor+colorValues.h"
+//#import "UIColor+colorValues.h"
 #import "BRPlaceholderTextView.h"
 #import <MJExtension.h>
 #import "YYCardDetailPageModel.h"
