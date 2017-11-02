@@ -11,7 +11,7 @@
 @interface AppDelegate : UIResponder <UIApplicationDelegate>
 
 @property (strong, nonatomic) UIWindow * window;
-
+@property (assign, nonatomic) BOOL  isHasPower;//医生是否有看病的权限
 
 @end
 

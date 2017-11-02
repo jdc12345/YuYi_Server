@@ -11,11 +11,13 @@
 #import <UIImageView+WebCache.h>
 #import "RCDHttpTool.h"
 #import "YYWordsViewController.h"
-
+#import "YYHomeUserModel.h"
+#import <MJExtension.h>
 
 #define RCDHTTPTOOL [RCDHttpTool shareInstance]
 
-@interface YYChatListViewController ()
+@interface YYChatListViewController ()<RCIMUserInfoDataSource>
+///<RCIMReceiveMessageDelegate>
 @property(nonatomic, assign) NSUInteger index;
 @end
 
@@ -26,8 +28,8 @@
     self.view.backgroundColor = [UIColor whiteColor];
     self.title = @"咨询";
     [self.conversationListTableView  setSeparatorStyle:UITableViewCellSeparatorStyleSingleLine];
-    [[RCIMClient sharedRCIMClient] setReceiveMessageDelegate:self object:nil];
-    
+//    [[RCIMClient sharedRCIMClient] setReceiveMessageDelegate:self object:nil];
+//    [[RCIM sharedRCIM] setReceiveMessageDelegate:self];
     
     //设置要显示的会话类型
     [self setDisplayConversationTypes:@[
@@ -64,13 +66,50 @@
                                                  name:@"RefreshConversationList"
                                                object:nil];
 
-    // Do any additional setup after loading the view.
+    // 没有消息时候显示的空页面.
+    self.emptyConversationView = [[EmptyDataView alloc]initWithFrame:CGRectMake(0, 0, kScreenW, kScreenH) AndImageStr:@"没有消息"];
+//    设置在会话列表中显示的头像形状，矩形或者圆形（全局有效）
+    [self setConversationAvatarStyle:RC_USER_AVATAR_CYCLE];
+    [self setConversationPortraitSize:CGSizeMake(40, 40)];
+//    是否在发送的所有消息中携带当前登录的用户信息
+    [[RCIM sharedRCIM] setEnableMessageAttachUserInfo:true];
+    // 用户信息提供者
+    [[RCIM sharedRCIM] setUserInfoDataSource:self];
+    //如果设置为NO，则SDK在需要显示用户信息时，会调用用户信息提供者获取用户信息并缓存到Cache，此Cache在App生命周期结束时会被移除，下次启动时会再次通过用户信息提供者获取信息。 如果设置为YES，则会将获取到的用户信息持久化存储在本地，App下次启动时Cache会仍然有效
+    [[RCIM sharedRCIM]setEnablePersistentUserInfoCache:true];
 }
+//在缓存到本地前需要向服务器请求一次数据
+-(void)getUserInfoWithUserId:(NSString *)userId completion:(void (^)(RCUserInfo *))completion{
+//http://192.168.1.168:8082/yuyi/homeuser/findMyUserInfo.do?token=293AB53EF708A14175A44DE3378D8BFA&personalId=18301264693
+//    token=医生的token
+//    personalId=患者的id，手机号；
+    NSString *getUserInfoUrl = [NSString stringWithFormat:@"%@%@&personalId=%@",mRCUserInfoUrl,mDefineToken,userId];
+    [[HttpClient defaultClient] requestWithPath:getUserInfoUrl method:0 parameters:nil prepareExecute:nil success:^(NSURLSessionDataTask *task, id responseObject) {
+        NSDictionary *dic = responseObject;
+        YYHomeUserModel *modle = [YYHomeUserModel mj_objectWithKeyValues:dic];
+        if ([modle.gender isEqualToString:@"1"]) {
+            modle.gender = @"男";
+        }else if ([modle.gender isEqualToString:@"0"]){
+            modle.gender = @"女";
+        }else{
+            modle.gender = @"未知";
+        }
+        if (!modle.age) {
+            modle.age = @"未知";
+        }
+        NSString *titleName = [NSString stringWithFormat:@"%@(%@ %@)",modle.trueName?modle.trueName:@"患者",modle.gender,modle.age];
+                RCUserInfo *userModel_rc = [[RCUserInfo alloc]initWithUserId:userId name:titleName portrait:[NSString stringWithFormat:@"%@%@",mPrefixUrl,responseObject[@"avatar"]]];
+        return completion(userModel_rc);
 
-//插入自定义会话model
+    } failure:^(NSURLSessionDataTask *task, NSError *error) {
+        
+    }];
+
+}
+//即将加载列表数据源的回调,您可以在回调中修改、添加、删除数据源的元素来定制显示的内容，会话列表会根据您返回的修改后的数据源进行显示,比如插入自定义会话model
 - (NSMutableArray *)willReloadTableData:(NSMutableArray *)dataSource {
     NSLog(@"%@",dataSource);
-    
+    NSLog(@"%@",[RCIM sharedRCIM].currentUserInfo.description);
     for (int i = 0; i < dataSource.count; i++) {
         RCConversationModel *model = dataSource[i];
         //筛选请求添加好友的系统消息，用于生成自定义会话类型的cell
@@ -79,11 +118,12 @@
              isMemberOfClass:[RCContactNotificationMessage class]]) {
                 model.conversationModelType = RC_CONVERSATION_MODEL_TYPE_CUSTOMIZATION;
             }
+        //群组通知消息
         if ([model.lastestMessage
              isKindOfClass:[RCGroupNotificationMessage class]]) {
             RCGroupNotificationMessage *groupNotification =
             (RCGroupNotificationMessage *)model.lastestMessage;
-            if ([groupNotification.operation isEqualToString:@"Quit"]) {
+            if ([groupNotification.operation isEqualToString:@"Quit"]) {//退出操作通知
                 NSData *jsonData =
                 [groupNotification.data dataUsingEncoding:NSUTF8StringEncoding];
                 NSDictionary *dictionary = [NSJSONSerialization
@@ -110,11 +150,15 @@
     
     return dataSource;
 }
+-(void)willDisplayConversationTableCell:(RCConversationBaseCell *)cell atIndexPath:(NSIndexPath *)indexPath{
+    RCConversationCell *Rcell = (RCConversationCell *)cell;
+    Rcell.conversationTitle.text = cell.model.conversationTitle;
 
+}
 //高度
 - (CGFloat)rcConversationListTableView:(UITableView *)tableView
                heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return 67.0f;
+    return 60.0f*kiphone6H;
 }
 //自定义cell
 - (RCConversationBaseCell *)rcConversationListTableView:(UITableView *)tableView
@@ -196,6 +240,10 @@
     RCDChatListCell *cell =
     [[RCDChatListCell alloc] initWithStyle:UITableViewCellStyleDefault
                            reuseIdentifier:@""];
+    //------------------------------后添加的这句代码，需要确认------------------------------
+    _contactNotificationMsg =
+    (RCContactNotificationMessage *)model.lastestMessage;
+    
     NSString *operation = _contactNotificationMsg.operation;
     NSString *operationContent;
     if ([operation isEqualToString:@"Request"]) {
@@ -246,6 +294,7 @@
      */
     [self refreshConversationTableViewIfNeeded];
 }
+
 - (void)onReceived:(RCMessage *)message
               left:(int)nLeft
             object:(id)object {

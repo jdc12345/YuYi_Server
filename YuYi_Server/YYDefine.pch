@@ -23,6 +23,8 @@
 #define kScreenH [UIScreen mainScreen].bounds.size.height
 #define kiphone6 [UIScreen mainScreen].bounds.size.width/375.0
 #define kiphone6H [UIScreen mainScreen].bounds.size.height/667.0
+////是否有看病权限
+//BOOL isHasPower = false;
 
 #pragma mark --------------Color--------------------
 #define kColor_DefaultGray [UIColor  colorWithRed:246/255.0 green:246/255.0 blue:246/255.0 alpha:1]
@@ -47,7 +49,13 @@
 #define mHomepageInfoList [NSString stringWithFormat:@"%@%@",mPrefixUrl,@"/article/findList.do?start=0&limit=20"]
 // 首页融云token接口
 #define mRCtokenUrl [NSString stringWithFormat:@"%@%@",mPrefixUrl,@"/personal/rongyuToken.do?personalid="]
+//根据id查询医生信息
 #define mRCDoctorTokenUrl [NSString stringWithFormat:@"%@%@",mPrefixUrl,@"/physician/doctory.do?cid="]
+//根据融云返回id查询用户信息
+#define mRCUserInfoUrl [NSString stringWithFormat:@"%@%@",mPrefixUrl,@"/homeuser/findMyUserInfo.do?token="]
+
+//审核医生是否有权限看病
+#define mRCDoctorHasPowerUrl [NSString stringWithFormat:@"%@%@",mPrefixUrl,@"/physician/doctoryrongyuntoken.do?&telephone="]
 // 医院列表接口
 #define mHospitalInfoList [NSString stringWithFormat:@"%@%@",mPrefixUrl,@"/hospital/findList.do?start=0&limit=20"]
 

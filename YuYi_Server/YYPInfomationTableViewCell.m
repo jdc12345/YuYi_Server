@@ -7,23 +7,28 @@
 //
 
 #import "YYPInfomationTableViewCell.h"
-#import <Masonry.h>
-#import "UIColor+Extension.h"
-
 
 @implementation YYPInfomationTableViewCell
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
-        self.contentView.backgroundColor = [UIColor whiteColor];//[UIColor colorWithHexString:@"#f6f6f6"];
+        self.contentView.backgroundColor = [UIColor colorWithHexString:@"#f2f2f2"];
         [self createDetailView];
     }
     return self;
 }
 - (void)createDetailView{
     
-    
+    //backView
+    UIView *backView = [[UIView alloc]init];
+    backView.backgroundColor = [UIColor whiteColor];
+    [self.contentView addSubview:backView];
+    [backView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.offset(10*kiphone6);
+        make.right.offset(-10*kiphone6);
+        make.top.bottom.offset(0);
+    }];
     //..邪恶的分割线
     UILabel *lineL = [[UILabel alloc]init];
     lineL.backgroundColor = [UIColor colorWithHexString:@"eeeeee"];
@@ -39,53 +44,50 @@
     self.seeRecardLabel.textAlignment = NSTextAlignmentLeft;
 //    self.seeRecardLabel.backgroundColor = [UIColor cyanColor];
     
-    self.editInfoText = [[UITextField alloc]init];
-    self.editInfoText.textColor = [UIColor colorWithHexString:@"333333"];
-    self.editInfoText.font = [UIFont systemFontOfSize:14];
-    self.editInfoText.textAlignment = NSTextAlignmentRight;
-    self.editInfoText.hidden = YES;
+//    self.editInfoText = [[UITextField alloc]init];
+//    self.editInfoText.textColor = [UIColor colorWithHexString:@"333333"];
+//    self.editInfoText.font = [UIFont systemFontOfSize:14];
+//    self.editInfoText.textAlignment = NSTextAlignmentRight;
+//    self.editInfoText.hidden = YES;
     
     
-    [self.contentView addSubview:lineL];
-    [self.contentView addSubview:self.titleLabel];
-    [self.contentView addSubview:self.seeRecardLabel];
-    [self.contentView addSubview:self.editInfoText];
+    [backView addSubview:lineL];
+    [backView addSubview:self.titleLabel];
+    [backView addSubview:self.seeRecardLabel];
+//    [self.contentView addSubview:self.editInfoText];
     
     
     
     [lineL mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.contentView);
-        make.left.equalTo(self.contentView).with.offset(0 *kiphone6);
-        make.size.mas_equalTo(CGSizeMake(kScreenW, 1));
+        make.left.right.bottom.offset(0);
+        make.height.offset(1/[UIScreen mainScreen].scale);
     }];
     [self.titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.centerY.equalTo(self.contentView);
+        make.centerY.offset(0);
         make.left.offset(10 *kiphone6);
-        make.size.mas_equalTo(CGSizeMake(45, 14 ));
     }];
     
     [self.seeRecardLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.centerY.equalTo(self.contentView);
-        make.left.equalTo(self.titleLabel.mas_right).with.offset(1 *kiphone6);
-        make.size.mas_equalTo(CGSizeMake(260 *kiphone6, 14 *kiphone6));
+        make.centerY.offset(0);
+        make.right.offset(-10 *kiphone6);
     }];
-    [self.editInfoText mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.centerY.equalTo(self.contentView);
-        make.right.equalTo(self.contentView).with.offset(-10 *kiphone6);
-        make.size.mas_equalTo(CGSizeMake(200 , 14 *kiphone6));
-    }];
+//    [self.editInfoText mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.centerY.equalTo(self.contentView);
+//        make.right.equalTo(self.contentView).with.offset(-10 *kiphone6);
+//        make.size.mas_equalTo(CGSizeMake(200 , 14 *kiphone6));
+//    }];
 }
 - (void)setType:(NSString *)cellType{
-    if ([cellType isEqualToString:@"cellbounce"]) {
-        UITapGestureRecognizer *tapGest = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(bounceCellClick)];
-        [self.seeRecardLabel addGestureRecognizer:tapGest];
-    }else if([cellType isEqualToString:@"celltextfield"]){
-        self.seeRecardLabel.hidden = YES;
-        self.editInfoText.hidden = NO;
-    }
+//    if ([cellType isEqualToString:@"cellbounce"]) {
+//        UITapGestureRecognizer *tapGest = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(bounceCellClick)];
+//        [self.seeRecardLabel addGestureRecognizer:tapGest];
+//    }else if([cellType isEqualToString:@"celltextfield"]){
+//        self.seeRecardLabel.hidden = YES;
+//        self.editInfoText.hidden = NO;
+//    }
 }
 - (void)bounceCellClick{
-    self.sexClick(@"123");
+//    self.sexClick(@"123");
     // self.seeRecardLabel.text = sex;
 }
 - (void)awakeFromNib {

@@ -7,14 +7,8 @@
 //
 
 #import "YYDetailRecardViewController.h"
-#import "UIColor+Extension.h"
-#import "YYHomeNewTableViewCell.h"
-#import <Masonry.h>
 #import "YYPersonalTableViewCell.h"
-#import "YYRecardTableViewCell.h"
 #import "YYPInfomationTableViewCell.h"
-#import "HttpClient.h"
-#import "CcUserModel.h"
 #import "RecardDetailModel.h"
 #import <MJExtension.h>
 
@@ -73,7 +67,7 @@
     [self tableView];
     self.tableView.tableFooterView = [self setTableFootView];
     
-    self.dataSource = [[NSMutableArray alloc]initWithArray:@[@[@"编号：",@"姓名：",@"性别：",@"年龄：",@"电话：",@"地址："]]];
+    self.dataSource = [[NSMutableArray alloc]initWithArray:@[@[@"就诊时间",@"编号",@"患者姓名",@"性别",@"年龄",@"就诊医院",@"就诊科室",@"就诊医生"]]];
     //    self.iconList =@[@[@"18511694068",@"男",@"24"],@[@"黑龙江哈尔滨",@"程序员",@"未婚"],@[@"2016-10-23"]];
     
     
@@ -82,96 +76,19 @@
     // Do any additional setup after loading the view.
 }
 - (UIView *)setTableFootView{
-    UIView *personV = [[UIView alloc]initWithFrame:CGRectMake(0, 0, kScreenW, kScreenH - 304)];
-    personV.backgroundColor = [UIColor colorWithHexString:@"ffffff"];
+    UIView *personV = [[UIView alloc]initWithFrame:CGRectMake(0, 0, kScreenW, 94*kiphone6H)];
+    personV.backgroundColor = [UIColor colorWithHexString:@"f2f2f2"];
     
     UIView *contentView  = [[UIView alloc]init];
-    contentView.backgroundColor = [UIColor colorWithHexString:@"e9e9e9"];
+    contentView.backgroundColor = [UIColor colorWithHexString:@"ffffff"];
     
     
     [personV addSubview:contentView];
     
     [contentView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(personV).with.offset(20 *kiphone6);
-        make.left.equalTo(personV).with.offset(10 *kiphone6);
-        make.right.equalTo(personV).with.offset(-10 *kiphone6);
-        make.bottom.equalTo(personV).with.offset(-10 *kiphone6);
-//        make.size.mas_equalTo(CGSizeMake(140 *kiphone6, 10 *kiphone6));
-    }];
-    
-    NSArray *arrayList = @[@"科室：",@"医师：",@"门诊："];
-    for (int i = 0;  i<3; i++) {
-        UILabel *titleLabel = [[UILabel alloc]init];
-        if (i == 0) {
-            titleLabel.text = [NSString stringWithFormat:@"%@%@",arrayList[i],self.appointmentModel.departmentName];
-        }else if (i == 1){
-            titleLabel.text = [NSString stringWithFormat:@"%@%@",arrayList[i],self.appointmentModel.physicianTrueName];;
-        }else{
-            titleLabel.text = [NSString stringWithFormat:@"%@%@",arrayList[i],self.appointmentModel.clinicName];;
-        }
-        
-        titleLabel.textColor = [UIColor colorWithHexString:@"333333"];
-        titleLabel.font = [UIFont systemFontOfSize:15];
-        
-        [contentView addSubview:titleLabel];
-        
-        [titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.top.equalTo(contentView).with.offset(0 +i*40);
-            make.left.equalTo(contentView).with.offset(10 *kiphone6);
-            make.size.mas_equalTo(CGSizeMake(kScreenW -40, 40));
-        }];
-        
-        
-        UILabel *lineLabel = [[UILabel alloc]init];
-        lineLabel.backgroundColor = [UIColor colorWithHexString:@"f2f2f2"];
-        
-        [contentView addSubview:lineLabel];
-        
-        [lineLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.top.equalTo(contentView).with.offset(40 +i*40);
-            make.left.equalTo(contentView).with.offset(0 *kiphone6);
-            make.size.mas_equalTo(CGSizeMake(kScreenW -20, 1));
-        }];
-    }
-    
-    return personV;
-}
-- (UIView *)personInfomation{
-    
-    UIView *personV = [[UIView alloc]initWithFrame:CGRectMake(0, 0, kScreenW, 242 *kiphone6)];
-    personV.backgroundColor = [UIColor colorWithHexString:@"f2f2f2"];
-    
-    UIView *headerView = [[UIView alloc]initWithFrame:CGRectMake(10 *kiphone6, 10 *kiphone6, kScreenW -20*kiphone6, 232 *kiphone6)];
-    headerView.backgroundColor = [UIColor whiteColor];
-    
-    [personV addSubview:headerView];
-    
-    //
-    UILabel *nameLabel = [[UILabel alloc]init];
-    nameLabel.text = @"现病史";
-    nameLabel.textColor = [UIColor colorWithHexString:@"666666"];
-    nameLabel.font = [UIFont systemFontOfSize:14];
-    //
-    
-    UITextView *textView = [[UITextView alloc]init];
-    
-    textView.text = self.dataModel.medicalrecord;
-    textView.textColor = [UIColor colorWithHexString:@"666666"];
-    textView.font = [UIFont systemFontOfSize:13];
-    textView.editable = NO;
-    [headerView addSubview:textView];
-    [headerView addSubview:nameLabel];
-    
-    
-    [nameLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(headerView).with.offset(10 *kiphone6);
-        make.left.equalTo(headerView).with.offset(10 *kiphone6);
-        make.size.mas_equalTo(CGSizeMake(140 *kiphone6, 10 *kiphone6));
-    }];
-    [textView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(nameLabel.mas_bottom).with.offset(10 *kiphone6);
-        make.left.equalTo(headerView).with.offset(10 *kiphone6);
-        make.size.mas_equalTo(CGSizeMake(kScreenW -30*kiphone6, 180 *kiphone6));
+        make.top.bottom.offset(0);
+        make.right.offset(-10 *kiphone6);
+        make.left.offset(10 *kiphone6);
     }];
     
     return personV;
@@ -181,7 +98,6 @@
 #pragma mark ------------Tableview Delegate----------------------
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     
-    //    [self.navigationController pushViewController:[[YYSectionViewController alloc]init] animated:YES];
     [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 #pragma mark -
@@ -196,53 +112,52 @@
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     
-    return 40 ;
+    return 47*kiphone6H ;
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
-    return 0 *kiphone6;
+    return 10 *kiphone6H;
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
     
-    UIView *headerView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, kScreenW, 0)];
+    UIView *headerView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, kScreenW, 10 *kiphone6H)];
     headerView.backgroundColor = [UIColor colorWithHexString:@"f2f2f2"];
     
     return headerView;
 }
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
-    YYPInfomationTableViewCell *homeTableViewCell = [tableView dequeueReusableCellWithIdentifier:@"YYPInfomationTableViewCell" forIndexPath:indexPath];
+    YYPInfomationTableViewCell *infoTableViewCell = [tableView dequeueReusableCellWithIdentifier:@"YYPInfomationTableViewCell" forIndexPath:indexPath];
     
-    homeTableViewCell.titleLabel.text = self.dataSource[indexPath.section][indexPath.row];
-    if (indexPath.section == 0) {
+    infoTableViewCell.titleLabel.text = self.dataSource[indexPath.section][indexPath.row];
+    
         if (indexPath.row ==  0) {
-            homeTableViewCell.seeRecardLabel.text = self.appointmentModel.info_id;
+            infoTableViewCell.seeRecardLabel.text = self.appointmentModel.visitTimeString;
         }else if (indexPath.row ==  1) {
-            homeTableViewCell.seeRecardLabel.text = self.appointmentModel.trueName;
-    
+            infoTableViewCell.seeRecardLabel.text = self.appointmentModel.info_id;
+
         }else if (indexPath.row ==  2) {
+            infoTableViewCell.seeRecardLabel.text = self.appointmentModel.trueName;
+            
+        }else if (indexPath.row ==  3) {
             if ([self.appointmentModel.gender isEqualToString:@"0"]) {
-                homeTableViewCell.seeRecardLabel.text = @"男";
+                infoTableViewCell.seeRecardLabel.text = @"男";
             }else{
-                homeTableViewCell.seeRecardLabel.text = @"女";
+                infoTableViewCell.seeRecardLabel.text = @"女";
             }
             
             
-        }else if (indexPath.row ==  3) {
-            homeTableViewCell.seeRecardLabel.text = self.appointmentModel.age;
-            
         }else if (indexPath.row ==  4) {
-            homeTableViewCell.seeRecardLabel.text = self.appointmentModel.telephone;
+            infoTableViewCell.seeRecardLabel.text = self.appointmentModel.age;
+            
         }else if (indexPath.row ==  5) {
-            homeTableViewCell.seeRecardLabel.text = self.appointmentModel.telephone;
+            infoTableViewCell.seeRecardLabel.text = self.appointmentModel.hospitalName;
+        }else if (indexPath.row ==  6) {
+        infoTableViewCell.seeRecardLabel.text = self.appointmentModel.clinicName;
+        }else if (indexPath.row ==  7) {
+        infoTableViewCell.seeRecardLabel.text = self.appointmentModel.physicianTrueName;
         }
-    }else{
-        
-        homeTableViewCell.seeRecardLabel.text = [self.dataModel.createTimeString componentsSeparatedByString:@" "].firstObject;;
-    }
-    //    homeTableViewCell.seeRecardLabel.text = self.iconList[indexPath.section][indexPath.row];
-    //    homeTableViewCell.iconV.image = [UIImage imageNamed:self.iconList[indexPath.row]];
     
-    return homeTableViewCell;
+    return infoTableViewCell;
     
 }
 

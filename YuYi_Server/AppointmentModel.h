@@ -10,9 +10,6 @@
 
 @interface AppointmentModel : NSObject
 
-
-
-
 @property (nonatomic, copy) NSString *trueName;
 @property (nonatomic, copy) NSString *visitTimeString;
 @property (nonatomic, copy) NSString *info_id;
@@ -22,7 +19,5 @@
 @property (nonatomic, copy) NSString *departmentName;
 @property (nonatomic, copy) NSString *clinicName;
 @property (nonatomic, copy) NSString *physicianTrueName;
-
-
-
+@property (nonatomic, copy) NSString *hospitalName;
 @end

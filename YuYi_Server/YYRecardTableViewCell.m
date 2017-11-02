@@ -7,69 +7,88 @@
 //
 
 #import "YYRecardTableViewCell.h"
-#import <Masonry.h>
-#import "UIColor+Extension.h"
-
+#import "UILabel+Addition.h"
+@interface YYRecardTableViewCell ()
+@property(nonatomic,weak)UILabel *nameLable;
+@property(nonatomic,weak)UILabel *departmentLable;
+@property(nonatomic,weak)UILabel *timeLable;
+@end
 @implementation YYRecardTableViewCell
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
-        self.contentView.backgroundColor = [UIColor whiteColor];//[UIColor colorWithHexString:@"#f6f6f6"];
-        [self createDetailView];
+        self.contentView.backgroundColor = [UIColor colorWithHexString:@"f2f2f2"];        [self createDetailView];
     }
     return self;
 }
+-(void)setModel:(AppointmentModel *)model{
+    _model = model;
+    self.nameLable.text = model.trueName;
+    
+    NSString *appointmentTime = [model.visitTimeString substringWithRange:NSMakeRange(0, 16)];
+    self.timeLable.text = appointmentTime;
+    self.departmentLable.text = model.departmentName;
+}
 - (void)createDetailView{
-    
-    
-    //..邪恶的分割线
-    UILabel *lineL = [[UILabel alloc]init];
-    lineL.backgroundColor = [UIColor colorWithHexString:@"eeeeee"];
-    
-    self.titleLabel = [[UILabel alloc]init];
-    self.titleLabel.textColor = [UIColor colorWithHexString:@"666666"];
-    self.titleLabel.font = [UIFont fontWithName:kPingFang_S size:14];
-    self.titleLabel.text = @"李美丽";
-    
-    self.seeRecardLabel = [[UILabel alloc]init];
-    self.seeRecardLabel.textColor = [UIColor colorWithHexString:@"666666"];
-    self.seeRecardLabel.font = [UIFont systemFontOfSize:14];
-    self.seeRecardLabel.text = @"病例查看";
-    self.seeRecardLabel.textAlignment = NSTextAlignmentRight;
-    
-    UILabel *promptLabel = [[UILabel alloc]init];
-    promptLabel.text = @"挂号时间：";
-    promptLabel.textColor = [UIColor colorWithHexString:@"333333"];
-    promptLabel.font = [UIFont systemFontOfSize:14];
-    promptLabel.textAlignment = NSTextAlignmentRight;
-    
-    [self.contentView addSubview:lineL];
-    [self.contentView addSubview:self.titleLabel];
-    [self.contentView addSubview:self.seeRecardLabel];
-    [self.contentView addSubview:promptLabel];
-    
-    
-    [lineL mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.contentView);
-        make.left.equalTo(self.contentView).with.offset(0 *kiphone6);
-        make.size.mas_equalTo(CGSizeMake(kScreenW, 1));
+
+    //渐变nameLabel
+    UILabel *nameLabel = [UILabel labelWithText:@"名字" andTextColor:[UIColor colorWithHexString:@"ffffff"] andFontSize:15];
+    nameLabel.textAlignment = NSTextAlignmentCenter;
+    //添加渐变色
+    CAGradientLayer *gradientLayer = [CAGradientLayer layer];
+    gradientLayer.colors = @[(__bridge id)[UIColor colorWithHexString:@"2feaeb"].CGColor, (__bridge id)[UIColor colorWithHexString:@"1ebeec"].CGColor];
+    gradientLayer.locations = @[@0.3, @1.0];
+    gradientLayer.startPoint = CGPointMake(0, 0);
+    gradientLayer.endPoint = CGPointMake(0, 1.0);
+    gradientLayer.frame = CGRectMake(0, 0, 75*kiphone6, 75*kiphone6);
+    [nameLabel.layer insertSublayer:gradientLayer atIndex:0];
+    [self.contentView addSubview:nameLabel];
+    [nameLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.left.offset(10*kiphone6);
+        make.width.height.offset(75*kiphone6);
     }];
-    [self.titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.centerY.equalTo(self.contentView);
-        make.left.equalTo(self.contentView).with.offset(10 *kiphone6);
-        make.size.mas_equalTo(CGSizeMake(100 *kiphone6, 14 *kiphone6));
+    self.nameLable = nameLabel;
+    //右侧背景view
+    UIView *rightBackView = [[UIView alloc]init];
+    rightBackView.backgroundColor = [UIColor colorWithHexString:@"ffffff"];
+    [self.contentView addSubview:rightBackView];
+    [rightBackView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(nameLabel.mas_right);
+        make.right.offset(-10*kiphone6);
+        make.top.bottom.equalTo(nameLabel);
     }];
-    
-    [self.seeRecardLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.bottom.equalTo(self.contentView).with.offset(-10 *kiphone6);
-        make.right.equalTo(self.contentView).with.offset(-10 *kiphone6);
-        make.size.mas_equalTo(CGSizeMake(130 , 14 ));
+    //科室label
+    UILabel *departmentLabel = [UILabel labelWithText:@"科室" andTextColor:[UIColor colorWithHexString:@"333333"] andFontSize:15];
+    [rightBackView addSubview:departmentLabel];
+    [departmentLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.offset(10*kiphone6);
+        make.right.offset(-10*kiphone6);
     }];
-    [promptLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.bottom.equalTo(self.seeRecardLabel.mas_bottom).with.offset(0 *kiphone6);
-        make.right.equalTo(self.seeRecardLabel.mas_left).with.offset(0 *kiphone6);
-        make.size.mas_equalTo(CGSizeMake(200 , 14 ));
+    self.departmentLable = departmentLabel;
+    //
+    UIImage *image = [UIImage imageNamed:@"record_arrow"];
+    UIImageView *nextImage = [[UIImageView alloc]initWithImage:image];
+    [rightBackView addSubview:nextImage];
+    [nextImage mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.bottom.right.offset(-10*kiphone6);
+        make.width.offset(image.size.width);
+        make.height.offset(image.size.height);
+    }];
+    //timeLabel
+    UILabel *timeLabel = [UILabel labelWithText:@"2017-10-28" andTextColor:[UIColor colorWithHexString:@"999999"] andFontSize:12];
+    [rightBackView addSubview:timeLabel];
+    [timeLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerY.equalTo(nextImage);
+        make.right.equalTo(nextImage.mas_left);
+    }];
+    self.timeLable = timeLabel;
+
+    UILabel *itemLabel = [UILabel labelWithText:@"就诊时间：" andTextColor:[UIColor colorWithHexString:@"666666"] andFontSize:12];
+    [rightBackView addSubview:itemLabel];
+    [itemLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerY.equalTo(nextImage);
+        make.right.equalTo(timeLabel.mas_left);
     }];
     
 }

@@ -11,13 +11,13 @@
 @interface YYPInfomationTableViewCell : UITableViewCell
 
 @property (nonatomic, strong) UILabel *titleLabel;
-@property (nonatomic, strong) UIImageView *nextImageV;
+//@property (nonatomic, strong) UIImageView *nextImageV;
 @property (nonatomic, strong) UILabel *seeRecardLabel;
-@property (nonatomic, strong) UITextField *editInfoText;
+//@property (nonatomic, strong) UITextField *editInfoText;
 
 - (void)setType:(NSString *)cellType;
 
-
-@property (nonatomic, copy) void(^sexClick)(NSString *);
+//
+//@property (nonatomic, copy) void(^sexClick)(NSString *);
 
 @end

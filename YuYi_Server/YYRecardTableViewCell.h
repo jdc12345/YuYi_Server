@@ -7,11 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
-
+#import "AppointmentModel.h"
 @interface YYRecardTableViewCell : UITableViewCell
 
-@property (nonatomic, strong) UILabel *titleLabel;
-@property (nonatomic, strong) UIImageView *nextImageV;
-@property (nonatomic, strong) UILabel *seeRecardLabel;
-
+@property(nonatomic,strong)AppointmentModel *model;
 @end

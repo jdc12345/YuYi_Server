@@ -9,7 +9,7 @@
 #import "YYRecordDetailVC.h"
 //#import "YYHomeNewTableViewCell.h"
 //#import "YYPersonalTableViewCell.h"
-#import "YYRecardTableViewCell.h"
+//#import "YYRecardTableViewCell.h"
 //#import "YYPInfomationTableViewCell.h"
 #import "RecardDetailModel.h"
 #import <MJExtension.h>

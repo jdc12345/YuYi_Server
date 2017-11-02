@@ -853,6 +853,8 @@
 				3E2272991E9C77AB005BF064 /* YYWordsViewController.m */,
 				3EBD825F1E8E67C800BDC217 /* ReciveAppointmentViewController.h */,
 				3EBD82601E8E67C800BDC217 /* ReciveAppointmentViewController.m */,
+				3EA3F4701E9770FD005670A5 /* YYDetailRecardViewController.h */,
+				3EA3F4711E9770FD005670A5 /* YYDetailRecardViewController.m */,
 			);
 			name = C;
 			sourceTree = "<group>";
@@ -1005,8 +1007,6 @@
 				3EBD825A1E8E678A00BDC217 /* ConsultViewController.m */,
 				3EBD825C1E8E67A000BDC217 /* CheckDataViewController.h */,
 				3EBD825D1E8E67A000BDC217 /* CheckDataViewController.m */,
-				3EA3F4701E9770FD005670A5 /* YYDetailRecardViewController.h */,
-				3EA3F4711E9770FD005670A5 /* YYDetailRecardViewController.m */,
 				3E85EF931E8F391400E7D8F1 /* YYContactViewController.h */,
 				3E85EF941E8F391400E7D8F1 /* YYContactViewController.m */,
 				3EA3F4671E97647C005670A5 /* YYChatListViewController.h */,

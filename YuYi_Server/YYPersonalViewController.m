@@ -22,6 +22,7 @@
 #import "UIButton+Badge.h"
 #import "YYNoticeListVC.h"
 #import "YYPInfomartionViewController.h"
+#import "AppDelegate.h"
 
 //#define myToken @"6DD620E22A92AB0AED590DB66F84D064"
 @interface YYPersonalViewController ()<UITableViewDataSource, UITableViewDelegate>
@@ -222,8 +223,14 @@
         
     }else if(indexPath.section == 1){
         if (indexPath.row == 0) {
-            YYChatListViewController *familyVC = [[YYChatListViewController alloc]init];
-            [self.navigationController pushViewController:familyVC animated:YES];
+            AppDelegate *appdelegate = (AppDelegate*)[UIApplication sharedApplication].delegate;
+            if (appdelegate.isHasPower) {//医生是否有权限
+                YYChatListViewController *familyVC = [[YYChatListViewController alloc]init];
+                [self.navigationController pushViewController:familyVC animated:YES];
+            }else{
+                [SVProgressHUD showInfoWithStatus:@"你还没有该权限"];
+            }
+            
         }else if(indexPath.row == 1){
             YYPatientsViewController *equipmentVC = [[YYPatientsViewController alloc]init];
             equipmentVC.titleStr = @"search";
