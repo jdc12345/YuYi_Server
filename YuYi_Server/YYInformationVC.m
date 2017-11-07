@@ -7,11 +7,11 @@
 //
 
 #import "YYInformationVC.h"
-#import <Masonry.h>
 #import "YYInformationTableViewCell.h"
 #import "YYInfoDetailModel.h"
 #import "YYInfoDetailVC.h"
 #import <MJRefresh.h>
+#import "YYInfomationHeaderImageTVCell.h"
 
 static NSString *cellId = @"cell_id";
 
@@ -63,6 +63,7 @@ static NSString *cellId = @"cell_id";
     tableView.estimatedRowHeight = 150;
     tableView.rowHeight = UITableViewAutomaticDimension;
     [tableView registerClass:[YYInformationTableViewCell class] forCellReuseIdentifier:cellId];
+    [tableView registerClass:[YYInfomationHeaderImageTVCell class] forCellReuseIdentifier:@"YYInfomationHeaderImageTVCell"];
     tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
 }
 #pragma tableViewDatasource
@@ -70,10 +71,17 @@ static NSString *cellId = @"cell_id";
     return self.infos.count;
 }
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
-    YYInformationTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellId forIndexPath:indexPath];
-    YYInfoDetailModel *model = self.infos[indexPath.row];
-    cell.model = model;
-    return cell;
+    if (indexPath.row == 0) {//顶部图片
+        YYInfomationHeaderImageTVCell *cell = [tableView dequeueReusableCellWithIdentifier:@"YYInfomationHeaderImageTVCell" forIndexPath:indexPath];
+        YYInfoDetailModel *model = self.infos[indexPath.row];
+        cell.model = model;
+        return cell;
+    }else{
+        YYInformationTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellId forIndexPath:indexPath];
+        YYInfoDetailModel *model = self.infos[indexPath.row];
+        cell.model = model;
+        return cell;
+    }
 }
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     [tableView deselectRowAtIndexPath:indexPath animated:true];
@@ -86,6 +94,9 @@ static NSString *cellId = @"cell_id";
     [tableView deselectRowAtIndexPath:indexPath animated:true];
 }
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
+    if (indexPath.row == 0) {
+        return 189*kiphone6H;
+    }
     return 105*kiphone6H;
 }
 - (void)didReceiveMemoryWarning {

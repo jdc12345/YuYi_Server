@@ -7,9 +7,7 @@
 //
 
 #import "YYInformationTableViewCell.h"
-#import <Masonry.h>
 #import "UILabel+Addition.h"
-#import "UIColor+colorValues.h"
 #import <UIImageView+WebCache.h>
 
 @interface YYInformationTableViewCell()

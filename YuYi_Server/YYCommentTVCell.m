@@ -7,12 +7,9 @@
 //
 
 #import "YYCommentTVCell.h"
-#import <Masonry.h>
 #import "UILabel+Addition.h"
-#import "UIColor+colorValues.h"
 #import <UIImageView+WebCache.h>
-#import "CcUserModel.h"
-#import "HttpClient.h"
+
 @interface YYCommentTVCell ()
 @property(nonatomic,weak)UIImageView *iconView;
 @property(nonatomic,weak)UILabel *nameLabel;

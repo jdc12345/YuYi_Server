@@ -129,8 +129,7 @@
                  apsForProduction:0
             advertisingIdentifier:advertisingId];
     
-    
-    
+        
     UNUserNotificationCenter *center = [UNUserNotificationCenter currentNotificationCenter];
     center.delegate = self;
     [center requestAuthorizationWithOptions:(UNAuthorizationOptionBadge | UNAuthorizationOptionSound | UNAuthorizationOptionAlert) completionHandler:^(BOOL granted, NSError * _Nullable error) {
@@ -149,6 +148,8 @@
     //注册推送（同iOS8）
     [[UIApplication sharedApplication] registerForRemoteNotifications];
     
+    // 点击通知栏的远程推送时，如果此时 App 已经被系统冻结，远程推送的内容可以在这里捕获
+    //NSDictionary *remoteNotificationUserInfo = launchOptions[UIApplicationLaunchOptionsRemoteNotificationKey];
     
     // Override point for customization after application launch.
 //--------------------------------友盟分享--------------------------------------
@@ -255,7 +256,7 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
     //Optional
     NSLog(@"did Fail To Register For Remote Notifications With Error: %@", error);
 }
-// 融云
+// 融云 如果 App 未被系统冻结，userInfo为远程推送的内容
 - (void)application:(UIApplication *)application
 didReceiveRemoteNotification:(NSDictionary *)userInfo {
     NSLog(@"%@qwqwqqw",userInfo);
@@ -455,7 +456,6 @@ didReceiveRemoteNotification:(NSDictionary *)userInfo {
 //    self.yyTabBar.selectedIndex = 3;
     [self.yyTabBar switchTab:3];
     
-
     YYChatListViewController *chatList = [[YYChatListViewController alloc]init];
     if ([self.yyTabBar.viewControllers.lastObject respondsToSelector:@selector(pushViewController: animated:)]) {
         [self.yyTabBar.viewControllers.lastObject pushViewController:chatList animated:YES];

@@ -25,7 +25,8 @@
     [super viewDidLoad];
     self.title = self.conversationTitle;
     self.view.backgroundColor = [UIColor colorWithHexString:@"f2f2f2"];
-    
+    //头像形状为圆形
+    [RCIM sharedRCIM].globalMessageAvatarStyle = RC_USER_AVATAR_CYCLE;
     // 判断是否直接连接语音或视频
     if ([self.modalityVC isEqualToString:@"speech"]) {
                 YYSpeechViewController *speechVC = [[YYSpeechViewController alloc]initWithOutgoingCall:self.targetId mediaType:RCCallMediaAudio];

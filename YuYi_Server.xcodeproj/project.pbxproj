@@ -66,6 +66,8 @@
 		163D61A01E8F7AB6003A27CF /* YYpostCardVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 163D619D1E8F7AB6003A27CF /* YYpostCardVC.m */; };
 		163D61A31E8F7B0D003A27CF /* UILabel+Addition.m in Sources */ = {isa = PBXBuildFile; fileRef = 163D61A21E8F7B0D003A27CF /* UILabel+Addition.m */; };
 		163D61A61E8F7CD5003A27CF /* NSObject+Formula.m in Sources */ = {isa = PBXBuildFile; fileRef = 163D61A51E8F7CD5003A27CF /* NSObject+Formula.m */; };
+		16461BDD1FB0379E00CD1FF2 /* YYInfoCommentTVCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 16461BDC1FB0379E00CD1FF2 /* YYInfoCommentTVCell.m */; };
+		1677923E1FAC4A7700D1EE2E /* YYInfomationHeaderImageTVCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1677923D1FAC4A7700D1EE2E /* YYInfomationHeaderImageTVCell.m */; };
 		1688D7C91E9B6CEB001BBA61 /* YYCardDetailModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 1688D7C81E9B6CEB001BBA61 /* YYCardDetailModel.m */; };
 		1688D7CC1E9B97B4001BBA61 /* YYCardDetailPageModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 1688D7CB1E9B97B4001BBA61 /* YYCardDetailPageModel.m */; };
 		1688D7CF1E9BB756001BBA61 /* YYCardCommentDetailModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 1688D7CE1E9BB756001BBA61 /* YYCardCommentDetailModel.m */; };
@@ -293,6 +295,11 @@
 		163D61A21E8F7B0D003A27CF /* UILabel+Addition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UILabel+Addition.m"; sourceTree = "<group>"; };
 		163D61A41E8F7CD5003A27CF /* NSObject+Formula.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+Formula.h"; sourceTree = "<group>"; };
 		163D61A51E8F7CD5003A27CF /* NSObject+Formula.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+Formula.m"; sourceTree = "<group>"; };
+		16461BDB1FB0379E00CD1FF2 /* YYInfoCommentTVCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YYInfoCommentTVCell.h; sourceTree = "<group>"; };
+		16461BDC1FB0379E00CD1FF2 /* YYInfoCommentTVCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YYInfoCommentTVCell.m; sourceTree = "<group>"; };
+		1677923C1FAC4A7700D1EE2E /* YYInfomationHeaderImageTVCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YYInfomationHeaderImageTVCell.h; sourceTree = "<group>"; };
+		1677923D1FAC4A7700D1EE2E /* YYInfomationHeaderImageTVCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YYInfomationHeaderImageTVCell.m; sourceTree = "<group>"; };
+		1677923F1FAC578B00D1EE2E /* YYInfoCommentVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YYInfoCommentVC.h; sourceTree = "<group>"; };
 		1688D7C71E9B6CEB001BBA61 /* YYCardDetailModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YYCardDetailModel.h; sourceTree = "<group>"; };
 		1688D7C81E9B6CEB001BBA61 /* YYCardDetailModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YYCardDetailModel.m; sourceTree = "<group>"; };
 		1688D7CA1E9B97B4001BBA61 /* YYCardDetailPageModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YYCardDetailPageModel.h; sourceTree = "<group>"; };
@@ -322,7 +329,7 @@
 		3E1ABC721EA064AF00F66BC3 /* EmptyDataView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EmptyDataView.m; sourceTree = "<group>"; };
 		3E1FC7211E97915800838F9E /* YYSettingTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YYSettingTableViewCell.h; sourceTree = "<group>"; };
 		3E1FC7221E97915800838F9E /* YYSettingTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YYSettingTableViewCell.m; sourceTree = "<group>"; };
-		3E1FC7241E9B15B900838F9E /* YYInfoCommentVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = YYInfoCommentVC.m; path = YuYi_Server/YYInfoCommentVC.m; sourceTree = "<group>"; };
+		3E1FC7241E9B15B900838F9E /* YYInfoCommentVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = YYInfoCommentVC.m; sourceTree = "<group>"; };
 		3E1FC7261E9B15F000838F9E /* YYCommentInfoModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = YYCommentInfoModel.m; path = YuYi_Server/YYCommentInfoModel.m; sourceTree = "<group>"; };
 		3E2272951E9C76EF005BF064 /* pinyin.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = pinyin.c; sourceTree = "<group>"; };
 		3E2272961E9C76EF005BF064 /* pinyin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = pinyin.h; sourceTree = "<group>"; };
@@ -759,6 +766,8 @@
 				1614C0CE1E94E311004CF952 /* YYInformationVC.m */,
 				1614C0D31E94FE16004CF952 /* YYInfoDetailVC.h */,
 				1614C0D41E94FE16004CF952 /* YYInfoDetailVC.m */,
+				1677923F1FAC578B00D1EE2E /* YYInfoCommentVC.h */,
+				3E1FC7241E9B15B900838F9E /* YYInfoCommentVC.m */,
 			);
 			name = C;
 			sourceTree = "<group>";
@@ -768,6 +777,10 @@
 			children = (
 				1614C0CA1E94D3DA004CF952 /* YYInformationTableViewCell.h */,
 				1614C0CB1E94D3DA004CF952 /* YYInformationTableViewCell.m */,
+				1677923C1FAC4A7700D1EE2E /* YYInfomationHeaderImageTVCell.h */,
+				1677923D1FAC4A7700D1EE2E /* YYInfomationHeaderImageTVCell.m */,
+				16461BDB1FB0379E00CD1FF2 /* YYInfoCommentTVCell.h */,
+				16461BDC1FB0379E00CD1FF2 /* YYInfoCommentTVCell.m */,
 			);
 			name = V;
 			sourceTree = "<group>";
@@ -855,6 +868,8 @@
 				3EBD82601E8E67C800BDC217 /* ReciveAppointmentViewController.m */,
 				3EA3F4701E9770FD005670A5 /* YYDetailRecardViewController.h */,
 				3EA3F4711E9770FD005670A5 /* YYDetailRecardViewController.m */,
+				3EA3F4671E97647C005670A5 /* YYChatListViewController.h */,
+				3EA3F4681E97647C005670A5 /* YYChatListViewController.m */,
 			);
 			name = C;
 			sourceTree = "<group>";
@@ -880,7 +895,6 @@
 			isa = PBXGroup;
 			children = (
 				3E1FC7261E9B15F000838F9E /* YYCommentInfoModel.m */,
-				3E1FC7241E9B15B900838F9E /* YYInfoCommentVC.m */,
 				3EA3F4451E95E3D0005670A5 /* ZYPageControl.h */,
 				3EA3F4461E95E3D0005670A5 /* ZYPageControl.m */,
 				3EA3F4421E95E388005670A5 /* YYCycleView.h */,
@@ -1009,8 +1023,6 @@
 				3EBD825D1E8E67A000BDC217 /* CheckDataViewController.m */,
 				3E85EF931E8F391400E7D8F1 /* YYContactViewController.h */,
 				3E85EF941E8F391400E7D8F1 /* YYContactViewController.m */,
-				3EA3F4671E97647C005670A5 /* YYChatListViewController.h */,
-				3EA3F4681E97647C005670A5 /* YYChatListViewController.m */,
 				3E2272C31E9CBDBC005BF064 /* YHPullDownMenu.h */,
 				3E2272C41E9CBDBC005BF064 /* YHPullDownMenu.m */,
 			);
@@ -1503,6 +1515,7 @@
 				3EBD823F1E8E56AC00BDC217 /* YYSciencesViewController.m in Sources */,
 				3EBD825E1E8E67A000BDC217 /* CheckDataViewController.m in Sources */,
 				1614C0D51E94FE16004CF952 /* YYInfoDetailVC.m in Sources */,
+				1677923E1FAC4A7700D1EE2E /* YYInfomationHeaderImageTVCell.m in Sources */,
 				161B03AF1E9E123E00095F77 /* HUPhotoHelper.m in Sources */,
 				3EA3F46F1E976BDA005670A5 /* RecardModel.m in Sources */,
 				3EBD82521E8E64DF00BDC217 /* YYPersonalTableViewCell.m in Sources */,
@@ -1545,6 +1558,7 @@
 				163D61A01E8F7AB6003A27CF /* YYpostCardVC.m in Sources */,
 				161B03B31E9E123E00095F77 /* HUWebImageDownloader.m in Sources */,
 				163D618B1E8F790E003A27CF /* UIColor+colorValues.m in Sources */,
+				16461BDD1FB0379E00CD1FF2 /* YYInfoCommentTVCell.m in Sources */,
 				3E1ABC731EA064AF00F66BC3 /* EmptyDataView.m in Sources */,
 				161B03A51E9E123E00095F77 /* HUPhotoBrowserCell.m in Sources */,
 				163D61961E8F7A2E003A27CF /* YYCardTableViewCell.m in Sources */,

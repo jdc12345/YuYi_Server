@@ -37,7 +37,7 @@
 #pragma mark -
 #pragma mark ---------------Dev - Url------------------
 #define mPrefixUrl @"http://192.168.1.168:8082/yuyi"
-//#define mPrefixUrl @"http://192.168.1.53:8080/yuyi"
+//#define mPrefixUrl @"http://192.168.1.44:8080/yuyi"
 #pragma mark -
 #pragma mark ---------------Dis - Url------------------
 //#define mPrefixUrl @"http://59.110.169.148:8080"

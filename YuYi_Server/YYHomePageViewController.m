@@ -57,9 +57,9 @@ static NSInteger todayStart = 0;
 //    http://192.168.1.55:8080/yuyi/doctorlyinformation/find.do?start=0&limit=3
 //    http://192.168.1.55:8080/yuyi/doctorlyinformation/findPage.do?start=0&limit=3
     
-    NSString *todayUrlStr = [NSString stringWithFormat:@"%@/doctorlyinformation/getTodayAll.do?start=0&limit=3",mPrefixUrl];
-    NSString *hotUrlStr = [NSString stringWithFormat:@"%@/doctorlyinformation/find.do?start=0&limit=3",mPrefixUrl];
-    NSString *recentUrlStr = [NSString stringWithFormat:@"%@/doctorlyinformation/findPage.do?start=0&limit=3",mPrefixUrl];
+    NSString *todayUrlStr = [NSString stringWithFormat:@"%@/doctorlyinformation/getTodayAll.do?start=0&limit=6",mPrefixUrl];
+    NSString *hotUrlStr = [NSString stringWithFormat:@"%@/doctorlyinformation/find.do?start=0&limit=6",mPrefixUrl];
+    NSString *recentUrlStr = [NSString stringWithFormat:@"%@/doctorlyinformation/findPage.do?start=0&limit=6",mPrefixUrl];
     [SVProgressHUD show];// 动画开始
     [self loadTodayInfosWithUrlStr:todayUrlStr];
     [self loadRecentInfosWithUrlStr:recentUrlStr];
@@ -129,7 +129,7 @@ static NSInteger todayStart = 0;
 
 //
 -(void)setupUI{
-    //轮播图
+    /*//轮播图
     YYCycleView *cycleView = [[YYCycleView alloc]init];
     cycleView.itemClick = ^(NSString *index){
         YYInfoDetailVC *infoDetail = [[YYInfoDetailVC alloc]init];
@@ -138,7 +138,7 @@ static NSInteger todayStart = 0;
         
     };
     //    cycleView.frame = CGRectMake(0, 0, kScreenW, 200*kiphone6);
-    [self.view addSubview:cycleView];
+    [self.view addSubview:cycleView];*/
     //添加帖子分类
     UIView *infosView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, kScreenW, 44)];
     infosView.backgroundColor = [UIColor whiteColor];
@@ -222,12 +222,12 @@ static NSInteger todayStart = 0;
     self.hotInfosVC = hotInfoVC;
     self.todayInfosVC = todayInfoVC;
     self.recentInfosVC = recentInfoVC;
-    //设置轮播器约束
+    /*//设置轮播器约束
     [cycleView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.left.offset(0);
         make.width.offset(kScreenW);
         make.height.offset(200*kiphone6);
-    }];
+    }];*/
 //    //设置帖子分类约束
 //    [infosView mas_makeConstraints:^(MASConstraintMaker *make) {
 ////        make.top.equalTo(cycleView.mas_bottom);
@@ -271,8 +271,8 @@ static NSInteger todayStart = 0;
     }];
     //约束
     [cardDetailView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.right.offset(0);
-        make.top.equalTo(cycleView.mas_bottom);
+        make.top.left.right.offset(0);
+        //make.top.equalTo(cycleView.mas_bottom);
         make.bottom.offset(-44);
     }];
     [cardDetailView layoutIfNeeded];
@@ -340,7 +340,7 @@ static NSInteger todayStart = 0;
 #pragma mark- refreshDelegate
 -(void)transViewController:(YYInformationVC *)learningVC{
     if (learningVC == self.hotInfosVC) {
-        NSString *hotUrlStr = [NSString stringWithFormat:@"%@/doctorlyinformation/find.do?start=0&limit=3",mPrefixUrl];
+        NSString *hotUrlStr = [NSString stringWithFormat:@"%@/doctorlyinformation/find.do?start=0&limit=6",mPrefixUrl];
         [[HttpClient defaultClient]requestWithPath:hotUrlStr method:0 parameters:nil prepareExecute:^{
             
         } success:^(NSURLSessionDataTask *task, id responseObject) {
@@ -361,7 +361,7 @@ static NSInteger todayStart = 0;
             return ;
         }];
     }else if (learningVC == self.todayInfosVC){
-        NSString *todayUrlStr = [NSString stringWithFormat:@"%@/doctorlyinformation/getTodayAll.do?start=0&limit=3",mPrefixUrl];
+        NSString *todayUrlStr = [NSString stringWithFormat:@"%@/doctorlyinformation/getTodayAll.do?start=0&limit=6",mPrefixUrl];
         [[HttpClient defaultClient]requestWithPath:todayUrlStr method:0 parameters:nil prepareExecute:^{
             
         } success:^(NSURLSessionDataTask *task, id responseObject) {
@@ -383,7 +383,7 @@ static NSInteger todayStart = 0;
         }];
         
     }else if (learningVC == self.recentInfosVC){
-        NSString *recentUrlStr = [NSString stringWithFormat:@"%@/doctorlyinformation/findPage.do?start=0&limit=3",mPrefixUrl];
+        NSString *recentUrlStr = [NSString stringWithFormat:@"%@/doctorlyinformation/findPage.do?start=0&limit=6",mPrefixUrl];
         [[HttpClient defaultClient]requestWithPath:recentUrlStr method:0 parameters:nil prepareExecute:^{
             
         } success:^(NSURLSessionDataTask *task, id responseObject) {
@@ -409,11 +409,11 @@ static NSInteger todayStart = 0;
 
 -(void)transForFootRefreshWithViewController:(YYInformationVC *)learningVC{
     if (learningVC == self.hotInfosVC) {
-        if (hotStart % 3 != 0) {//已经没有数据了，分页请求是按页请求的，只要已有数据数量没有超过最后一页的最大数量，再请求依然会返回最后一页的数据
+        if (hotStart % 6 != 0) {//已经没有数据了，分页请求是按页请求的，只要已有数据数量没有超过最后一页的最大数量，再请求依然会返回最后一页的数据
             [learningVC.tableView.mj_footer endRefreshingWithNoMoreData];
             return;
         }
-        NSString *hotUrlStr = [NSString stringWithFormat:@"%@/doctorlyinformation/find.do?start=%ld&limit=3",mPrefixUrl,hotStart];
+        NSString *hotUrlStr = [NSString stringWithFormat:@"%@/doctorlyinformation/find.do?start=%ld&limit=6",mPrefixUrl,hotStart];
         [[HttpClient defaultClient]requestWithPath:hotUrlStr method:0 parameters:nil prepareExecute:^{
             
         } success:^(NSURLSessionDataTask *task, id responseObject) {
@@ -432,11 +432,11 @@ static NSInteger todayStart = 0;
             [learningVC.tableView.mj_footer endRefreshing];
         }];
     }else if (learningVC == self.todayInfosVC){
-        if (todayStart % 3 != 0) {//已经没有数据了，分页请求是按页请求的，只要已有数据数量没有超过最后一页的最大数量，再请求依然会返回最后一页的数据
+        if (todayStart % 6 != 0) {//已经没有数据了，分页请求是按页请求的，只要已有数据数量没有超过最后一页的最大数量，再请求依然会返回最后一页的数据
             [learningVC.tableView.mj_footer endRefreshingWithNoMoreData];
             return;
         }
-        NSString *todayUrlStr = [NSString stringWithFormat:@"%@/doctorlyinformation/getTodayAll.do?start=%ld&limit=3",mPrefixUrl,todayStart];
+        NSString *todayUrlStr = [NSString stringWithFormat:@"%@/doctorlyinformation/getTodayAll.do?start=%ld&limit=6",mPrefixUrl,todayStart];
         [[HttpClient defaultClient]requestWithPath:todayUrlStr method:0 parameters:nil prepareExecute:^{
             
         } success:^(NSURLSessionDataTask *task, id responseObject) {
@@ -456,11 +456,11 @@ static NSInteger todayStart = 0;
         }];
         
     }else if (learningVC == self.recentInfosVC){
-        if (recentStart % 3 != 0) {//已经没有数据了，分页请求是按页请求的，只要已有数据数量没有超过最后一页的最大数量，再请求依然会返回最后一页的数据
+        if (recentStart % 6 != 0) {//已经没有数据了，分页请求是按页请求的，只要已有数据数量没有超过最后一页的最大数量，再请求依然会返回最后一页的数据
             [learningVC.tableView.mj_footer endRefreshingWithNoMoreData];
             return;
         }
-        NSString *recentUrlStr = [NSString stringWithFormat:@"%@/doctorlyinformation/findPage.do?start=%ld&limit=3",mPrefixUrl,recentStart];
+        NSString *recentUrlStr = [NSString stringWithFormat:@"%@/doctorlyinformation/findPage.do?start=%ld&limit=6",mPrefixUrl,recentStart];
         [[HttpClient defaultClient]requestWithPath:recentUrlStr method:0 parameters:nil prepareExecute:^{
             
         } success:^(NSURLSessionDataTask *task, id responseObject) {

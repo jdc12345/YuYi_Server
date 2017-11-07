@@ -309,7 +309,7 @@ static NSInteger selectStart = 0;
     [postMessageBtn addTarget:self action:@selector(postMassageBtnClick:) forControlEvents:UIControlEventTouchUpInside];
 }
 
-//按钮的监听事件
+//按钮点击事件
 -(void)shopCategoryButtonClick:(UIButton*)sender{
     [sender setTitleColor:[UIColor colorWithHexString:@"1ebeec"] forState:UIControlStateNormal];
     for (UIButton *btn in self.cardCategoryButtons) {
@@ -396,10 +396,8 @@ static NSInteger selectStart = 0;
 }
 #pragma refreshDelegate
 -(void)transViewController:(YYlearningCircleVC *)learningVC{
-    CcUserModel *userModel = [CcUserModel defaultClient];
-    NSString *token = userModel.userToken;
     if (learningVC == self.hotCardVC) {
-        NSString *hotUrlStr = [NSString stringWithFormat:@"%@/academicpaper/findhot.do?start=0&limit=6&token=%@",mPrefixUrl,token];
+        NSString *hotUrlStr = [NSString stringWithFormat:@"%@/academicpaper/findhot.do?start=0&limit=6&token=%@",mPrefixUrl,mDefineToken];
         [[HttpClient defaultClient]requestWithPath:hotUrlStr method:0 parameters:nil prepareExecute:^{
             
         } success:^(NSURLSessionDataTask *task, id responseObject) {
@@ -420,7 +418,7 @@ static NSInteger selectStart = 0;
             return ;
         }];
     }else if (learningVC == self.selectCardVC){
-        NSString *selectUrlStr = [NSString stringWithFormat:@"%@/academicpaper/Selected.do?start=0&limit=6&token=%@",mPrefixUrl,token];
+        NSString *selectUrlStr = [NSString stringWithFormat:@"%@/academicpaper/Selected.do?start=0&limit=6&token=%@",mPrefixUrl,mDefineToken];
         [[HttpClient defaultClient]requestWithPath:selectUrlStr method:0 parameters:nil prepareExecute:^{
             
         } success:^(NSURLSessionDataTask *task, id responseObject) {
@@ -442,7 +440,7 @@ static NSInteger selectStart = 0;
         }];
         
     }else if (learningVC == self.recentCardVC){
-        NSString *recentUrlStr = [NSString stringWithFormat:@"%@/academicpaper/findtime.do?start=0&limit=6&token=%@",mPrefixUrl,token];
+        NSString *recentUrlStr = [NSString stringWithFormat:@"%@/academicpaper/findtime.do?start=0&limit=6&token=%@",mPrefixUrl,mDefineToken];
         [[HttpClient defaultClient]requestWithPath:recentUrlStr method:0 parameters:nil prepareExecute:^{
             
         } success:^(NSURLSessionDataTask *task, id responseObject) {

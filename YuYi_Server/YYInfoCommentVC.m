@@ -7,15 +7,11 @@
 //
 
 #import "YYInfoCommentVC.h"
-#import "HttpClient.h"
 #import "YYCommentInfoModel.h"
 #import <MJExtension.h>
-#import <Masonry.h>
 #import "YYCommentTVCell.h"
 #import "UILabel+Addition.h"
-#import "UIColor+colorValues.h"
 #import "BRPlaceholderTextView.h"
-#import "CcUserModel.h"
 #import <UShareUI/UShareUI.h>
 #import <MJRefresh.h>
 
@@ -544,6 +540,8 @@ static NSInteger start = 0;
                 type = 2;
             }else if (platformType == UMSocialPlatformType_Qzone){
                 type = 3;
+            }else{
+                type = 0;
             }
             NSString *urlStr = [NSString stringWithFormat:@"%@/share/AcademicpaperShare.do?id=%@&token=%@&shareType=%ld",mPrefixUrl,self.info_id,token,type];
             [[HttpClient defaultClient]requestWithPath:urlStr method:0 parameters:nil prepareExecute:^{
