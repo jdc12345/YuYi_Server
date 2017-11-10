@@ -97,7 +97,7 @@
     // 融云控制台输出信息种类
     [RCIMClient sharedRCIMClient].logLevel = RC_Log_Level_Error;
     
-    
+   
     //r---------- 3 向用户请求允许推送 ----------
     if ([application
          respondsToSelector:@selector(registerUserNotificationSettings:)]) {
@@ -111,10 +111,15 @@
     }
     
     JPUSHRegisterEntity * entity = [[JPUSHRegisterEntity alloc] init];
+        
     entity.types = JPAuthorizationOptionAlert|JPAuthorizationOptionBadge|JPAuthorizationOptionSound;
     if ([[UIDevice currentDevice].systemVersion floatValue] >= 8.0) {
+        // 可以添加自定义categories
+        // NSSet<UNNotificationCategory *> *categories for iOS10 or later
+        // NSSet<UIUserNotificationCategory *> *categories for iOS8 and iOS9
 
     }
+//    新版本的注册方法（兼容iOS10）
     [JPUSHService registerForRemoteNotificationConfig:entity delegate:self];
     
     // 如需使用IDFA功能请添加此代码并在初始化方法的advertisingIdentifier参数中填写对应值
@@ -124,11 +129,11 @@
     // init Push
     // notice: 2.1.5版本的SDK新增的注册方法，改成可上报IDFA，如果没有使用IDFA直接传nil
     // 如需继续使用pushConfig.plist文件声明appKey等配置内容，请依旧使用[JPUSHService setupWithOption:launchOptions]方式初始化。
+
     [JPUSHService setupWithOption:launchOptions appKey:@"14387858f853dc00f5c5959a"
                           channel:@"App Store"
                  apsForProduction:0
             advertisingIdentifier:advertisingId];
-    
         
     UNUserNotificationCenter *center = [UNUserNotificationCenter currentNotificationCenter];
     center.delegate = self;
@@ -147,7 +152,7 @@
     }];
     //注册推送（同iOS8）
     [[UIApplication sharedApplication] registerForRemoteNotifications];
-    
+        
     // 点击通知栏的远程推送时，如果此时 App 已经被系统冻结，远程推送的内容可以在这里捕获
     //NSDictionary *remoteNotificationUserInfo = launchOptions[UIApplicationLaunchOptionsRemoteNotificationKey];
     
@@ -316,7 +321,8 @@ didReceiveRemoteNotification:(NSDictionary *)userInfo {
 - (void)jpushNotificationCenter:(UNUserNotificationCenter *)center willPresentNotification:(UNNotification *)notification withCompletionHandler:(void (^)(NSInteger))completionHandler {
     // Required
     NSDictionary * userInfo = notification.request.content.userInfo;
-    if([notification.request.trigger isKindOfClass:[UNPushNotificationTrigger class]]) {
+    if([notification.request.trigger isKindOfClass:[UNPushNotificationTrigger class]])
+    {//远程推送
         [JPUSHService handleRemoteNotification:userInfo];
         NSLog(@"%@",userInfo);
     }
@@ -327,7 +333,7 @@ didReceiveRemoteNotification:(NSDictionary *)userInfo {
 - (void)jpushNotificationCenter:(UNUserNotificationCenter *)center didReceiveNotificationResponse:(UNNotificationResponse *)response withCompletionHandler:(void (^)())completionHandler {
     // Required
     NSDictionary * userInfo = response.notification.request.content.userInfo;
-    if([response.notification.request.trigger isKindOfClass:[UNPushNotificationTrigger class]]) {
+    if([response.notification.request.trigger isKindOfClass:[UNPushNotificationTrigger class]]) {//远程推送
         [JPUSHService handleRemoteNotification:userInfo];
     }
     completionHandler();  // 系统要求执行这个方法
@@ -339,7 +345,7 @@ didReceiveRemoteNotification:(NSDictionary *)userInfo {
     [JPUSHService handleRemoteNotification:userInfo];
     completionHandler(UIBackgroundFetchResultNewData);
 }
-# pragma mark - RCIMReceiveMessageDelegate 接收消息的回调方法
+# pragma mark - RCIMReceiveMessageDelegate 融云接收消息的回调方法
 - (void)onRCIMReceiveMessage:(RCMessage *)message
                         left:(int)left{
     

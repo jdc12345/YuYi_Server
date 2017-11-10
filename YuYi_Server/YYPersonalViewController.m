@@ -335,9 +335,11 @@
     [self.navigationController.navigationBar setShadowImage:nil];
 //        self.navigationController.navigationBar.translucent = false;
 }
+//设置按钮点击事件
 - (void)pushSettingVC{
     [self.navigationController pushViewController:[[YYSettingViewController alloc]init] animated:YES];
 }
+//消息按钮点击事件
 - (void)pushNotficVC{
     YYNoticeListVC *noticeVC = [[YYNoticeListVC alloc]init];
     [self.navigationController pushViewController:noticeVC animated:YES];
