@@ -7,7 +7,6 @@
 //
 
 #import "YYpostCardVC.h"
-#import "UIColor+colorValues.h"
 #import "BRPlaceholderTextView.h"
 #import "UILabel+Addition.h"
 #import "HUImagePickerViewController.h"
@@ -35,7 +34,6 @@ static NSString *cell_id = @"cell_id";
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.navigationController.navigationBar.translucent = false;
     self.title = @"发帖";
     self.view.backgroundColor = [UIColor whiteColor];
     [self setupUI];
@@ -400,7 +398,14 @@ static NSString *cell_id = @"cell_id";
     [self textViewDidChange:self.contentView];
     [picker dismissViewControllerAnimated:YES completion:nil];
 }
-
+-(void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+    self.navigationController.navigationBar.translucent = false;
+}
+-(void)viewWillDisappear:(BOOL)animated{
+    [super viewWillDisappear:animated];
+    self.navigationController.navigationBar.translucent = true;
+}
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.

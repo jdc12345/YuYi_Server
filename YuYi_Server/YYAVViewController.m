@@ -7,8 +7,6 @@
 //
 
 #import "YYAVViewController.h"
-#import "UIColor+Extension.h"
-#import <Masonry.h>
 
 @interface YYAVViewController ()<RCCallSessionDelegate ,RCCallReceiveDelegate>
 
@@ -69,11 +67,11 @@
     
     UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
     [btn setImage:[UIImage imageNamed:@"voice-phone-icon-1"] forState:UIControlStateNormal];
-    [btn addTarget:self action:@selector(btnClick:) forControlEvents:UIControlEventTouchUpInside];
+//    [btn addTarget:self action:@selector(btnClick:) forControlEvents:UIControlEventTouchUpInside];
     
     UIButton *btn2 = [UIButton buttonWithType:UIButtonTypeCustom];
     [btn2 setImage:[UIImage imageNamed:@"voice-photo-icon-1"] forState:UIControlStateNormal];
-    [btn2 addTarget:self action:@selector(btnClick:) forControlEvents:UIControlEventTouchUpInside];
+//    [btn2 addTarget:self action:@selector(btnClick:) forControlEvents:UIControlEventTouchUpInside];
     
     
     UILabel *titleLabel = [[UILabel alloc]init];

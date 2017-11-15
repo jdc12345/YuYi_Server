@@ -359,7 +359,10 @@ didReceiveRemoteNotification:(NSDictionary *)userInfo {
     
     UIApplication *app = [UIApplication sharedApplication];
     //r---------- 6.2 显示未读信息数 ----------
-    app.applicationIconBadgeNumber = unreadMsgCount;
+    dispatch_sync(dispatch_get_main_queue(), ^{
+        app.applicationIconBadgeNumber = unreadMsgCount;
+    });
+    
     
 //    NSString * unreadNum = [NSString stringWithFormat:@"%d",unreadMsgCount];
 //    NSDictionary * dict = @{@"unreadNum":unreadNum};

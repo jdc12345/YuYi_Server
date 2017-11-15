@@ -7,7 +7,6 @@
 //
 
 #import "YYlearningCircleVC.h"
-#import <Masonry.h>
 #import "YYCardTableViewCell.h"
 #import "YYCardDetailVC.h"
 #import <MJRefresh.h>

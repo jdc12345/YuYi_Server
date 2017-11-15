@@ -634,8 +634,10 @@ static NSInteger tempMon = 0;
     }else{
         isAm = 0;
     }
+    NSString *urlStr = [NSString stringWithFormat:@"%@token=%@&start=0&limit=10&departmentId=%@&clinicId=%@&visitTime=%@&isAm=%ld",mAllAppointment,mDefineToken,appointmentModel.info_id,clinicDict[@"id"],date,(long)isAm];
+    urlStr = [urlStr stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
     [SVProgressHUD show];
-    [[HttpClient defaultClient]requestWithPath:[NSString stringWithFormat:@"%@token=%@&start=0&limit=10&departmentId=%@&clinicId=%@&visitTime=%@&isAm=%ld",mAllAppointment,mDefineToken,appointmentModel.info_id,clinicDict[@"id"],date,(long)isAm] method:0 parameters:nil prepareExecute:^{
+    [[HttpClient defaultClient]requestWithPath:urlStr method:0 parameters:nil prepareExecute:^{
         
     } success:^(NSURLSessionDataTask *task, id responseObject) {
         [SVProgressHUD dismiss];

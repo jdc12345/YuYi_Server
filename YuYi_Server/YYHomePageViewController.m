@@ -237,7 +237,7 @@ static NSInteger todayStart = 0;
 //    }];
     //设置按钮约束
     [cardCategoryButtons mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.height.offset(44);
+        make.height.offset(55);
         make.bottom.offset(0);
     }];
     //循环设置按钮的等宽
@@ -273,7 +273,7 @@ static NSInteger todayStart = 0;
     [cardDetailView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.left.right.offset(0);
         //make.top.equalTo(cycleView.mas_bottom);
-        make.bottom.offset(-44);
+        make.bottom.offset(-55);
     }];
     [cardDetailView layoutIfNeeded];
     [todayInfoVC.view mas_makeConstraints:^(MASConstraintMaker *make) {

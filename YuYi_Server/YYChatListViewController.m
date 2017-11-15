@@ -258,7 +258,20 @@
     cell.model = model;
     return cell;
 }
+/*!
+ 在会话列表中，收到新消息的回调
+ 
+ @param notification    收到新消息的notification
+ 
+ @discussion SDK在此方法中有针对消息接收有默认的处理（如刷新等），如果您重写此方法，请注意调用super。
+ 
+ notification的object为RCMessage消息对象，userInfo为NSDictionary对象，其中key值为@"left"，value为还剩余未接收的消息数的NSNumber对象。
+ */
 -(void)didReceiveMessageNotification:(NSNotification *)notification{
+    //收到消息后更新会话列表
+    dispatch_sync(dispatch_get_main_queue(), ^{
+        [self refreshConversationTableViewIfNeeded];
+    });
     
 }
 - (void)didReceiveMemoryWarning {

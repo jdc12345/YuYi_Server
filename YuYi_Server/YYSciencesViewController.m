@@ -8,15 +8,12 @@
 
 #import "YYSciencesViewController.h"
 #import "YYlearningCircleVC.h"
-#import <Masonry.h>
 #import "UIButton+Badge.h"
-#import "UIColor+colorValues.h"
 #import "YYpostCardVC.h"
 #import "NSObject+Formula.h"
 #import "YYCardDetailModel.h"
 #import "HttpClient.h"
 #import <MJExtension.h>
-#import "CcUserModel.h"
 #import <MJRefresh.h>
 #import "YYNoticeListVC.h"
 
@@ -141,7 +138,7 @@ static NSInteger selectStart = 0;
     [self.view addSubview:cardsView];
     //
     self.cardsView = cardsView;
-    //添加商家分类按钮
+    //添加分类按钮
     UIButton *hotCardButton = [[UIButton alloc]init];
     UIButton *selectCardButton = [[UIButton alloc]init];
     UIButton *recentCardButton = [[UIButton alloc]init];

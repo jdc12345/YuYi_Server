@@ -10,7 +10,6 @@
 #import "YYCardDetailTVCell.h"
 #import "YYCommentTVCell.h"
 #import "UILabel+Addition.h"
-//#import "UIColor+colorValues.h"
 #import "BRPlaceholderTextView.h"
 #import <MJExtension.h>
 #import "YYCardDetailPageModel.h"
@@ -42,7 +41,7 @@ static NSInteger start = 0;
 }
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.navigationController.navigationBar.translucent = false;
+//    self.navigationController.navigationBar.translucent = false;
     self.view.backgroundColor = [UIColor whiteColor];
     self.title = @"帖子详情";
     [self loadData];
@@ -577,7 +576,7 @@ static NSInteger start = 0;
 
 -(void)viewWillDisappear:(BOOL)animated{
     [super viewWillDisappear:animated];
-    self.navigationController.navigationBar.hidden = false;
+//    self.navigationController.navigationBar.hidden = false;
     [SVProgressHUD dismiss];// 动画结束
 }
 - (void)didReceiveMemoryWarning {

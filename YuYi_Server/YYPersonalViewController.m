@@ -73,9 +73,22 @@
     [super viewDidLoad];
     [self httpRequest];
     self.view.backgroundColor = [UIColor colorWithHexString:@"f2f2f2"];
-    self.automaticallyAdjustsScrollViewInsets = NO;
+    if (@available(iOS 11.0, *)) {
+//        如果你的APP中使用的是自定义的navigationbar，隐藏掉系统的navigationbar，并且tableView的frame为(0,0,SCREEN_WIDTH, SCREEN_HEIGHT)开始，那么系统会自动调整SafeAreaInsets值为(20,0,0,0)，如果使用了系统的navigationbar，那么SafeAreaInsets值为(64,0,0,0)，如果也使用了系统的tabbar，那么SafeAreaInsets值为(64,0,49,0)
+//        即使把navigationbar设置为透明的，系统也认为安全区域是从navigationbar的bottom开始的,想要从导航栏左上角开始需要添加下边的代码,作用是计算tableview的adjustContentInset（表示contentView.frame.origin偏移了scrollview.frame.origin多少；是系统计算得来的，计算方式由contentInsetAdjustmentBehavior决定）
+        NSLog(@"----------safeAreaInsets--------------->top:%f,botoom:%f",self.view.safeAreaInsets.top,self.view.safeAreaInsets.bottom);
+        NSLog(@"----------adjustedContentInset--------------->top:%f,botoom:%f",self.tableView.adjustedContentInset.top,self.tableView.adjustedContentInset.bottom);
+        NSLog(@"-----------contentInset-------------->top:%f,botoom:%f",self.tableView.contentInset.top,self.tableView.contentInset.bottom);
+        self.tableView.contentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentNever;
+    } else {
+        self.automaticallyAdjustsScrollViewInsets = NO;
+    }
+//    只有到两个属性都设置成可以延伸时，页面起始点才会从状态栏也就是屏幕最左上角开始
+//    延伸视图包含不包含不透明的Bar,是用来指定导航栏是透明的还是不透明
+//    self.extendedLayoutIncludesOpaqueBars = NO;
+//    从导航栏左上角开始计算起始点
+//    self.edgesForExtendedLayout = UIRectEdgeTop;
     
-    // ,@[@"购物车",@"订单详情"] ,@[@"Personal-shopping -icon-",@"order_icon_"]
     CcUserModel *ccuserModel = [CcUserModel defaultClient];
     if(![ccuserModel.telephoneNum isEqualToString:@"18511694068"]){
         self.dataSource = [[NSMutableArray alloc]initWithArray:@[@[@"我的帖子",@"我的点赞"],@[@"咨询",@"查看数据",@"挂号接收"]]];}
@@ -323,7 +336,7 @@
     }];
 }
 
-//防止导航栏设置影响其他页面
+////防止导航栏设置影响其他页面
 -(void)viewWillAppear:(BOOL)animated{
     //把导航栏变透明
     [self.navigationController.navigationBar setBackgroundImage:[[UIImage alloc]init] forBarMetrics:UIBarMetricsDefault];
