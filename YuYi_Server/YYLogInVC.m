@@ -11,6 +11,8 @@
 #import "YYTabBarController.h"
 #import "YYTabBarController.h"
 #import "PrivacyViewController.h"
+#import <RongIMKit/RongIMKit.h>
+#import "AppDelegate.h"
 
 @interface YYLogInVC ()<UITextFieldDelegate>
 
@@ -277,6 +279,60 @@
             YYTabBarController *tabBarVC = [[YYTabBarController alloc]init];
             [SVProgressHUD dismiss];// 动画结束
             [UIApplication sharedApplication].keyWindow.rootViewController = tabBarVC;
+            
+            
+            
+            
+            
+            //审核医生权限
+            
+            [[HttpClient defaultClient]requestWithPath:[NSString stringWithFormat:@"%@%@",mRCDoctorHasPowerUrl,userModel.telephoneNum] method:0 parameters:nil prepareExecute:^{
+                
+            } success:^(NSURLSessionDataTask *task, id responseObject) {
+                
+                if (responseObject[@"PermissionInfo"]) {
+                    //            //看病权限
+                    AppDelegate *appDelegate = (AppDelegate*)[UIApplication sharedApplication].delegate;
+                    appDelegate.isHasPower = true;
+                    //r---------- 1 融云初始化 ----------
+                    [[RCIM sharedRCIM] initWithAppKey:@"25wehl3u2qo7w"];
+                    
+                    //r---------- 2.1 登陆融云 ----------
+                    
+                    [[RCIM sharedRCIM] connectWithToken:responseObject[@"token"]     success:^(NSString *userId) {
+                        //r---------- 2.2 用服务区请求的用户信息登录融云，用向服务区请求的用户信息设置当前登录用户信息 ----------
+                        NSLog(@"登陆成功。当前登录的用户ID：%@", userId);
+                        [[RCIM sharedRCIM] setReceiveMessageDelegate:appDelegate];
+                        [[RCIM sharedRCIM] setUserInfoDataSource:appDelegate];
+                        //            是否关闭所有的本地通知，默认值是NO
+                        [RCIM sharedRCIM].disableMessageNotificaiton = false;
+                        //            是否将用户信息和群组信息在本地持久化存储，默认值为NO
+                        [[RCIM sharedRCIM]setEnablePersistentUserInfoCache:YES];
+                        RCUserInfo *currentUserInfo = [[RCUserInfo alloc]initWithUserId:userId name:responseObject[@"TrueName"] portrait:[NSString stringWithFormat:@"%@%@",mPrefixUrl,responseObject[@"Avatar"]]];
+                        [[RCIM sharedRCIM] setCurrentUserInfo:currentUserInfo];
+                    } error:^(RCConnectErrorCode status) {
+                        NSLog(@"登陆的错误码为:%ld", (long)status);
+                    } tokenIncorrect:^{
+                        //token过期或者不正确。
+                        //如果设置了token有效期并且token过期，请重新请求您的服务器获取新的token
+                        //如果没有设置token有效期却提示token错误，请检查您客户端和服务器的appkey是否匹配，还有检查您获取token的流程。
+                        NSLog(@"token错误");
+                        
+                    }];
+                    
+                }
+                
+                
+            } failure:^(NSURLSessionDataTask *task, NSError *error) {
+                NSLog(@"%@",error);
+            }];
+            
+           
+            
+            
+            
+            
+            
         }else{
             if ([dic[@"result"] isEqualToString:@""]) {
                 [self showAlertWithMessage:@"请确认电话号码正确以及网络是否正常"];

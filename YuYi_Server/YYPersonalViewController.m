@@ -76,9 +76,9 @@
     if (@available(iOS 11.0, *)) {
 //        如果你的APP中使用的是自定义的navigationbar，隐藏掉系统的navigationbar，并且tableView的frame为(0,0,SCREEN_WIDTH, SCREEN_HEIGHT)开始，那么系统会自动调整SafeAreaInsets值为(20,0,0,0)，如果使用了系统的navigationbar，那么SafeAreaInsets值为(64,0,0,0)，如果也使用了系统的tabbar，那么SafeAreaInsets值为(64,0,49,0)
 //        即使把navigationbar设置为透明的，系统也认为安全区域是从navigationbar的bottom开始的,想要从导航栏左上角开始需要添加下边的代码,作用是计算tableview的adjustContentInset（表示contentView.frame.origin偏移了scrollview.frame.origin多少；是系统计算得来的，计算方式由contentInsetAdjustmentBehavior决定）
-        NSLog(@"----------safeAreaInsets--------------->top:%f,botoom:%f",self.view.safeAreaInsets.top,self.view.safeAreaInsets.bottom);
-        NSLog(@"----------adjustedContentInset--------------->top:%f,botoom:%f",self.tableView.adjustedContentInset.top,self.tableView.adjustedContentInset.bottom);
-        NSLog(@"-----------contentInset-------------->top:%f,botoom:%f",self.tableView.contentInset.top,self.tableView.contentInset.bottom);
+//        NSLog(@"----------safeAreaInsets--------------->top:%f,botoom:%f",self.view.safeAreaInsets.top,self.view.safeAreaInsets.bottom);
+//        NSLog(@"----------adjustedContentInset--------------->top:%f,botoom:%f",self.tableView.adjustedContentInset.top,self.tableView.adjustedContentInset.bottom);
+//        NSLog(@"-----------contentInset-------------->top:%f,botoom:%f",self.tableView.contentInset.top,self.tableView.contentInset.bottom);
         self.tableView.contentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentNever;
     } else {
         self.automaticallyAdjustsScrollViewInsets = NO;

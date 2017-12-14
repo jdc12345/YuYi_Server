@@ -7,8 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <RongIMKit/RongIMKit.h>
 
-@interface AppDelegate : UIResponder <UIApplicationDelegate>
+@interface AppDelegate : UIResponder <UIApplicationDelegate,RCIMReceiveMessageDelegate, RCIMUserInfoDataSource>
 
 @property (strong, nonatomic) UIWindow * window;
 @property (assign, nonatomic) BOOL  isHasPower;//医生是否有看病的权限
